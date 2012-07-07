@@ -1,0 +1,137 @@
+#!/usr/local/bin/perl
+use warnings;
+#use diagnostics;
+use strict;
+use Getopt::Euclid;
+use Fatal qw( open close );
+
+use Morsulus::Actions;
+
+main();
+
+sub main {
+    my $date = $ARGV{-date};
+    my $input_fh = get_input($ARGV{-in});
+    my $output_fh = get_output($ARGV{-out});
+    while (my $action_line = <$input_fh>) {
+        chomp $action_line;
+        $action_line =~ s/&quot;/"/g;
+        next if $action_line =~ /^err/ && ! $ARGV{-err};
+        my ( undef, $kingdom, $action, $name, $armory, $name2, $notes )
+            = split( /[|]/, $action_line );
+        next if $action eq 'disposition';
+        
+        $action =~ s/\s+$//;
+
+        my $act = Morsulus::Actions->new(
+            {   action => $action,
+                source => "$date$kingdom",
+                name   => $name,
+                armory => $armory,
+                name2  => $name2,
+                notes => $notes,
+            }
+        );
+        print $output_fh $act->make_db_entries;
+    }
+}
+
+sub get_input {
+    my $file = shift;
+    if ($file eq '-') {
+        return \*STDIN;
+    }
+    else {
+        open my $fh, '<', $file;
+        return $fh;
+    }
+}
+
+sub get_output {
+    my $file = shift;
+    if ($file eq '-') {
+        return \*STDOUT;
+    }
+    else {
+        open my $fh, '>', $file;
+        return $fh;
+    }
+}
+
+__END__
+
+=head1 NAME
+
+act2db - Convert actions into database format
+
+=head1 VERSION
+
+This documentation refers to process-actions version 0.01
+
+=head1 USAGE
+
+    act2db -in file.act -out file.db -date yyyymm
+
+=head1 REQUIRED
+
+=over
+
+=back
+
+=head1 OPTIONS
+
+=over
+
+=item -d[ate] <date>
+
+Year and month for actions
+
+=for Euclid:
+    date.type: string
+    date.default: '999999'
+
+=item -i[n] [-] <file>
+
+Specify input (actions) file
+
+=for Euclid:
+    file.type:    readable
+    file.default: '-'
+
+=item -o[ut] [=] <file>
+
+Specify output (database) file
+
+=for Euclid:
+    file.type:    writable
+    file.default: '-'
+
+=item -err[ata]
+
+Include errata in processing. Default is to ignore errata.
+
+=item -v
+
+=item --verbose
+
+Print all warnings
+
+=item --version
+
+=item --usage
+
+=item --help
+
+=item --man
+
+=back
+
+=head1 TODO
+
+Add value checking to date argument
+
+=head1 COPYRIGHT
+
+Copyright (c) 2005 Michael Houghton. All rights reserved.
+
+This program may be used under the same terms as Perl.
