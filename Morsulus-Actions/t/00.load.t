@@ -629,5 +629,9 @@ Angels,< Barony of> the|9999C|b|Gules, a seraph\'s head Or faced proper.|(For Or
 'Caid<, Kingdom of>|-9999C|b|(Fieldless) A rose Or barbed and seeded vert.|(-association corrected)
 Caid<, Kingdom of>|9999C|b|(Fieldless) A rose Or barbed and seeded vert.|(For Legion of Courtesy)
 ',
+'ufo000114|K|Heraldic title "Rottaler Herold" (see PENDS for other heraldic title)|Calontir, Kingdom of||
+' =>
+'Rottaler< Herold>|9999K|t|Calontir<, Kingdom of>|
+',
     );
 }

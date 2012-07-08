@@ -4,7 +4,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('2012.005.002');
+use version; our $VERSION = qv('2012.005.003');
 use Class::Std;
 use Carp;
 use Daud;
@@ -105,7 +105,7 @@ use List::MoreUtils qw(uniq);
         for my $q_name (@{$quoted_names_of{$ident}}, $second_name_of{$ident}, $name_of{$ident})
         {
             if ($q_name =~ m/($SPACE 
-                (?: Herald | Pursuivant | King $SPACE of $SPACE Arms | Herault) 
+                (?: Herald | Pursuivant | King $SPACE of $SPACE Arms | Herault | Herold) 
                 (?: $SPACE Extraordinary)?)/xms)
             {
                 my $title = $1;
