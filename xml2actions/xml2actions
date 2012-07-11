@@ -1,0 +1,264 @@
+#!/usr/local/bin/perl
+use strict;
+$|++;
+
+my $USAGE = <<USAGE;
+Usage: $0 [input_file] > output_file
+       reads STDIN if input_file not given
+USAGE
+
+my $kingdom;
+my $owner = '';
+my $action = '';
+my $action_name = '';
+my $armory = '';
+my $discussion = '';
+my @disc_blazons = ();
+my $seq = 'ufo000000';
+my $in_errata = 0;
+
+# table to convert kingdom name to kingdom id
+my %Ktab = (
+	'Æthelmearc' => 'H',
+	'&#198;thelmearc' => 'H',
+   'aethelmearc', 'H',
+   'an tir', 'N',
+   'ansteorra', 'X',
+   'artemisia', 'R',
+   'atenveldt', 'A',
+   'kraken', 'Q',
+   'atlantia', 'Q',
+   'batonvert' => 'C',
+   'caid', 'C',
+   'calontir', 'K',
+   'drachenwald', 'D',
+   'ealdormere', 'm',
+   'east', 'E',
+   'electrum letter of intent to protect', 'N',
+   'gleann abhann' => 'G',
+   'laurel', 'L',
+   'lochac', 'w',
+   'meridies', 'S',
+   'middle', 'M',
+   'northshield', 'n',
+   'nebuly letter of intent to protect', 'W',
+   'nebuly', 'W',
+   'outlands', 'O',
+   'saewynn and clarion letter of intent to protect', 'L',
+   'society for creative anachronism', 'L',
+   'scribe armarius', 'C',
+   'siren' => 'N',
+   'palimpsest' => 'N',
+   'trimaris', 'T',
+   'west', 'W'
+);
+	
+use XML::Twig;
+
+my $xp = XML::Twig->new(twig_handlers => {
+		'kingdom/name' => \&get_kingdom_name,
+		'kingdom/item/name' => \&get_item_name,
+		'kingdom/item/action' => \&get_item_action,
+		'kingdom/item/action/name' => \&get_item_action_name,
+		'kingdom/item/armory' => \&get_item_armory,
+		'kingdom/item/discussion' => \&get_item_discussion,
+		'kingdom/item/discussion/armory-discussion/p/blazon' => \&get_item_discussion_blazon,
+		'kingdom/item/discussion/p/blazon' => \&get_item_discussion_blazon,
+		'kingdom/item[@decision="accepted"]' => \&extract_action,
+		'kingdom/item[@decision="returned"]' => \&no_action,
+		'kingdom/item[@decision="pended"]' => \&no_action,
+		'kingdom/item[@decision="inprocess"]' => \&no_action,
+		'kingdom/item' => \&bad_action,
+		'errata' => \&end_errata,
+	},
+	start_tag_handlers => {
+		'errata' => \&start_errata,
+	},
+	keep_encoding => 1,);
+
+if (@ARGV)
+{
+	$xp->parsefile($ARGV[0]);
+}
+else
+{
+	local ($/);
+	undef $/;
+	$xp->parse(<STDIN>);
+}
+
+sub start_errata { $in_errata = 1; $seq =~ s/^ufo/err/;}
+sub end_errata { $in_errata = 0; $seq =~ s/^err/ufo/; reset_vars(); }
+
+sub reset_vars
+{
+	$owner = '';
+	$action = '';
+	$action_name = '';
+	$armory = '';
+	$discussion = '';
+	@disc_blazons = ();
+}
+
+sub get_kingdom_name
+{
+	my ($t, $elt) = @_;
+	#return if $in_errata;
+	$kingdom = $elt->text;
+	$kingdom =~ s/\W+$//;
+	$kingdom =~ s/^\s*//;
+	die "Unknown kingdom $kingdom" unless exists $Ktab{lc($kingdom)};
+	print STDERR "Kingdom $kingdom mapped to code ";
+	$kingdom = $Ktab{lc($kingdom)};
+	print STDERR $kingdom, "\n";
+	#$xp->purge;
+}
+
+sub get_item_name
+{
+	my ($t, $elt) = @_;
+	#return if $in_errata;
+	($owner = $elt->text) =~ s:[\012\015]+: :sg;
+#	print "get_item_name $owner\n";
+}
+
+sub get_item_action
+{
+	my ($t, $elt) = @_;
+	#return if $in_errata;
+	($action = $elt->text) =~ s:[\012\015]+: :sg;
+#	print "get_item_action $action\n";
+}
+
+sub get_item_action_name
+{
+	my ($t, $elt) = @_;
+	#return if $in_errata;
+	($action_name = $elt->text) =~ s:[\012\015]+: :sg;
+#	print "get_item_action_name $action_name\n";
+}
+
+sub get_item_armory
+{
+	my ($t, $elt) = @_;
+	#return if $in_errata;
+	($armory = $elt->text) =~ s:[\012\015]+: :sg;
+	$armory =~ s: +$::;
+#	print "get_item_armory $armory\n";
+}
+
+sub get_item_discussion
+{
+	my ($t, $elt) = @_;
+	#return if $in_errata;
+	if ($action =~ /change|blanket|heraldic title/i or $in_errata)
+	{
+		($discussion = $elt->text) =~ s:[\012\015]+: :sg;
+	}
+#	print "get_item_discussion $discussion\n";
+}
+
+sub get_item_discussion_blazon
+{
+	my ($t, $elt) = @_;
+	#return if $in_errata;
+	if ($action =~ /(device|badge) change/i 
+	    or $action =~ /blazon/i 
+	    or $action =~ /exchange of device and badge/i
+	    or $in_errata)
+	{
+		(my $disc = $elt->text) =~ s:[\012\015]+: :sg;
+		$disc =~ s: +$::;
+		push @disc_blazons, $disc;
+	}
+#	print "get_item_discussion_blazon\n";
+}
+
+sub bad_action
+{
+	my ($t, $elt) = @_;
+	return if $in_errata;
+	print STDERR "#$owner has unrecognized or no decision - imputing acceptance\n";
+	extract_action(@_);
+	#$xp->purge;
+}
+
+sub no_action
+{
+	reset_vars();
+	#$xp->purge;
+}
+
+sub extract_action
+{
+	#return if $in_errata;
+	my ($t, $elt) = @_;
+	die "Kingdom not specified for item $seq ($owner)" unless $kingdom;
+	if ($action =~ /^joint badge$/i and $owner =~ /^(.*) and (.*)$/)
+	{
+		$action = "Joint badge with \"$2\"";
+		$owner = $1;
+	}
+	elsif ($action =~ /^(.+) reblazon$/)
+	{
+		$action = "Reblazon of $1";
+	}
+	$action_name and $action =~ s/$action_name/"$action_name"/;
+	if ($action =~ /heraldic title (.+) (?:to|from) (.+)/i)
+	{
+	    my ($title, $who) = ($1, $2);
+	    $action =~ s/$title/"$title"/ unless $title =~ /"/;
+	    $action =~ s/$who/"$who"/ unless $who =~ /"/;
+	}
+	if ($action =~ /transfer of order name (.+) (?:to|from)/i
+	    || $action =~ /order name transfer (.+) (?:to|from)/i)
+	{
+	    my $order = $1;
+	    $action =~ s/$order/"$order"/;
+	}
+	mark_retained($action, $action_name, $discussion);
+	if ($action =~ /exchange of device and badge/i)
+	{
+	    my ($old_device) = grep {$discussion =~ /previous device, $_/} @disc_blazons;
+	    my ($old_badge) = grep {$_ ne $old_device} @disc_blazons;
+	    if (@disc_blazons == 2 && defined $old_device)
+	    {
+	        @disc_blazons = ();
+	    }
+	    #print "exchange of device ($old_device) and badge ($old_badge)\n";
+	    print join('|', $seq++, $kingdom, "change of badge to device", $owner, $old_badge, "\n");
+	    print join('|', $seq++, $kingdom, "change of device to badge", $owner, $old_device, "\n");
+	}
+	else
+	{
+	    print join('|', $seq++, $kingdom, $action, $owner, $armory, "\n");
+	}
+	print join('|', $seq++, $kingdom, guess_disposition($_, $discussion, $action), $owner, $_, "\n")
+		foreach @disc_blazons;
+	$discussion and print join('|', $seq++, $kingdom, 'disposition', $owner,  $discussion, "\n");
+	reset_vars();
+	#$xp->purge;
+}
+
+sub mark_retained
+{
+    my ($action, $name, $discussion) = @_;
+    return unless $action =~ /^name change/i;
+    return unless $discussion =~ /previous name, $name, is retained/;
+    $_[0] =~ s/"$name"/"$name" retained/;
+    return;
+}
+
+sub guess_disposition
+{
+    my ($blazon, $discussion, $action) = @_;
+    if ($discussion =~ /(?:old|previous) (device|badge), $blazon, is (?:to be )?(retained|released)/)
+    {
+        return "$1 changed/$2";
+    }
+    elsif ($action =~ /^Reblazon of (.+)$/)
+    {
+        return "$1 reblazoned";
+    }
+    return "armory disposition";
+}
