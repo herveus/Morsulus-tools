@@ -242,10 +242,24 @@ sub add_blazon
     {
         $blazon_rs->create(
             {
-                blason => $blazon,
+                blazon => $blazon,
             })->update;
     }
     return $blazon_rs($blazon);
+}
+
+sub add_note
+{
+    my $self = shift;
+    my ($reg, $note_text) = @_;
+    my $note = $self->schema->resultset('Note')
+        ->create({note_text => $note_text})->update;
+    $self->schema->resultset('RegistrationNote')
+        ->create(
+            {
+                reg_id => $reg->reg_id,
+                note_id => $note->note_id,
+            })->update;
 }
 
 sub add_desc
@@ -336,12 +350,13 @@ sub load_database
             my $pad = $entry->text;
             $pad =~ s/^(?:See |For )//;
             $self->add_name($pad);
-            $self->update_reg($reg_id, {text_name => $pad});
+            $reg->text_name($pad);
+            $reg->update;
         }
         
         for my $note ($entry->split_notes)
         {
-            $self->add_note($reg_id, $note);
+            $self->add_note($reg, $note);
         }
     }
 }
