@@ -9,7 +9,9 @@ my $dbfile = 't/01.create.db';
 unlink $dbfile if -e $dbfile;
 
 my $ord = Morsulus::Ordinary::Classic->new(dbname => 't/01.create.db',
-    category_file => 't/test.cat');
+    category_file => 't/test.cat',
+    db_flat_file => 't/test.db',
+    );
 
 is $ord->dbname, 't/01.create.db', 'dbname set correctly';
 is $ord->category_file, 't/test.cat', 'cat file set correctly';

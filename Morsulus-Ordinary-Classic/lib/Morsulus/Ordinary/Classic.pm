@@ -44,7 +44,8 @@ sub build_dbh
     my $dbh = DBI->connect(
         "dbi:SQLite:dbname=$dbname",
         "",
-        ""
+        "",
+        {RaiseError => 1}
     ) or die "Cannot connect to DB $DBI::errstr";
     return $dbh;
 }
@@ -195,10 +196,8 @@ sub add_feature_set
     my $self = shift;
     my ($set_name) = @_;
     my $fs = $self->schema->resultset('FeatureSet');
-    if ($fs->find($set_name) == 0)
-    {
+    $fs->find($set_name) or 
         $fs->create({feature_set_name => $set_name})->update;
-    }
     return $fs->find($set_name);
 }
 
@@ -207,14 +206,12 @@ sub add_feature
     my $self = shift;
     my ($feature_name, $set_name) = @_;
     my $feature = $self->schema->resultset('Feature');
-    if ($feature->find($feature_name) == 0)
-    {
+    $feature->find($feature_name) or
         $feature->create(
             {
                 feature => $feature_name,
                 feature_set => $set_name,
             })->update;
-    }
     return $feature->find($feature_name);
 }
 
@@ -223,13 +220,11 @@ sub add_name
     my $self = shift;
     my ($name) = @_;
     my $name_rs = $self->schema->resultset('Name');
-    if ($name_rs->find($name) == 0)
-    {
+    $name_rs->find($name) or
         $name_rs->create(
             {
                 name => $name,
             })->update;
-    }
     return $name_rs->find($name);
 }
 
@@ -238,13 +233,11 @@ sub add_blazon
     my $self = shift;
     my ($blazon) = @_;
     my $blazon_rs = $self->schema->resultset('Blazon');
-    if ($blazon_rs->find($blazon) == 0)
-    {
+    $blazon_rs->find($blazon) or
         $blazon_rs->create(
             {
                 blazon => $blazon,
             })->update;
-    }
     return $blazon_rs($blazon);
 }
 
@@ -252,8 +245,9 @@ sub add_note
 {
     my $self = shift;
     my ($reg, $note_text) = @_;
-    my $note = $self->schema->resultset('Note')
-        ->create({note_text => $note_text})->update;
+    my $note_rs = $self->schema->resultset('Note');
+    my $note = $note_rs->find($note_text) ||
+        $note_rs->create({note_text => $note_text})->update;
     $self->schema->resultset('RegistrationNote')
         ->create(
             {
@@ -280,7 +274,7 @@ sub add_desc
     {
         $df->create(
             {
-                feature => $feature,
+                feature => $f,
                 desc_id => $desc->desc_id,
             })->update;
     }
@@ -316,7 +310,7 @@ sub load_database
     my $self = shift;
     my $dbfile = $self->db_flat_file;
     defined $dbfile or die "No legacy database file specified";
-    -r $catfile or die "Database file $dbfile not readable";
+    -r $dbfile or die "Database file $dbfile not readable";
     require Morsulus::Ordinary::Legacy;
     open my $dbfile_fh, '<', $dbfile;
     while (<$dbfile_fh>)
@@ -340,7 +334,7 @@ sub load_database
             my $blazon = $self->add_blazon($entry->text);
             $reg->text_blazon_id($blazon->blazon_id);
             $reg->update;
-            for my $desc ($entry->split_descs))
+            for my $desc ($entry->split_descs)
             {
                 $self->add_desc($desc, $blazon);
             }

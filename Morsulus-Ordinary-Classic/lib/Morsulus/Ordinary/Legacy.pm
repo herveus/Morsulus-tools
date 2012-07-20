@@ -47,7 +47,7 @@ sub is_historical
 sub parse_source
 {
     my $self = shift;
-    my ($reg, $rel) = split(/-/, $self->source;
+    my ($reg, $rel) = split(/-/, $self->source);
     my @parts;
     if (defined $reg)
     {
