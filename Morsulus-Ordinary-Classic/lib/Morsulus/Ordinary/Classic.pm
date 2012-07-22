@@ -7,6 +7,7 @@ use Moose;
 use namespace::autoclean;
 use DBI;
 use Morsulus::Ordinary::Classic::Schema;
+use Morsulus::Ordinary::Legacy;
 
 has 'schema' => (
     isa => 'Object',
@@ -75,6 +76,7 @@ sub makeDB
 sub load_dates
 {
     my $self = shift;
+    $self->schema->txn_begin;
     for my $year (1960..2020)
     {
         for my $month ('01'..'12')
@@ -87,10 +89,12 @@ sub load_dates
                 })->update;
         }
     }
+    $self->schema->txn_commit;
 }
 
 sub load_actions {
     my $self = shift;
+    $self->schema->txn_begin;
     my $sth = $self->dbh->prepare(
         'insert into actions (action_id, action_description) values (?,?)');
     for my $action (get_actions())
@@ -101,6 +105,7 @@ sub load_actions {
                 action_description => $action->[1],
             })->update;
     }
+    $self->schema->txn_commit;
 }
 
 sub get_actions
@@ -133,6 +138,9 @@ sub get_actions
         [ 'vc', 'corrected variant spelling' ],
         [ 'Bvc', 'corrected variant branch-name spelling' ],
         [ 'R', 'cross-reference' ],
+        [ 'D', 'combined name and device' ],
+        [ 'BD', 'combined branch name and device' ],
+        [ 'B', 'combined name and badge' ]
     );
 }
 
@@ -143,6 +151,8 @@ sub load_categories
     defined $catfile or die "No category file specified";
     -r $catfile or die "Category file $catfile not readable";
     
+    my $count = 0;
+    $self->schema->txn_begin;
     open my $catfile_fh, '<', $catfile;
     while (<$catfile_fh>)
     {
@@ -156,7 +166,14 @@ sub load_categories
         {
             $self->process_heading($_);
         }
+        $count++;
+        if ($count % 100)
+        {
+            $self->schema->txn_commit;
+            $self->schema->txn_begin;
+        }
     }
+    $self->schema->txn_commit;
 }
 
 sub process_heading
@@ -233,12 +250,12 @@ sub add_blazon
     my $self = shift;
     my ($blazon) = @_;
     my $blazon_rs = $self->schema->resultset('Blazon');
-    $blazon_rs->find($blazon) or
+    my $bz = $blazon_rs->find({blazon => $blazon}) ||
         $blazon_rs->create(
             {
                 blazon => $blazon,
             })->update;
-    return $blazon_rs($blazon);
+    return $bz;
 }
 
 sub add_note
@@ -246,7 +263,7 @@ sub add_note
     my $self = shift;
     my ($reg, $note_text) = @_;
     my $note_rs = $self->schema->resultset('Note');
-    my $note = $note_rs->find($note_text) ||
+    my $note = $note_rs->find({note_text => $note_text}) ||
         $note_rs->create({note_text => $note_text})->update;
     $self->schema->resultset('RegistrationNote')
         ->create(
@@ -311,47 +328,65 @@ sub load_database
     my $dbfile = $self->db_flat_file;
     defined $dbfile or die "No legacy database file specified";
     -r $dbfile or die "Database file $dbfile not readable";
-    require Morsulus::Ordinary::Legacy;
+    $self->schema->txn_begin;
+    my $count = 0;
     open my $dbfile_fh, '<', $dbfile;
     while (<$dbfile_fh>)
     {
-        chomp;
-        my $entry = Morsulus::Ordinary::Legacy->from_string($_);
-        my ($reg_date, $reg_king, $rel_date, $rel_king) =
-            $entry->parse_source;
-        $self->add_name($entry->name);
-        my $reg = $self->schema->resultset('Registration')->create(
-            {
-                owner_name => $entry->name,
-                action => $entry->type,
-                registration_date => $reg_date,
-                release_date => $rel_date,
-                registration_kingdom => $reg_king,
-                release_kingdom => $rel_king,
-            })->update;
-        if ($entry->has_blazon)
+        $self->process_legacy_record($_);
+        $count++;
+        if ($count)
         {
-            my $blazon = $self->add_blazon($entry->text);
-            $reg->text_blazon_id($blazon->blazon_id);
-            $reg->update;
+            $self->schema->txn_commit;
+            $self->schema->txn_begin;
+        }
+    }
+    $self->schema->txn_commit;
+}
+
+sub process_legacy_record
+{
+    my $self = shift;
+    my ($record) = @_;
+    chomp $record;
+    my $entry = Morsulus::Ordinary::Legacy->from_string($record);
+    my ($reg_date, $reg_king, $rel_date, $rel_king) =
+        $entry->parse_source;
+    $self->add_name($entry->name);
+    my $reg = $self->schema->resultset('Registration')->create(
+        {
+            owner_name => $entry->name,
+            action => $entry->type,
+            registration_date => $reg_date,
+            release_date => $rel_date,
+            registration_kingdom => $reg_king,
+            release_kingdom => $rel_king,
+        })->update;
+    if ($entry->has_blazon)
+    {
+        my $blazon = $self->add_blazon($entry->text);
+        $reg->text_blazon_id($blazon->blazon_id);
+        $reg->update;
+        if (! $entry->is_historical)
+        {
             for my $desc ($entry->split_descs)
             {
                 $self->add_desc($desc, $blazon);
             }
         }
-        elsif ($entry->text)
-        {
-            my $pad = $entry->text;
-            $pad =~ s/^(?:See |For )//;
-            $self->add_name($pad);
-            $reg->text_name($pad);
-            $reg->update;
-        }
-        
-        for my $note ($entry->split_notes)
-        {
-            $self->add_note($reg, $note);
-        }
+    }
+    elsif ($entry->text)
+    {
+        my $pad = $entry->text;
+        $pad =~ s/^(?:See |For )//;
+        $self->add_name($pad);
+        $reg->text_name($pad);
+        $reg->update;
+    }
+    
+    for my $note ($entry->split_notes)
+    {
+        $self->add_note($reg, $note);
     }
 }
 

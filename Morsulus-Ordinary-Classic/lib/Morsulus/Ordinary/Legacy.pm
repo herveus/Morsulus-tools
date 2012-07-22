@@ -1,6 +1,5 @@
 package Morsulus::Ordinary::Legacy;
 
-use 5.14.0;
 use Moose;
 use namespace::autoclean;
 
@@ -11,6 +10,38 @@ has 'text' => ( is => 'rw' );
 has 'notes' => ( is => 'rw' );
 has 'descs' => ( is => 'rw' );
 
+my %blazon_types = (
+    'a' => 1,
+    'b' => 1,
+    'D?' => 1,
+    'd' => 1,
+    'g' => 1,
+    't' => 0,
+    's' => 1,
+    'N' => 0,
+    'BN' => 0,
+    'O' => 0,
+    'OC' => 0,
+    'AN' => 0,
+    'ANC' => 0,
+    'NC' => 0,
+    'Nc' => 0,
+    'BNC' => 0,
+    'BNc' => 0,
+    'HN' => 0,
+    'HNC' => 0,
+    'C' => 0,
+    'j' => 0,
+    'u' => 0,
+    'v' => 0,
+    'Bv' => 0,
+    'vc' => 0,
+    'Bvc' => 0,
+    'R' => 0,
+    'D' => 1,
+    'BD' => 1,
+    'B' => 1,
+    );
 sub from_string
 {
     my $self = shift;
@@ -35,7 +66,8 @@ sub to_string
 sub has_blazon
 {
     my $self = shift;
-    return $self->type ~~ [qw/a b d g s B D BD/];
+    return $blazon_types{$self->type};
+    #return $self->type ~~ [qw/a b d g s B D BD D?/];
 }
 
 sub is_historical
@@ -48,7 +80,7 @@ sub parse_source
 {
     my $self = shift;
     my ($reg, $rel) = split(/-/, $self->source);
-    my @parts;
+    my @parts = (undef, undef, undef, undef);
     if (defined $reg)
     {
         $reg =~ /^([0-9]{6})([A-Za-z])?$/;
