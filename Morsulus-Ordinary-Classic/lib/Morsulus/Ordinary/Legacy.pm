@@ -96,19 +96,105 @@ sub parse_source
     return @parts;
 }
 
+sub make_source
+{
+    my $self = shift;
+    my @parts = @_;
+    die "too many pieces in make_source" if @parts > 4;
+    my $source = '';
+    if ($parts[0])
+    {
+        $parts[0] =~ /^[0-9]{6}$/ or die "malformed registration date (yyyymm)";
+        $source .= $parts[0];
+    }
+    if ($parts[1])
+    {
+        $parts[1] =~ /^[A-Za-z]$/ or die "malformed registration kingdom";
+        $source .= $parts[1];
+    }
+    $source .= '-' if ($parts[2] || $parts[3]);
+    if ($parts[2])
+    {
+        $parts[2] =~ /^[0-9]{6}$/ or die "malformed release date (yyyymm)";
+        $source .= $parts[2];
+    }
+    if ($parts[3])
+    {
+        $parts[3] =~ /^[A-Za-z]$/ or die "malformed release kingdom";
+        $source .= $parts[3];
+    }
+    $self->source($source);
+}
+
+sub set_reg_date
+{
+    my $self = shift;
+    my ($date) = @_;
+    $date =~ /^[0-9]{6}$/ or die "malformed date (yyyymm)";
+    my @parts = $self->parse_source;
+    $parts[0] = $date;
+    $self->make_source(@parts);
+}
+
+sub set_rel_date
+{
+    my $self = shift;
+    my ($date) = @_;
+    $date =~ /^[0-9]{6}$/ or die "malformed date (yyyymm)";
+    my @parts = $self->parse_source;
+    $parts[2] = $date;
+    $self->make_source(@parts);
+}
+
+sub set_reg_kingdom
+{
+    my $self = shift;
+    my ($kingdom) = @_;
+    $kingdom =~ /^[A-Za-z]$/ or die "malformed kingdom";
+    my @parts = $self->parse_source;
+    $parts[1] = $kingdom;
+    $self->make_source(@parts);
+}
+
+sub set_rel_kingdom
+{
+    my $self = shift;
+    my ($kingdom) = @_;
+    $kingdom =~ /^[A-Za-z]$/ or die "malformed kingdom";
+    my @parts = $self->parse_source;
+    $parts[3] = $kingdom;
+    $self->make_source(@parts);
+}
+
 sub split_descs
 {
     my $self = shift;
+    return unless defined $self->descs;
     return split(/\|/, $self->descs);
+}
+
+sub add_descs
+{
+    my $self = shift;
+    my (@descs) = @_;
+    $self->descs(join('|', $self->split_descs, @descs));
 }
 
 sub split_notes
 {
     my $self = shift;
-    return unless $self->notes;
+    return unless defined $self->notes;
     my $pad = $self->notes;
     $pad =~ s/^.(.+).$/$1/;
     return split(/\)\(/, $pad);
+}
+
+sub add_notes
+{
+    my $self = shift;
+    my (@notes) = @_;
+    $self->notes($self->notes . 
+        join('', map {"($_)"} @notes));
 }
 
 __PACKAGE__->meta->make_immutable;

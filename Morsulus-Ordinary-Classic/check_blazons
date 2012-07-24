@@ -1,0 +1,172 @@
+#!/usr/local/bin/perl
+use warnings;
+use strict;
+use Getopt::Euclid;
+use Fatal qw(open close);
+use Carp;
+use Morsulus::Ordinary::Classic;
+
+{
+    package Legacy::DB::Entry;
+    use Moose;
+    
+    has 'name' => ( is => 'rw' );
+    has 'source' => ( is => 'rw' );
+    has 'type' => ( is => 'rw' );
+    has 'text' => ( is => 'rw' );
+    has 'notes' => ( is => 'rw' );
+    has 'descs' => ( is => 'rw' );
+    
+    sub from_string
+    {
+        my $self = shift;
+        my $db_string = shift;
+        chomp $db_string;
+        my ($name, $source, $type, $text, $notes, $descs) = split(/\|/, $db_string, 6);
+        my $entry = $self->new(name => $name, source => $source, 
+            type => $type,
+            text => $text, notes => $notes, descs => $descs);
+        return $entry;
+    }
+    
+    sub to_string
+    {
+        my $self = shift;
+        my $string = join('|', $self->name, $self->source, $self->type,
+            $self->text, $self->notes);
+        $string .= '|'.$self->descs if $self->descs;
+        return $string;
+    }
+    
+    sub has_blazon
+    {
+        my $self = shift;
+        return $self->type ~~ [qw/a b d g s B D BD/];
+    }
+    
+    sub is_historical
+    {
+        my $self = shift;
+        return $self->source =~ /-/;
+    }
+}
+
+main();
+
+sub main
+{
+    my $input_fh = get_input($ARGV{-i});
+    my $output_fh = get_output($ARGV{-o});
+    
+    print STDERR "fetching blazons...";
+    my $ord = Morsulus::Ordinary::Classic->new(dbname => $ARGV{-db});
+    print STDERR "fetched\n";
+    while (<$input_fh>)
+    {
+        chomp;
+        my $entry = Morsulus::Ordinary::Legacy->from_string($_);
+        next unless $entry->has_blazon;
+        #print STDERR "$_ has a blazon\n";
+        my @registrations = $ord->get_blazon_registrations($entry->text);
+        if ($entry->is_historical)
+        {
+            #print STDERR "...and it's historical\n";
+            
+            if (! @registrations)
+            {
+                carp "$_\nblazon not found in database\n";
+            }
+            elsif (!grep {defined $_->descs} @registrations) # none have descs
+            {
+                carp "$_\nblazon has no descs in database\n";
+            }
+        }
+        else
+        {
+            #print STDERR "...and it exists in the database\n";
+            for my $reg (@registrations)
+            {
+                next unless defined $reg->descs;
+                $entry->descs($reg->descs);
+                last;
+            }
+        }
+        #no warnings 'uninitialized';
+        $_ = $entry->to_string;
+    }
+    continue
+    {
+        print $output_fh $_, "\n";
+    }
+    # get blazons from db
+    # for each input with a blazon
+    # if release then warn if blazon not in db
+    # if registration then append descs if found
+    # write record regardless
+    print "done\n" if $ARGV{'--noisy'};
+}
+
+sub get_input
+{
+    my $file = shift;
+    if ($file eq '-')
+    {
+        return \*STDIN;
+    }
+    else
+    {
+        open my $fh, '<', $file;
+        return $fh;
+    }
+}
+
+sub get_output
+{
+    my $file = shift;
+    if ($file eq '-')
+    {
+        return \*STDOUT;
+    }
+    else
+    {
+        open my $fh, '>', $file;
+        return $fh;
+    }
+}
+__END__
+
+=head1 OPTIONS
+
+=over
+
+=item -db <file>
+
+Master database file. Defaults to /Users/herveus/aux/oandab.db
+
+SQLite database compatible with Morsulus::Ordinary::Classic::Schema
+
+=for Euclid:
+    file.default: '/Users/herveus/aux/oandadb.db'
+    file.type: readable
+
+=item -i[n] [-] <file>
+
+Specify input file. Defaults to STDIN.
+
+=for Euclid:
+    file.type: readable
+    file.default: '-'
+
+=item -o[ut] [-] <file>
+
+Specify output file. Defaults to STDOUT.
+
+=for Euclid:
+    file.type: writable
+    file.default: '-'
+
+=item --noisy
+
+Make "noise"; at least, say "done".
+=back
+

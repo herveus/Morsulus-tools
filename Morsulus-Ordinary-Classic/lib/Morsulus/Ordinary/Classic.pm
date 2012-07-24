@@ -298,6 +298,59 @@ sub add_desc
     return $desc;
 }
 
+sub get_blazon_registrations
+{
+    my $self = shift;
+    my ($blazon) = @_;
+    #find the list of registrations that refer to this blazon
+    my $blazon_rs = $self->schema->resultset('Blazon');
+    my @regs = $blazon_rs->search_related('registrations', 
+        {blazon => $blazon})->all;
+    my @entries;
+    for my $reg (@regs)
+    {
+        push @entries, $self->get_registration($reg);
+    }
+    # get the descs for each
+    # format them as Morsulus::Ordinary::Legacy objects
+    return @entries;
+}
+
+sub get_registration
+{
+    my $self = shift;
+    my ($reg) = @_;
+    my $reg_rs = $self->schema->resultset('Registration');
+    $reg = $reg_rs->find($reg) unless ref $reg;
+    return unless $reg;
+    my $entry = Morsulus::Ordinary::Legacy->new;
+    $entry->name($reg->owner_name->name);
+    $entry->type($reg->action->action_id);
+    $entry->text($reg->text_blazon->blazon) if $entry->has_blazon;
+    $entry->text($reg->text_name->name) unless $entry->has_blazon;
+    # TODO: Account for For/See prefix on text
+    $entry->source('');
+    defined $reg->registration_date and 
+        $entry->set_reg_date($reg->registration_date->date);
+    defined $reg->registration_kingdom and
+        $entry->set_reg_kingdom($reg->registration_kingdom->kingdom_id);
+    defined $reg->release_date and
+        $entry->set_rel_date($reg->release_date->date);
+    defined $reg->release_kingdom and 
+        $entry->set_rel_kingdom($reg->release_kingdom->kingdom_id);
+    $entry->notes('');
+    $entry->add_notes(map { $_->note_text } $reg->notes->all());
+    if ($entry->has_blazon && ! $entry->is_historical)
+    {
+        for my $desc ($reg->text_blazon->descriptions())
+        {
+            $entry->add_descs(join(':', $desc->category->heading,
+                map { $_->feature->feature } $desc->desc_features->all()));
+        }
+    }
+    return $entry;
+}
+
 # sub get_feature
 # {
 #     my $self = shift;

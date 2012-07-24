@@ -98,6 +98,22 @@ for my $type (keys %actions)
     ok !$entry->has_blazon, '$type has no blazon' unless ($actions{$type});
 }
 
+
+$entry->notes('');
+$entry->add_notes('note1');
+is $entry->notes, '(note1)', 'added note1';
+$entry->add_notes(qw/note2 note3/);
+is $entry->notes, '(note1)(note2)(note3)', 'added note2 and 3';
+
+$entry->descs(undef);
+@descs = $entry->split_descs;
+is scalar @descs, 0, 'empty descs';
+$entry->add_descs('desc1');
+is $entry->descs, 'desc1', 'added desc1';
+$entry->add_descs(qw/desc2 desc3/);
+is $entry->descs, 'desc1|desc2|desc3', 'added desc2 and 3';
+
+
 open my $fh, '<', 't/test.db';
 while (<$fh>)
 {

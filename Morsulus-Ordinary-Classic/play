@@ -1,0 +1,52 @@
+#!/usr/local/bin/perl
+use warnings;
+use strict;
+
+use Morsulus::Ordinary::Classic;
+
+my $ord  = Morsulus::Ordinary::Classic->new(dbname => '/Users/herveus/aux/oandadb.db');
+
+my $blazon = 'Purpure, an arrow head argent charged with a Latin cross formy nowy purpure.';
+
+my @regs = $ord->get_blazon_registrations($blazon);
+
+print $_->to_string, "\n" for @regs;
+
+__END__
+
+my $blazon_rs = $ord->schema->resultset('Blazon');
+my $regs_rs = $blazon_rs->search_related('registrations', {blazon => $blazon});
+my $descs_rs = $blazon_rs->search_related('descriptions', {blazon => $blazon});
+
+my @regs = $regs_rs->all();
+my @entries;
+for my $reg (@regs)
+{
+    my $entry = Morsulus::Ordinary::Legacy->new;
+    $entry->text($blazon);
+    $entry->type($reg->action->action_id);
+    $entry->name($reg->owner_name->name);
+    $entry->source('');
+    defined $reg->registration_date and 
+        $entry->set_reg_date($reg->registration_date->date);
+    defined $reg->registration_kingdom and
+        $entry->set_reg_kingdom($reg->registration_kingdom->kingdom_id);
+    defined $reg->release_date and
+        $entry->set_rel_date($reg->release_date->date);
+    defined $reg->release_kingdom and 
+        $entry->set_rel_kingdom($reg->release_kingdom->kingdom_id);
+    print $entry->to_string, "\n";
+    $entry->notes('');
+    $entry->add_notes(map { $_->note_text } $reg->notes->all());
+    print $entry->to_string, "\n";
+    my @descs = $descs_rs->all();
+    for my $desc (@descs)
+    {
+        #my @features = $desc->desc_features->all();
+        $entry->add_descs(join(':', $desc->category->heading,
+            map { $_->feature->feature } $desc->desc_features->all()));
+    }
+    print $entry->to_string, "\n";
+}
+
+1;

@@ -1,4 +1,7 @@
 Changes
+check_blazons
+no_regs.db
+play
 ignore.txt
 lib/Morsulus/Ordinary/Classic.pm
 lib/Morsulus/Ordinary/Classic/Schema.pm
@@ -27,3 +30,6 @@ t/manifest.t
 t/pod-coverage.t
 t/pod.t
 t/test.cat
+t/test.db
+t/test2k.db
+t/01-legacy.t
