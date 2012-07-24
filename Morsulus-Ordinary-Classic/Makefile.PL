@@ -14,6 +14,10 @@ WriteMakefile(
     PL_FILES            => {},
     PREREQ_PM => {
         'Test::More' => 0,
+		'Moose' => 0,
+		'namespace::autoclean' => 0,
+		'DBIx::Class::Schema' => 0,
+		'DBD::SQLite' => 0,
     },
     dist                => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean               => { FILES => 'Morsulus-Ordinary-Classic-*' },

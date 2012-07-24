@@ -673,8 +673,127 @@ Perhaps a little code snippet.
 A list of functions that can be exported.  You can delete this section
 if you don't export anything, such as for a purely object-oriented module.
 
-=head1 SUBROUTINES/METHODS
+=head1 METHODS
 
+=head2 Adding registrations to a database
+
+=over 4
+
+#       add_blazon
+#       add_desc
+#       add_feature
+#       add_feature_set
+#       add_name
+#       add_note
+#       get_blazon_registrations
+#       get_next_reg_id
+#       get_registration
+#       process_feature
+#       process_heading
+#       process_legacy_record
+
+=back
+
+
+=head2 Setting up a database
+
+The typical invocation to set up a database is:
+
+    my $ord = Morsulus::Ordinary::Classic->new({dbfile => ...,
+		db_flat_file => ...,
+		category_file => ...,}).
+	$ord->makeDB;
+
+=over 4
+
+=item makeDB
+
+Assumes an empty or non-existent database file. 
+
+Creates the tables and indexes.
+
+Loads static data (kingdoms, dates, actions).
+
+Loads the category file.
+
+Loads registration data from the flat file.
+
+=item load_kingdoms
+
+Loads the kingdom reference data.
+
+=item get_kingdoms
+
+Returns a list of lists containing the kingdom codes and their long names.
+
+=item load_actions
+
+Loads the registration action reference data.
+
+=item get_actions
+
+Returns a list of lists containing the actions and their long name.
+
+=item load_dates
+
+Loads the date table with Ordinary style dates for referential integrity.
+Dates are yyyymm.
+
+=item load_categories
+
+Loads categories (with headings), features, and feature_sets.
+
+TODO: Load cross-references and feature relationships once the database
+expands to support them
+
+=item get_creates
+
+Returns a list of SQL statements to create the tables and indexes. 
+
+=item build_schema
+
+Lazy loader for instantiating the schema attribute when needed.
+
+=item build_dbh
+
+Lazy loader for instantating the dbh attribute when needed.
+
+=back
+
+=head1 ATTRIBUTES
+
+Attributes must be specified in the call to new(). 
+
+=over 4
+
+=item dbname
+
+The name of the SQLite database file. You must provide a value.
+
+=item category_file
+
+The name of the Ordinary category file. Only needed for building a new
+database.
+
+=item db_flat_file
+
+The name of the Ordinary flat file. Only needed for building a new database.
+If you want to build an database with no registrations, /dev/null or any empty
+file will work.
+
+=item schema
+
+The DBIx::Class::Schema object/connection to the database. 
+
+You do not need to provide this; it will be generated at need.
+
+=item dbh
+
+The plain DBI dbh available for use.
+
+You do not need to provide this; it will be generated at need.
+
+=back
 
 =head1 AUTHOR
 
