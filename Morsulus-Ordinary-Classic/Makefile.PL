@@ -1,7 +1,26 @@
 use 5.006;
 use strict;
 use warnings;
-use ExtUtils::MakeMaker;
+#use ExtUtils::MakeMaker;
+use inc::Module::Install;
+
+name 'Morsulus::Ordinary::Classic';
+all_from 'lib/Morsulus/Ordinary/Classic.pm';
+
+requires 'Moose' => 0;
+requires 'namespace::autoclean' => 0;
+requires 'DBD::SQLite' => 1.00;
+requires 'DBIx::Class::Schema' => 0;
+requires 'DBI' => 0;
+requires 'Getopt::Euclid' => 0;
+test_requires 'Test::More' => 0;
+
+install_script 'check_blazons';
+install_script 'load_db';
+
+
+WriteAll;
+__END__
 
 WriteMakefile(
     NAME                => 'Morsulus::Ordinary::Classic',

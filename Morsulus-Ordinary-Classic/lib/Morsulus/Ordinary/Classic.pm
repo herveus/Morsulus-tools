@@ -668,11 +668,6 @@ Perhaps a little code snippet.
     my $foo = Morsulus::Ordinary::Classic->new();
     ...
 
-=head1 EXPORT
-
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
-
 =head1 METHODS
 
 =head2 Adding registrations to a database

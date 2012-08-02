@@ -1,0 +1,74 @@
+#!/usr/local/bin/perl
+
+use strict;
+use warnings;
+use Morsulus::Ordinary::Classic;
+use Getopt::Euclid;
+
+my $ord = Morsulus::Ordinary::Classic->new(dbname => $ARGV{-db},
+    db_flat_file => $ARGV{-oanda},
+    category_file =>$ARGV{-init},
+    );
+
+if (defined $ARGV{-init})
+{
+    $ord->makeDB;
+}
+elsif (defined $ARGV{-oanda})
+{
+    $ord->load_database;
+}
+
+__END__
+
+=head1 NAME
+
+load_db - script to create database files
+
+=head1 SYNOPSIS
+
+    load_db -db mydb.db -oanda oanda.db # load existing database
+    load_db -db newdb.db -init my.cat -oanda oanda.db # make new database
+
+Optionally creates and then loads ordinary data into a database.
+
+Note that loading up the whole O and A may take some time, and the
+process gives no clear signs of progress. On the other hand, you can
+open the db file with sqlite3 and monitor the number of rows in the
+table "registrations". You do have SQLite installed as a standalone
+tool, right?
+    
+=head1 REQUIRED
+
+=over
+
+=item -db <file>
+
+SQLite database file to be created or updated with Ordinary entries. 
+
+=for Euclid:
+    file.type: writable
+
+=back
+
+=head1 OPTIONS
+
+=over
+
+=item -init <catfile>
+
+Initializes new database and loads the specified category file.
+
+=for Euclid:
+    catfile.type: readable
+    catfile.default: undef
+
+=item -oanda <file>
+
+Legacy format flat file database to load from.
+
+=for Euclid:
+    file.type: readable
+    file.default: undef
+
+=back
