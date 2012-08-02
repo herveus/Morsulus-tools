@@ -4,7 +4,7 @@ use warnings;
 #use ExtUtils::MakeMaker;
 use inc::Module::Install;
 
-name 'Morsulus::Ordinary::Classic';
+name 'Morsulus-Ordinary-Classic';
 all_from 'lib/Morsulus/Ordinary/Classic.pm';
 
 requires 'Moose' => 0;

@@ -6,8 +6,8 @@ use Morsulus::Ordinary::Classic;
 use Getopt::Euclid;
 
 my $ord = Morsulus::Ordinary::Classic->new(dbname => $ARGV{-db},
-    db_flat_file => $ARGV{-oanda},
-    category_file =>$ARGV{-init},
+    db_flat_file => $ARGV{-oanda} || '/dev/null',
+    category_file =>$ARGV{-init} || '/dev/null',
     );
 
 if (defined $ARGV{-init})

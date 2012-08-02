@@ -156,7 +156,7 @@ sub load_categories
     open my $catfile_fh, '<', $catfile;
     while (<$catfile_fh>)
     {
-        chomp;
+        s/\r?\n$//;
         next if /^#/;
         if (/^\|/)
         {
@@ -401,7 +401,7 @@ sub process_legacy_record
 {
     my $self = shift;
     my ($record) = @_;
-    chomp $record;
+    $record =~ s/\r?\n$//;
     my $entry = Morsulus::Ordinary::Legacy->from_string($record);
     my ($reg_date, $reg_king, $rel_date, $rel_king) =
         $entry->parse_source;

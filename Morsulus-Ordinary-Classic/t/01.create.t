@@ -16,32 +16,26 @@ my $ord = Morsulus::Ordinary::Classic->new(dbname => 't/01.create.db',
 is $ord->dbname, 't/01.create.db', 'dbname set correctly';
 is $ord->category_file, 't/test.cat', 'cat file set correctly';
 
+my %test_data;
+{
+	open my $test_db, '<', $ord->db_flat_file;
+	while (<$test_db>)
+	{
+		s/\r?\n$//;
+		$test_data{$_} = 0;
+	}
+}
+
 $ord->makeDB;
 
-# open my $db_flat_file_fh, '<', 't/test.db';
-# # my @test_data = <$db_flat_file_fh>; chomp(@test_data);
-# my @local_test_data = get_test_data();
-# # for my $x (0..9)
-# # {
-# #     is $test_data[$x], $local_test_data[$x], "record $x";
-# # }
-# while (<$db_flat_file_fh>)
-# # {
-# #     chomp;
-# #     is $_, $local_test_data[0], 'woof';
-# #     shift @local_test_data;
-# # }
-# # for (get_test_data())
-# {
-#     chomp;
-#     diag($_);
-#     $ord->process_legacy_record($_);
-# }
-# 
-#$ord->process_legacy_record('A. J. of Bonwicke|199404X|N||(Owner: A. J. of Bonwicke:199404X)(Holding name)
-#');
-#$ord->process_legacy_record('A. J. of Bonwicke|199404X|d|Per pall inverted gules, Or and argent, a cedar tree vert stocked sable and a bordure sable semy of lozenges Or.|(Owner: A. J. of Bonwicke:199404X)|BORDURE:charged:pl:sable:surrounding 1 only|FIELD DIV.-PER PALL*7:pl|FIELD:multicolor light|LOZENGE:or:pl:seme:tertiary:unc|TREE-PINE TREE SHAPE:1:spna:vert
-#');
+my @regs = $ord->schema->resultset('Registration')->all;
+for my $reg (@regs)
+{
+	my $entry = $ord->get_registration($reg)->to_string;
+	ok exists $test_data{$entry}, 'got the entry back';
+	$test_data{$entry}++;
+	is $test_data{$entry}, 1, "and haven't seen it before";
+}
 
 done_testing();
 
