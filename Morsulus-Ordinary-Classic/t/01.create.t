@@ -32,7 +32,7 @@ my @regs = $ord->schema->resultset('Registration')->all;
 for my $reg (@regs)
 {
 	my $entry = $ord->get_registration($reg)->to_string;
-	ok exists $test_data{$entry}, 'got the entry back';
+	ok exists $test_data{$entry}, "got the entry back: $entry";
 	$test_data{$entry}++;
 	is $test_data{$entry}, 1, "and haven't seen it before";
 }

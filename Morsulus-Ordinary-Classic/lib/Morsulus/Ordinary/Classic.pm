@@ -492,154 +492,240 @@ sub get_kingdoms
 sub get_creates
 {
     return split(/EOS/, <<EOSQL);
-    drop table if exists blazons EOS
+    drop table if exists blazons 
+	EOS
     create table blazons (
         blazon_id integer not null primary key,
         blazon text not null unique
-        )EOS
-    drop table if exists names EOS
+        )
+	EOS
+    drop table if exists names 
+	EOS
     create table names (
         name text not null primary key
-        )EOS
-    drop table if exists dates EOS
+        )
+	EOS
+    drop table if exists dates 
+	EOS
     create table dates (
         date text not null primary key,
         year integer not null,
         month integer not null
-        )EOS
-    drop table if exists kingdoms EOS
+        )
+	EOS
+    drop table if exists kingdoms 
+	EOS
     create table kingdoms (
         kingdom_id text not null primary key,
         kingdom_name_nominative text not null,
         kingdom_name text references names(name)
-        )EOS
-    drop table if exists actions EOS
+        )
+	EOS
+    drop table if exists actions 
+	EOS
     create table actions (
         action_id text not null primary key,
         action_description text
-        )EOS
-    drop table if exists registrations EOS
+        )
+	EOS
+    drop table if exists registrations 
+	EOS
     create table registrations (
         reg_id integer not null primary key,
-        owner_name text not null references names(name),
-        registration_date text references dates(date),
-        release_date text references dates(date),
-        registration_kingdom text references kingdoms(kingdom_id),
-        release_kingdom text references kingdoms(kingdom_id),
-        action text references actions(action_id),
+        owner_name text not null references names(name) default "",
+        registration_date text references dates(date) default "",
+        release_date text references dates(date) default "",
+        registration_kingdom text references kingdoms(kingdom_id) default "",
+        release_kingdom text references kingdoms(kingdom_id) default "",
+        action text references actions(action_id) default "",
         text_blazon_id integer references blazons(blazon_id),
-        text_name text references names(name)
-        )EOS
-    drop table if exists notes EOS
+        text_name text references names(name) default ""
+        )
+	EOS
+    drop table if exists notes 
+	EOS
     create table notes (
         note_id integer not null primary key,
         note_text text not null,
         note_name text references names(name)
-        )EOS
-    drop table if exists registration_notes EOS
+        )
+	EOS
+    drop table if exists registration_notes 
+	EOS
     create table registration_notes (
         reg_id integer not null references registrations(reg_id),
         note_id integer not null references notes(note_id),
         primary key (reg_id, note_id)
-        )EOS
-    drop table if exists categories EOS
+        )
+	EOS
+    drop table if exists categories 
+	EOS
     create table categories (
         category text not null primary key,
         heading text
-        )EOS
-    drop table if exists feature_sets EOS
+        )
+	EOS
+    drop table if exists feature_sets 
+	EOS
     create table feature_sets (
         feature_set_name text not null primary key
-        )EOS
-    drop table if exists features EOS
+        )
+	EOS
+    drop table if exists features 
+	EOS
     create table features (
         feature text not null primary key,
         feature_set text not null references feature_sets(feature_set_name)
-        )EOS
-    drop table if exists descriptions EOS
+        )
+	EOS
+    drop table if exists descriptions 
+	EOS
     create table descriptions (
         desc_id integer not null primary key,
         category text not null references categories(category),
         blazon_id integer not null references blazons(blazon_id)
-        )EOS
-    drop table if exists desc_features EOS
+        )
+	EOS
+    drop table if exists desc_features 
+	EOS
     create table desc_features (
         desc_id integer not null references descriptions(desc_id),
         feature text not null references features(feature),
         primary key (desc_id, feature)
-        )EOS
-    drop index if exists blazons_pkx EOS
+        )
+	EOS
+    drop index if exists blazons_pkx 
+	EOS
     create unique index blazons_pkx
-        on blazons(blazon_id)EOS
-    drop index if exists names_pkx EOS
+        on blazons(blazon_id)
+	EOS
+    drop index if exists names_pkx 
+	EOS
     create unique index names_pkx
-        on names(name)EOS
-    drop index if exists dates_pkx EOS
+        on names(name)
+	EOS
+    drop index if exists dates_pkx 
+	EOS
     create unique index dates_pkx
-        on dates(date)EOS
-    drop index if exists kingdoms_pkx EOS
+        on dates(date)
+	EOS
+    drop index if exists kingdoms_pkx 
+	EOS
     create unique index kingdoms_pkx
-        on kingdoms(kingdom_id)EOS
-    drop index if exists actions_pkx EOS
+        on kingdoms(kingdom_id)
+	EOS
+    drop index if exists actions_pkx 
+	EOS
     create unique index actions_pkx
-        on actions(action_id)EOS
-    drop index if exists registrations_pkx EOS
+        on actions(action_id)
+	EOS
+    drop index if exists registrations_pkx 
+	EOS
     create unique index registrations_pkx
-        on registrations(reg_id)EOS
-    drop index if exists reg_owners_ix EOS
+        on registrations(reg_id)
+	EOS
+    drop index if exists reg_owners_ix 
+	EOS
     create index reg_owners_ix
-        on registrations(owner_name)EOS
-    drop index if exists reg_blazon_ix EOS
+        on registrations(owner_name)
+	EOS
+    drop index if exists reg_blazon_ix 
+	EOS
     create index reg_blazon_ix
-        on registrations(text_blazon_id)EOS
-    drop index if exists reg_text_name_ix EOS
+        on registrations(text_blazon_id)
+	EOS
+    drop index if exists reg_text_name_ix 
+	EOS
     create index reg_text_name_ix
-        on registrations(text_name)EOS
-    drop index if exists reg_reg_date_ix EOS
+        on registrations(text_name)
+	EOS
+    drop index if exists reg_reg_date_ix 
+	EOS
     create index reg_reg_date_ix
-        on registrations(registration_date, registration_kingdom)EOS
-    drop index if exists reg_rel_date_ix EOS
+        on registrations(registration_date, registration_kingdom)
+	EOS
+    drop index if exists reg_rel_date_ix 
+	EOS
     create index reg_rel_date_ix
-        on registrations(release_date, release_kingdom)EOS
-    drop index if exists reg_action_ix EOS
+        on registrations(release_date, release_kingdom)
+	EOS
+    drop index if exists reg_action_ix 
+	EOS
     create index reg_action_ix
-        on registrations(action)EOS
-    drop index if exists notes_xpk EOS
+        on registrations(action)
+	EOS
+    drop index if exists notes_xpk 
+	EOS
     create unique index notes_xpk
-        on notes(note_id)EOS
-    drop index if exists notes_note_name_ix EOS
+        on notes(note_id)
+	EOS
+    drop index if exists notes_note_name_ix 
+	EOS
     create index notes_note_name_ix
-        on notes(note_name)EOS
-    drop index if exists registration_notes_xpk EOS
+        on notes(note_name)
+	EOS
+    drop index if exists registration_notes_xpk 
+	EOS
     create unique index registration_notes_xpk
-        on registration_notes(reg_id, note_id)EOS
-    drop index if exists categories_xpk EOS
+        on registration_notes(reg_id, note_id)
+	EOS
+    drop index if exists categories_xpk 
+	EOS
     create unique index categories_xpk
-        on categories(category)EOS
-    drop index if exists category_headings_ix EOS
+        on categories(category)
+	EOS
+    drop index if exists category_headings_ix 
+	EOS
     create index category_headings_ix
-        on categories(heading, category)EOS
-    drop index if exists feature_sets_xpk EOS
+        on categories(heading, category)
+	EOS
+    drop index if exists feature_sets_xpk 
+	EOS
     create unique index feature_sets_xpk
-        on feature_sets(feature_set_name)EOS
-    drop index if exists features_xpk EOS
+        on feature_sets(feature_set_name)
+	EOS
+    drop index if exists features_xpk 
+	EOS
     create unique index features_xpk
-        on features(feature)EOS
-    drop index if exists features_feature_set_ix EOS
+        on features(feature)
+	EOS
+    drop index if exists features_feature_set_ix 
+	EOS
     create index features_feature_set_ix
-        on features(feature_set, feature)EOS
-    drop index if exists descriptions_xpk EOS
+        on features(feature_set, feature)
+	EOS
+    drop index if exists descriptions_xpk 
+	EOS
     create unique index descriptions_xpk
-        on descriptions(desc_id)EOS
-    drop index if exists descriptions_blazon_ix EOS
+        on descriptions(desc_id)
+	EOS
+    drop index if exists descriptions_blazon_ix 
+	EOS
     create index descriptions_blazon_ix
-        on descriptions(blazon_id, category)EOS
-    drop index if exists descriptions_category_ix EOS
+        on descriptions(blazon_id, category)
+	EOS
+    drop index if exists descriptions_category_ix 
+	EOS
     create index descriptions_category_ix
-        on descriptions(category, blazon_id)EOS
-    drop index if exists desc_features_xpk EOS
+        on descriptions(category, blazon_id)
+	EOS
+    drop index if exists desc_features_xpk 
+	EOS
     create unique index desc_features_xpk
-        on desc_features (desc_id, feature)EOS
+        on desc_features (desc_id, feature)
+	EOS
+	insert into names (name) 
+	values ("")
+	EOS
+	insert into kingdoms (kingdom_id, kingdom_name_nominative, kingdom_name) 
+	values ("","","")
+	EOS
+	insert into actions (action_id, action_description) 
+	values ("","")
+	EOS
+	insert into dates (date, year, month) 
+	values ("",0,0)
+	EOS
 EOSQL
 }
 
