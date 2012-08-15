@@ -8,6 +8,7 @@ use namespace::autoclean;
 use DBI;
 use Morsulus::Ordinary::Classic::Schema;
 use Morsulus::Ordinary::Legacy;
+# VERSION is way down below in POD area
 
 has 'schema' => (
     isa => 'Object',
@@ -194,7 +195,7 @@ sub process_feature
     my ($input) = @_;
     $input =~ /^\|[^:]+:[^<=]+(?:[<=][^,=]+)*$/
         or die "malformed feature definition '$input'";
-    my ($set_name, $feature_name) = /^\|([^:]+)([^<=]+)/;
+    my ($set_name, $feature_name) = /^\|([^:]+):([^<=]+)/;
     $self->add_feature_set($set_name);
     $self->add_feature($feature_name, $set_name);
     my @relations = split(/([<=])/, $input);
@@ -205,6 +206,7 @@ sub process_feature
         $relationship = shift @relations;
         $related_feature = shift @relations;
         $self->add_feature($related_feature, $set_name);
+		#TODO: capture relationships when that is added to the database
     }
 }
 
@@ -735,11 +737,11 @@ Morsulus::Ordinary::Classic - The Ordinary database, classic style, in an RDBMS
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 
 =head1 SYNOPSIS

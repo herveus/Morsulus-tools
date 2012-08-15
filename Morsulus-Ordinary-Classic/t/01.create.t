@@ -28,6 +28,29 @@ my %test_data;
 
 $ord->makeDB;
 
+my @feature_sets = $ord->schema->resultset('FeatureSet')->all;
+my %sets = map { $_ => 0 } (qw/ arrangement bird_posture chrelation count
+	crescent_dir fish_posture group line number orientation posture 
+	relation tertiaries tincture1 tincture2 tincture/);
+for my $fs (@feature_sets)
+{
+	ok exists $sets{$fs->feature_set_name}, "feature set is in list";
+	$sets{$fs->feature_set_name}++;
+}
+for my $fs (keys %sets)
+{
+	is $sets{$fs}, 1, "feature set $fs found in DB";
+}
+
+my $feature_rs = $ord->schema->resultset('Feature');
+for my $test_feat ("proper:tincture", "4 or fewer:number", "square:line", "g2pa:group")
+{
+	my ($test_feature, $test_feature_set) = split(/:/, $test_feat);
+	my $feature = $feature_rs->find({feature => $test_feature});
+	ok defined $feature, "found feature $test_feature in database";
+	is $feature->feature_set->feature_set_name, $test_feature_set, "...and it has the right feature set";
+}
+
 my @regs = $ord->schema->resultset('Registration')->all;
 for my $reg (@regs)
 {
