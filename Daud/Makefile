@@ -1,4 +1,4 @@
-# This Makefile is for the Morsulus::Actions extension to perl.
+# This Makefile is for the Daud extension to perl.
 #
 # It was generated automatically by MakeMaker version
 # 6.6302 (Revision: 66302) from the contents of
@@ -11,16 +11,13 @@
 
 #   MakeMaker Parameters:
 
-#     ABSTRACT_FROM => q[lib/Morsulus/Actions.pm]
-#     AUTHOR => [q[Michael Houghton <herveus@cpan.org>]]
+#     ABSTRACT_FROM => q[Daud.pm]
+#     AUTHOR => [q[A. U. Thor <a.u.thor@a.galaxy.far.far.away>]]
 #     BUILD_REQUIRES => {  }
 #     CONFIGURE_REQUIRES => {  }
-#     NAME => q[Morsulus::Actions]
-#     PL_FILES => {  }
-#     PREREQ_PM => { Test::More=>q[0], version=>q[0] }
-#     VERSION_FROM => q[lib/Morsulus/Actions.pm]
-#     clean => { FILES=>q[Morsulus-Actions-*] }
-#     dist => { COMPRESS=>q[gzip -9f], SUFFIX=>q[gz] }
+#     NAME => q[Daud]
+#     PREREQ_PM => {  }
+#     VERSION_FROM => q[Daud.pm]
 
 # --- MakeMaker post_initialize section:
 
@@ -57,13 +54,13 @@ VENDORLIBEXP =
 AR_STATIC_ARGS = cr
 DIRFILESEP = /
 DFSEP = $(DIRFILESEP)
-NAME = Morsulus::Actions
-NAME_SYM = Morsulus_Actions
-VERSION = 2012.005.003
+NAME = Daud
+NAME_SYM = Daud
+VERSION = 0.04
 VERSION_MACRO = VERSION
-VERSION_SYM = 2012_005_003
+VERSION_SYM = 0_04
 DEFINE_VERSION = -D$(VERSION_MACRO)=\"$(VERSION)\"
-XS_VERSION = 2012.005.003
+XS_VERSION = 0.04
 XS_VERSION_MACRO = XS_VERSION
 XS_DEFINE_VERSION = -D$(XS_VERSION_MACRO)=\"$(XS_VERSION)\"
 INST_ARCHLIB = blib/arch
@@ -147,11 +144,11 @@ MM_REVISION = 66302
 # PARENT_NAME = NAME without BASEEXT and no trailing :: (eg Foo::Bar)
 # DLBASE  = Basename part of dynamic library. May be just equal BASEEXT.
 MAKE = make
-FULLEXT = Morsulus/Actions
-BASEEXT = Actions
-PARENT_NAME = Morsulus
+FULLEXT = Daud
+BASEEXT = Daud
+PARENT_NAME = 
 DLBASE = $(BASEEXT)
-VERSION_FROM = lib/Morsulus/Actions.pm
+VERSION_FROM = Daud.pm
 OBJECT = 
 LDFROM = $(OBJECT)
 LINKTYPE = dynamic
@@ -163,14 +160,14 @@ C_FILES  =
 O_FILES  = 
 H_FILES  = 
 MAN1PODS = 
-MAN3PODS = lib/Morsulus/Actions.pm
+MAN3PODS = Daud.pm
 
 # Where is the Config information that we are using/depend on
 CONFIGDEP = $(PERL_ARCHLIB)$(DFSEP)Config.pm $(PERL_INC)$(DFSEP)config.h
 
 # Where to build things
-INST_LIBDIR      = $(INST_LIB)/Morsulus
-INST_ARCHLIBDIR  = $(INST_ARCHLIB)/Morsulus
+INST_LIBDIR      = $(INST_LIB)
+INST_ARCHLIBDIR  = $(INST_ARCHLIB)
 
 INST_AUTODIR     = $(INST_LIB)/auto/$(FULLEXT)
 INST_ARCHAUTODIR = $(INST_ARCHLIB)/auto/$(FULLEXT)
@@ -185,10 +182,10 @@ PERL_ARCHIVE       =
 PERL_ARCHIVE_AFTER = 
 
 
-TO_INST_PM = lib/Morsulus/Actions.pm
+TO_INST_PM = Daud.pm
 
-PM_TO_BLIB = lib/Morsulus/Actions.pm \
-	blib/lib/Morsulus/Actions.pm
+PM_TO_BLIB = Daud.pm \
+	$(INST_LIB)/Daud.pm
 
 
 # --- MakeMaker platform_constants section:
@@ -246,8 +243,8 @@ TAR = COPY_EXTENDED_ATTRIBUTES_DISABLE=1 COPYFILE_DISABLE=1 tar
 TARFLAGS = cvf
 ZIP = zip
 ZIPFLAGS = -r
-COMPRESS = gzip -9f
-SUFFIX = gz
+COMPRESS = gzip --best
+SUFFIX = .gz
 SHAR = shar
 PREOP = $(NOECHO) $(NOOP)
 POSTOP = $(NOECHO) $(NOOP)
@@ -256,8 +253,8 @@ CI = ci -u
 RCS_LABEL = rcs -Nv$(VERSION_SYM): -q
 DIST_CP = best
 DIST_DEFAULT = tardist
-DISTNAME = Morsulus-Actions
-DISTVNAME = Morsulus-Actions-2012.005.003
+DISTNAME = Daud
+DISTVNAME = Daud-0.04
 
 
 # --- MakeMaker macro section:
@@ -410,9 +407,9 @@ POD2MAN = $(POD2MAN_EXE)
 
 
 manifypods : pure_all  \
-	lib/Morsulus/Actions.pm
+	Daud.pm
 	$(NOECHO) $(POD2MAN) --section=3 --perm_rw=$(PERM_RW) \
-	  lib/Morsulus/Actions.pm $(INST_MAN3DIR)/Morsulus::Actions.$(MAN3EXT) 
+	  Daud.pm $(INST_MAN3DIR)/Daud.$(MAN3EXT) 
 
 
 
@@ -456,7 +453,7 @@ clean :: clean_subdirs
 	  perl.exe so_locations \
 	  $(BASEEXT).exp 
 	- $(RM_RF) \
-	  blib Morsulus-Actions-* 
+	  blib 
 	- $(MV) $(FIRST_MAKEFILE) $(MAKEFILE_OLD) $(DEV_NULL)
 
 
@@ -478,9 +475,9 @@ realclean purge ::  clean realclean_subdirs
 metafile : create_distdir
 	$(NOECHO) $(ECHO) Generating META.yml
 	$(NOECHO) $(ECHO) '---' > META_new.yml
-	$(NOECHO) $(ECHO) 'abstract: '\''Convert actions extracted from the XML into useful forms.'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) 'abstract: '\''Perl extension converting between Daud encoding and other styles'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) 'author:' >> META_new.yml
-	$(NOECHO) $(ECHO) '  - '\''Michael Houghton <herveus@cpan.org>'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) '  - '\''A. U. Thor <a.u.thor@a.galaxy.far.far.away>'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) 'build_requires:' >> META_new.yml
 	$(NOECHO) $(ECHO) '  ExtUtils::MakeMaker: 0' >> META_new.yml
 	$(NOECHO) $(ECHO) 'configure_requires:' >> META_new.yml
@@ -491,21 +488,19 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) 'meta-spec:' >> META_new.yml
 	$(NOECHO) $(ECHO) '  url: http://module-build.sourceforge.net/META-spec-v1.4.html' >> META_new.yml
 	$(NOECHO) $(ECHO) '  version: 1.4' >> META_new.yml
-	$(NOECHO) $(ECHO) 'name: Morsulus-Actions' >> META_new.yml
+	$(NOECHO) $(ECHO) 'name: Daud' >> META_new.yml
 	$(NOECHO) $(ECHO) 'no_index:' >> META_new.yml
 	$(NOECHO) $(ECHO) '  directory:' >> META_new.yml
 	$(NOECHO) $(ECHO) '    - t' >> META_new.yml
 	$(NOECHO) $(ECHO) '    - inc' >> META_new.yml
-	$(NOECHO) $(ECHO) 'requires:' >> META_new.yml
-	$(NOECHO) $(ECHO) '  Test::More: 0' >> META_new.yml
-	$(NOECHO) $(ECHO) '  version: 0' >> META_new.yml
-	$(NOECHO) $(ECHO) 'version: v2012.5.3' >> META_new.yml
+	$(NOECHO) $(ECHO) 'requires: {}' >> META_new.yml
+	$(NOECHO) $(ECHO) 'version: 0.04' >> META_new.yml
 	-$(NOECHO) $(MV) META_new.yml $(DISTVNAME)/META.yml
 	$(NOECHO) $(ECHO) Generating META.json
 	$(NOECHO) $(ECHO) '{' > META_new.json
-	$(NOECHO) $(ECHO) '   "abstract" : "Convert actions extracted from the XML into useful forms.",' >> META_new.json
+	$(NOECHO) $(ECHO) '   "abstract" : "Perl extension converting between Daud encoding and other styles",' >> META_new.json
 	$(NOECHO) $(ECHO) '   "author" : [' >> META_new.json
-	$(NOECHO) $(ECHO) '      "Michael Houghton <herveus@cpan.org>"' >> META_new.json
+	$(NOECHO) $(ECHO) '      "A. U. Thor <a.u.thor@a.galaxy.far.far.away>"' >> META_new.json
 	$(NOECHO) $(ECHO) '   ],' >> META_new.json
 	$(NOECHO) $(ECHO) '   "dynamic_config" : 1,' >> META_new.json
 	$(NOECHO) $(ECHO) '   "generated_by" : "ExtUtils::MakeMaker version 6.6302, CPAN::Meta::Converter version 2.120921",' >> META_new.json
@@ -516,7 +511,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",' >> META_new.json
 	$(NOECHO) $(ECHO) '      "version" : "2"' >> META_new.json
 	$(NOECHO) $(ECHO) '   },' >> META_new.json
-	$(NOECHO) $(ECHO) '   "name" : "Morsulus-Actions",' >> META_new.json
+	$(NOECHO) $(ECHO) '   "name" : "Daud",' >> META_new.json
 	$(NOECHO) $(ECHO) '   "no_index" : {' >> META_new.json
 	$(NOECHO) $(ECHO) '      "directory" : [' >> META_new.json
 	$(NOECHO) $(ECHO) '         "t",' >> META_new.json
@@ -535,14 +530,11 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '         }' >> META_new.json
 	$(NOECHO) $(ECHO) '      },' >> META_new.json
 	$(NOECHO) $(ECHO) '      "runtime" : {' >> META_new.json
-	$(NOECHO) $(ECHO) '         "requires" : {' >> META_new.json
-	$(NOECHO) $(ECHO) '            "Test::More" : "0",' >> META_new.json
-	$(NOECHO) $(ECHO) '            "version" : "0"' >> META_new.json
-	$(NOECHO) $(ECHO) '         }' >> META_new.json
+	$(NOECHO) $(ECHO) '         "requires" : {}' >> META_new.json
 	$(NOECHO) $(ECHO) '      }' >> META_new.json
 	$(NOECHO) $(ECHO) '   },' >> META_new.json
 	$(NOECHO) $(ECHO) '   "release_status" : "stable",' >> META_new.json
-	$(NOECHO) $(ECHO) '   "version" : "v2012.5.3"' >> META_new.json
+	$(NOECHO) $(ECHO) '   "version" : "0.04"' >> META_new.json
 	$(NOECHO) $(ECHO) '}' >> META_new.json
 	-$(NOECHO) $(MV) META_new.json $(DISTVNAME)/META.json
 
@@ -839,11 +831,9 @@ testdb_static :: testdb_dynamic
 # Creates a PPD (Perl Package Description) for a binary distribution.
 ppd :
 	$(NOECHO) $(ECHO) '<SOFTPKG NAME="$(DISTNAME)" VERSION="$(VERSION)">' > $(DISTNAME).ppd
-	$(NOECHO) $(ECHO) '    <ABSTRACT>Convert actions extracted from the XML into useful forms.</ABSTRACT>' >> $(DISTNAME).ppd
-	$(NOECHO) $(ECHO) '    <AUTHOR>Michael Houghton &lt;herveus@cpan.org&gt;</AUTHOR>' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '    <ABSTRACT>Perl extension converting between Daud encoding and other styles</ABSTRACT>' >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) '    <AUTHOR>A. U. Thor &lt;a.u.thor@a.galaxy.far.far.away&gt;</AUTHOR>' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> $(DISTNAME).ppd
-	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Test::More" />' >> $(DISTNAME).ppd
-	$(NOECHO) $(ECHO) '        <REQUIRE NAME="version::" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="darwin-2level-5.16" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '        <CODEBASE HREF="" />' >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) '    </IMPLEMENTATION>' >> $(DISTNAME).ppd
@@ -854,7 +844,7 @@ ppd :
 
 pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
-	  lib/Morsulus/Actions.pm blib/lib/Morsulus/Actions.pm 
+	  Daud.pm $(INST_LIB)/Daud.pm 
 	$(NOECHO) $(TOUCH) pm_to_blib
 
 

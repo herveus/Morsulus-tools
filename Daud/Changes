@@ -1,0 +1,12 @@
+Revision history for Perl extension Daud.
+
+0.01  Wed Jul 17 13:01:32 2002
+	- original version; created by h2xs 1.21 with options
+		-X -A Daud
+
+0.02
+    - initial working version
+
+0.03  Sat Dec 3 2005
+    - fixed daudify to ignore CR and LF in string
+
