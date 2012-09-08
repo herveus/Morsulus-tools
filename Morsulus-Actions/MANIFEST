@@ -1,10 +1,15 @@
 Changes
-MANIFEST
-META.yml # Will be created by "make dist"
-Makefile.PL
-README
 lib/Morsulus/Actions.pm
+lib/Morsulus/ActionsMoose.pm
+Makefile.PL
+MANIFEST
+META.yml			# Will be created by "make dist"
+README
+scripts/process-actions
 t/00.load.t
+t/00.loadM.t
+t/00.rewrite_action.t
+t/00.rewrite_actionM.t
 t/perlcritic.t
 t/pod-coverage.t
 t/pod.t

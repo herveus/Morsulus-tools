@@ -24,8 +24,8 @@ while (@actions_and_results)
             name2  => '',
         }
     );
-    my $actual_result = $act->cooked_form_of_action;
-    my $got_quoted_names = [$act->quoted_names];
+    my $actual_result = $act->cooked_action_of;
+    my $got_quoted_names = [@{$act->quoted_names_of}];
     is $actual_result, $expected_cooked_action, $before_action;
     is_deeply $got_quoted_names, $quoted_names, $before_action;
 }

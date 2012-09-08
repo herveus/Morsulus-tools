@@ -185,10 +185,13 @@ PERL_ARCHIVE       =
 PERL_ARCHIVE_AFTER = 
 
 
-TO_INST_PM = lib/Morsulus/Actions.pm
+TO_INST_PM = lib/Morsulus/Actions.pm \
+	lib/Morsulus/ActionsMoose.pm
 
 PM_TO_BLIB = lib/Morsulus/Actions.pm \
-	blib/lib/Morsulus/Actions.pm
+	blib/lib/Morsulus/Actions.pm \
+	lib/Morsulus/ActionsMoose.pm \
+	blib/lib/Morsulus/ActionsMoose.pm
 
 
 # --- MakeMaker platform_constants section:
@@ -854,7 +857,8 @@ ppd :
 
 pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
-	  lib/Morsulus/Actions.pm blib/lib/Morsulus/Actions.pm 
+	  lib/Morsulus/Actions.pm blib/lib/Morsulus/Actions.pm \
+	  lib/Morsulus/ActionsMoose.pm blib/lib/Morsulus/ActionsMoose.pm 
 	$(NOECHO) $(TOUCH) pm_to_blib
 
 
