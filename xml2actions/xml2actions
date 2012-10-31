@@ -10,7 +10,7 @@ USAGE
 my $kingdom;
 my $owner = '';
 my $action = '';
-my $action_name = '';
+my @action_name = ();
 my $armory = '';
 my $discussion = '';
 my @disc_blazons = ();
@@ -94,7 +94,7 @@ sub reset_vars
 {
 	$owner = '';
 	$action = '';
-	$action_name = '';
+	@action_name = ();
 	$armory = '';
 	$discussion = '';
 	@disc_blazons = ();
@@ -134,7 +134,8 @@ sub get_item_action_name
 {
 	my ($t, $elt) = @_;
 	#return if $in_errata;
-	($action_name = $elt->text) =~ s:[\012\015]+: :sg;
+	(my $action_name = $elt->text) =~ s:[\012\015]+: :sg;
+	push @action_name, $action_name;
 #	print "get_item_action_name $action_name\n";
 }
 
@@ -203,7 +204,7 @@ sub extract_action
 	{
 		$action = "Reblazon of $1";
 	}
-	$action_name and $action =~ s/$action_name/"$action_name"/;
+	$action =~ s/$_/"$_"/ for @action_name;
 	if ($action =~ /heraldic title (.+) (?:to|from) (.+)/i)
 	{
 	    my ($title, $who) = ($1, $2);
@@ -216,7 +217,7 @@ sub extract_action
 	    my $order = $1;
 	    $action =~ s/$order/"$order"/;
 	}
-	mark_retained($action, $action_name, $discussion);
+	mark_retained($action, $action_name[0], $discussion);
 	if ($action =~ /exchange of device and badge/i)
 	{
 	    my ($old_device) = grep {$discussion =~ /previous device, $_/} @disc_blazons;
