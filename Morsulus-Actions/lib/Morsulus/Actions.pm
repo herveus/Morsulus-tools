@@ -4,7 +4,7 @@ use warnings;
 use strict;
 use Carp;
 
-our $VERSION = '2012.005.003';
+our $VERSION = '2012.008.001';
 use Daud;
 use Moose;
 use namespace::autoclean;
@@ -67,8 +67,8 @@ use overload
 sub as_str
 {
     my ( $self, $other, $swap ) = @_;
-    return join $SEPARATOR, $self->raw_form_of,
-        $self->cooked_form_of, $self->source_of, $self->name_of,
+    return join $SEPARATOR, $self->action_of,
+        $self->cooked_action_of, $self->source_of, $self->name_of,
         $self->armory_of, $self->second_name_of,
         @{ $self->quoted_names_of}, $self->notes_of;
 }
@@ -414,6 +414,9 @@ my %transforms = (
         'armory_release' => [ 'b', 'associated with household name' ],
         'normalize_joint_badge_for' => [], },
     'joint household name "x"' => { 'normalize_joint_household_name' => [] },
+    'joint household name change to "x" from "x" and badge' => { 'order_name_change_reversed' => [ 'HNC' ], 
+        'normalize_joint_badge_for' => [], 
+        },
     'name and badge' => { 'name' => [ 'N' ], 'armory' => [ 'b'], },
     'name and device' => { 'name' => [ 'N' ], 'armory' => [ 'd'], },
     'name and acceptance of device transfer from "x"' => { 'name' => [ 'N' ], 'armory' => [ 'd' ] },
@@ -540,7 +543,7 @@ sub make_db_entries
     my $self = shift;
     if (not exists $transforms{$self->cooked_action_of})
     {
-        carp "Unknown action in $self";
+        carp "Unknown action in ".$self->as_str;
         return;
     }
     
@@ -559,6 +562,7 @@ sub make_db_entries
 sub name_for
 {
     my ($self, $type) = @_;
+    # 
     return [ $self->permute($self->quoted_names_of->[0]),
         $self->source_of, $type, "For ".$self->name_of, 
         $self->notes_of ];

@@ -22,7 +22,7 @@ while (@actions_and_results)
         name2 => $name2,
         notes => $notes
     });
-    print "$act\n";
+    print $act->as_str."\n";
     my $actual_result = $act->make_db_entries;
     is $actual_result, $expected_result, $action_line;
 }
@@ -632,6 +632,12 @@ Caid<, Kingdom of>|9999C|b|(Fieldless) A rose Or barbed and seeded vert.|(For Le
 'ufo000114|K|Heraldic title "Rottaler Herold" (see PENDS for other heraldic title)|Calontir, Kingdom of||
 ' =>
 'Rottaler< Herold>|9999K|t|Calontir<, Kingdom of>|
+',
+'ufo000119|C|Joint household name change to "Company of Saint Martin de Tours" from "Company of Martin de Tours" and badge|Juliana Neuneker Hirsch von Schutzhundheim and Arion Hirsch von Schutzhundheim|Azure, two scarpes argent between two furisons Or|
+' =>
+'Juliana Neuneker Hirsch von Schutzhundheim|9999C|b|Azure, two scarpes argent between two furisons Or.|(For Company of Saint Martin de Tours)(JB: Arion Hirsch von Schutzhundheim)
+Arion Hirsch von Schutzhundheim|9999C|j|Juliana Neuneker Hirsch von Schutzhundheim|
+Martin de Tours, Company of|9999C|HNC|Arion Hirsch von Schutzhundheim|
 ',
     );
 }
