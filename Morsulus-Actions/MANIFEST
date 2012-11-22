@@ -1,6 +1,7 @@
 Changes
 lib/Morsulus/Actions.pm
 lib/Morsulus/ActionsMoose.pm
+lib/Morsulus/Actions/Apply.pm
 Makefile.PL
 MANIFEST
 META.yml			# Will be created by "make dist"

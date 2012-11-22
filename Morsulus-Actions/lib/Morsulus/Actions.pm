@@ -179,6 +179,15 @@ sub bracket_name
     return $q_name;
 }
 
+sub split_notes
+{
+    my $self = shift;
+    return unless defined $self->notes_of;
+    my $pad = $self->notes_of;
+    $pad =~ s/^.(.+).$/$1/;
+    return split(/\)\(/, $pad);
+}
+
 sub normalize_cooked_action {
     my $self = shift;
     my $cooked_form = $self->cooked_action_of;
