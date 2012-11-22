@@ -147,32 +147,32 @@ my %transforms = (
     '-badge transfer to "x"' => {  'transfer_armory' => [ 'b', ], },
     'badge' => { 'armory' => [ 'b' ], },
     '-blanket permission to conflict with alternate name "x"' => { 
-        'blanket_permission_secondary_name' => [ 'BP', 'alternate name' ], },
+        'blanket_permission_secondary_name' => [ 'AN', 'alternate name' ], },
     'blanket permission to conflict with badge' => { 
-        'blanket_permission_armory' => [ 'BP', 'badge' ], },
+        'blanket_permission_armory' => [ 'b', 'badge' ], },
     '-blanket permission to conflict with device "x"' => { 
-        'blanket_permission_armory' => [ 'BP', 'device' ], },
+        'blanket_permission_armory' => [ 'd', 'device' ], },
     '-blanket permission to conflict with device' => { 
-        'blanket_permission_armory' => [ 'BP', 'device' ], },
+        'blanket_permission_armory' => [ 'd', 'device' ], },
     '-blanket permission to conflict with augmented device' => { 
-        'blanket_permission_armory' => [ 'BP', 'device' ], },
+        'blanket_permission_armory' => [ 'a', 'device' ], },
     '-blanket permission to conflict with heraldic title "x"' => {
-        'blanket_permission_secondary_name' => [ 'BP', 'heraldic title' ],  },
+        'blanket_permission_secondary_name' => [ 't', 'heraldic title' ],  },
     '-blanket permission to conflict with household name "x"' => {
-        'blanket_permission_secondary_name' => [ 'BP', 'household name' ],  },
+        'blanket_permission_secondary_name' => [ 'HN', 'household name' ],  },
     '-blanket permission to conflict with name "x"' => { 
-        'blanket_permission_name' => [ 'BP', 'name' ],  },
+        'blanket_permission_name' => [ 'N', 'name' ],  },
     '-blanket permission to conflict with name and device' => { 
-        'blanket_permission_name' => [ 'BP', 'name' ], 
-        'blanket_permission_armory' => [ 'BP', 'device' ], },
+        'blanket_permission_name' => [ 'N', 'name' ], 
+        'blanket_permission_armory' => [ 'd', 'device' ], },
     '-blanket permission to conflict with alternate name "x" and badge' => { 
-        'blanket_permission_secondary_name' => [ 'BP', 'alternate name' ], 
-        'blanket_permission_armory' => [ 'BP', 'badge' ], },
+        'blanket_permission_secondary_name' => [ 'AN', 'alternate name' ], 
+        'blanket_permission_armory' => [ 'b', 'badge' ], },
     '-blanket permission to conflict with name and device "x"' => { 
-        'blanket_permission_name' => [ 'BP', 'name' ], 
-        'blanket_permission_armory' => [ 'BP', 'device' ], },
-    '-blanket permission to conflict with name' => { 
-        'blanket_permission_name' => [ 'BP', 'name' ],  },
+        'blanket_permission_name' => [ 'N', 'name' ], 
+        'blanket_permission_armory' => [ 'd', 'device' ], },
+    'blanket permission to conflict with name' => { 
+        'blanket_permission_name' => [ 'N', 'name' ],  },
     '-blazon correction for badge for "x"' => { 'badge_for' => [] },
     '-branch name and badge' => { 'name' => [ 'BN' ], 'armory' => [ 'b'], },
     '-branch name and device' => { 'name' => [ 'BN' ], 'armory' => [ 'd'], },
@@ -207,7 +207,7 @@ my %transforms = (
         'armory' => [ 'b' , 'Ancient Arms' ], },
     '-device changed/retained' => { 'armory_release' => [ 'd', 'changed/retained' ], 
         'armory' => [ 'b' ], },
-    '-device reblazoned' => { 'armory_release' => [ 'd', 'reblazoned' ] },
+    'device reblazoned' => { 'armory_release' => [ 'd', 'reblazoned' ] },
     '-device released' => { 'armory_release' => [ 'd', 'released' ] },
     'device' => { 'armory' => [ 'd' ], },
     '-device and blanket permission to conflict with device' => { 'armory' => [ 'd' ], 
@@ -248,7 +248,7 @@ my %transforms = (
     '-important non-sca badge' => { 'armory' => [ 'b', 'Important non-SCA badge' ], },
     '-important non-sca flag' => { 'armory' => [ 'b', 'Important non-SCA flag' ], },
     '-joint badge for "x"' => { 'normalize_joint_badge_for' => [] },
-    '-joint badge with "x"' => { 'joint' => [], 'joint_badge' => [] },
+    'joint badge with "x"' => { 'joint' => [], 'joint_badge' => [] },
     '-joint badge' => { 'normalize_joint_badge' => [] },
     '-joint badge reblazoned' => { 'armory_release' => [ 'b', 'reblazoned' ] },
     '-joint badge transfer to "x"' => { 'transfer_joint_armory' => [ 'b', ], 
@@ -315,7 +315,7 @@ my %transforms = (
         'armory_release' => [ 'b', 'associated with order name' ], },
     'order name "x" and badge' => { 'name_owned_by' => [ 'O' ], 
         'badge_for' => [ ], },
-    '-order name "x"' => { 'name_owned_by' => [ 'O' ] },
+    'order name "x"' => { 'name_owned_by' => [ 'O' ] },
     '-order name change from "x" to "x"' => { 'order_name_change' => [ 'OC' ], },
     '-order name change to "x" from "x"' => { 'order_name_change_reversed' => [ 'OC' ], },
     '-order name correction to "x" from "x"' => { 'owned_name_correction' => [ 'OC', '-corrected' ], },
@@ -325,7 +325,7 @@ my %transforms = (
     '-reblazon of badge for the "x"' => { 'badge_for' => [ "the " ] },
     'reblazon of badge' => { 'armory' => [ 'b' ], },
     '-reblazon of joint badge' => { 'reblazon_joint_badge' => [ 'b' ], },
-    '-reblazon of device' => { 'armory' => [ 'd' ], },
+    'reblazon of device' => { 'armory' => [ 'd' ], },
     '-reblazon of important non-sca flag' => { 'armory' => [ 'b', 'Important non-SCA flag' ], },
     '-reblazon of important non-sca arms' => { 'armory' => [ 'b', 'Important non-SCA arms' ], },
     '-reblazon of seal' => { 'armory' => [ 's' ], },
@@ -613,6 +613,20 @@ sub holding_name
 sub joint
 {
     my ($self) = @_;
+    my $reg = $self->db->schema->resultset('Registration')->create(
+        {
+            owner_name => $self->quoted_names_of->[0],
+            action => 'j',
+            registration_date => $self->date_of,
+            registration_kingdom => $self->kingdom_of,
+            text_name => $self->name_of,
+        })->update;
+    for my $n ($self->split_notes)
+    {
+        next unless $n;
+        $self->db->add_note($reg, $n);
+    }
+    return $reg;
     die $self->as_str;
     return [ $self->quoted_names_of->[0], $self->source_of, 'j',
         $self->name_of, $self->notes_of ];
@@ -728,7 +742,6 @@ sub normalize_joint_household_name
 sub joint_badge
 {
     my ($self) = @_;
-    die $self->as_str;
     return $self->armory('b', "JB: ".$self->quoted_names_of->[0]);
 }
 
@@ -869,6 +882,31 @@ sub transfer_owned_name
 sub blanket_permission_name
 {
     my ($self, $type, $item_type) = @_;
+    if (!$self->is_name_registered($self->name_of, $type))
+    {
+        die "Name is not registered: ".$self->name_of;
+    }
+    my $additional_note = $self->quoted_names_of->[0] || '';
+    $additional_note = ' '.$additional_note if $additional_note;
+    my @regs = $self->db->schema->resultset('Registration')->search({
+        release_kingdom => '',
+        release_date => '',
+        action => $type,
+        owner_name => $self->name_of,
+        });
+    if (@regs > 1)
+    {
+        die "Name registered multiple times to ".$self->name_of.'/'.$self->armory_of;
+    }
+    my $source = $self->source_of;
+    my $note = "Blanket permission to conflict with $item_type$additional_note granted $source";
+    my $reg = $regs[0];
+    for my $n ($self->split_notes, $note)
+    {
+        next unless $n;
+        $self->db->add_note($reg, $n);
+    }
+    return $reg;
     die $self->as_str;
     my $notes = $self->notes_of;
     if ($notes)
