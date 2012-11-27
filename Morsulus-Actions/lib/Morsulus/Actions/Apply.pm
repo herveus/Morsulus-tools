@@ -63,7 +63,7 @@ sub is_primary_name_registered
 {
     my $self = shift;
     my ($name) = @_;
-    return $self->is_name_registered($name, ['N','BN','D','B']);
+    return $self->is_name_registered($name, ['N','BN','D','B','BD']);
 }
 
 sub is_armory_registered
@@ -73,6 +73,22 @@ sub is_armory_registered
     my @regs = $self->db->schema->resultset('Registration')->search({
         release_kingdom => '',
         release_date => '',
+        'text_blazon.blazon' => $blazon,
+        },
+        {
+            join => 'text_blazon',
+        });
+    return @regs > 0;
+}
+
+sub is_armory_registered_as
+{
+    my $self = shift;
+    my ($blazon, $type) = @_;
+    my @regs = $self->db->schema->resultset('Registration')->search({
+        release_kingdom => '',
+        release_date => '',
+        action => $type,
         'text_blazon.blazon' => $blazon,
         },
         {
@@ -152,7 +168,7 @@ my %transforms = (
         'blanket_permission_armory' => [ 'b', 'badge' ], },
     '-blanket permission to conflict with device "x"' => { 
         'blanket_permission_armory' => [ 'd', 'device' ], },
-    '-blanket permission to conflict with device' => { 
+    'blanket permission to conflict with device' => { 
         'blanket_permission_armory' => [ 'd', 'device' ], },
     '-blanket permission to conflict with augmented device' => { 
         'blanket_permission_armory' => [ 'a', 'device' ], },
@@ -200,12 +216,12 @@ my %transforms = (
         'armory' => [ 'd' ], },
     '-designator change from "x"' => { 'designator_change' => [ 'u' ], },
     '-device (important non-sca armory)' => { 'armory' => [ 'd', 'Important non-SCA armory' ], },
-    '-device change' => { 'armory' => [ 'd' ], },
-    '-device changed/released' => { 'armory_release' => [ 'd', 'changed/released' ] },
+    'device change' => { 'armory' => [ 'd' ], },
+    'device changed/released' => { 'armory_release' => [ 'd', 'changed/released' ] },
     '-device changed/retained as ancient arms' => { 
         'armory_release' => [ 'd', 'changed/retained as Ancient Arms' ], 
         'armory' => [ 'b' , 'Ancient Arms' ], },
-    '-device changed/retained' => { 'armory_release' => [ 'd', 'changed/retained' ], 
+    'device changed/retained' => { 'armory_release' => [ 'd', 'changed/retained' ], 
         'armory' => [ 'b' ], },
     'device reblazoned' => { 'armory_release' => [ 'd', 'reblazoned' ] },
     '-device released' => { 'armory_release' => [ 'd', 'released' ] },
@@ -224,7 +240,7 @@ my %transforms = (
     '-guild name "x"' => { 'name_owned_by' => [ 'HN', 'Guild' ], },
     '-heraldic title "x"' => { 'name_owned_by' => [ 't' ] },
     '-heraldic title' => { 'non_sca_title' => [ ] },
-    '-heraldic will' => { 'name' => [ 'W' ], },
+    'heraldic will' => { 'name' => [ 'W' ], },
     '-heraldic will for heraldic title "x"' => { 'name' => [ 'W' ], },
     '-heraldic will for household name "x"' => { 'name' => [ 'W' ], },
     '-holding name' => { 'holding_name' => [] },
@@ -280,7 +296,7 @@ my %transforms = (
     '-name change from "x" and change of badge to device' => { 'name_change' => [ 'NC' ], 
         'armory_release' => [ 'b', 'converted to device' ], 
         'armory' => [ 'd' ], },
-    '-name change from "x" retained' => { 'name_change' => [ 'NC' ], 
+    'name change from "x" retained' => { 'name_change' => [ 'NC' ], 
         'name_for' => [ 'AN' ]},
     '-name change from "x" retained and device' => { 'name_change' => [ 'NC' ], 
         'name_for' => [ 'AN' ],
@@ -410,6 +426,7 @@ sub name_for
     if ($self->is_name_registered($owned_name, [ $type ]))
     {
         die "Owned name already registered: $owned_name";
+        # may need to refine this; what if title == household name? type should cover
     }
     my $oname = $self->db->add_name($owned_name);
     my $reg = $self->db->schema->resultset('Registration')->create(
@@ -435,6 +452,104 @@ sub name_for
 sub name_change
 {
     my ($self, $type) = @_;
+    my $ntype = $type;
+    $ntype =~ s/C$//;
+    if (!$self->is_name_registered($self->permute($self->quoted_names_of->[0]), [ $ntype ]))
+    {
+        die "Old name not registered: ".$self->permute($self->quoted_names_of->[0]);
+    }
+    if ($self->is_name_registered($self->name_of, [ $ntype ]))
+    {
+        die "New name already registered: ".$self->name_of;
+    }
+    my @regs = $self->db->schema->resultset('Registration')->search(
+        {
+            owner_name => $self->permute($self->quoted_names_of->[0]),
+            action => { -not_in => [ qw/ NC C R u v vc Nc OC ANC HNC BNC BNc Bv Bvc/ ] },
+        });
+    my $got_the_primary_name = 0;
+    for my $reg (@regs)
+    {
+        if ($reg->action ~~ [qw/B D BD/])
+        {
+            die "split unified record in name_change";
+            # put the armory in the new record with the changed name and the old date
+            # leave the current record alone for further processing
+        }
+    	my @name_types = qw/ BN N AN t O HN /;
+        my @armory_types = qw/ a b d g j s D? /;
+    	if ($reg->action ~~ @name_types && !$got_the_primary_name)
+    	{
+    	    my $reg_date = $reg->registration_date;
+    	    my $reg_king = $reg->registration_kingdom;
+    	    $reg->action($type);
+    	    $reg->text_name("See ".$self->name_of);
+    	    $reg->release_date($self->date_of);
+    	    $reg->release_kingdom($self->kingdom_of);
+    	    $reg->update;
+    	    
+    	    $self->db->add_name($self->name_of);
+    	    $self->db->schema->resultset('Registration')->create(
+    	        {
+    	            owner_name => $self->name_of,
+    	            action => $type,
+    	            registration_date => $self->date_of,
+    	            registration_kingdom => $self->kingdom_of,
+    	        })->update;
+    	    $got_the_primary_name = 1;
+    	}
+    	elsif ($reg->action ~~ @name_types)
+    	{
+    	    die "hit the else case in name_change; got another name after changing primary name";
+    	}
+    	elsif ($reg->action ~~ @armory_types)
+    	{
+    	    $reg->owner_name($self->name_of);
+    	    $reg->update;
+    	}
+    	else
+    	{
+    	    die "unexpected type in name_change";
+    	}
+    }
+    # now to look over the text
+    @regs = $self->db->schema->resultset('Registration')->search(
+        {
+            action => 'AN',
+            text_name => 'For '.$self->permute($self->quoted_names_of->[0]),
+        });
+    for my $reg (@regs)
+    {
+        $reg->text_name('For '.$self->name_of);
+        $reg->update;
+    }
+    
+    @regs = $self->db->schema->resultset('Registration')->search(
+        {
+            text_name => { like => '%'.$self->permute($self->quoted_names_of->[0]).'%' },
+            action => { -in => [ qw/ HN O t j / ] },
+        });
+    for my $reg (@regs)
+    {
+        if ($reg->text_name =~ /^"(.+)"$/)
+        {
+            my @tnames = split(/" and "/, $1);
+            for my $tname (@tnames)
+            {
+                next unless $tname eq $self->permute($self->quoted_names_of->[0]);
+                $tname = $self->name_of;
+            }
+            $reg->text_name('"'.join('" and "', @tnames).'"');
+            $reg->update;
+        }
+        elsif ($reg->text_name eq $self->permute($self->quoted_names_of->[0]))
+        {
+            $reg->text_name($self->name_of);
+            $reg->update;
+        }
+    }
+    # now troll through the notes
+    
     die $self->as_str;
     return [ $self->permute($self->quoted_names_of->[0]),
         $self->source_of, $type, "See ".$self->name_of,
@@ -579,6 +694,7 @@ sub name
     {
         die "Name already registered: ".$self->name_of;
     }
+    $self->db->add_name($self->name_of);
     my $reg = $self->db->schema->resultset('Registration')->create(
         {
             owner_name => $self->name_of,
@@ -613,6 +729,14 @@ sub holding_name
 sub joint
 {
     my ($self) = @_;
+    if (!$self->is_name_registered($self->name_of, [ 'N' ]))
+    {
+        die "Primary owner name not registered: ".$self->name_of;
+    }
+    if (!$self->is_name_registered($self->quoted_names_of->[0], [ 'N' ]))
+    {
+        die "Secondary owner name not registered: ".$self->name_of;
+    }
     my $reg = $self->db->schema->resultset('Registration')->create(
         {
             owner_name => $self->quoted_names_of->[0],
@@ -752,7 +876,7 @@ sub armory
     {
         die "Name for armory not registered: ".$self->name_of;
     }
-    if ($self->is_armory_registered($self->armory_of))
+    if ($self->is_armory_registered_as($self->armory_of, $type))
     {
         die "Armory already registered: ".$self->armory_of;
     }
@@ -792,6 +916,7 @@ sub armory_release
     my @regs = $self->db->schema->resultset('Registration')->search({
         release_kingdom => '',
         release_date => '',
+        action => $type,
         'text_blazon.blazon' => $self->armory_of,
         owner_name => $self->name_of,
         },
@@ -803,6 +928,11 @@ sub armory_release
         die "Armory registered multiple times to ".$self->name_of.'/'.$self->armory_of;
     }
     my $reg = $regs[0];
+    if ($reg->action eq 'B' or $reg->action eq 'D' or $reg->action eq 'BD') # split unified record
+    {
+        die "Split unified record in armory change";
+        # create fresh record for name with old date 
+    }
     $reg->release_date($self->date_of);
     $reg->release_kingdom($self->kingdom_of);
     $reg->update;

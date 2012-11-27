@@ -4,7 +4,7 @@ use warnings;
 use strict;
 use Carp;
 
-our $VERSION = '2012.008.001';
+our $VERSION = '2012.008.002';
 use Daud;
 use Moose;
 use namespace::autoclean;
@@ -56,7 +56,7 @@ my $EMPTY_STR = q{};
 my $PERIOD    = q{.};
 my $NEWLINE = qq{\n};
 my $SPACE = qr/[ ]/;
-my $BRANCH = qr/(?: Kingdom | Principality | Barony |
+my $BRANCH = qr/(?: Kingdom | Principality | Barony | Bailiwick |
         Province | Region | Shire | Canton | Stronghold | Port |
         College | Crown $SPACE Province | March | Dominion | Barony-Marche )/xms;
 

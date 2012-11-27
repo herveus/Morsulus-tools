@@ -639,5 +639,9 @@ Caid<, Kingdom of>|9999C|b|(Fieldless) A rose Or barbed and seeded vert.|(For Le
 Arion Hirsch von Schutzhundheim|9999C|j|Juliana Neuneker Hirsch von Schutzhundheim|
 Martin de Tours, Company of|9999C|HNC|Arion Hirsch von Schutzhundheim|
 ',
+'ufo000223|E|Badge|Ivyeinrust, Bailiwick of|(Fieldless) An ivy leaf quarterly vert and argent|
+' =>
+'Ivyeinrust<, Bailiwick of>|9999E|b|(Fieldless) An ivy leaf quarterly vert and argent.|
+',
     );
 }
