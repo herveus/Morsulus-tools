@@ -29,39 +29,45 @@ __PACKAGE__->table("registrations");
   is_auto_increment: 1
   is_nullable: 0
 
-=head2 owner_name
+=head2 reg_owner_name
 
   data_type: 'text'
+  default_value: (empty string)
   is_foreign_key: 1
   is_nullable: 0
 
 =head2 registration_date
 
   data_type: 'text'
+  default_value: (empty string)
   is_foreign_key: 1
   is_nullable: 1
 
 =head2 release_date
 
   data_type: 'text'
+  default_value: (empty string)
   is_foreign_key: 1
   is_nullable: 1
 
 =head2 registration_kingdom
 
   data_type: 'text'
+  default_value: (empty string)
   is_foreign_key: 1
   is_nullable: 1
 
 =head2 release_kingdom
 
   data_type: 'text'
+  default_value: (empty string)
   is_foreign_key: 1
   is_nullable: 1
 
 =head2 action
 
   data_type: 'text'
+  default_value: (empty string)
   is_foreign_key: 1
   is_nullable: 1
 
@@ -74,6 +80,13 @@ __PACKAGE__->table("registrations");
 =head2 text_name
 
   data_type: 'text'
+  default_value: (empty string)
+  is_foreign_key: 1
+  is_nullable: 1
+
+=head2 owner_id
+
+  data_type: 'integer'
   is_foreign_key: 1
   is_nullable: 1
 
@@ -82,22 +95,59 @@ __PACKAGE__->table("registrations");
 __PACKAGE__->add_columns(
   "reg_id",
   { data_type => "integer", is_auto_increment => 1, is_nullable => 0 },
-  "owner_name",
-  { data_type => "text", is_foreign_key => 1, is_nullable => 0 },
+  "reg_owner_name",
+  {
+    data_type      => "text",
+    default_value  => "",
+    is_foreign_key => 1,
+    is_nullable    => 0,
+  },
   "registration_date",
-  { data_type => "text", is_foreign_key => 1, is_nullable => 1 },
+  {
+    data_type      => "text",
+    default_value  => "",
+    is_foreign_key => 1,
+    is_nullable    => 1,
+  },
   "release_date",
-  { data_type => "text", is_foreign_key => 1, is_nullable => 1 },
+  {
+    data_type      => "text",
+    default_value  => "",
+    is_foreign_key => 1,
+    is_nullable    => 1,
+  },
   "registration_kingdom",
-  { data_type => "text", is_foreign_key => 1, is_nullable => 1 },
+  {
+    data_type      => "text",
+    default_value  => "",
+    is_foreign_key => 1,
+    is_nullable    => 1,
+  },
   "release_kingdom",
-  { data_type => "text", is_foreign_key => 1, is_nullable => 1 },
+  {
+    data_type      => "text",
+    default_value  => "",
+    is_foreign_key => 1,
+    is_nullable    => 1,
+  },
   "action",
-  { data_type => "text", is_foreign_key => 1, is_nullable => 1 },
+  {
+    data_type      => "text",
+    default_value  => "",
+    is_foreign_key => 1,
+    is_nullable    => 1,
+  },
   "text_blazon_id",
   { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
   "text_name",
-  { data_type => "text", is_foreign_key => 1, is_nullable => 1 },
+  {
+    data_type      => "text",
+    default_value  => "",
+    is_foreign_key => 1,
+    is_nullable    => 1,
+  },
+  "owner_id",
+  { data_type => "integer", is_foreign_key => 1, is_nullable => 1 },
 );
 
 =head1 PRIMARY KEY
@@ -127,14 +177,34 @@ __PACKAGE__->belongs_to(
   "Morsulus::Ordinary::Classic::Schema::Result::Action",
   { action_id => "action" },
   {
-    is_deferrable => 1,
+    is_deferrable => 0,
     join_type     => "LEFT",
-    on_delete     => "CASCADE",
-    on_update     => "CASCADE",
+    on_delete     => "NO ACTION",
+    on_update     => "NO ACTION",
   },
 );
 
-=head2 owner_name
+=head2 owner
+
+Type: belongs_to
+
+Related object: L<Morsulus::Ordinary::Classic::Schema::Result::Owner>
+
+=cut
+
+__PACKAGE__->belongs_to(
+  "owner",
+  "Morsulus::Ordinary::Classic::Schema::Result::Owner",
+  { owner_id => "owner_id" },
+  {
+    is_deferrable => 0,
+    join_type     => "LEFT",
+    on_delete     => "NO ACTION",
+    on_update     => "NO ACTION",
+  },
+);
+
+=head2 reg_owner_name
 
 Type: belongs_to
 
@@ -143,10 +213,10 @@ Related object: L<Morsulus::Ordinary::Classic::Schema::Result::Name>
 =cut
 
 __PACKAGE__->belongs_to(
-  "owner_name",
+  "reg_owner_name",
   "Morsulus::Ordinary::Classic::Schema::Result::Name",
-  { name => "owner_name" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { name => "reg_owner_name" },
+  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
 =head2 registration_date
@@ -162,10 +232,10 @@ __PACKAGE__->belongs_to(
   "Morsulus::Ordinary::Classic::Schema::Result::Date",
   { date => "registration_date" },
   {
-    is_deferrable => 1,
+    is_deferrable => 0,
     join_type     => "LEFT",
-    on_delete     => "CASCADE",
-    on_update     => "CASCADE",
+    on_delete     => "NO ACTION",
+    on_update     => "NO ACTION",
   },
 );
 
@@ -182,10 +252,10 @@ __PACKAGE__->belongs_to(
   "Morsulus::Ordinary::Classic::Schema::Result::Kingdom",
   { kingdom_id => "registration_kingdom" },
   {
-    is_deferrable => 1,
+    is_deferrable => 0,
     join_type     => "LEFT",
-    on_delete     => "CASCADE",
-    on_update     => "CASCADE",
+    on_delete     => "NO ACTION",
+    on_update     => "NO ACTION",
   },
 );
 
@@ -217,10 +287,10 @@ __PACKAGE__->belongs_to(
   "Morsulus::Ordinary::Classic::Schema::Result::Date",
   { date => "release_date" },
   {
-    is_deferrable => 1,
+    is_deferrable => 0,
     join_type     => "LEFT",
-    on_delete     => "CASCADE",
-    on_update     => "CASCADE",
+    on_delete     => "NO ACTION",
+    on_update     => "NO ACTION",
   },
 );
 
@@ -237,10 +307,10 @@ __PACKAGE__->belongs_to(
   "Morsulus::Ordinary::Classic::Schema::Result::Kingdom",
   { kingdom_id => "release_kingdom" },
   {
-    is_deferrable => 1,
+    is_deferrable => 0,
     join_type     => "LEFT",
-    on_delete     => "CASCADE",
-    on_update     => "CASCADE",
+    on_delete     => "NO ACTION",
+    on_update     => "NO ACTION",
   },
 );
 
@@ -257,10 +327,10 @@ __PACKAGE__->belongs_to(
   "Morsulus::Ordinary::Classic::Schema::Result::Blazon",
   { blazon_id => "text_blazon_id" },
   {
-    is_deferrable => 1,
+    is_deferrable => 0,
     join_type     => "LEFT",
-    on_delete     => "CASCADE",
-    on_update     => "CASCADE",
+    on_delete     => "NO ACTION",
+    on_update     => "NO ACTION",
   },
 );
 
@@ -277,10 +347,10 @@ __PACKAGE__->belongs_to(
   "Morsulus::Ordinary::Classic::Schema::Result::Name",
   { name => "text_name" },
   {
-    is_deferrable => 1,
+    is_deferrable => 0,
     join_type     => "LEFT",
-    on_delete     => "CASCADE",
-    on_update     => "CASCADE",
+    on_delete     => "NO ACTION",
+    on_update     => "NO ACTION",
   },
 );
 
@@ -295,8 +365,8 @@ Composing rels: L</registration_notes> -> note
 __PACKAGE__->many_to_many("notes", "registration_notes", "note");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-17 19:27:39
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:S7kEzbR17XU+VwjfxynrFw
+# Created by DBIx::Class::Schema::Loader v0.07033 @ 2012-12-01 13:08:27
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:rjR078sSZoiNRlFA50lMZw
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

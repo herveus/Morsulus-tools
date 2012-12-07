@@ -39,6 +39,13 @@ has 'db_flat_file' => (
     is => 'ro',
     );
 
+has 'note_regexen' => (
+    isa => 'ArrayRef',
+    is => 'ro',
+    lazy => 1,
+    default => \&build_note_regexen,
+    );
+
 sub build_dbh
 {
     my $self = shift;
@@ -71,6 +78,7 @@ sub makeDB
     $self->load_dates;
     $self->load_actions;
     $self->load_categories;
+    $self->load_notes_with_names;
     $self->load_database;
 }
 
@@ -142,6 +150,31 @@ sub get_actions
         [ 'D', 'combined name and device' ],
         [ 'BD', 'combined branch name and device' ],
         [ 'B', 'combined name and badge' ]
+    );
+}
+
+sub load_notes_with_names {
+    my $self = shift;
+    $self->schema->txn_begin;
+    for my $action (get_notes_with_names())
+    {
+        $self->schema->resultset('NoteWithNames')->create(
+            {
+                note_regex => $action,
+            })->update;
+    }
+    $self->schema->txn_commit;
+}
+
+sub get_notes_with_names
+{
+    return (
+        '^Also the arms of (.*)$',
+        '^For (.*)$',
+        '^JB: (.*)$',
+        '^same branch as (.*)$',
+        '^same person as (.*)$',
+        '-transferred to (.*)$',
     );
 }
 
@@ -260,6 +293,14 @@ sub add_blazon
     return $bz;
 }
 
+sub build_note_regexen
+{
+    my $self = shift;
+    my @regexen = map {qr/$_/} 
+        $self->schema->resultset('NoteWithNames')->all();
+    return \@regexen;
+}
+
 sub add_note
 {
     my $self = shift;
@@ -273,6 +314,14 @@ sub add_note
                 reg_id => $reg->reg_id,
                 note_id => $note->note_id,
             })->update;
+    for my $re (@{$self->note_regexen()})
+    {
+        if ($note_text =~ /$re/)
+        {
+            $self->note_name($self->add_name($1)->name)->update;
+            last;
+        }
+    }
 }
 
 sub add_desc
@@ -300,6 +349,22 @@ sub add_desc
     return $desc;
 }
 
+sub Action { my $self = shift; return  $self->schema->resultset('Action'); }
+sub Blazon { my $self = shift; return  $self->schema->resultset('Blazon'); }
+sub Category { my $self = shift; return  $self->schema->resultset('Category'); }
+sub Date { my $self = shift; return  $self->schema->resultset('Date'); }
+sub DescFeature { my $self = shift; return  $self->schema->resultset('DescFeature'); }
+sub Description { my $self = shift; return  $self->schema->resultset('Description'); }
+sub Feature { my $self = shift; return  $self->schema->resultset('Feature'); }
+sub FeatureSet { my $self = shift; return  $self->schema->resultset('FeatureSet'); }
+sub Kingdom { my $self = shift; return  $self->schema->resultset('Kingdom'); }
+sub Name { my $self = shift; return  $self->schema->resultset('Name'); }
+sub Note { my $self = shift; return  $self->schema->resultset('Note'); }
+sub NoteWithNames { my $self = shift; return  $self->schema->resultset('NoteWithNames'); }
+sub Owner { my $self = shift; return  $self->schema->resultset('Owner'); }
+sub Registration { my $self = shift; return  $self->schema->resultset('Registration'); }
+sub RegistrationNote { my $self = shift; return  $self->schema->resultset('RegistrationNote'); }
+
 sub get_blazon_registrations
 {
     my $self = shift;
@@ -326,7 +391,7 @@ sub get_registration
     $reg = $reg_rs->find($reg) unless ref $reg;
     return unless $reg;
     my $entry = Morsulus::Ordinary::Legacy->new;
-    $entry->name($reg->owner_name->name);
+    $entry->name($reg->get_column('reg_owner_name'));
     $entry->type($reg->action->action_id);
     $entry->text($reg->text_blazon->blazon) if $entry->has_blazon;
     $entry->text($reg->text_name->name) unless $entry->has_blazon;
@@ -410,7 +475,7 @@ sub process_legacy_record
     $self->add_name($entry->name);
     my $reg = $self->schema->resultset('Registration')->create(
         {
-            owner_name => $entry->name,
+            reg_owner_name => $entry->name,
             action => $entry->type,
             registration_date => $reg_date,
             release_date => $rel_date,
@@ -441,6 +506,23 @@ sub process_legacy_record
     
     for my $note ($entry->split_notes)
     {
+        if ($note =~ /^Owner: (.+)$/) 
+        {
+            my $owner_data = $1;
+            my ($owner_name, $owner_name_date, $owner_ordinal) = split(/:/, $owner_data);
+            my $owner_rs = $self->schema->resultset('Owner');
+            my $owner = $owner_rs->find({owner_name => $owner_name || "",
+                owner_name_date => $owner_name_date || "",
+                owner_name_ordinal => $owner_ordinal || "1"}) ||
+                $owner_rs->create(
+                    {
+                        owner_name => $owner_name || "",
+                        owner_name_date => $owner_name_date || "",
+                        owner_name_ordinal => $owner_ordinal || "1",
+                    })->update;
+            $reg->owner_id($owner->owner_id);
+            $reg->update;
+        }
         $self->add_note($reg, $note);
     }
 }
@@ -504,8 +586,18 @@ sub get_creates
     drop table if exists names 
 	EOS
     create table names (
-        name text not null primary key
+        name text not null primary key,
+        unpermuted_name text null references names(name)
         )
+	EOS
+	drop table if exists owners
+	EOS
+	create table owners (
+	    owner_id integer not null primary key,
+	    owner_name text not null default "",
+	    owner_name_date text not null default "",
+	    owner_name_ordinal text not null default "1"
+	    )
 	EOS
     drop table if exists dates 
 	EOS
@@ -534,14 +626,15 @@ sub get_creates
 	EOS
     create table registrations (
         reg_id integer not null primary key,
-        owner_name text not null references names(name) default "",
+        reg_owner_name text not null references names(name) default "",
         registration_date text references dates(date) default "",
         release_date text references dates(date) default "",
         registration_kingdom text references kingdoms(kingdom_id) default "",
         release_kingdom text references kingdoms(kingdom_id) default "",
         action text references actions(action_id) default "",
         text_blazon_id integer references blazons(blazon_id),
-        text_name text references names(name) default ""
+        text_name text references names(name) default "",
+        owner_id integer null references owners(owner_id)
         )
 	EOS
     drop table if exists notes 
@@ -559,6 +652,12 @@ sub get_creates
         note_id integer not null references notes(note_id),
         primary key (reg_id, note_id)
         )
+	EOS
+	drop table if exists notes_with_names
+	EOS
+	create table notes_with_names (
+	    note_regex text not null primary key
+	    )
 	EOS
     drop table if exists categories 
 	EOS
@@ -606,6 +705,21 @@ sub get_creates
     create unique index names_pkx
         on names(name)
 	EOS
+    drop index if exists unpermuted_name_ix 
+	EOS
+    create unique index unpermuted_name_ix
+        on names(unpermuted_name)
+	EOS
+	drop index if exists owners_pkx
+	EOS
+	create unique index owners_pkx 
+	    on owners(owner_id)
+	EOS
+	drop index if exists owners_akx
+	EOS
+	create unique index owners_akx
+	    on owners(owner_name, owner_name_date, owner_name_ordinal)
+	EOS
     drop index if exists dates_pkx 
 	EOS
     create unique index dates_pkx
@@ -629,7 +743,7 @@ sub get_creates
     drop index if exists reg_owners_ix 
 	EOS
     create index reg_owners_ix
-        on registrations(owner_name)
+        on registrations(reg_owner_name)
 	EOS
     drop index if exists reg_blazon_ix 
 	EOS
@@ -741,7 +855,7 @@ Version 0.02
 
 =cut
 
-our $VERSION = '0.02';
+our $VERSION = '0.10';
 
 
 =head1 SYNOPSIS

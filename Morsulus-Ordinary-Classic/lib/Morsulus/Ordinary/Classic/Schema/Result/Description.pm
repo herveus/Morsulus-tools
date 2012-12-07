@@ -78,7 +78,7 @@ __PACKAGE__->belongs_to(
   "blazon",
   "Morsulus::Ordinary::Classic::Schema::Result::Blazon",
   { blazon_id => "blazon_id" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
 =head2 category
@@ -93,7 +93,7 @@ __PACKAGE__->belongs_to(
   "category",
   "Morsulus::Ordinary::Classic::Schema::Result::Category",
   { category => "category" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
 =head2 desc_features
@@ -122,8 +122,8 @@ Composing rels: L</desc_features> -> feature
 __PACKAGE__->many_to_many("features", "desc_features", "feature");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-17 19:27:39
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:3pIOUK/5iz7rv8Eleu6QUA
+# Created by DBIx::Class::Schema::Loader v0.07033 @ 2012-11-29 18:05:27
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:ArtD7rE3Eaob+PeKsxsJkQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

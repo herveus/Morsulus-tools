@@ -78,10 +78,10 @@ __PACKAGE__->belongs_to(
   "Morsulus::Ordinary::Classic::Schema::Result::Name",
   { name => "note_name" },
   {
-    is_deferrable => 1,
+    is_deferrable => 0,
     join_type     => "LEFT",
-    on_delete     => "CASCADE",
-    on_update     => "CASCADE",
+    on_delete     => "NO ACTION",
+    on_update     => "NO ACTION",
   },
 );
 
@@ -111,8 +111,8 @@ Composing rels: L</registration_notes> -> reg
 __PACKAGE__->many_to_many("regs", "registration_notes", "reg");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-17 19:27:39
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:fFmtaUPCjWrzpPc2z0wbjg
+# Created by DBIx::Class::Schema::Loader v0.07033 @ 2012-11-29 18:05:27
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:wTzwBLP/KHV7CoAnQw6b6A
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration

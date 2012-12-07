@@ -58,6 +58,23 @@ is $parts[1], 'D', 'reg kingdom';
 is $parts[2], '200607', 'rel year';
 is $parts[3], 'D', 'rel king';
 
+$entry = Morsulus::Ordinary::Legacy->from_string('Atenveldt, Kingdom of|-201210A|b|Argent, a sun in splendor per saltire Or and azure and a bordure indented azure.|(-associated with usage)
+');
+is $entry->name, 'Atenveldt, Kingdom of', 'name';
+is $entry->source, '-201210A', 'source';
+is $entry->type, 'b', 'type';
+is $entry->text, 'Argent, a sun in splendor per saltire Or and azure and a bordure indented azure.', 'text';
+is $entry->notes, '(-associated with usage)';
+is $entry->descs, undef, 'descs';
+ok $entry->has_blazon, 'has blazon';
+ok $entry->is_historical, 'is historical';
+@parts = $entry->parse_source;
+is scalar @parts, 4, 'four pieces in source';
+is $parts[0], undef, 'reg year';
+is $parts[1], undef, 'reg kingdom';
+is $parts[2], '201210', 'rel year';
+is $parts[3], 'A', 'rel king';
+
 my %actions = (
     'a' => 1,
     'b' => 1,
@@ -115,14 +132,16 @@ is $entry->descs, 'desc1|desc2|desc3', 'added desc2 and 3';
 
 
 open my $fh, '<', 't/test.db';
-while (<$fh>)
+while (my $test_input = <$fh>)
 {
-    chomp;
-    my $entry = Morsulus::Ordinary::Legacy->from_string($_);
+    chomp $test_input;
+    my $entry = Morsulus::Ordinary::Legacy->from_string($test_input);
     my $has_blazon = $entry->has_blazon ? 1 : 0;
-    my $type = (split(/\|/, $_))[2];
-    is $has_blazon, $actions{$type}, "$_";
-    is $entry->type, $type, "$type:$_";
+    my $type = (split(/\|/, $test_input))[2];
+    is $has_blazon, $actions{$type}, "$test_input";
+    is $entry->type, $type, "$type:$test_input";
+    is $entry->to_string, $test_input, "stringify $test_input";
+    is $entry->canonicalize->to_string, $test_input, "canonicalize $test_input";
 }
 
 for (test_data())
@@ -140,9 +159,9 @@ done_testing();
 sub test_data
 {
 return split(/\n/,<<EOD);
-A. J. of Bonwicke|199404X|N||(Owner: A. J. of Bonwicke:199404X)(Holding name)
+A. J. of Bonwicke|199404X|N||(Holding name)(Owner: A. J. of Bonwicke:199404X)
 A. J. of Bonwicke|199404X|d|Per pall inverted gules, Or and argent, a cedar tree vert stocked sable and a bordure sable semy of lozenges Or.|(Owner: A. J. of Bonwicke:199404X)|BORDURE:charged:pl:sable:surrounding 1 only|FIELD DIV.-PER PALL*7:pl|FIELD:multicolor light|LOZENGE:or:pl:seme:tertiary:unc|TREE-PINE TREE SHAPE:1:spna:vert
-A ma vie< Pursuivant>|200812N|t|Dukes of Brittany|(Owner: Laurel - admin)(Important Non-SCA title)
+A ma vie< Pursuivant>|200812N|t|Dukes of Brittany|(Important Non-SCA title)(Owner: Laurel - admin)
 Aale Brunkarrkarl|198905X|N||(Owner: Aale Brunkarrkarl:198905X)
 Aal{'e}s de Lironcourt|200208S|N||(Owner: Aal{'e}s de Lironcourt:200208S)
 Aarnimetsa<, Barony of>|199806D-200607D|Bvc|Aarnimets{a:}<, Barony of>|(Owner: Morsulus - admin)

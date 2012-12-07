@@ -63,12 +63,28 @@ sub to_string
     return $string;
 }
 
+sub canonicalize
+{
+    my $self = shift;
+    $self->descs(join('|', sort $self->split_descs));
+    $self->notes('('.join(')(', sort $self->split_notes).')') if $self->notes;
+    return $self;
+}
+
 sub has_blazon
 {
     my $self = shift;
     return $blazon_types{$self->type};
     #return $self->type ~~ [qw/a b d g s B D BD D?/];
 }
+
+sub registers_name
+{
+    my $self = shift;
+    return $self->type ~~ [qw/N BN O OC AN ANC NC BNC Nc BNc HN HNC u D BD D/];
+}
+
+
 
 sub is_historical
 {

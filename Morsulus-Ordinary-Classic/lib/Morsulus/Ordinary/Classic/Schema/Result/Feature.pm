@@ -84,7 +84,7 @@ __PACKAGE__->belongs_to(
   "feature_set",
   "Morsulus::Ordinary::Classic::Schema::Result::FeatureSet",
   { feature_set_name => "feature_set" },
-  { is_deferrable => 1, on_delete => "CASCADE", on_update => "CASCADE" },
+  { is_deferrable => 0, on_delete => "NO ACTION", on_update => "NO ACTION" },
 );
 
 =head2 descs
@@ -98,8 +98,8 @@ Composing rels: L</desc_features> -> desc
 __PACKAGE__->many_to_many("descs", "desc_features", "desc");
 
 
-# Created by DBIx::Class::Schema::Loader v0.07025 @ 2012-07-17 19:27:39
-# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:H3NF9ReRUpBlZwsLcsQ0ag
+# Created by DBIx::Class::Schema::Loader v0.07033 @ 2012-11-29 18:05:27
+# DO NOT MODIFY THIS OR ANYTHING ABOVE! md5sum:fdkswUQpamp08kM9TRgmEQ
 
 
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
