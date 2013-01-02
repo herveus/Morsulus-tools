@@ -25,7 +25,7 @@ our @EXPORT_OK = ( @{ $EXPORT_TAGS{'all'} } );
 our @EXPORT = qw(
 	
 );
-our $VERSION = '0.04';
+our $VERSION = '2012.11.00';
 
 my $maps = { ascii => {},
 	html => {},
@@ -618,5 +618,6 @@ ff;ff;FB00;;LATIN SMALL LIGATURE FF
 fi;fi;FB01;;LATIN SMALL LIGATURE FI
 fl;fl;FB02;;LATIN SMALL LIGATURE FL
 st;st;FB06;;LATIN SMALL LIGATURE ST
+u!;u;E724;&uvertline;LATIN LOWERCASE U WITH VERTICAL LINE ABOVE
 EOD
 }

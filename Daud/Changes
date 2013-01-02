@@ -10,3 +10,5 @@ Revision history for Perl extension Daud.
 0.03  Sat Dec 3 2005
     - fixed daudify to ignore CR and LF in string
 
+2012.11.0 Wed Jan 2 2013
+    - added {u!} and bumped version to datelike form
