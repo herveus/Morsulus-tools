@@ -166,6 +166,7 @@ sub get_item_discussion_blazon
 	if ($action =~ /(device|badge) change/i 
 	    or $action =~ /blazon/i 
 	    or $action =~ /exchange of device and badge/i
+	    or $action =~ /\bchange\b/i
 	    or $in_errata)
 	{
 		(my $disc = $elt->text) =~ s:[\012\015]+: :sg;
