@@ -633,15 +633,26 @@ Caid<, Kingdom of>|9999C|b|(Fieldless) A rose Or barbed and seeded vert.|(For Le
 ' =>
 'Rottaler< Herold>|9999K|t|Calontir<, Kingdom of>|
 ',
+'ufo000223|E|Badge|Ivyeinrust, Bailiwick of|(Fieldless) An ivy leaf quarterly vert and argent|
+' =>
+'Ivyeinrust<, Bailiwick of>|9999E|b|(Fieldless) An ivy leaf quarterly vert and argent.|
+',
 'ufo000119|C|Joint household name change to "Company of Saint Martin de Tours" from "Company of Martin de Tours" and badge|Juliana Neuneker Hirsch von Schutzhundheim and Arion Hirsch von Schutzhundheim|Azure, two scarpes argent between two furisons Or|
 ' =>
 'Juliana Neuneker Hirsch von Schutzhundheim|9999C|b|Azure, two scarpes argent between two furisons Or.|(For Company of Saint Martin de Tours)(JB: Arion Hirsch von Schutzhundheim)
 Arion Hirsch von Schutzhundheim|9999C|j|Juliana Neuneker Hirsch von Schutzhundheim|
-Martin de Tours, Company of|9999C|HNC|Arion Hirsch von Schutzhundheim|
+Martin de Tours, Company of|9999C|HNC|Saint Martin de Tours, Company of|
 ',
-'ufo000223|E|Badge|Ivyeinrust, Bailiwick of|(Fieldless) An ivy leaf quarterly vert and argent|
+'ufo000041|X|Joint household name "Bentbow House" and joint badge|Eric Bentbow and Alexandra Bentbow|(Fieldless) On a tower per pale Or and azure, an arrowhead inverted counterchanged|
 ' =>
-'Ivyeinrust<, Bailiwick of>|9999E|b|(Fieldless) An ivy leaf quarterly vert and argent.|
+'Bentbow House|9999X|HN|"Eric Bentbow" and "Alexandra Bentbow"|
+Alexandra Bentbow|9999X|j|Eric Bentbow|
+Eric Bentbow|9999X|b|(Fieldless) On a tower per pale Or and azure, an arrowhead inverted counterchanged.|(For Bentbow House)(JB: Alexandra Bentbow)
+',
+'ufo000162|w|Blanket permission to conflict with name and alternate name "ffride wlffsdotter"|Ásfríðr Úlfvíðardóttir||
+' =>
+'ffride wlffsdotter|9999w|BP|{A\'}sfr{i\'}{dh}r {U\'}lfv{i\'}{dh}ard{o\'}ttir|(Blanket permission to conflict with alternate name granted 9999w)
+{A\'}sfr{i\'}{dh}r {U\'}lfv{i\'}{dh}ard{o\'}ttir|9999w|BP||(Blanket permission to conflict with name granted 9999w)
 ',
     );
 }

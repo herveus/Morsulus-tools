@@ -46,16 +46,16 @@ sub is_name_registered
 {
     my $self = shift;
     my ($name, $types) = @_;
-    if (!ref($types) eq 'ARRAY')
+    if (ref($types) ne 'ARRAY')
     {
         $types = [ $types ];
     }
-    my @regs = $self->db->schema->resultset('Registration')->search({
-        owner_name => $name,
+    my @regs = $self->db->Registration->search({
+        reg_owner_name => $name,
         action => { '-in' => $types },
         release_kingdom => '',
         release_date => '',
-        });
+        })->all;
     return @regs > 0;
 }
 
@@ -70,7 +70,7 @@ sub is_armory_registered
 {
     my $self = shift;
     my ($blazon) = @_;
-    my @regs = $self->db->schema->resultset('Registration')->search({
+    my @regs = $self->db->Registration->search({
         release_kingdom => '',
         release_date => '',
         'text_blazon.blazon' => $blazon,
@@ -85,7 +85,7 @@ sub is_armory_registered_as
 {
     my $self = shift;
     my ($blazon, $type) = @_;
-    my @regs = $self->db->schema->resultset('Registration')->search({
+    my @regs = $self->db->Registration->search({
         release_kingdom => '',
         release_date => '',
         action => $type,
@@ -429,9 +429,9 @@ sub name_for
         # may need to refine this; what if title == household name? type should cover
     }
     my $oname = $self->db->add_name($owned_name);
-    my $reg = $self->db->schema->resultset('Registration')->create(
+    my $reg = $self->db->Registration->create(
         {
-            owner_name => $self->name_of,
+            reg_owner_name => $self->name_of,
             action => $type,
             registration_date => $self->date_of,
             registration_kingdom => $self->kingdom_of,
@@ -462,9 +462,9 @@ sub name_change
     {
         die "New name already registered: ".$self->name_of;
     }
-    my @regs = $self->db->schema->resultset('Registration')->search(
+    my @regs = $self->db->Registration->search(
         {
-            owner_name => $self->permute($self->quoted_names_of->[0]),
+            reg_owner_name => $self->permute($self->quoted_names_of->[0]),
             action => { -not_in => [ qw/ NC C R u v vc Nc OC ANC HNC BNC BNc Bv Bvc/ ] },
         });
     my $got_the_primary_name = 0;
@@ -489,9 +489,9 @@ sub name_change
     	    $reg->update;
     	    
     	    $self->db->add_name($self->name_of);
-    	    $self->db->schema->resultset('Registration')->create(
+    	    $self->db->Registration->create(
     	        {
-    	            owner_name => $self->name_of,
+    	            reg_owner_name => $self->name_of,
     	            action => $type,
     	            registration_date => $self->date_of,
     	            registration_kingdom => $self->kingdom_of,
@@ -504,7 +504,7 @@ sub name_change
     	}
     	elsif ($reg->action ~~ @armory_types)
     	{
-    	    $reg->owner_name($self->name_of);
+    	    $reg->reg_owner_name($self->name_of);
     	    $reg->update;
     	}
     	else
@@ -513,7 +513,7 @@ sub name_change
     	}
     }
     # now to look over the text
-    @regs = $self->db->schema->resultset('Registration')->search(
+    @regs = $self->db->Registration->search(
         {
             action => 'AN',
             text_name => 'For '.$self->permute($self->quoted_names_of->[0]),
@@ -524,7 +524,7 @@ sub name_change
         $reg->update;
     }
     
-    @regs = $self->db->schema->resultset('Registration')->search(
+    @regs = $self->db->Registration->search(
         {
             text_name => { like => '%'.$self->permute($self->quoted_names_of->[0]).'%' },
             action => { -in => [ qw/ HN O t j / ] },
@@ -639,9 +639,9 @@ sub name_owned_by
         die "Owned name already registered: $owned_name";
     }
     my $oname = $self->db->add_name($owned_name);
-    my $reg = $self->db->schema->resultset('Registration')->create(
+    my $reg = $self->db->Registration->create(
         {
-            owner_name => $self->name_of,
+            reg_owner_name => $self->name_of,
             action => $type,
             registration_date => $self->date_of,
             registration_kingdom => $self->kingdom_of,
@@ -695,9 +695,9 @@ sub name
         die "Name already registered: ".$self->name_of;
     }
     $self->db->add_name($self->name_of);
-    my $reg = $self->db->schema->resultset('Registration')->create(
+    my $reg = $self->db->Registration->create(
         {
-            owner_name => $self->name_of,
+            reg_owner_name => $self->name_of,
             action => $type,
             registration_date => $self->date_of,
             registration_kingdom => $self->kingdom_of,
@@ -737,9 +737,9 @@ sub joint
     {
         die "Secondary owner name not registered: ".$self->name_of;
     }
-    my $reg = $self->db->schema->resultset('Registration')->create(
+    my $reg = $self->db->Registration->create(
         {
-            owner_name => $self->quoted_names_of->[0],
+            reg_owner_name => $self->quoted_names_of->[0],
             action => 'j',
             registration_date => $self->date_of,
             registration_kingdom => $self->kingdom_of,
@@ -769,9 +769,9 @@ sub badge_for
         die "Armory already registered: ".$self->armory_of;
     }
     my $blazon = $self->db->add_blazon($self->armory_of);
-    my $reg = $self->db->schema->resultset('Registration')->create(
+    my $reg = $self->db->Registration->create(
         {
-            owner_name => $self->name_of,
+            reg_owner_name => $self->name_of,
             action => 'b',
             registration_date => $self->date_of,
             registration_kingdom => $self->kingdom_of,
@@ -881,9 +881,9 @@ sub armory
         die "Armory already registered: ".$self->armory_of;
     }
     my $blazon = $self->db->add_blazon($self->armory_of);
-    my $reg = $self->db->schema->resultset('Registration')->create(
+    my $reg = $self->db->Registration->create(
         {
-            owner_name => $self->name_of,
+            reg_owner_name => $self->name_of,
             action => $type,
             registration_date => $self->date_of,
             registration_kingdom => $self->kingdom_of,
@@ -913,12 +913,12 @@ sub armory_release
     {
         die "Armory not registered: ".$self->armory_of;
     }
-    my @regs = $self->db->schema->resultset('Registration')->search({
+    my @regs = $self->db->Registration->search({
         release_kingdom => '',
         release_date => '',
         action => $type,
         'text_blazon.blazon' => $self->armory_of,
-        owner_name => $self->name_of,
+        reg_owner_name => $self->name_of,
         },
         {
             join => 'text_blazon',
@@ -1018,11 +1018,11 @@ sub blanket_permission_name
     }
     my $additional_note = $self->quoted_names_of->[0] || '';
     $additional_note = ' '.$additional_note if $additional_note;
-    my @regs = $self->db->schema->resultset('Registration')->search({
+    my @regs = $self->db->Registration->search({
         release_kingdom => '',
         release_date => '',
         action => $type,
-        owner_name => $self->name_of,
+        reg_owner_name => $self->name_of,
         });
     if (@regs > 1)
     {
@@ -1080,11 +1080,11 @@ sub blanket_permission_armory
     }
     my $additional_note = $self->quoted_names_of->[0] || '';
     $additional_note = ' '.$additional_note if $additional_note;
-    my @regs = $self->db->schema->resultset('Registration')->search({
+    my @regs = $self->db->Registration->search({
         release_kingdom => '',
         release_date => '',
         'text_blazon.blazon' => $self->armory_of,
-        owner_name => $self->name_of,
+        reg_owner_name => $self->name_of,
         },
         {
             join => 'text_blazon',

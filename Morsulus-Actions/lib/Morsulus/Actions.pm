@@ -4,7 +4,7 @@ use warnings;
 use strict;
 use Carp;
 
-our $VERSION = '2012.008.002';
+our $VERSION = '2012.010.001';
 use Daud;
 use Moose;
 use namespace::autoclean;
@@ -329,6 +329,9 @@ my %transforms = (
     'blanket permission to conflict with name and device' => { 
         'blanket_permission_name' => [ 'BP', 'name' ], 
         'blanket_permission_armory' => [ 'BP', 'device' ], },
+    'blanket permission to conflict with name and alternate name "x"' => { 
+        'blanket_permission_name' => [ 'BP', 'name' ], 
+        'blanket_permission_secondary_name' => [ 'BP', 'alternate name' ], },
     'blanket permission to conflict with alternate name "x" and badge' => { 
         'blanket_permission_secondary_name' => [ 'BP', 'alternate name' ], 
         'blanket_permission_armory' => [ 'BP', 'badge' ], },
@@ -418,6 +421,8 @@ my %transforms = (
     'joint badge transfer to "x"' => { 'transfer_joint_armory' => [ 'b', ], 
         'joint_transfer' => [] },
     'joint household name "x" and badge' => { 'normalize_joint_household_name' => [], 
+        'normalize_joint_badge_for' => [], },
+    'joint household name "x" and joint badge' => { 'normalize_joint_household_name' => [], 
         'normalize_joint_badge_for' => [], },
     'joint household name "x" and badge association' => { 'normalize_joint_household_name' => [], 
         'armory_release' => [ 'b', 'associated with household name' ],
@@ -761,6 +766,7 @@ sub normalize_joint_badge_for
 {
     my ($self) = @_;
     my @names = split(/ and /, $self->name_of);
+    local ($self->quoted_names_of->[0]) = $self->quoted_names_of->[0];
     my $joint_badge;
     {
         my $household_name = $self->quoted_names_of->[0];
