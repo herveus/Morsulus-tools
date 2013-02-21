@@ -17,6 +17,8 @@ lib/Morsulus/Ordinary/Classic/Schema/Result/FeatureSet.pm
 lib/Morsulus/Ordinary/Classic/Schema/Result/Kingdom.pm
 lib/Morsulus/Ordinary/Classic/Schema/Result/Name.pm
 lib/Morsulus/Ordinary/Classic/Schema/Result/Note.pm
+lib/Morsulus/Ordinary/Classic/Schema/Result/NoteWithNames.pm
+lib/Morsulus/Ordinary/Classic/Schema/Result/Owner.pm
 lib/Morsulus/Ordinary/Classic/Schema/Result/Registration.pm
 lib/Morsulus/Ordinary/Classic/Schema/Result/RegistrationNote.pm
 lib/Morsulus/Ordinary/Legacy.pm

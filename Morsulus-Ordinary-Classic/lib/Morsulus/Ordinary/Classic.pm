@@ -296,8 +296,8 @@ sub add_blazon
 sub build_note_regexen
 {
     my $self = shift;
-    my @regexen = map {qr/$_/} 
-        $self->schema->resultset('NoteWithNames')->all();
+    my @regexen = map {my $re = $_->note_regex; qr/$re/} 
+        $self->NoteWithNames->all();
     return \@regexen;
 }
 
@@ -318,7 +318,8 @@ sub add_note
     {
         if ($note_text =~ /$re/)
         {
-            $self->note_name($self->add_name($1)->name)->update;
+            $note->note_name($self->add_name($1)->name);
+            $note->update;
             last;
         }
     }

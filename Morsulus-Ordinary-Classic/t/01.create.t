@@ -42,7 +42,7 @@ for my $fs (keys %sets)
 	is $sets{$fs}, 1, "feature set $fs found in DB";
 }
 
-my $feature_rs = $ord->schema->resultset('Feature');
+my $feature_rs = $ord->Feature;
 for my $test_feat ("proper:tincture", "4 or fewer:number", "square:line", "g2pa:group")
 {
 	my ($test_feature, $test_feature_set) = split(/:/, $test_feat);
@@ -51,13 +51,22 @@ for my $test_feat ("proper:tincture", "4 or fewer:number", "square:line", "g2pa:
 	is $feature->feature_set->feature_set_name, $test_feature_set, "...and it has the right feature set";
 }
 
-my @regs = $ord->schema->resultset('Registration')->all;
+my @regs = $ord->Registration->all;
 for my $reg (@regs)
 {
 	my $entry = $ord->get_registration($reg)->canonicalize->to_string;
 	ok exists $test_data{$entry}, "got the entry back: $entry";
 	$test_data{$entry}++;
 	is $test_data{$entry}, 1, "and haven't seen it before";
+}
+
+my $reg = $ord->Registration->find(10);
+for my $note ($reg->notes)
+{
+    if ($note->note_text =~ /^For (.*)/)
+    {
+        is $note->note_name->name, 'Kultaisen Kapustan Kilta', "note has referenced name";
+    }
 }
 
 done_testing();

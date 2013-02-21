@@ -9,3 +9,7 @@ Revision history for Morsulus-Ordinary-Classic
 		check_blazons works and fast
 		Capable of regenerating oanda flat file from database
 		
+0.10    12/7/2012
+        Added owners table and owner_id column to registrations
+        Added note_regexen table to itemize note patterns that have names embedded
+        

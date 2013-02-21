@@ -4,7 +4,8 @@ use strict;
 
 use Morsulus::Ordinary::Classic;
 
-my $ord  = Morsulus::Ordinary::Classic->new(dbname => '/Users/herveus/aux/oandadb.db');
+my $ord  = Morsulus::Ordinary::Classic->new(dbname => 't/01.create.db');
+#my $ord  = Morsulus::Ordinary::Classic->new(dbname => '/Users/herveus/aux/oandadb.db');
 
 my $blazon = 'Purpure, an arrow head argent charged with a Latin cross formy nowy purpure.';
 
