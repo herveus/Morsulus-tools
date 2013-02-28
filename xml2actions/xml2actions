@@ -222,7 +222,7 @@ sub extract_action
 	if ($action =~ /exchange of device and badge/i)
 	{
 	    my ($old_device) = grep {$discussion =~ /previous device, $_/} @disc_blazons;
-	    my ($old_badge) = grep {$_ ne $old_device} @disc_blazons;
+	    my ($old_badge) = grep {$_ ne $old_device} @disc_blazons, $armory;
 	    if (@disc_blazons == 2 && defined $old_device)
 	    {
 	        @disc_blazons = ();
