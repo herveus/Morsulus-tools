@@ -654,5 +654,10 @@ Eric Bentbow|9999X|b|(Fieldless) On a tower per pale Or and azure, an arrowhead 
 'ffride wlffsdotter|9999w|BP|{A\'}sfr{i\'}{dh}r {U\'}lfv{i\'}{dh}ard{o\'}ttir|(Blanket permission to conflict with alternate name granted 9999w)
 {A\'}sfr{i\'}{dh}r {U\'}lfv{i\'}{dh}ard{o\'}ttir|9999w|BP||(Blanket permission to conflict with name granted 9999w)
 ',
+'ufo000068|Q|Name change from "Aillenn DÌlis ingen NÈll" and release of device|EtaÌn DÌlis ingen Fhinn|Per fess azure and vert, a crescent pendant argent and an oak leaf fesswise Or|
+' => 
+'Aillenn D{\'I}lis ingen N{\'E}ll|9999Q|NC|See Eta{\'I}n D{\'I}lis ingen Fhinn|
+Eta{\'I}n D{\'I}lis ingen Fhinn|-9999Q|d|Per fess azure and vert, a crescent pendant argent and an oak leaf fesswise Or.|(-released)
+',
     );
 }

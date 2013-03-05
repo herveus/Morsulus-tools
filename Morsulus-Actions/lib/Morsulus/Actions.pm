@@ -4,7 +4,7 @@ use warnings;
 use strict;
 use Carp;
 
-our $VERSION = '2012.010.001';
+our $VERSION = '2012.012.001';
 use Daud;
 use Moose;
 use namespace::autoclean;
@@ -449,6 +449,8 @@ my %transforms = (
     'name change from "x" and change of badge to device' => { 'name_change' => [ 'NC' ], 
         'armory_release' => [ 'b', 'converted to device' ], 
         'armory' => [ 'd' ], },
+    'name change from "x" and release of device' => { 'name_change' => [ 'NC' ], 
+        'armory_release' => [ 'd', 'released' ], },
     'name change from "x" retained' => { 'name_change' => [ 'NC' ], 
         'name_for' => [ 'AN' ]},
     'name change from "x" retained and device' => { 'name_change' => [ 'NC' ], 
