@@ -1,0 +1,1314 @@
+#!/usr/local/bin/perl
+use strict;
+use warnings;
+
+use Getopt::Euclid;
+use Tk;
+use POSIX qw(ceil floor);
+use Fatal;
+use File::Slurp qw(slurp write_file);
+use Carp;
+use List::MoreUtils qw(any firstidx);
+
+main();
+exit;
+
+sub main {
+    initialize_data();
+    make_visuals();
+    load_database();
+    run_ui();
+}
+
+sub run_ui
+{
+    set_current_item(0);
+    set_number_of_items(get_item_count());
+    First_Item();
+    MainLoop();
+}
+
+sub make_visuals {
+    require Tk::ROText;
+    require Tk::LabEntry;
+    require Tk::FontDialog;
+    require Tk::NoteBook;
+    require Tk::HList;
+    require Tk::Dialog;
+
+    my $mw = MainWindow->new();
+    $mw->configure( -background => 'white' );
+    $mw->title("Index database file '$ARGV{-in}'");
+    my @max_size = $mw->maxsize;
+    $max_size[1] -= 50;
+    $mw->geometry( join( 'x', @max_size ) );
+    my $font
+        = '-b&h-lucidatypewriter-medium-r-normal-sans-10-100-75-75-m-60-iso8859-1';
+
+ #my $font = '-schumacher-clean-medium-r-normal--10-100-75-75-c-50-iso8859-1';
+    
+    create_cancel_confirm_dialog($mw);
+
+    my $item_fr     = make_item_frame($mw);
+    my $control_fr  = make_control_frame($mw);
+    my $cat_feat_fr = make_cats_feats_frame($mw);
+    my $descs_fr    = make_descs_frame($mw);
+    my $search_fr   = make_search_frame($mw);
+    my $lookup_fr   = make_lookup_frame($mw);
+
+    $item_fr->pack( -side     => 'top',    -fill => 'x' );
+    $control_fr->pack( -side  => 'bottom', -fill => 'x' );
+    $cat_feat_fr->pack( -side => 'right',  -fill => 'both', -expand => 1 );
+    $descs_fr->pack( -side    => 'top',    -fill => 'both', -expand => 1 );
+    $search_fr->pack( -side => 'top' );
+    $lookup_fr->pack( -side => 'top' );
+
+    $mw->bind( '<Left>'        => \&Prev_Item );
+    $mw->bind( '<Right>'       => \&Next_Item );
+    $mw->bind( '<Shift-Left>'  => \&First_Item );
+    $mw->bind( '<Shift-Right>' => \&Last_Item );
+    $mw->bind( '<Up>'          => \&Prev_Desc );
+    $mw->bind( '<Down>'        => \&Next_Desc );
+    $mw->bind( '<Control-Left>' => \&Prev_Tab );
+    $mw->bind( '<Control-Right>' => \&Next_Tab );
+    $mw->bind( '<Control-Shift-Left>' => \&MFUC_Tab );
+    $mw->bind( '<Control-Shift-Right>' => \&Feature_Tab );
+    $mw->bind( '<Shift-Up>'    => \&Prev_Feat );
+    $mw->bind( '<Shift-Down>'  => \&Next_Feat );
+    $mw->bind( '<Control-Up>'     => \&Prev_Feat_Set );
+    $mw->bind( '<Control-Down>'   => \&Next_Feat_Set );
+
+    set_up_category_tabs( cat_feat_nb() );
+    set_up_feature_tab( cat_feat_nb() );
+    Rebuild_MFUC_Tab();
+
+    apply_font( $mw, $font );
+}
+
+sub required_bg_color { return 'palegreen'; }
+sub optional_bg_color { return 'lightpink'; }
+
+{
+    my $cancel_confirm_dialog;
+    sub create_cancel_confirm_dialog
+    {
+        my $mw = shift;
+        $cancel_confirm_dialog = $mw->Dialog(-text => 'Discard changes?',
+        -buttons => [ 'OK', 'Cancel' ],
+        -default_button => 'Cancel',
+        );
+    }
+    
+    sub get_cancel_confirm_dialog
+    {
+        return $cancel_confirm_dialog;
+    }
+}
+
+sub apply_font {
+    my ( $mw, $font ) = @_;
+    return if not defined($font);
+    $mw->RefontTree( -font => $font, -canvas => 1 );
+}
+
+{
+    my $blazon_rotxt;
+    my $note_txt;
+
+    sub blazon_rotxt_var { return \$blazon_rotxt; }
+    sub update_blazon_field
+    {
+        my $blazon = shift;
+        $blazon_rotxt->Contents($blazon);
+    }
+    sub note_txt_var     { return \$note_txt; }
+    sub update_note_field
+    {
+        my $notes = shift;
+        $note_txt->Contents($notes);
+    }
+    sub get_note_field
+    {
+        return $note_txt->Contents();
+    }
+
+    sub make_item_frame {
+        my ($mw) = shift;
+
+        my $item_fr = $mw->Frame( -borderwidth => 2, -relief => 'ridge', );
+
+        $blazon_rotxt = $item_fr->ROText(
+            -width      => 70,
+            -height     => 5,
+            -wrap       => 'word',
+            -background => 'white',
+        );
+
+        $note_txt = $item_fr->Text(
+            -width      => 50,
+            -height     => 5,
+            -wrap       => 'word',
+            -background => 'white',
+        );
+
+        my $name_labent = $item_fr->LabEntry(
+            -label              => 'Name',
+            -labelPack          => [ -side => 'left', -anchor => 'w' ],
+            -width              => 70,
+            -textvariable       => name_var(),
+            -relief             => 'flat',
+            -state              => 'disabled',
+            -disabledbackground => 'beige',
+            -disabledforeground => 'black',
+        );
+        my $date_type_fr = $item_fr->Frame();
+        $date_type_fr->LabEntry(
+            -label              => 'Date',
+            -labelPack          => [ -side => 'left', -anchor => 'w' ],
+            -width              => 10,
+            -textvariable       => date_var(),
+            -relief             => 'flat',
+            -state              => 'disabled',
+            -disabledbackground => 'beige',
+            -disabledforeground => 'black',
+            )->pack(
+            -side   => 'top',
+            -fill   => 'x',
+            -anchor => 'w',
+            -expand => 0
+            );
+        $date_type_fr->LabEntry(
+            -label              => 'Type',
+            -labelPack          => [ -side => 'left', -anchor => 'w' ],
+            -width              => 10,
+            -textvariable       => type_var(),
+            -relief             => 'flat',
+            -state              => 'disabled',
+            -disabledbackground => 'beige',
+            -disabledforeground => 'black',
+            )->pack(
+            -side   => 'top',
+            -fill   => 'x',
+            -anchor => 'w',
+            -expand => 0
+            );
+
+        my $kingdom_item_fr = $item_fr->Frame();
+        $kingdom_item_fr->LabEntry(
+            -label              => 'Kingdom',
+            -labelPack          => [ -side => 'left', -anchor => 'w' ],
+            -width              => 30,
+            -textvariable       => kingdom_var(),
+            -relief             => 'flat',
+            -state              => 'disabled',
+            -disabledbackground => 'beige',
+            -disabledforeground => 'black',
+            )->pack(
+            -side   => 'top',
+            -fill   => 'x',
+            -anchor => 'w',
+            -expand => 1
+            );
+        my $item_no_fr = $kingdom_item_fr->Frame();
+        $item_no_fr->LabEntry(
+            -label              => 'Item',
+            -labelPack          => [ -side => 'left', -anchor => 'w' ],
+            -width              => 6,
+            -textvariable       => current_item_var(),
+            -relief             => 'flat',
+            -state              => 'disabled',
+            -disabledbackground => 'beige',
+            -disabledforeground => 'black',
+        )->pack( -side => 'left', -anchor => 'w', );
+        $item_no_fr->LabEntry(
+            -label              => 'of',
+            -labelPack          => [ -side => 'left', -anchor => 'w' ],
+            -width              => 6,
+            -textvariable       => number_of_items_var(),
+            -relief             => 'flat',
+            -state              => 'disabled',
+            -disabledbackground => 'beige',
+            -disabledforeground => 'black',
+        )->pack( -side           => 'left',   -anchor => 'w', );
+        $item_no_fr->pack( -side => 'bottom', -anchor => 'w', );
+
+        $blazon_rotxt->pack(
+            -side   => 'left',
+            -fill   => 'none',
+            -anchor => 'w'
+        );
+        $note_txt->pack( -side => 'right', -fill => 'none', -anchor => 'e' );
+        $name_labent->pack(
+            -side   => 'top',
+            -fill   => 'x',
+            -anchor => 'w',
+            -expand => 1
+        );
+        $date_type_fr->pack(
+            -side   => 'left',
+            -fill   => 'none',
+            -anchor => 'w'
+        );
+        $kingdom_item_fr->pack(
+            -side   => 'top',
+            -fill   => 'none',
+            -anchor => 'w'
+        );
+
+        return $item_fr;
+    }
+}
+
+sub make_control_frame {
+    my $mw = shift;
+
+    my $control_fr = $mw->Frame( -borderwidth => 2, -relief => 'ridge', );
+
+    my @control_buttons = (
+        [ 'Quit',            \&Quit,                      'right' ],
+        [ 'Abort',           \&Abort,                     'right' ],
+        [ 'Save',            \&Save,                      'right' ],
+        [ 'Remember FUC',    \&Save_Most_Used_Categories, 'right' ],
+        [ 'Discard changes', \&update_display,            'left' ],
+        [ 'Validate',        \&Validate_Descs,            'left' ],
+        [ 'Suggest',         \&Suggest,                   'left' ],
+#        [ 'Bracketize Name', \&Bracketize_Name,           'left' ],
+        [ 'Update MFUC Tab', \&Rebuild_MFUC_Tab,          'left' ],
+    );
+
+    foreach my $button (@control_buttons) {
+        $control_fr->Button(
+            -text    => $button->[0],
+            -command => $button->[1],
+        )->pack( -side => $button->[2] );
+    }
+
+    return $control_fr;
+}
+{
+    my $cat_feat_nb;
+    sub cat_feat_nb_var { return \$cat_feat_nb; }
+    sub cat_feat_nb     { return $cat_feat_nb; }
+
+    sub make_cats_feats_frame {
+        my $mw = shift;
+        my $cat_feat_fr
+            = $mw->Frame( -borderwidth => 2, -relief => 'ridge', );
+
+        $cat_feat_nb = $cat_feat_fr->NoteBook( -backpagecolor => 'white', )
+            ->pack( -side => 'top', -fill => 'both', -expand => 'y' );
+
+        return $cat_feat_fr;
+    }
+}
+{
+    my $desc_list;
+    sub desc_list_var { return \$desc_list; }
+    sub desc_list { return $desc_list; }
+
+    sub make_descs_frame {
+        my $mw       = shift;
+        my $descs_fr = $mw->Frame(
+            -label     => 'Descriptions',
+            -labelPack => [ -side => 'top', -anchor => 'w' ],
+        );
+
+        $desc_list = $descs_fr->Scrolled(
+            'Listbox',
+            -scrollbars => 'se',
+            -width      => 35,
+            -height     => 10,
+            -selectmode => 'single',
+            -background => 'white',
+        );
+        $desc_list->bind( '<1>', \&Adjust_Feature_Sets );
+        my $delete_button = $descs_fr->Button(
+            -text    => 'Delete description',
+            -command => \&Delete_Desc,
+        );
+
+        $desc_list->pack(
+            -side   => 'top',
+            -fill   => 'both',
+            -anchor => 'w',
+            -expand => 1
+        );
+        $delete_button->pack( -side => 'left' );
+
+        return $descs_fr;
+    }
+}
+
+sub make_search_frame {
+    my $mw        = shift;
+    my $search_fr = $mw->Frame(
+        -label     => 'Name search',
+        -labelPack => [ -side => 'top', -anchor => 'w' ],
+    );
+
+    my $find_item = $search_fr->LabEntry(
+        -label        => 'Find:',
+        -labelPack    => [ -side => 'left', -anchor => 'w' ],
+        -textvariable => find_string_var(),
+        -width        => 35,
+        -background   => 'white',
+    );
+    my $first_button = $search_fr->Button(
+        -text    => '|<',
+        -command => \&First_Item,
+    );
+    my $prev_button = $search_fr->Button(
+        -text    => '<',
+        -command => \&Pref_Item,
+    );
+    my $next_button = $search_fr->Button(
+        -text    => '>',
+        -command => \&Next_Item,
+    );
+    my $last_button = $search_fr->Button(
+        -text    => '>|',
+        -command => \&Last_Item,
+    );
+    my $find_button = $search_fr->Button(
+        -text    => 'Find name',
+        -command => \&Find_Item,
+    );
+
+    $find_item->pack(
+        -side   => 'top',
+        -expand => 1,
+        -fill   => 'x',
+        -anchor => 'w'
+    );
+    $first_button->pack( -side => 'left' );
+    $prev_button->pack( -side  => 'left' );
+    $next_button->pack( -side  => 'left' );
+    $last_button->pack( -side  => 'left' );
+    $find_button->pack( -side  => 'right' );
+
+    return $search_fr;
+}
+
+{
+    my $synonym_list;
+    sub synonym_list_var { return \$synonym_list; }
+
+    sub make_lookup_frame {
+        my $mw        = shift;
+        my $lookup_fr = $mw->Frame(
+            -label     => 'Synonym lookup',
+            -labelPack => [ -side => 'top', -anchor => 'w' ],
+        );
+
+        my $find_synonym = $lookup_fr->LabEntry(
+            -label        => 'Find:',
+            -width        => 35,
+            -textvariable => find_synonym_string_var(),
+            -background   => 'white',
+        );
+        $find_synonym->bind( '<Return>', \&Find_Synonym );
+        $synonym_list = $lookup_fr->Scrolled(
+            'Listbox',
+            -scrollbars => 'se',
+            -width      => 35,
+            -height     => 10,
+            -background => 'white',
+        );
+        $synonym_list->bind( '<Double-ButtonRelease-1>',
+            \&Add_Desc_From_Synonym );
+        my $find_button = $lookup_fr->Button(
+            -text    => 'Find synonyms',
+            -command => \&Find_Synonym,
+        );
+
+        $find_synonym->pack(
+            -side   => 'top',
+            -fill   => 'x',
+            -expand => 1,
+            -anchor => 'w',
+        );
+        $synonym_list->pack( -side => 'top', -fill => 'both', -expand => 1 );
+        $find_button->pack( -side => 'right' );
+
+        return $lookup_fr;
+    }
+}
+
+{
+    my %tabs;
+    my %frames;
+    my @MFUC_Buttons;
+    my $tab_geom;
+    my %set_frames;
+    my %set_lbs;
+    my $current_feature_set;
+    my @current_feature_sets;
+    
+    sub Next_Tab {
+        cat_feat_nb()->raise(cat_feat_nb()->info("focusnext"));
+        }
+    sub Prev_Tab { 
+        cat_feat_nb()->raise(cat_feat_nb()->info("focusprev"));
+        }
+    sub MFUC_Tab { cat_feat_nb()->raise('MFUC'); }
+    sub Feature_Tab { cat_feat_nb()->raise('Features'); }
+
+    sub set_up_category_tabs {
+        my $nb = shift;
+        print STDERR "Setting up categories\n";
+        $tab_geom = discover_nb_tab_geometry($nb);
+    TAB: foreach my $tab ( 'MFUC', group_list() ) {
+            my @group_contents;
+            if ( $tab eq 'MFUC' ) {
+                @group_contents = ('') x $tab_geom->{buttons_per_page};
+            }
+            else {
+                @group_contents = group_members($tab);
+            }
+            my $page_count
+                = ceil( @group_contents / $tab_geom->{buttons_per_page} );
+            foreach my $tabno ( 1 .. $page_count ) {
+                my $tabname = $tab;
+                $tabname .= "$tabno" if $tabno > 1;
+                $tabs{$tabname} = $nb->add(
+                    $tabname,
+                    -label  => $tabname,
+                    -anchor => 'center',
+                );
+            COL: foreach my $col ( 0 .. $tab_geom->{cols_per_page} ) {
+                    $frames{$tabname}[$col] = $tabs{$tabname}->Frame->pack(
+                        -side   => 'left',
+                        -anchor => 'n',
+                        -expand => 1,
+                        -fill   => 'y'
+                    );
+                ROW: foreach my $row ( 1 .. $tab_geom->{rows_per_page} ) {
+                        next TAB if @group_contents == 0;
+                        my $cat_name = shift @group_contents;
+                        my $button   = $frames{$tabname}[$col]->Button(
+                            -text        => $cat_name,
+                            -borderwidth => 0,
+                            -command     => sub { Add_Desc($cat_name); },
+                            -background  => 'white',
+                        )->pack( -side => 'top', -anchor => 'w' );
+                        push @MFUC_Buttons, $button if $tabname eq 'MFUC';
+                        print STDERR "$tabname $cat_name", ' ' x 35, "\r";
+                    }
+                }
+            }
+        }
+        print STDERR "\n";
+    }
+
+    sub Rebuild_MFUC_Tab {
+        my @top_list =
+            sort {$a cmp $b} (mfuc_list( { max_number => $tab_geom->{buttons_per_page} } ));
+        foreach my $button (@MFUC_Buttons) {
+            if (@top_list) {
+                my $cat = shift @top_list;
+                $button->configure(
+                    -state   => 'normal',
+                    -command => sub { Add_Desc($cat); },
+                    -text    => $cat,
+                );
+            }
+            else {
+                $button->configure(
+                    -state   => 'disabled',
+                    -command => undef,
+                    -text    => '',
+                );
+            }
+        }
+    }
+
+    sub discover_nb_tab_geometry {
+        my $nb = shift;
+
+        my $tab = $nb->add(
+            'temp',
+            -label  => 'temp',
+            -anchor => 'center',
+        );
+        my $tab_fr = $tab->Frame->pack(
+            -side   => 'left',
+            -anchor => 'n',
+            -expand => 1,
+            -fill   => 'both'
+        );
+        $tab_fr->update;
+        my $frame_width  = $tab_fr->width;
+        my $frame_height = $tab_fr->height;
+        $nb->delete('temp');
+
+        my $min_col_width    = 190;
+        my $min_row_height   = 21;
+        my $cols             = floor( $frame_width / $min_col_width );
+        my $rows             = floor( $frame_height / $min_row_height );
+        my $buttons_per_page = $cols * $rows;
+
+        return {
+            max_col_width    => $min_col_width,
+            min_row_height   => $min_row_height,
+            cols_per_page    => $cols,
+            rows_per_page    => $rows,
+            buttons_per_page => $buttons_per_page,
+        };
+    }
+
+    sub set_up_feature_tab {
+        my $nb = shift;
+        print STDERR "Setting up features \n";
+
+        $tabs{Features} = $nb->add(
+            'Features',
+            -label  => 'Features',
+            -anchor => 'center',
+        );
+
+        foreach my $feature_set ( feature_set_names() ) {
+            print "\r$feature_set: ";
+            my $max_width = 0;
+            $set_frames{$feature_set} = $tabs{Features}->Frame(
+                -label     => $feature_set,
+                -labelPack => [ -side => 'top', -anchor => 'w' ],
+            );
+            $set_lbs{$feature_set} = $set_frames{$feature_set}->Scrolled(
+                'HList',
+                -scrollbars => 'se',
+                -drawbranch => 0,
+                -indicator  => 0,
+                -browsecmd  => sub 
+                    { 
+                        $current_feature_set = $feature_set;
+                        Adjust_Desc(@_);
+                    },
+                -width      => 20,
+                -selectmode => 'single',
+                -height     => 20,
+                )->pack(
+                -side   => 'left',
+                -expand => 1,
+                -fill   => 'y',
+                -anchor => 'w'
+                );
+            $set_lbs{$feature_set}->add( '<none>', -text => '<none>' );
+            foreach my $feature ( sort {$a cmp $b} feature_set_members($feature_set) ) {
+                $set_lbs{$feature_set}->add( $feature, -text => $feature );
+                print STDERR $feature, ' ' x 20, "\r$feature_set: ";
+                $max_width = length($feature)
+                    if length($feature) > $max_width;
+            }
+            $set_lbs{$feature_set}->configure( -width => $max_width + 2 );
+        }
+
+        print STDERR "\n";
+    }
+    
+    sub next_in_list
+    {
+        my ($item, @list) = @_;
+        return prev_in_list($item, reverse @list);
+    }
+    
+    sub prev_in_list
+    {
+        my ($item, @list) = @_;
+        my $idx = firstidx { $_ eq $item } @list;
+        return $list[-1] if $idx == -1;
+        my $next_idx = $idx-1 % @list;
+        return $list[$next_idx];
+    }
+    
+    sub Next_Feat
+    {
+        my $current_feat = $set_lbs{$current_feature_set}->selectionGet()->[0];
+        my @values = ('<none>', sort {$a cmp $b} feature_set_members($current_feature_set));
+        select_feature(
+            next_in_list($current_feat, @values),
+            $current_feature_set);
+        Adjust_Desc();
+    }
+    
+    sub Prev_Feat
+    {
+        my $current_feat = $set_lbs{$current_feature_set}->selectionGet()->[0];
+        my @values = ('<none>', sort {$a cmp $b} feature_set_members($current_feature_set));
+        select_feature(
+            prev_in_list($current_feat, @values),
+            $current_feature_set);
+        Adjust_Desc();
+    }
+    
+    sub Next_Feat_Set
+    {
+        return unless @current_feature_sets;
+        select_current_feature_set(next_in_list($current_feature_set, @current_feature_sets));
+    }
+    sub Prev_Feat_Set
+    {
+        return unless @current_feature_sets;
+        select_current_feature_set(prev_in_list($current_feature_set, @current_feature_sets));
+    }
+    
+    sub select_current_feature_set
+    {
+        $current_feature_set = shift;
+        return unless defined $current_feature_set;
+        $set_lbs{$current_feature_set}->focus();
+    }
+    
+    sub deactivate_all_feature_lists
+    {
+        foreach my $feature_set (sort keys %set_frames)
+        {
+            $set_frames{$feature_set}->packForget;
+            $set_lbs{$feature_set}->selectionClear;
+            $set_lbs{$feature_set}->selectionSet('<none>');
+            $set_lbs{$feature_set}->configure(-background => required_bg_color());
+            $set_lbs{$feature_set}->anchorClear;
+        }
+        @current_feature_sets = ();
+        $current_feature_set = undef;
+    }
+    sub activate_selected_feature_lists
+    {
+        my @feature_sets = @_;
+        foreach my $feature_set (@feature_sets)
+        {
+            next if (grep $feature_set eq $_, @current_feature_sets);
+            push @current_feature_sets, $feature_set;
+            $set_lbs{$feature_set}->configure(-background => required_bg_color());
+            $set_frames{$feature_set}->pack(-side => 'left', -expand => 1,
+                -fill => 'y', -anchor => 'w');
+        }
+        select_current_feature_set($feature_sets[0])
+            if not defined $current_feature_set;
+    }
+    sub select_feature
+    {
+        my ($feature, $feature_set) = @_;
+        $set_lbs{$feature_set}->selectionClear();
+        $set_lbs{$feature_set}->selectionSet($feature);
+        $set_lbs{$feature_set}->see($feature);
+    }
+    sub get_selected_features
+    {
+        my @feature_sets = @_;
+        my @feats;
+        foreach my $feature_set (@feature_sets)
+        {
+            push @feats, $set_lbs{$feature_set}->selectionGet();
+            if ($feature_set eq 'tincture' and defined $feats[-1] and $feats[-1] =~ /^multicolor/)
+            {
+                next if any { $_ eq 'tincture2' } @feature_sets;
+                push @feats, $set_lbs{tincture1}->selectionGet(),
+                    $set_lbs{tincture2}->selectionGet();
+            }
+        }
+        return @feats;
+    }
+}
+{
+    my %entry;
+    my $current_item;
+    my $number_of_items;
+    my $find_name_string;
+    my $find_synonym_string;
+    my %most_used;
+    my %most_used_by_score;
+    my $most_used_dirty;
+    my %categories;
+    my %set_name;
+    my %set_names;
+    my @feature_names;
+    my %xref;
+    my %group;
+    my @group;
+    my %compatible;
+    my %heading;
+    my %all_cats;
+    my %feature_group_order;
+    my @feature_group_order;
+    my %next_prev_feature_set;
+
+    sub initialize_data {
+        load_MFUC_data( $ARGV{-mfuc} );
+        require $ARGV{-cat};
+        %categories    = categories();
+        %set_name      = set_name();
+        %set_names     = set_names();
+        @feature_names = feature_names();
+        %xref          = xrefs();
+        %group         = group_hash();
+        @group         = group_array();
+        %compatible    = compatible();
+        %heading  = map { $categories{$_}->{heading} => $_ } keys %categories;
+        %all_cats = %categories;
+        $all_cats{$_}->{xrefs}    = $xref{$_} foreach keys %xref;
+        $all_cats{$_}->{category} = $_        foreach keys %all_cats;
+        %feature_group_order = ( number => 1, count => 2, posture => 3,
+            bird_posture => 4, fish_posture => 5, crescent_dir => 6,
+            line => 7, orientation => 8, tincture =>  9, tincture1 => 9.5,
+            tincture2 => 10, relation => 11, chrelation => 12, group => 13,
+            tertiaries => 0.5, arrangement => 14);
+        @feature_group_order = sort feature_group_order keys %feature_group_order;
+        for my $i (0 .. @feature_group_order-1)
+        {
+            $next_prev_feature_set{$feature_group_order[$i]} = 
+                { next => $feature_group_order[($i+1)% @feature_group_order],
+                    prev => $feature_group_order[$i-1] };
+        }
+    }
+
+    sub load_MFUC_data {
+        my $data_file = shift;
+        open my $mfuc_file, '<', $data_file;
+        while ( defined( my $mfuc_line = <$mfuc_file> ) ) {
+            chomp $mfuc_line;
+            my ( $cat, $score ) = split( /:/, $mfuc_line );
+            $most_used{$cat} = $score;
+            push @{ $most_used_by_score{$score} }, $cat;
+        }
+        $most_used_dirty = 0;
+    }
+    
+    sub Save_Most_Used_Categories
+    {
+        my $data_file = $ARGV{-mfuc};
+        open my $mfuc_file, '>', $data_file;
+        print $mfuc_file map { "$_:$most_used{$_}\n" } keys %most_used;
+        close $mfuc_file;
+    }
+
+    sub blazon_var              { return \$entry{blazon}; }
+    sub notes_var               { return \$entry{notes}; }
+    sub name_var                { return \$entry{name}; }
+    sub date_var                { return \$entry{date}; }
+    sub type_var                { return \$entry{type}; }
+    sub kingdom_var             { return \$entry{kingdom}; }
+    sub current_item_var        { return \$current_item; }
+    sub number_of_items_var     { return \$number_of_items; }
+    sub find_string_var         { return \$find_name_string; }
+    sub find_synonym_string_var { return \$find_synonym_string; }
+    
+    sub set_current_item { $current_item = shift; }
+    sub set_number_of_items { $number_of_items = shift; }
+    
+    sub Find_Synonym
+    {
+        ${synonym_list_var()}->delete(0, 'end');
+        my %synonyms;
+        my $lookup_string = ${find_synonym_string_var()};
+        foreach my $list (@xref{grep {/$lookup_string/} keys %xref})
+        {
+            foreach my $li (@$list)
+            {
+                $synonyms{$li} = 1;
+            }
+        }
+        ${synonym_list_var()}->insert('end', sort keys %synonyms);
+    }
+    
+    sub Add_Desc_From_Synonym
+    {
+        my @sel = ${synonym_list_var()}->curselection;
+        return unless @sel;
+        my $head = ${synonym_list_var()}->get($sel[0]);
+        if (! exists $categories{$head})
+        {
+            return;
+        }
+        Add_Desc($head);
+    }
+
+    sub group_list {
+        return @group;
+    }
+
+    sub group_members {
+        my $group = shift;
+        return @{ $group{$group} };
+    }
+
+    sub feature_set_names {
+        return keys %set_names;
+    }
+
+    sub feature_set_members {
+        my $feature_set = shift;
+        return grep { $set_name{$_} eq $feature_set } keys %set_name;
+    }
+    
+    sub add_to_most_used
+    {
+        my @descs = @_;
+        foreach my $desc (@descs)
+        {
+            my ($head) = split(/:/, $desc);
+            $most_used{$head}++;
+            $most_used_dirty = 1;
+        }
+    }
+    
+    sub remove_from_most_used
+    {
+        my @descs = @_;
+        foreach my $desc (@descs)
+        {
+            my ($head) = split(/:/, $desc);
+            next if $most_used{$head} <= 0;
+            $most_used{$head}--;
+            $most_used_dirty = 1;
+        }
+    }
+    
+    sub recompute_most_used_by_score
+    {  
+        %most_used_by_score = ();
+        while (my ($cat, $score) = each %most_used)
+        {
+            push @{ $most_used_by_score{$score} }, $cat;
+        }
+        $most_used_dirty = 0;
+    }
+
+    sub mfuc_list {
+        my $args_href = shift;
+        if ($most_used_dirty)
+        {
+            recompute_most_used_by_score();
+        }
+        if ( exists $args_href->{max_number} ) {
+            my $number_of_cats = $args_href->{max_number};
+            my @cats;
+            for my $score ( reverse sort { $a <=> $b }
+                keys %most_used_by_score )
+            {
+                my $score_count = scalar( @{ $most_used_by_score{$score} } );
+                last if @cats + $score_count > $number_of_cats;
+                push @cats, @{ $most_used_by_score{$score} };
+            }
+            return @cats;
+        }
+        elsif ( exists $args_href->{min_score} ) {
+            my $min_score = $args_href->{min_score};
+            my @cats;
+            for my $score ( reverse sort { $a <=> $b }
+                keys %most_used_by_score )
+            {
+                my $score_count = scalar( @{ $most_used_by_score{$score} } );
+                last if $score < $min_score;
+                push @cats, @{ $most_used_by_score{$score} };
+            }
+            return @cats;
+        }
+    }
+    
+    sub is_armory_type
+    {
+        my $type = shift;
+        return $type =~ /^(:?[abdsABDS]|D\?|BD)$/;
+    }
+    
+    sub is_historical_date
+    {
+        my $date = shift;
+        return $date =~ /-/;
+    }
+    
+    sub First_Item
+    {
+        Save_Indexing() if $current_item;
+        $current_item = 0;
+        Next_Item();
+    }
+    
+    sub Last_Item
+    {
+        Save_Indexing() if $current_item;
+        $current_item = 0;
+        Prev_Item();
+    }
+    
+    sub Prev_Item
+    {
+        Save_Indexing() if $current_item;
+        foreach my $item_number (reverse($current_item..$number_of_items, 1..$current_item-1))
+        {
+            my $item = get_parsed_item($item_number);
+            next if ! is_armory_type($item->{type});
+            next if is_historical_date($item->{date});
+            $current_item = $item_number;
+            last;
+        }
+        update_display();
+    }
+    
+    sub Next_Item
+    {
+        Save_Indexing() if $current_item;
+        foreach my $item_number ($current_item+1..$number_of_items, 1..$current_item)
+        {
+            my $item = get_parsed_item($item_number);
+            next if ! is_armory_type($item->{type});
+            next if is_historical_date($item->{date});
+            $current_item = $item_number;
+            last;
+        }
+        update_display();
+    }
+    
+    sub Find_Item
+    {
+        return unless defined $find_name_string;
+        Save_Indexing() if $current_item;
+        foreach my $item_number ($current_item+1..$number_of_items, 1..$current_item)
+        {
+            my $item = get_parsed_item($item_number);
+            next if ! is_armory_type($item->{type});
+            next if ! $item->{name} =~ /$find_name_string/;
+            next if is_historical_date($item->{date});
+            $current_item = $item_number;
+            last;
+        }
+        update_display();
+    }
+    
+    sub Save_Indexing
+    {
+        my $item = get_parsed_item($current_item);
+        if ($item->{text} !~ /[.]$/)
+        {
+            $item->{text} .= '.';
+        }
+        $item->{notes} = get_note_field() || '';
+        $item->{notes} =~ tr{\n}{}d;
+        $item->{descs} = [];
+        foreach my $desc (desc_list()->get(0, 'end'))
+        {
+            my ($head, @feats) = split(/:/, $desc);
+            foreach my $feat (@feats)
+            {
+                $feat =~ s/uncharged/unc/;
+                $feat =~ s/plain line/pl/;
+                $feat =~ s/secondary/second/;
+            }
+            $head = $categories{$head}->{heading};
+            push @{$item->{descs}}, @feats > 0 ? join(':', $head, @feats) : $head;
+        }
+        save_parsed_item($current_item, $item);
+    }
+    
+    sub update_display
+    {
+        my $item = get_parsed_item($current_item);
+        $entry{name} = $item->{name};
+        my ($date, $kingdom) = $item->{date} =~ /^(......)(.)?$/;
+        $entry{date} = $date;
+        $entry{type} = $item->{type};
+        $entry{kingdom} = $kingdom;
+        update_blazon_field($item->{text});
+        update_note_field($item->{notes});
+        foreach my $desc (@{$item->{descs}})
+        {
+            my ($head, @feats) = split(/:/, $desc);
+            $head = $heading{$head};
+            $desc = @feats > 0 ? join(':', $head, @feats) : $head;
+        }
+        desc_list()->delete(0, 'end');
+        desc_list()->insert(0, @{$item->{descs}});
+        desc_list()->selectionClear(0, 'end');
+        desc_list()->selectionSet(0) if desc_list()->size;
+        Adjust_Feature_Sets();
+    }
+    
+    sub feature_group_order { $feature_group_order{$a} <=> $feature_group_order{$b} }
+    
+    sub Adjust_Feature_Sets
+    {
+        my @sel = desc_list()->curselection();
+        return if @sel == 0;
+        my $item = $sel[0];
+        desc_list()->selectionClear(0, 'end');
+        desc_list()->selectionSet($item) if desc_list()->size;
+        
+        my $the_desc = desc_list()->get($item);
+        my ($head, @feats) = split(/:/, $the_desc);
+        return if ! defined $head;
+        
+        if ( ! exists $categories{$head})
+        {
+            print STDERR "Desc '$the_desc' has an unrecognized heading/category name\n";
+            return;
+        }
+        deactivate_all_feature_lists();
+        activate_selected_feature_lists(sort feature_group_order @{$categories{$head}->{features}});
+        my $has_tincture2 = grep {$_ eq 'tincture2'} @{$categories{$head}->{features}};
+        foreach my $feature (@feats)
+        {
+            next if not defined $feature;
+            next if $feature eq '';
+            select_feature($feature, $set_name{$feature});
+            next if $has_tincture2;
+            next if ! $feature =~ /^multicolor/;
+            # do the tincture1 and tincture2 thing
+            activate_selected_feature_lists('tincture1', 'tincture2');
+        }
+        #skip showing the optional feature sets...
+    }
+    
+    sub Add_Desc
+    {
+        my @descs = @_;
+        foreach my $desc (@descs)
+        {
+            desc_list()->insert('end', $desc);
+            my ($head) = split(/:/, $desc);
+            add_to_most_used($head);
+        }
+    }
+    
+    sub Delete_Desc
+    {
+        foreach my $sel_item (desc_list()->curselection())
+        {
+            my $desc = desc_list()->get($sel_item);
+            desc_list()->delete($sel_item);
+            my ($head) = split(/:/, $desc);
+            remove_from_most_used($head);
+        }
+    }
+    
+    sub Next_Desc
+    {
+        return if desc_list()->size() == 0;
+        my @sel = desc_list()->curselection();
+        my $sel = @sel == 0 ? 0 : $sel[0]+1;
+        $sel = 0 if $sel >= desc_list()->size();
+        desc_list()->selectionClear(0, 'end');
+        desc_list()->selectionSet($sel);
+        Adjust_Feature_Sets();
+    }
+    
+    sub Prev_Desc
+    {
+        return if desc_list()->size() == 0;
+        my @sel = desc_list()->curselection();
+        my $sel = @sel == 0 ? desc_list()->size()-1 : $sel[0]-1;
+        $sel = desc_list()->size-1 if $sel < 0;
+        desc_list()->selectionClear(0, 'end');
+        desc_list()->selectionSet($sel);
+        Adjust_Feature_Sets();
+    }
+    
+    sub Adjust_Desc
+    {
+        my @sel = desc_list()->curselection;
+        return if @sel == 0;
+        my $sel_item = $sel[0];
+        desc_list()->selectionClear(0, 'end');
+        desc_list()->selectionSet($sel_item) if desc_list()->size();
+        
+        my $the_desc = desc_list()->get($sel_item);
+        my ($head) = split(/:/, $the_desc);
+        if (exists $heading{$head})
+        {
+            $head = $heading{$head};
+        }
+        
+        if (! exists $categories{$head})
+        {
+            print STDERR "Desc '$the_desc' has an unrecognized heading/category name\n";
+            return;
+        }
+        
+        my @feats = grep {$_ ne '<none>'} get_selected_features(sort feature_group_order @{$categories{$head}->{features}});
+        my $desc = join(':', $head, sort @feats);
+        desc_list()->delete($sel_item);
+        desc_list()->insert($sel_item, $desc);
+        desc_list()->selectionSet($sel_item);
+    }
+}
+
+{
+    my @items;
+    
+    sub load_database
+    {
+        @items = slurp($ARGV{-in});
+        chomp @items;
+    }
+    
+    sub save_database
+    {
+        write_file($ARGV{-in}, map {"$_\n"} @items);
+    }
+    
+    sub get_item
+    {
+        my $item_number = shift;
+        return undef if $item_number < 1;
+        return undef if $item_number > @items;
+        return $items[$item_number-1];
+    }
+    
+    sub get_parsed_item
+    {
+        my $item_number = shift;
+        my $item = get_item($item_number);
+        return if not defined $item;
+        my @parts = split(/[|]/, $item);
+        my $parsed_item = { name => $parts[0],
+            date => $parts[1],
+            type => $parts[2],
+            text => $parts[3],
+            notes => $parts[4],
+            descs => [@parts[5..$#parts]],
+            };
+        return $parsed_item;
+    }
+    
+    sub set_item
+    {
+        my ($item_number, $value) = @_;
+        return if $item_number < 1;
+        return if $item_number > @items;
+        $items[$item_number-1] = $value;
+    }
+    
+    sub save_parsed_item
+    {
+        my ($item_number, $item) = @_;
+        my $value = join('|', $item->{name}, $item->{date}, $item->{type},
+            $item->{text}, $item->{notes}, @{$item->{descs}});
+        set_item($item_number, $value);
+    }
+    
+    sub get_item_count
+    {
+        return scalar(@items);
+    }
+}
+
+sub Quit {
+    Save() and exit;
+}
+
+sub Save {
+    Save_Indexing();
+    save_database();
+    return 1;
+}
+
+sub Abort
+{
+    exit if get_cancel_confirm_dialog()->Show eq 'OK';
+}
+
+__END__
+
+=head1 NAME
+
+indexer - Index ordinary database file
+
+=head1 VERSION
+
+This documentation refers to indexer version 1.00
+
+=head1 USAGE
+
+    indexer -in file.db -category category_file -mfuc mfuc_data file
+
+=head1 REQUIRED ARGUMENTS
+
+=over
+
+=item -i[n] <file>
+
+Specify database file to index.
+
+=for Euclid:
+    file.type: writable
+
+=back
+
+=head1 OPTIONAL ARGUMENTS
+
+=over
+
+=item -c[at[egory]] <file>
+
+Catalog file to be used. This is a pre-processed
+file as generated by the mk_cat_file utility. 
+
+=for Euclid:
+    file.type: readable
+    file.default: '/Users/herveus/aux/mikecat'
+
+=item -m[fuc] <file>
+
+Most Frequently Used Category file. Used to populate the MFUC
+tab as well as to remember updated usage statistics.
+
+=for Euclid:
+    file.type: writable
+    file.default: '/Users/herveus/aux/MFUC'
+
+=back
+
+=head1 DESCRIPTION
+
+Provides a Tk-based GUI for indexing armory. Salient features
+include:
+
+=over
+
+=item *
+
+Point and click interface
+
+Mostly mouse driven with arrow keys available for convenience.
+
+=item *
+
+Most Frequently Used Categories
+
+Keeps track of how often each category is invoked, in order to
+build an MFUC tab of categories. Many pieces of armory can be
+indexed from the categories in the MFUC list without having to 
+page among the tabs.
+
+=item * 
+
+Name search
+
+Jump to a specific item by name of registrant
+
+=item * 
+
+Category cross-reference search
+
+Search through the list of categories for items that match the
+pattern entered. Double-click on hits to add them to the list
+of categories for the armory under consideration.
+
+=item *
+
+Edit notes
+
+The display of notes is editable. Notes can be added or deleted.
+
+=back
+
+=head1 TODO
+
+Allow use of non-preprocessed category files. 
+
+Use Morsulus::Catalog to handle catalog data.
+
+=head1 COPYRIGHT
+
+Copyright (c) 2006 Michael Houghton. All rights reserved.
+
+This program may be used under the same terms as Perl.

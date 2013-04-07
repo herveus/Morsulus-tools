@@ -1,0 +1,7 @@
+#!/bin/bash
+Xlines=$(ps -x | grep xinit | wc -l)
+if [ $Xlines -eq 1 ]
+then
+    open /Applications/Utilities/X11.app
+fi
+indexer -i $1 
