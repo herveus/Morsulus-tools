@@ -1,0 +1,25 @@
+This is a collection of tools Morsulus uses to do his work.
+
+Daud
+
+	A Perl module that converts between Latin-1 and "Daud" notation.
+
+xml2actions
+	
+	A Perl program that extracts items of interest from a Letter of
+	Acceptances and Returns (LoAR) for further processing. 
+
+Morsulus-Actions
+
+	A Perl package that takes the output of xml2actions and creates
+	an armorial database with the actions found. 
+
+Morsulus-Ordinary-Classic
+
+	A Perl package that implements a SQLite database schema that
+	is a first step toward normalizing the Ordinary database. 
+
+indexer
+
+	A Perl program that presents a Tk based user interface for
+	indexing armory in an Ordinary.
