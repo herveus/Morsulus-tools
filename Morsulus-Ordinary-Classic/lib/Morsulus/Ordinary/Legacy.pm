@@ -96,7 +96,7 @@ sub parse_source
 {
     my $self = shift;
     my ($reg, $rel) = split(/-/, $self->source);
-    my @parts = (undef, undef, undef, undef);
+    my @parts = ('', '', '', '');
     if (defined $reg)
     {
         $reg =~ /^([0-9]{6})([A-Za-z])?$/;

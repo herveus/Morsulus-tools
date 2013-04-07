@@ -22,8 +22,8 @@ my @parts = $entry->parse_source;
 is scalar @parts, 4, 'four pieces in source';
 is $parts[0], '199404', 'reg year';
 is $parts[1], 'X', 'reg kingdom';
-is $parts[2], undef, 'rel year';
-is $parts[3], undef, 'rel king';
+is $parts[2], '', 'rel year';
+is $parts[3], '', 'rel king';
 
 
 $entry = Morsulus::Ordinary::Legacy->from_string('A. J. of Bonwicke|199404X|d|Per pall inverted gules, Or and argent, a cedar tree vert stocked sable and a bordure sable semy of lozenges Or.|(Owner: A. J. of Bonwicke:199404X)|BORDURE:charged:pl:sable:surrounding 1 only|FIELD DIV.-PER PALL*7:pl|FIELD:multicolor light|LOZENGE:or:pl:seme:tertiary:unc|TREE-PINE TREE SHAPE:1:spna:vert
