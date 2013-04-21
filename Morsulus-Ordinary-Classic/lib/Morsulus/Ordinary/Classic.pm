@@ -398,13 +398,13 @@ sub get_registration
     $entry->text($reg->text_name->name) unless $entry->has_blazon;
     # TODO: Account for For/See prefix on text
     $entry->source('');
-    defined $reg->registration_date and 
+    $reg->registration_date->date ne '' and 
         $entry->set_reg_date($reg->registration_date->date);
-    defined $reg->registration_kingdom and
+    $reg->registration_kingdom->kingdom_id ne '' and
         $entry->set_reg_kingdom($reg->registration_kingdom->kingdom_id);
-    defined $reg->release_date and
+    $reg->release_date->date ne '' and
         $entry->set_rel_date($reg->release_date->date);
-    defined $reg->release_kingdom and 
+    $reg->release_kingdom->kingdom_id ne '' and 
         $entry->set_rel_kingdom($reg->release_kingdom->kingdom_id);
     $entry->notes('');
     $entry->add_notes(map { $_->note_text } $reg->notes->all());

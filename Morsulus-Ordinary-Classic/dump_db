@@ -1,0 +1,89 @@
+#!/usr/local/bin/perl
+
+use strict;
+use warnings;
+use Morsulus::Ordinary::Classic;
+use Morsulus::Ordinary::Legacy;
+use Getopt::Euclid;
+
+my $ord = Morsulus::Ordinary::Classic->new(dbname => $ARGV{-db});
+
+my $search = {};
+if ($ARGV{-regdate})
+{
+    #s/^(.*)$/"$1"/ for (@{$ARGV{-regdate}});
+    $search->{registration_date} = [ @{$ARGV{-regdate}} ];
+}
+
+if ($ARGV{-regonly})
+{
+    $search->{release_date} = '';
+}
+
+if ($ARGV{-armonly})
+{
+    $search->{text_blazon_id} = { '!=', undef };
+}
+
+my $regs = $ord->Registration->search($search);
+while (my $reg = $regs->next)
+{
+    print $ord->get_registration($reg)->to_string, "\n";
+}
+
+__END__
+
+=head1 NAME
+
+dump_db - script to dump database files to legacy format
+
+=head1 SYNOPSIS
+
+    dump_db -db mydb.db -o oanda.db # dump the whole enchilada
+    dump_db -db newdb.db -regdate 201301 # extract registrations to STDOUT
+
+For full or partial extracts. Options for partial extracts will grow as 
+needed. Syntax to be made up on the fly...
+    
+=head1 REQUIRED
+
+=over
+
+=item -db <file>
+
+SQLite database file to be created or updated with Ordinary entries. 
+
+=for Euclid:
+    file.type: writable
+
+=back
+
+=head1 OPTIONS
+
+=over
+
+=item -o <file>
+
+Destination for extracted records. Defaults to STDOUT.
+
+=for Euclid:
+    file.type: writable
+    file.default: '-'
+
+=item -regdate <regdate>
+
+Extract records with this registration date. Multiple instances 
+give multiple months. Format is YYYYMM.
+
+=for Euclid:
+    repeatable
+    regdate.type: /[0-9]{6}/
+
+=item -regonly
+
+Limit items to those without a release date.
+
+=item -armonly
+
+Limit items to those with armory.
+=back
