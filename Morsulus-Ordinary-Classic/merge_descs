@@ -1,0 +1,63 @@
+#!/usr/local/bin/perl
+
+use strict;
+use warnings;
+use Morsulus::Ordinary::Classic;
+use Morsulus::Ordinary::Legacy;
+use Getopt::Euclid;
+
+my $ord = Morsulus::Ordinary::Classic->new(dbname => $ARGV{-db});
+
+
+
+__END__
+
+=head1 NAME
+
+merge_descs - update descriptions in database from legacy format flat file
+
+=head1 SYNOPSIS
+
+    merge_descs -db oanda.db -i descs.db 
+
+Update blazons in oanda.db from descs.db. Additional options specify
+whether to replace or merge with existing descriptions and how to handle
+input records with no descriptions.
+    
+=head1 REQUIRED
+
+=over
+
+=item -db <file>
+
+SQLite database file to be created or updated with Ordinary entries. 
+
+=for Euclid:
+    file.type: writable
+
+=item -i <file>
+
+Legacy format file with descriptions.
+
+=for Euclid:
+    file.type: readable
+
+=back
+
+=head1 OPTIONS
+
+=over
+
+=item -replace
+
+Replace existing descriptions with descriptions in input file.
+
+=item -merge
+
+Add descriptions in input file to descriptions in database.
+
+=item -nonulls
+
+Ignore input records with no descriptions.
+
+=back

@@ -25,6 +25,19 @@ if ($ARGV{-armonly})
     $search->{text_blazon_id} = { '!=', undef };
 }
 
+if ($ARGV{-anydate})
+{
+    if (keys %$search)
+    {
+        die "can't mix -anydate with other args";
+    }
+    else
+    {
+        $search = [ { registration_date => [ @{$ARGV{-anydate}} ] },
+            { release_date => [ @{$ARGV{-anydate}} ] } ];
+    }
+}
+
 my $regs = $ord->Registration->search($search);
 while (my $reg = $regs->next)
 {
@@ -73,6 +86,15 @@ Destination for extracted records. Defaults to STDOUT.
 =item -regdate <regdate>
 
 Extract records with this registration date. Multiple instances 
+give multiple months. Format is YYYYMM.
+
+=for Euclid:
+    repeatable
+    regdate.type: /[0-9]{6}/
+
+=item -anydate <regdate>
+
+Extract records with this registration or release date. Multiple instances 
 give multiple months. Format is YYYYMM.
 
 =for Euclid:
