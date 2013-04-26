@@ -350,6 +350,14 @@ sub add_desc
     return $desc;
 }
 
+sub drop_descs
+{
+    my $self = shift;
+    my ($blazon) = @_;
+    $blazon = $self->schema->resultset('Blazon')->find($blazon) unless ref($blazon);
+    
+}
+
 sub Action { my $self = shift; return  $self->schema->resultset('Action'); }
 sub Blazon { my $self = shift; return  $self->schema->resultset('Blazon'); }
 sub Category { my $self = shift; return  $self->schema->resultset('Category'); }

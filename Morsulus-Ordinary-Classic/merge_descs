@@ -8,7 +8,18 @@ use Getopt::Euclid;
 
 my $ord = Morsulus::Ordinary::Classic->new(dbname => $ARGV{-db});
 
+open my $descs, '<', $ARGV{-i};
 
+while (my $record = <$descs>)
+{
+    $record =~ s/\r?\n$//;
+    my $entry = Morsulus::Ordinary::Legacy->from_string($record);
+    next unless $entry->has_blazon;
+    next unless $entry->split_descs or $ARGV{-nulls};
+    my ($blazon) = $ord->Blazon->search({ blazon => $entry->text } );
+    $self->drop_descs($blazon) unless $ARGV{-merge};
+    $self->add_desc($_, $blazon) for $entry->split_descs;
+}
 
 __END__
 
@@ -56,8 +67,11 @@ Replace existing descriptions with descriptions in input file.
 
 Add descriptions in input file to descriptions in database.
 
-=item -nonulls
+=item -[no]nulls
 
-Ignore input records with no descriptions.
+Accept/ignore input records with no descriptions.
+
+=for Euclid:
+    false: nonulls
 
 =back
