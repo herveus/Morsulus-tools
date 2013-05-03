@@ -1,0 +1,25 @@
+#!/bin/bash
+
+S=~herveus/bin
+A=~herveus/aux
+
+print "run oldcheck.pl"
+$S/oldcheck.pl $1 $2 > $2.check
+
+print "run namedates.pl"
+$S/db/namedates.pl $2 | sort -nr > $2.nd
+
+print "run namenc.pl"
+$S/db/namenc.pl $2 | sort > $2.nc
+
+print "run regsad"
+$S/db/getnames.pl -cr $2 | sort -u > regs.cur
+$S/txt/accent.pl -o regs.cur | $S/txt/design.pl | $S/txt/lcase.pl | $S/txt/drop.pl | $S/txt/freq.pl -dup regs.cur > regsad
+
+#print "run tempo"
+#print "    make working.db"
+#$S/db/unbranch2.pl $2 | $S/txt/brackets.pl | $S/db/oldtypes.pl | $S/sortdbf.pl > working.db
+#print "  make temp.db"
+#$S/tempmap working.db > in.db
+#$S/xlate.pl -c $A/temp.cat -d in.db -e $A/temp.desc
+

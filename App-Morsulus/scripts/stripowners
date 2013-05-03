@@ -1,0 +1,12 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+my @parts;
+while (<>)
+{
+	chomp;
+	@parts = split(/\|/, $_, 99);
+	$parts[4] =~ s/\(Owner: [^)]+\)//;
+	print join('|', @parts), "\n";
+}

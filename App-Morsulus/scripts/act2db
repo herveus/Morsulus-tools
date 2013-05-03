@@ -1,0 +1,94 @@
+#!/usr/bin/perl
+use warnings;
+use strict;
+
+use Parse::RecDescent;
+
+my $grammar = q{
+	fullaction: action eos
+	eos: /^\Z/ {1;}
+	action: Name_Armory | BranchName_Armory | Armory
+	action: Name | BranchName
+	Name: /name/i
+		{
+			print "got Name\n";
+			print join("|", $::name, $::source, 'N', '', $::notes), "\n";
+			1;
+		}
+	BranchName: /branch name/i
+		{
+			print "got Branch Name\n";
+			print join("|", $::name, $::source, 'BN', '', $::notes), "\n";
+			1;
+		}
+	Device: /device/i
+		{
+			print "got Device\n";
+			print join("|", $::name, $::source, 'd', $::armory, $::notes), "\n";
+			1;
+		}
+	Badge: /badge/i
+		{
+			print "got Badge\n";
+			print join("|", $::name, $::source, 'b', $::armory, $::notes), "\n";
+			1;
+		}
+	Armory: Badge | Device
+		{ print "in Armory\n"; 1; }
+	Name_Armory: Name ' and ' Armory
+		{ print "in Name_Armory\n"; 1; }
+	BranchName_Armory: BranchName ' and ' Armory
+		{ print "in BranchName_Armory\n"; 1; }
+};
+
+my $month = shift;
+
+$::RD_HINT=1;
+my $parser = Parse::RecDescent->new($grammar) or die;
+use vars qw/$kingdom $name $armory $name2 $notes $source/;
+
+while (<DATA>)
+{
+	chomp;
+	my $action;
+	(undef, $kingdom, $action, $name, $armory, $name2) = split(/\|/, $_, 6);
+	if ($action =~ /^(.+) \(see (PENDING|RETURNS|PENDS|PENDED) for [^)]+\)$/)
+	{
+		$action = $1;
+	}
+	$notes = '';
+	$source = $month.$kingdom;
+	#print substr($_,0,10);
+	print "bad line: $_" unless defined($parser->fullaction($action));
+	print "\n";
+}
+
+__DATA__
+ufo000000|H|Name|&#193;ine MacAfee||
+ufo000001|H|Branch Name|'A'isha bint Abid ibn Khalil||
+ufo000002|H|Device|Alexander Logan of Argyll|Argent, a falcon jessed sable between three fleurs-de-lys azure|
+ufo000004|H|Name and device|Asselyna Glendonwyn|Quarterly gules and sable, an estoile within a bordure argent|
+ufo000008|H|Name and device|David of the Vayle|Quarterly gules and Or, a cross argent between four crosses of Jerusalem counterchanged|
+ufo000009|H|Badge|David of the Vayle|(Fieldless) On a lion's head erased gules a rose Or|
+ufo000019|H|Device change|James Ahearn|Quarterly sable and argent, a horse's head couped contourny gules crined Or and in chief a sword fesswise reversed gules hilted Or|
+ufo000020|H|device changed/released|James Ahearn|Quarterly sable and argent, a horse's head couped contourny, in chief a sword fesswise reversed gules|
+ufo000033|H|Change of device to badge|Raven J&#228;de vom Schwarzwald|Or, a bird displayed vert within a bordure rayonny sable|
+ufo000035|H|Holding name and device (see RETURNS for name)|R&#243;s of Port Oasis|Argent, a rose gules slipped and leaved proper and on a chief vert five empty yarn quills Or|
+ufo000038|H|Name change from "Jacqueline of the Forgotten Home"|Sign&#253; Hr&#250;tsd&#243;ttir||
+ufo000048|H|Household name "Maison Rouge" and badge|Valentine Rafael de P&#233;rigueux|(Fieldless) A unicorn's head erased gules armed Or|
+ufo000051|N|Heraldic title "Pomegranate <Herald>"|An Tir<, Kingdom of>||
+ufo000069|X|Order name "Order of the Golden Bridle of Ansteorra"|Ansteorra<, Kingdom of>||
+ufo000081|X|Branch name and device|T&#237;r Med&#243;in<, Canton of>|Azure, on a fess between three thistles argent a laurel wreath azure|
+ufo000088|R|Badge transfer to "Artemisia<, Kingdom of>"|Iduna Snorrisdottir|(Fieldless) On a wagon wheel proper, an open scroll argent|
+ufo000090|R|Alternate name "Shotetsu Kensai"|Ivan Leicester||
+ufo000098|A|Reblazon of Device|Conrad Tolbert Regnault|Azure, a sword proper supporting on its point a pair of scales Or|
+ufo000099|A|device reblazoned|Conrad Tolbert Regnault|Azure, a sword proper, balanced on its point a pair of scales Or|
+ufo000114|Q|Reblazon of Badge|Caitlin ni C&#225;ilean de Bri|Argent, a raven close sable perched upon and supported by a rowan branch leaved and fructed proper|
+ufo000115|Q|badge reblazoned|Caitlin ni C&#225;ilean de Bri|Argent, a raven close sable perched upon a rowan branch leaved and fructed proper [Sorbus aucutaria]|
+ufo000165|E|Alternate name "&#198;milia Silver" and badge|Fionnghuala Gliobach Mael Ailbe|Sable, a phoenix rising from and supported by a single-horned anvil argent|
+ufo000167|E|Joint badge with "Michael of Exeter"|Genevieve d'Angoulême|Or, a heart sable within an orle of escallops inverted vert|
+ufo000205|w|Heraldic title "Aquarius <Herald>" for <Barony of >River Haven|Lochac<, Kingdom of>||
+ufo000240|M|Device change|Conchobar mac Gabhann|Argent, on a chief vert three martlets argent|
+ufo000241|M|device changed/retained|Conchobar mac Gabhann|Vert, a bend sinister between six acorns argent|
+ufo000263|T|Device reblazon and augmentation|Ysabella Celestina Manrique de Palma|Per pale argent and gules, all goutty, four mascles in cross, in base two bars wavy, a chief invected, all counterchanged, and for augmentation, on the chief, three escallops counterchanged|
+ufo000271|W|Transfer of heraldic title "Aquarius <Pursuivan>t" (to Lochac<, Kingdom of>)|West, <Kingdom of >the||

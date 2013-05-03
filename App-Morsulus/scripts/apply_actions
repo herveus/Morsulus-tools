@@ -1,0 +1,123 @@
+#!/usr/local/bin/perl
+use strict;
+use warnings;
+use feature ":5.16";
+use Getopt::Euclid;
+use Morsulus::Ordinary::Classic;
+use Morsulus::Actions::Apply;
+use Try::Tiny;
+
+my $input_fh = get_input($ARGV{-i}) or die "No input available";
+
+my $ordinary = Morsulus::Ordinary::Classic->new(dbname => $ARGV{-db}) or die "Can't open database";
+
+my $date = $ARGV{-date};
+
+while (my $action_line = <$input_fh>)
+{
+    chomp $action_line;
+    # do we still need to convert &quot; to "?
+    next if $action_line =~ /^err?/ && !$ARGV{-err};
+    
+    my ( undef, $kingdom, $action, $name, $armory, $name2, $notes )
+        = split( /[|]/, $action_line );
+    next if $action eq 'disposition';
+    
+    $action =~ s/\s+$//;
+
+    my $act = Morsulus::Actions::Apply->new(
+        {   action => $action,
+            source => "$date$kingdom",
+            name   => $name,
+            armory => $armory,
+            name2  => $name2,
+            notes => $notes,
+            db => $ordinary,
+        }
+    );
+    
+    try {
+        $act->apply_entries;
+        }
+    catch {
+        warn $@."$_";
+        # ultimately emit unprocessed action
+        }
+}
+
+say "all done";
+
+sub get_input
+{
+    my $file = shift;
+    if ($file eq '-')
+    {
+        return \*STDIN;
+    }
+    else
+    {
+        open my $fh, '<', $file;
+        return $fh;
+    }
+}
+
+__END__
+
+=head1 NAME
+
+apply_actions - Attempt to apply actions to an ordinary database
+
+=head1 USAGE
+
+    apply_actions -i file.act -db oanda.db -date yyyymm -err 
+
+=head1 REQUIRED
+
+=over
+
+=item -db <database>
+
+The Morsulus::Ordinary::Classic format database file to be updated.
+
+=for Euclid:
+    database.type: writable
+
+=back
+
+=head1 OPTIONS
+
+=over
+
+=item -i [-] <file>
+
+File containing actions as produced by xml2actions. Defaults to STDIN. 
+
+=for Euclid:
+    file.type: readable
+    file.default: '-'
+
+=item -date <date>
+
+YYYYMM date for actions.
+
+=for Euclid:
+    date.type: string
+    date.default: '999999'
+
+=item -err
+
+Include errata records in processing. Default is to ignore errata. 
+Actions which begin with "err" are considered errata.
+
+=head1 LICENSE AND COPYRIGHT
+
+Copyright 2012 Michael Houghton.
+
+This program is free software; you can redistribute it and/or modify it
+under the terms of either: the GNU General Public License as published
+by the Free Software Foundation; or the Artistic License.
+
+See http://dev.perl.org/licenses/ for more information.
+
+
+

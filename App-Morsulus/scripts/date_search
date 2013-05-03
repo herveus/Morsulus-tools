@@ -1,0 +1,94 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use Carp;
+$| = 1;
+
+use Morsulus::DB;
+use Morsulus::Legacy;
+use Morsulus::Registration;
+
+use Getopt::Std;
+
+my $USAGE = q{
+Usage: date_search options dates
+   -d dbfile   use this dbfile (default oanda.db)
+   -k kingdoms limit to these kingdoms (comma delimited list)
+   -o register registration dates only
+   -o release  release dates only
+   -l limit    limit output to this size (default 50)
+   -o nodate   limit to items with no dates at all
+
+Kingdoms are single-letter codes, or "none" for those without
+a kingdom specified. If no -o option is given, matches dates
+against registration and release dates.
+
+Dates are four digit YYMM.
+};
+
+my %opts = ( d => '/Volumes/stuff/morsulus/oanda.db',
+	l => 50 );
+
+getopts("d:o:nbl:", \%opts) or die $USAGE;
+die $USAGE if $opts{l} =~ /\D/;
+
+my $loader = Morsulus::DB->new($opts{d})
+	or croak "Failed to open database $opts{d}";
+
+my @where;
+my $release_kingdom;
+my $registration_kingdom;
+my $both_kingdoms;
+if (defined $opts{k})
+{
+	if ($opts{k} eq "none")
+	{
+		$release_kingdom = "release_kingdom is null";
+		$registration_kingdom = "registration_kingdom is null";
+		$both_kingdoms = "($release_kingdom and $registration_kingdom)";
+	}
+	else
+	{
+		my $klist = DBI::neat_list([split(/,/, $opts{k})]);
+		$release_kingdom = "release_kingdom in ($klist)";
+		$registration_kingdom = "registration_kingdom in ($klist)";
+		$both_kingdoms = "($release_kingdom or $registration_kingdom)";
+	}
+}
+
+if (!defined $opts{o})
+{
+	push @where, "(release_date = ? or registration_date = ?)";
+	push @where, $both_kingdoms	if $opts{k};
+}
+elsif ($opts{o} eq "release")
+{
+	push @where, "release_date = ?";
+	push @where, $release_kingdom if $opts{k};
+}
+elsif ($opts{o} eq "registration")
+{
+	push @where, "registration_date = ?";
+	push @where, $registration_kingdom if $opts{k};
+}
+elsif ($opts{o} eq "nodate")
+{
+	push @where, "(release_date is null and registration_date is null)";
+}
+
+OA::Registration->add_constructor(find_by_date => join("\nAND\n", @where));
+
+my %regs;
+while (@ARGV)
+{
+	my $date = shift;
+	foreach my $reg (OA::Registration->find_by_date($date, $date))
+	{
+		$regs{$reg} = $reg;
+	}
+}
+
+foreach my $reg (values %regs)
+{
+	print $reg->old_format, "\n";
+}

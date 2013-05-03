@@ -1,0 +1,73 @@
+db/abbrev.pl|abbreviate blazons
++accent|convert between Daud and other encodings; modernized
++accent.pl|convert between Daud and other encodings; legacy
+txt/accent.pl|convert between Daud and other encodings; legacy
+act2db|replaced by Morsulus::Actions
+act2db.pl|replaced by Morsulus::Actions
+addpermute.pl|add permuted order names to an ordinary database
+bothways.pl|put titles, order and household names both ways in the database
+bracketed.pl|strip bracketed text and Linnean names
++brackets|delete brackets
+txt/brackets.pl|delete brackets
+cat2html.pl|generate online ordinary templates from category file
+categorize|some flavor of GUI indexer
+catexport.pl|convert a category file to an exportable form
+catsort.pl|sort and print a category file; legacy
+check|database consistency checker ; now oldcheck
+check.pl|database consistency checker; now oldcheck
++check_indexing|attempted replacement for xlate.pl
+checks|replaced by run_checks
+chkactions|old db file checker
+count-cats-by-year|data mining
+date_search|old db file searcher
+daudify|apply Daud encoding to a file or as a filter
++txt/design.pl|remove branch designators from a text file
+doactions|replaced by Morsulus::Actions
++txt/drop.pl|munge letters to assist in finding typos
+dup_devices|find multiply registered SCA armory
+expand_descs|expands desc shorthand into full lists for ordinary pages
+expandcats.pl|expands desc shorthand into full lists for ordinary pages; legacy
+db/extract.pl|extract an armorial database from an ordinary databae
+txt/extract-dups.plx|find potential dups in databae
+feature-check|extract entries for reindexing
++fixnotice|computed variables in export.db notice
+db/fmtdates.pl|format dates for printing an armorial
++txt/freq.pl|tabulate the number of occurrenes of each line in a text file
+getaccent.pl|tally Daud codes in tabular form; legacy
+getblazons.pl|extract current blazons from ordinary database
+db/getdescs2.pl|extract the descriptions from an ordinary database
+getindex|extracts TOC/index data from ford-generated postscript
++db/getnames.pl|extract names from an ordinary database
++txt/lcase.pl|convert a text file to lower-case
+merge.pl|merge re-indexed blazons into database; legacy
+mk_cat_file|pre-parses category file for indexer use
++db/namedates.pl|list recent armory registrations that lack name registration data
++db/namenc.pl|list name-changes, -corrections, and -updates that lack matching registration data
++nc2|merge data into ordinary database; current version
+db/noking.pl|delete kingdom information
+np_search|command line name pattern search attempt
++oldcheck.pl|consistency check for databases; current and legacy
+db/oldtypes.pl|convert new tyeps to NC
+db/range-arm.pl|extract all names and armory from a particular period for an Armorial updates
+db/range-ord.pl|extract all new armory from a particular period for an Ordinary updates
+db/ranger.pl|extract all names and armory from a particular period
+rembdu.pl|remove branch designator updates
++run_checks|run multiple checks
+sortdb2f.pl|sort database by blazon
+db/sortdb2f.pl|sort database by blazon
+sortdb3f.pl|sort by date, kingdom, name 
++sortdbf.pl|sort database by name
++sortdescs.pl|sort descriptions
++stripowners|remove owner notes
+tag-owners.pl|try to identify owners of records
++tempmap|convert database descs to temp format for generating ordinary
+tempmap2|tempmap modernized
+db/thin.pl|thin a database keeping only indexed armory
+db/unbranch2.pl|translate branch-name records into name records
++xlate.pl|check descs and cats
+
+bnew.db|symlink to current oanda.db
+export.db|export version of database
+notice.|static part of database license/header
+notice.tail|derived from bnew.db via fixnotice
+check_blazons|

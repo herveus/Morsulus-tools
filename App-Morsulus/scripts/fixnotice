@@ -1,0 +1,34 @@
+#!/usr/bin/perl
+
+use 5.006;
+use strict;
+use warnings;
+
+my $maxdate = 0;
+my %month_count;
+
+while (<>)
+{
+	next if /^NOTICE/../^END OF NOTICE/;
+	my (undef, $date, undef) = split(/[|]/, $_);
+	next unless $date;
+	my ($d1, $d2) = split(/-/, $date);
+	foreach my $d ($d1, $d2)
+	{
+		next unless $d;
+		$d =~ /^(\d{4,6})[a-zA-Z]?$/ or next;
+		my $dd = $1;
+		$dd += 190000 if $dd < 10000;
+		$dd += 10000 if $dd < 196600;
+		$month_count{$dd}++;
+		$maxdate = $dd if $dd > $maxdate;
+	}
+}
+
+if ($month_count{$maxdate} < 10)
+{
+	print STDERR "$maxdate has fewer than ten entries\n";
+}
+print " ||C|Version control:  LoARs thru ", $maxdate, "\n",
+	" ||C|Last update:  ",
+	sprintf "%02d%02d%02d by Morsulus\n", (localtime())[5]%100, (localtime())[4]+1, (localtime())[3];

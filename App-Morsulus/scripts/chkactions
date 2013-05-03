@@ -1,0 +1,205 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use Carp;
+#use lib qw[ ./blib/lib ./blib/arch ];
+$|=1;
+
+use Morsulus::DB;
+use Morsulus::NameUsage;
+use Morsulus::NameToRegistration;
+use Morsulus::Name;
+use Morsulus::Legacy;
+use Morsulus::Daud;
+use Morsulus::Blazon;
+
+use Getopt::Std;
+use IO::File;
+
+my $USAGE = q{
+Usage: chkactions options files
+   -d dbfile   use this dbfile (default oanda.db)
+   -o outfile  send the output to this file (default STDOUT)
+
+Files are assumed to contain one action per line. If no files given,
+reads STDIN.
+
+Outputs each name followed by "registered" or "not registered", 
+along with a list of records that do or did register that name in
+some fashion.
+};
+
+my %opts = ( d => '/Volumes/stuff/morsulus/oanda.db' );
+
+getopts("d:o:", \%opts) or die $USAGE;
+
+my $outfile = $opts{o} ? IO::File->new(">$opts{o}") :
+	IO::File->new(">&STDOUT") or die "couldn't reopen STDOUT";
+
+my $loader = Morsulus::DB->new($opts{d})
+	or croak "Failed to open database $opts{d}";
+
+while (<>)
+{
+	chomp;
+	my $dauded = Morsulus::Daud::to_daud($_);
+	my ($id, $kingdom, $action, $name, $blazon, @other) = split(/\|/, $dauded);
+	$action = normalize_action($action);
+	$blazon .= "." unless $blazon =~ /\.$/;
+	print $outfile "$id: $action - $name\n";
+	print $outfile "\tregisters name(s)\n";
+	foreach my $reg (registers_names($action, $name))
+	{
+		print $outfile "\t\t$reg: ", 
+			Morsulus::Name::is_registered($reg) ? " ALREADY" : " not",
+			" registered\n";
+	}
+	print $outfile "\tregisters armory\n";
+	foreach my $reg (registers_armory($action, $blazon))
+	{
+		print $outfile "\t\t$reg: ", 
+			Morsulus::Blazon::is_registered($reg) ? " ALREADY" : " not",
+			" registered\n";
+	}
+	print $outfile "\treferences name(s)\n";
+	foreach my $reg (references_names($action, $name))
+	{
+		print $outfile "\t\t$reg: ",
+			Morsulus::Name::is_registered($reg) ? " " : " NOT",
+			" registered\n";
+	}
+	print $outfile "\treferences armory\n";
+	foreach my $reg (references_armory($action, $blazon))
+	{
+		print $outfile "\t\t$reg: ", 
+			Morsulus::Blazon::is_registered($reg) ? " " : " NOT",
+			" registered\n";
+	}
+	
+}
+
+sub normalize_action
+{
+	my $action = shift;
+	$action =~ s/\(see RETURNS.+?\)//;
+	$action =~ s/\(see PENDS.+?\)//;
+	$action =~ s/\s\s+/ /g;
+	$action =~ s/^\s+//;
+	$action =~ s/\s+$//;
+	return $action;
+}
+
+sub registers_names
+{
+	my ($action, $name) = @_;
+	my @registers;
+	push @registers, $name if registers_name($action);
+	my $secondary_name;
+	$secondary_name = name_in_action($action)
+		and push @registers, $secondary_name;
+	return @registers;
+}
+
+sub registers_armory
+{
+	my ($action, $blazon) = @_;
+	my @registers;
+	push @registers, $blazon if registers_blazon($action);
+	return @registers;
+}
+
+sub references_names
+{
+	my ($action, $name) = @_;
+	my @refs;
+	push @refs, Morsulus::Legacy::split_multiple_owners($name) if name_in_action($action);
+	push @refs, Morsulus::Legacy::split_multiple_owners($name) if registers_blazon($action) && ! registers_name($action);
+	push @refs, Morsulus::Legacy::split_multiple_owners($name) if $action =~ /^badge for/i;
+	push @refs, Morsulus::Legacy::split_multiple_owners($name) if $action =~ /^heraldic will/i;
+	push @refs, Morsulus::Legacy::split_multiple_owners($name) if $action =~ /^exchange of device and badge/i;
+	push @refs, Morsulus::Legacy::split_multiple_owners($name) if references_blazon($action) && ! registers_name($action);
+	if (registers_blazon($action) and $action =~ /for (the )?"(.+?)"/i)
+	{
+		push @refs, $2;
+	}
+	if ($action =~ /^joint badge with "(.+?)"/i)
+	{
+		push @refs, $1;
+	}
+	if ($action =~ /^name (change|correction|reconsideration) from (holding name )?"(.+?)"/i)
+	{
+		push @refs, $3;
+	}
+	if ($action =~ /^branch designator update from "(.+?)"/i)
+	{
+		push @refs, $1;
+	}
+	if ($action =~ /^transfer of .+?"(.+?)"( to )?(.+)?$/i)
+	{
+		push @refs, $1;
+		push @refs, $3 if $3;
+		push @refs, Morsulus::Legacy::split_multiple_owners($name);
+	}
+	if ($action =~ /^release of heraldic title "(.+?)"/i)
+	{
+		push @refs, $1;
+		push @refs, $name;
+	}
+	if ($action =~ /^exchange of primary and alternate name "(.+?)"/i)
+	{
+		push @refs, $1; # ...and this better be registered as an AN
+		push @refs, $name;
+	}
+	return @refs;
+}
+
+sub references_armory
+{
+	my ($action, $blazon) = @_;
+	my @registers;
+	push @registers, $blazon if references_blazon($action);
+	return @registers;
+}
+
+sub registers_blazon
+{
+	my $action = lc(shift);
+	return 1 if $action eq "device";
+	return 1 if $action =~ /^badge( for.+)?$/;
+	return 1 if $action eq "device change";
+	return 1 if $action =~ /^reblazon/;
+	return 1 if $action =~ /^joint badge with/;
+	return 1 if $action =~ / and device/;
+	return 1 if $action =~ / and badge/;
+	return;
+}
+
+sub references_blazon
+{
+	my $action = lc(shift);
+	return 1 if $action =~ /^(device|badge) (changed|reblazoned)/;
+	return 1 if $action =~ /(transfer|release) of (device|badge)/;
+	return;
+}
+
+sub registers_name
+{
+	my $action = lc(shift);
+	return 1 if $action =~ /^(holding |branch )?name/;
+	return 1 if $action =~ /^branch designator/;
+	return;
+}
+
+sub name_in_action
+{
+	my $action = shift;
+	if ($action =~ /^(household|alternate|order|award) name (the )?"(.+?)"/i)
+	{
+		return $3;
+	}
+	if ($action =~ /^heraldic title "(.+?)"/i)
+	{
+		return $1;
+	}
+	return;
+}

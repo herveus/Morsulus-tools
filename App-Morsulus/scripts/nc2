@@ -1,0 +1,261 @@
+#!/usr/bin/perl
+
+use 5.006;
+use strict;
+use warnings;
+use Carp;
+
+# process name changes, releases, transfers and associations
+
+# based on nc.pl by Stephen Gold, updated 2000 by Michael Houghton
+
+my $Usage = <<USAGE;
+Usage: $0 loardb [oandadb]
+          loardb is the transactions to apply
+          oandadb is the existing database - reads STDIN if not given
+
+New unsorted database appears on STDOUT
+
+USAGE
+
+my $loar = shift or croak $Usage;
+
+my %nc;
+
+# read the LOAR data
+# make note of all name-change type items
+open (LOAR, $loar) or croak "Cannot open LoAR file '$loar': $!";
+while (<LOAR>)
+{
+	chomp;
+	my ($name, $date, $type, $text, $rest) = split(/\|/, $_, 5);
+	if ($type =~ /^B?NC$|^u$/ && $text =~ /^See (.+)$/)
+	{
+		$nc{$name} = { new_name => $1,
+			change_date => $date,
+			use_count => 0,
+			};
+	}
+	elsif ($type eq 'Nc' || $type eq 'OC' || $type eq 'ANC' || $type eq 'HNC'
+    || $type eq 'BNc' || $type eq 'u')
+	{
+		croak "$type record for '$name' has no new name specified" unless $text;
+		$nc{$name} = { new_name => $text,
+			change_date => $date,
+			use_count => 0,
+			};
+	}
+	elsif ($type eq 'BP')
+	{
+# 	    carp "Got a BP but I don't know how to handle it";
+	}
+	elsif ($type eq 'vc')
+	{
+# 	    $nc{$name} = { correct_name => $text,
+# 	        change_date => $date,
+# 	        use_count => 0,
+# 	        };
+	}
+	elsif ($date =~  /^-/)
+	{
+# 	    $nc{$name} = { item_type => $type,
+# 	        item_text => $text,
+# 	        item_notes => $rest,
+# 	        use_count => 0,
+# 	        };
+	}
+}
+close LOAR;
+
+# scan the main database applying name-changes where appropriate
+while (<>)
+{
+	chomp;
+	my ($name, $date, $type, $text, $notes, $rest) = split(/\|/, $_, 6);
+	unless (is_historical($type))
+	{
+		if (exists $nc{$name}) # is the name field "interesting"?
+		{
+			if ($type eq 'B' or $type eq 'D') # split unified record
+			{
+				print_record($nc{$name}->{new_name}, $nc{$name}->{date}, 'N');
+				$type =~ tr/BD/bd/;
+				$date = '';
+			}
+			elsif ($type eq 'BD') # split unified record
+			{
+				print_record($nc{$name}->{new_name}, $nc{$name}->{date}, 'BN');
+				$type = 'd';
+				$date = '';
+			}
+			if (is_name_registration($type))
+			{
+				if ($notes =~ /\(holding name\)/i)
+				{
+					$nc{$name}->{holding_name} = 1;
+					$notes =~ s/\(holding name\)//i;
+				}
+				
+				if (! exists $nc{$name}->{orig_date})
+				{
+					# note the original date (for the *C record)
+					# change the date to the registration date for the new name
+					$nc{$name}->{orig_date} = $date;
+					$date = $nc{$name}->{change_date};
+					$nc{$name}->{use_count}++;
+					$name = $nc{$name}->{new_name};
+				}
+				else
+				{
+					# we've already seen one name-thingy registration with
+					# this name; convert other references to -change types
+					$type .= "C";
+					$date = "$date-$nc{$name}->{nc_date}";
+					$text = $nc{$name}->{new_name};
+					$nc{$name}->{use_count}++;
+					$text = "See $text" if ($type eq 'NC' || $type eq 'BNC');
+					$notes = '';
+				}
+			}
+			elsif (is_armory_registration($type))
+			{
+				# just change the name...
+				$nc{$name}->{use_count}++;
+				$name = $nc{$name}->{new_name};
+			}
+			else
+			{
+				croak "unexpected type '$type' in \n\t'$_'";
+			}
+		}
+		
+		# look for references in $text which have varying formats
+		if ($type eq 'AN' && $text =~ /^For (.+)$/) 
+		{
+			if (exists $nc{$1})
+			{
+				$text = "For $nc{$1}->{new_name}";
+				$nc{$1}->{use_count}++;
+			}
+		}
+		elsif ($type eq 'HN' or $type =~ /^[Otj]$/)
+		{
+			# text might be single name or 
+			# list of names in "" separated by ' and '
+			if ($text =~ /^"(.*)"$/) 
+			{
+				my @text = split(/" and "/, $1);
+				foreach my $t (@text)
+				{
+					next unless exists $nc{$t};
+					$nc{$t}->{use_count}++;
+					$t = $nc{$t}->{new_name};
+				}
+				$text = '"' . join('" and "', @text) . '"';
+			}
+			elsif (exists $nc{$text})
+			{
+				$nc{$text}->{use_count}++;
+				$text = $nc{$text}->{new_name};
+			}
+		}
+		
+		# look for references in the notes
+		if ($notes =~ /^\((.*)\)$/)
+		{
+			my @notes = split(/\)\(/, $1);
+			foreach my $n (@notes)
+			{
+				next unless note_has_name($n);
+				my $ref = name_in_note($n);
+				next unless exists $nc{$ref};
+				$nc{$ref}->{use_count}++;
+				$n =~ s/$ref/$nc{$ref}->{new_name}/e;
+			}
+			$notes = '(' . join(')(', @notes) . ')';
+		}
+	}
+	print_record($name, $date, $type, $text, $notes, $rest);	
+}
+
+open (LOAR, $loar) or croak "Cannot reopen LoAR file '$loar': $!";
+while (<LOAR>)
+{
+	chomp;
+	my ($name, $date, $type, $text, $notes, $rest) = split(/\|/, $_, 6);
+	if ($type =~ /^(?:B?NC|u)$/ && $text =~ /^See (.+)$/
+	        or $type =~ /^(?:OC|HNC|Nc)$/ && $text =~ /^(.+$)/)
+	{
+		$date = "$nc{$name}->{orig_date}-$date" if (exists $nc{$name}->{orig_date});
+		$notes .= "(holding name)" if $nc{$name}->{holding_name};
+	}
+	print_record($name, $date, $type, $text, $notes, $rest);	
+}
+close LOAR;
+
+foreach (keys %nc)
+{
+	print STDERR "$nc{$_}->{use_count}\t$_ -> $nc{$_}->{new_name}\n";
+}
+
+# append the LOAR data to the end of the main database
+
+BEGIN {
+	my @notes_with_names = (qr/^Also the arms of (.*)$/,
+		qr/^For (.*)$/, qr/^JB: (.*)$/, qr/^same branch as (.*)$/,
+		qr/^same person as (.*)$/, qr/^-transferred to (.*)$/,
+		);
+	sub note_has_name
+	{
+		my $note = shift;
+		grep $note =~ /$_/, @notes_with_names;
+	}
+	sub name_in_note
+	{
+		my $note = shift;
+		foreach (@notes_with_names)
+		{
+			next unless $note =~ /$_/;
+			return $1;
+		}
+		return undef;
+	}
+}
+
+BEGIN {
+	my @historical_types = qw/ NC C R u v vc Nc OC ANC HNC BNC BNc Bv Bvc/;
+	sub is_historical
+	{
+		my $type = shift or return undef;
+		grep $_ eq $type, @historical_types;
+	}
+}
+
+BEGIN {
+	my @name_types = qw/ BN N AN t O HN /;
+	sub is_name_registration
+	{
+		my $type = shift or return undef;
+		grep $_ eq $type, @name_types;
+	}
+}
+
+BEGIN {
+	my @armory_types = qw/ a b d g j s D? /;
+	sub is_armory_registration
+	{
+		my $type = shift or return undef;
+		grep $_ eq $type, @armory_types;
+	}
+}
+
+sub print_record
+{
+	my @args = @_;
+	foreach (@args[0..4])
+	{
+		$_ = '' unless defined $_;
+	}
+	while (@args < 5) { push @args, ''; }
+	print join('|', @args[0..4]), defined($args[5]) ? "|$args[5]" : '', "\n";
+}

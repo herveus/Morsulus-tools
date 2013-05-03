@@ -1,0 +1,171 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use Carp;
+#use lib qw[ ./blib/lib ./blib/arch ];
+$|=1;
+
+use Morsulus::DB;
+use Morsulus::NameUsage;
+use Morsulus::NameToRegistration;
+use Morsulus::Name;
+use Morsulus::Legacy;
+use Morsulus::Daud;
+use Morsulus::Blazon;
+
+use Getopt::Std;
+use IO::File;
+
+my $USAGE = q{
+Usage: np_search options patterns
+   -d dbfile   use this dbfile (default oanda.db)
+   -o daud     search in Da'uded names (default)
+   -o ascii    search in ASCII-ized names
+   -n          narrow search - registered items only (default)
+   -b          broad search - wherever names appear
+   -l limit    limit result sets to this size (default 50)
+
+Patterns are Perl 5 regexes. If none provided, reads STDIN.
+
+Outputs each name followed by "registered" or "not registered", 
+along with a list of records that do or did register that name in
+some fashion.
+};
+
+my %opts = ( d => '/Volumes/stuff/morsulus/oanda.db',
+	o => 'daud',
+	l => 50 );
+
+getopts("d:o:nbl:", \%opts) or die $USAGE;
+die $USAGE if $opts{n} && $opts{b};
+die $USAGE if $opts{l} =~ /\D/;
+$opts{n} = 1 unless $opts{b};
+
+my $loader = Morsulus::DB->new($opts{d})
+	or croak "Failed to open database $opts{d}";
+
+print STDERR "gathering names";
+Morsulus::Name::load_all();
+print STDERR "...ready\n";
+
+my %findprocs = ( daud => \&Morsulus::Name::find_by_dauded_name,
+	ascii => \&Morsulus::Name::find_by_ascii_name,
+	);
+
+if (@ARGV)
+{
+	foreach my $pat (@ARGV)
+	{
+		print_names(find_names($pat));
+	}
+	exit;
+}
+
+print "pattern-> ";
+
+while (<STDIN>)
+{
+	chomp;
+	if (/^:/)
+	{
+		process_command($_);
+	}
+	else
+	{
+		print_names(find_names($_));
+	}
+	print "\npattern-> ";
+}
+
+exit;
+
+#######
+
+sub process_command
+{
+	my $input = shift;
+	if ($input =~ /^:daud/i)
+	{
+		$opts{o} = "daud";
+	}
+	elsif ($input =~ /^:ascii/i)
+	{
+		$opts{o} = "ascii";
+	}
+	elsif ($input =~ /^:narrow/i)
+	{
+		$opts{n} = 1;
+		$opts{b} = 0;
+	}
+	elsif ($input =~ /^:broad/i)
+	{
+		$opts{n} = 0;
+		$opts{b} = 1;
+	}
+	elsif ($input =~ /^:limit (\d+)/i)
+	{
+		$opts{l} = $1;
+	}
+	elsif ($input =~ /^:opts/i)
+	{
+		print "Current settings: search $opts{o} names; ",
+			$opts{n} ? "narrow; " : "broad; ",
+			"limit $opts{l}\n";
+	}
+	elsif ($input =~ /^:(exit|quit)/i)
+	{
+		exit;
+	}
+	else
+	{
+		print "commands all start with ':'; anything else is a search pattern\n",
+			"    command    details\n",
+			"    daud       searches among Da'ud-ed names\n",
+			"    ascii      searches among ASCII-ized names\n",
+			"    narrow     limits results to where name is registered\n",
+			"    broad      finds any reference to the name\n",
+			"    limit n    changes the number of results returned\n",
+			"    opts       show settings\n";
+			"    quit       quits\n",
+			"    exit       quits\n",
+			"    help       print this message\n";
+	}
+}
+
+sub find_names
+{
+	my $pattern = shift;
+	my $found = $findprocs{$opts{o}}->(qr/$pattern/);
+	return wantarray ? @$found : $found;
+}
+
+sub print_names
+{
+	if (@_ > $opts{l})
+	{
+		print "Big print list (over $opts{l} items).\n",
+			"Print anyway, Abort, Truncate? (p/a/t) ";
+		my $opt = <STDIN>;
+		return if $opt =~ /^a/i;
+		splice(@_, $opts{l}) if $opt =~ /^t/i;
+	}
+	
+	while (@_)
+	{
+		my $name = OA::Name->retrieve(shift);
+		my @regs;
+		
+		if ($opts{n})
+		{
+			@regs = Morsulus::Name::find_registration($name);
+		}
+		else
+		{
+			@regs = $name->name_references;
+		}
+		foreach my $reg (@regs)
+		{
+			print $reg->registration->old_format, "\n";
+		}
+	}
+}

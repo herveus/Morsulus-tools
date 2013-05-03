@@ -1,0 +1,14 @@
+#!/usr/local/bin/perl
+
+use Morsulus::Actions::Apply;
+use Morsulus::Ordinary::Classic;
+
+my $ord = Morsulus::Ordinary::Classic->new(dbname => 'oanda1206.db');
+my $act = Morsulus::Actions::Apply->new(db => $ord, action => 'N', source => '', name => 'foo');
+
+my $name = "Bera Jorundard{o'}ttir";
+
+while (1)
+{
+	1;
+}

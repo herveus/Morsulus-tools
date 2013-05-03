@@ -1,0 +1,53 @@
+#!/usr/local/bin/perl
+
+use 5.006;
+use strict;
+use warnings;
+
+use Daud;
+use Getopt::Std;
+
+my $USAGE = <<USAGE;
+Usage: $0 -t style -s -f style  database
+   -t - style to convert to
+   -f - style to convert from
+   valid styles are:
+   ascii - "old" style
+   html - HTML entity names
+   latin1 - IS0 8859-1 (Latin-1)
+   postscript
+   unicode
+   
+   -s - save old representation where conversion is lossy
+   
+   Default is -t ascii; specify only one of -t/-f.
+   -f presently only supports latin1
+USAGE
+
+my %opts;
+
+die $USAGE unless getopts('t:f:s', \%opts);
+die $USAGE if $opts{f} && $opts{t};
+die "Sorry; I lied about -f -- it's not implemented yet" if $opts{f};
+
+my @styles = qw/ ascii html latin1 postscript unicode /;
+my $style = $opts{t} || $opts{f} || 'ascii';
+Daud::set_style($style);
+
+while (<>)
+{
+	chomp;
+	my @parts = split(/[|]/, $_, -1);
+	#print STDERR $_, "\n" if Daud::lose_data($_);
+	my $newnotes;
+	foreach my $p (@parts)
+	{
+		$newnotes .= "(Full form: $p)" if Daud::lose_data($p) && $opts{s};
+		Daud::recode($p);
+	}
+	$parts[4] .= $newnotes if $newnotes;
+	{
+		no warnings;
+		print join('|', @parts), "\n";
+	}
+}

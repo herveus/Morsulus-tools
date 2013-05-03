@@ -1,0 +1,26 @@
+#!/usr/bin/perl
+
+my %cats_by_year;
+
+while (<>)
+{
+	chomp;
+	my ($name, $date, $type, $text, $notes, @descs) = split(/\|/, $_);
+	next unless $type =~ /^([abBdDgs]|BD)$/;
+	next if $date =~ /-/;
+	$date =~ s/^([0-9]{2})...?$/$1/;
+	$date = 'old' if $date eq '';
+	foreach my $d (@descs)
+	{
+		my ($cat, @feats) = split(/:/, $d);
+		$cats_by_year{$date}{$cat}++;
+	}
+}
+
+foreach my $y (sort keys %cats_by_year)
+{
+	foreach my $c (map { $_->[0] } sort {$b->[1] <=> $a->[1]} map {[$_, $cats_by_year{$y}{$_}]} keys %{$cats_by_year{$y}})
+	{
+		print join(":", $y, $c, $cats_by_year{$y}{$c}), "\n";
+	}
+}

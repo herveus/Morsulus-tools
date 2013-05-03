@@ -1,0 +1,40 @@
+#!/bin/bash
+
+DBFILE=$1
+DATE=$2
+
+PATH=$PATH:/Users/herveus/bin/db:/Users/herveus/bin/txt
+A=/Users/herveus/aux
+
+echo "Checking file '$DBFILE' for date $DATE"
+echo " - check:"
+echo " --> oldcheck.pl $DATE $DBFILE > check.out"
+oldcheck.pl $DATE $DBFILE > check.out
+echo " - nd:"
+echo " --> namedates.pl $DBFILE | sort -nr > nd.out"
+namedates.pl $DBFILE | sort -nr > nd.out
+echo " - nc:"
+echo " --> namenc.pl $DBFILE | sort > nc.out"
+namenc.pl $DBFILE | sort > nc.out
+echo " - regsad:"
+echo " --> getnames.pl -cr $DBFILE | sort -u > regs.cur"
+getnames.pl -cr $DBFILE | sort -u > regs.cur
+echo " --> accent.pl -o regs.cur | design.pl | lcase.pl | drop.pl | freq.pl -dup regs.cur > regsad"
+accent.pl -o regs.cur | design.pl | lcase.pl | drop.pl | freq.pl -dup regs.cur > regsad
+
+exit
+
+
+echo " - tempo:"
+echo " --> unbranch2.pl $DBFILE | brackets.pl | oldtypes.pl | sortdbf.pl > working.db"
+unbranch2.pl $DBFILE | brackets.pl | oldtypes.pl | sortdbf.pl > working.db
+echo " --> tempmap working.db > in.db"
+tempmap working.db > in.db
+#echo " --> check_indexing -i in.db -o temp.db -c $A/temp.cat -e $A/temp.desc"
+#check_indexing -i in.db -o temp.db -c $A/temp.cat -d $A/temp.desc
+echo " --> xlate.pl -d in.db -c $A/temp.cat -e $A/temp.desc > temp.db 2>&1"
+xlate.pl -d in.db -c $A/temp.cat -e $A/temp.desc > temp.db 2>&1
+echo " --> rm in.db"
+rm in.db
+echo " --> getdescs2.pl $A/temp.desc temp.db | sort -nr > tempo"
+getdescs2.pl $A/temp.desc temp.db | sort -nr > tempo

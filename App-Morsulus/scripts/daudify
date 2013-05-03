@@ -1,0 +1,101 @@
+#!/usr/bin/perl
+use warnings;
+use strict;
+use Getopt::Euclid;
+use Fatal qw( open close);
+
+use Daud;
+
+main();
+
+sub main {
+    my $input_fh = get_input($ARGV{-in});
+    my $output_fh = get_output($ARGV{-out});
+    while (my $input_line = <$input_fh>) {
+        print $output_fh Daud::daudify($input_line);
+    }
+}
+
+sub get_input {
+    my $file = shift;
+    if ($file eq '-') {
+        return \*STDIN;
+    }
+    else {
+        open my $fh, '<', $file;
+        return $fh;
+    }
+}
+
+sub get_output {
+    my $file = shift;
+    if ($file eq '-') {
+        return \*STDOUT;
+    }
+    else {
+        open my $fh, '>', $file;
+        return $fh;
+    }
+}
+
+__END__
+
+=head1 NAME
+
+daudify - Convert non-ASCII characters in file to Da'ud format
+
+=head1 VERSION
+
+This documentation referes to daudify version 0.01
+
+=head1 USAGE
+
+    daudify -in file -out file
+
+=head1 REQUIRED
+
+=over
+
+=back
+
+=head1 OPTIONS
+
+=over
+
+=item -i[n] [-] <file>
+
+Specify file to be converted. Defaults to STDIN.
+
+=for Euclid:
+    file.type:    readable
+    file.default: '-'
+
+=item -o[ut] [-] <file>
+
+Specify file to hold converted data. Defaults to STDOUT.
+
+=for Euclid:
+    file.type:    writable
+    file.default: '-'
+
+=item -v
+
+=item --verbose
+
+Print all warnings
+
+=item --version
+
+=item --usage
+
+=item --help
+
+=item --man
+
+=back
+
+=head1 COPYRIGHT
+
+Copyright (c) 2005 Michael Houghton. All rights reserved.
+
+This program may be used under the same terms as Perl.

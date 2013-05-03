@@ -1,0 +1,173 @@
+#!/usr/bin/perl
+
+#%  Extract entries for re-indexing from an ordinary database.
+
+$[ = 1;
+$, = ':';
+$failed = '';
+
+do read_cat_file ('/Users/herveus/aux/mike.cat');
+while (<>) {
+  chop;                               # Strip off the record separator.
+  @fields = split (/\|/, $_, 99);     # Split the record into fields.
+
+  $match = '';
+  $rest = '';
+  for ($i = 6; $i <= $#fields; $i++) {
+    $_ = $fields[$i];
+    $m = 0;
+    if (/QUARTERLY/) {
+      ($c, @f) = split (/:/);
+      $m = 1;
+      foreach $f (@f) {
+        $m++ if (&compatible ($f, 'complex line') == 1);
+      }
+    }
+    if ($m > 1) {
+      $match .= '|' . $_;
+    } else {
+      $rest .= '|' . $_;
+    }
+  }
+  if ($match ne '') {
+    print $fields[4] . $rest . $match . "\n";
+  }
+}
+sub read_cat_file {
+  local ($cat_file_name) = @_;
+  local (%set_features);
+
+#  Read the category-file, creating two tables, %set_name and %compatible.
+
+#    %set_name is used to look up the name of the set to which a
+#    particular feature belongs.
+
+#    %compatible is used to check the compatibility of a
+#    pair of features which both belonging to the same set.
+
+  open (CAT_FILE, $cat_file_name) || die "cannot open $cat_file_name";
+  while (<CAT_FILE>) {
+    chop;  #  Strip off the newline.
+
+    #  Process each line of the category-file.
+    #  There are four types of lines in the file.
+
+    if (/^\#/) {
+      #  The line begins with a "#", so it is a comment.
+      skip;
+
+    } elsif (/^\|/) {
+      local ($set_name, $feature_name);
+
+      #  The line begins with a "|", so it defines a feature.
+      /^\|([^:]+)\:([^<=]+)(.*)$/ || die 'cannot parse feature definition';
+      ($set_name, $feature_name, $_) = ($1, $2, $3);
+
+      #  Record the set to which the feature belongs
+      #  in the %set_name table.
+      $set_name{$feature_name} = $set_name;
+      $set_features{$set_name} .= ':' . $feature_name;
+  
+      #  Each "<" or "=" in the line begins a
+      #  relationship to another feature.
+      while ($_ ne '') {
+        local ($relationship, $feature2);
+
+        /^([<=])([^<=]+)(.*)$/ || die 'cannot parse feature relationship';
+        ($relationship, $feature2, $_) = ($1, $2, $3);
+  
+        #  Record each relationship in the %compatible table.
+        $compatible{$feature_name, $feature2} = $relationship;
+      }
+  
+    } elsif (/ - see /) {
+      #  The line contains " - see ", so it defines a cross-reference.
+      skip;
+  
+    } else {
+      #  None of the above cases apply, so the line defines a heading.
+      skip;
+    }
+  } #  Now the entire category-file has been processed.
+  close CAT_FILE;
+
+  #  Flesh out the %compatible table.
+
+  #    The category-file only contains the bare minimum
+  #    info on feature compatibility; the rest of the table
+  #    is inferred from the data in the file.
+
+  do {
+    local ($progress, @entries);
+
+    $progress = 0;   #  Reset the progress indicator.
+
+    @entries = keys (%compatible);
+    foreach (@entries) {
+      #  For each entry in the table ...
+
+      #  Split the key into two features.
+      #    (I assume that ":" is used to separate features.)
+      local ($feature1, $feature2) = split ($;);
+  
+      #  If $feature1 is compatible with $feature2,
+      #  then $feature2 is compatible with $feature1.
+  
+      if ($compatible{$feature2, $feature1} eq $failed) {
+  
+        #  That fact was missing from the table, so we made progress.
+        $compatible{$feature2, $feature1} = '=';
+        $progress = 1;
+      }
+  
+      #  If $feature1 is a subset of $feature2
+      #  and $feature2 is a subset of $feature3, 
+      #  then $feature1 is a subset of $feature3.
+  
+      if ($compatible{$_} eq '<') {
+        local ($feature3);
+        local (@feature_names)
+          = split (/\:/, $set_features{$set_name{$feature1}});
+
+        #  Try all features.
+        foreach $feature3 (@feature_names) {
+          if ($compatible{$feature2, $feature3} eq '<') {
+            if ($compatible{$feature1, $feature3} ne '<') {
+  
+              #  That fact was missing from the table, so we made progress.
+              $compatible{$feature1, $feature3} = '<';
+              $progress = 1;
+            }
+          }
+        }
+      }
+  
+      #  If $feature1 is compatible with $feature2
+      #  and $feature2 is a subset of $feature3, 
+      #  then $feature1 is compatible with $feature3.
+  
+      elsif ($compatible{$_} eq '=') {
+        foreach $feature3 (@feature_names) {
+          if ($compatible{$feature2, $feature3} eq '<') {
+            if ($compatible{$feature1, $feature3} eq $failed) {
+  
+              #  That fact was missing from the table, so we made progress.
+              $compatible{$feature1, $feature3} = '=';
+              $progress = 1;
+            }
+          }
+        }
+      }
+    }
+  
+  } while ($progress > 0);
+  #  Keep expanding the %compatible table until no more progress is made.
+}
+
+sub compatible {
+  local ($f1, $f2) = @_;
+
+  return 1 if ($f1 eq $f2);
+  return 2 if ($set_name{$f1} ne $set_name{$f2});
+  return ($compatible{$f1, $f2} ne '');
+}

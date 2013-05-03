@@ -1,0 +1,156 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+use Getopt::Std;
+
+my $USAGE = <<USAGE;
+Usage: $0 [-t] database
+    -t strip tertiary descriptions
+USAGE
+
+my %opts;
+getopts("t", \%opts) or die $USAGE;
+
+my %map = (
+	'AXE-DOUBLE BITTED' => 'AXE:of 2',
+	'AXE-SINGLE BITTED' => 'AXE:of 1',
+	
+	'BIRD-CHICKEN AND QUAIL' => 'BIRD:chicken',
+	'BIRD-DUCK,GOOSE AND SWAN' => 'BIRD:duck',
+	'BIRD-EAGLE,FALCON AND HAWK' => 'BIRD:eagle',
+	'BIRD-HERON' => 'BIRD:heron',
+	'BIRD-HUMMINGBIRD' => 'BIRD:hummingbird',
+	'BIRD-DOVE AND MARTLET' => 'BIRD:dove',
+	'BIRD-OWL' => 'BIRD:owl',
+	'BIRD-PARROT' => 'BIRD:parrot',
+	'BIRD-PEACOCK' => 'BIRD:peacock',
+	'BIRD-PELICAN' => 'BIRD:pelican',
+	'BIRD-PENGUIN AND PUFFIN' => 'BIRD:penguin',
+	'BIRD-RAVEN AND CROW' => 'BIRD:raven',
+	'BIRD-SEAGULL AND SEABIRD' => 'BIRD:seagull',
+	'MONSTER-ROC' => 'BIRD:roc',
+	
+	'BEAST-MOLE' => 'BEASTETC:t1',
+	'BEAST-GIRAFFE' => 'BEASTETC:t2',
+	'BEAST-BEAVER' => 'BEASTETC:t3',
+	'BEAST-SLOTH' => 'BEASTETC:t4',
+	'BEAST-PLATYPUS' => 'BEASTETC:t5',
+	'BEAST-KANGAROO' => 'BEASTETC:t6',
+	
+	'MONSTER8OTHER' => 'METC:t1',
+	'MONSTER-COMPOSITE' => 'METC:t2',
+	
+	'CASTLE' => 'CASTLE:t1',
+	'TOWER' => 'CASTLE:t2',
+	
+	'MULLET' => 'STAR:t1',
+	'COMPASS STAR' => 'STAR:t2',
+	
+	'ARRANGEMENT9BEAST&MONSTER,COMBATTANT' => 'COMBAT',
+	'ARRANGEMENT-IN PALE' => 'INPALE',
+	'ARRANGEMENT-IN SALTIRE,2 SWORDS' => 'INSA:t1',
+	'ARRANGEMENT-IN SALTIRE,2 TRUMPETS' => 'INSA:t2',
+	'ARRANGEMENT-IN SALTIRE,ARROW&___' => 'INSA:t3',
+	'ARRANGEMENT-IN SALTIRE,9OTHER' => 'INSA:t4',
+	'ARRANGEMENT-IN SALTIRE,QUILL&___' => 'INSA:t5',
+	'ARRANGEMENT-IN SALTIRE,SPEAR&LANCE' => 'INSA:t6',
+	'ARRANGEMENT-IN SALTIRE,SWORD&___' => 'INSA:t7',
+	'BASE AND FORD' => 'BASE',
+	'BEAST-CAT AND LION' => 'CAT',
+	'BEAST-DOG,FOX AND WOLF' => 'DOG',
+	'BEND*3' => 'BS',
+	'CROSS*9' => 'CRAC',
+	'CUP AND GOBLET' => 'CUP',
+	'FIELD DIV.-PER BEND' => 'PB',
+	'FIELD DIV.-PER BEND*3' => 'PBS',
+	'FIELD DIV.-PER FESS' => 'PFESS',
+	'FIELD DIV.-PER PALE' => 'PPALE',
+	'FIELD DIV.-PER SALTIRE' => 'PSALT',
+	'FIELD DIV.-QUARTERLY' => 'QLY',
+	'FLEUR-DE-LYS' => 'FDL',
+	'HEAD-BEAST,DOG,FOX AND WOLF' => 'HEADDOG',
+	'MONSTER-PEGASUS AND WINGED UNICORN' => 'PEGASUS',
+	'MUSICAL INSTR-HARP AND LYRE' => 'HARP',
+	'WREATH-LAUREL' => 'LW',
+	
+	'FISH-DOLPHIN' => 'DOLPHIN:natural',
+	'MONSTER-DOLPHIN' => 'DOLPHIN:heraldic',
+	
+	'MONSTER-AMPHISBAENA' => 'DRAGON:t3',
+	'MONSTER-BASILISK' => 'DRAGON:t4',
+	'MONSTER-DRAGON' => 'DRAGON:t1',
+	'MONSTER-HYDRA' => 'DRAGON:t5',
+	'MONSTER-WIVERN' => 'DRAGON:t2',
+	
+	'MONSTER-GRIFFIN' => 'GRIFFIN:t1',
+	'MONSTER-OPINICUS' => 'GRIFFIN:t2',
+	
+	'MONSTER-SEA WOLF' => 'SEAWOLF:t1',
+	'MONSTER-SEA DOG AND SEA LOAT' => 'SEAWOLF:t2',
+	
+	'MONSTER-KRAKEN' => 'KRAKEN:t1',
+	'MOLLUSK-OCTOPUS AND SQUID' => 'KRAKEN:t2',
+	
+	'MONSTER-SALAMANDER' => 'LIZARD:t2',
+	'REPTILE-LIZARD' => 'LIZARD:t2',
+	
+	'FIELD DIV.-PER CHEVRON' => 'PC:t1',
+	'FIELD DIV.-CHAPE' => 'PC:t2',
+	'FIELD DIV.-PER CHEVRON*7' => 'PCI:t1',
+	'FIELD DIV.-CHAUSSE' => 'PCI:t2',
+	
+	'ESCARBUNCLE' => 'ESCARB:t1',
+	'SNOWFLAKE' => 'ESCARB:t2',
+	
+	'FRET' => 'FRET:t1',
+	'FIELD TREATMENT-FRETTY' => 'FRET:t2',
+	
+	'FLOWER-GARDEN ROSE' => 'ROSE:natural',
+	'FLOWER-HERALDIC ROSE' => 'ROSE:heraldic',
+	
+	'FIELD DIV.-GYRONNY' => 'GYRONNY:t1',
+	'FIELD DIV.-GYRONNY OTHER THAN EIGHT' => 'GYRONNY:t2',
+	
+	'SHIP-CANOE' => 'SHIP:t3',
+	'SHIP-DRAKKAR' => 'SHIP:t2',
+	'SHIP-LYMPHAD AND GALLEY' => 'SHIP:t1',
+	
+	'SUN' => 'SUN:unc',
+	
+	'SWORD AND DAGGER*1B' => 'SWORD:broken',
+	'SWORD AND DAGGER' => 'SWORD:plain blade',
+	'SWORD AND DAGGER*1C' => 'SWORD:obscured',
+	'SWORD AND DAGGER*1A' => 'SWORD:odd shape',
+	'SWORD AND DAGGER*1D' => 'SWORD:t1',
+	'SWORD AND DAGGER,2' => 'SWORD:2',
+	'SWORD AND DAGGER,3+' => 'SWORD:3 or more',
+);
+
+while (<>)
+{
+	no warnings 'uninitialized';
+	chomp;
+	my ($name, $source, $type, $text, $notes, @descs) = split(/\|/, $_);
+	print join('|', $name, $source, $type, $text, $notes, munge_descs(@descs)), "\n";
+}
+
+sub munge_descs
+{
+	my @descs = ();
+	while (@_)
+	{
+		my $desc = shift;
+		next if $desc =~ /:tinctureless|:hidden line/;
+		next if $opts{t} and $desc =~ /:tertiary/;
+		my ($hdg, @feats) = split(/:/, $desc);
+		$hdg = $map{$hdg} if exists $map{$hdg};
+		$desc = @feats ? join(":", $hdg, @feats) : $hdg;
+		push @descs, $desc;
+		if ($desc =~ s/^MONSTER-HYDRA/MONSTER9MULTI-HEADED/)
+		{
+			push @descs, $desc;
+		}
+	}
+	return @descs;
+}

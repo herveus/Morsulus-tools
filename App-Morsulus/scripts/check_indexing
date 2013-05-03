@@ -1,0 +1,287 @@
+#!/usr/local/bin/perl
+use strict;
+use warnings;
+
+use Getopt::Euclid;
+use Morsulus::Catalog;
+
+main();
+
+sub main {
+    my $catalog = Morsulus::Catalog->new({catalog_name => 'original catalog'});
+    $catalog->read_catalog_file( $ARGV{-category} );
+    my $descs     = read_desc_file( $ARGV{-descs}, $catalog );
+    my $xlates    = read_translation_file( $ARGV{-trans} );
+    my $input_fh  = get_input( $ARGV{-in} );
+    my $output_fh = get_output( $ARGV{-out} );
+    status_msg("Checking database...\n");
+    while ( my $line = <$input_fh> ) {
+        chomp $line;
+        my ( $name, $date, $action, $text, $notes, @descs )
+            = split( /[|]/, $line );
+        next unless $action =~ /^[abdgsDB]|DB$/;    # skip non-armory data
+        next if $date =~ /-/;                       # skip historical records
+        my $bad_notes;
+        foreach my $desc (@descs) {
+
+            # add a note for each "fault"
+            # print revised item to output_fh if any faults
+            my @bad_headings
+                = check_desc_against_category_file( $catalog, $desc );
+            my $new_desc = translate_desc( $desc, $xlates );
+            push @bad_headings,
+                check_desc_against_category_file( $catalog, $new_desc )
+                unless $new_desc eq $desc; # no need to check twice unless changed
+            my $matches = count_matching_descs( $catalog, $new_desc, $descs );
+            $bad_notes .= join( '', map {"($_ bad)"} (@bad_headings) );
+            $bad_notes .= "($desc matches $matches)" if $matches != 1;
+        }
+        if ($bad_notes)
+        {
+        print $output_fh join( '|',
+            $name, $date, $action, $text, $notes . $bad_notes, @descs ), "\n";
+        }
+    }
+}
+
+sub count_matching_descs {
+    my ( $catalog, $desc_to_check, $descs ) = @_;
+    my ( $heading, @feats ) = split( /:/, $desc_to_check );
+    return 0 unless $catalog->heading_exists($heading);
+    return 1 if @{ $descs->{$heading} } == 0;    # plain heading
+    my $compats = 0;
+    my $feats = Morsulus::Catalog::SetOf::Feature->new({catalog => $catalog});
+    $feats->insert(@feats);
+    foreach my $features_to_match ( @{ $descs->{$heading} } ) {
+        $compats++ if $feats->is_compatible_with( $features_to_match );
+    }
+    return $compats;
+}
+
+sub translate_desc {
+    my ( $desc, $xlates ) = @_;
+    my ( $heading, @feats ) = split( /:/, $desc );
+    return $desc unless exists $xlates->{$heading};
+    return join(':', $xlates->{$heading}, @feats);
+}
+
+sub check_desc_against_category_file {
+    my ( $catalog, $desc ) = @_;
+
+    my ( $heading, @features ) = split( /:/, $desc );
+    my @messages;
+    push @messages, "Bad heading '$heading'"
+        unless $catalog->heading_exists($heading);
+    foreach my $feature (@features) {
+        push @messages, "Bad feature '$feature' in desc '$desc'"
+            unless $catalog->feature_exists($feature);
+    }
+    return @messages;
+}
+
+sub status_msg {
+    return unless $ARGV{-v};
+    print STDERR @_;
+}
+
+sub get_input {
+    my $file = shift;
+    if ( $file eq '-' ) {
+        return \*STDIN;
+    }
+    else {
+        open my $fh, '<', $file;
+        return $fh;
+    }
+}
+
+sub get_output {
+    my $file = shift;
+    if ( $file eq '-' ) {
+        return \*STDOUT;
+    }
+    else {
+        open my $fh, '>', $file;
+        return $fh;
+    }
+}
+
+sub read_desc_file {
+    my $desc_file_name = shift;
+    my $catalog = shift;
+    my %descs;
+    print STDERR "Reading old descs...\n";
+    open my $desc_file, '<', $desc_file_name
+        or die "Can't open '$desc_file_name': $!";
+    while ( my $desc = <$desc_file> ) {
+        chomp $desc;
+        next if $desc =~ /^$/;
+        my ( $heading, @features ) = split( /:/, $desc );
+        $descs{$heading} ||= [];
+        my $feats = Morsulus::Catalog::SetOf::Feature->new({catalog => $catalog});
+        $feats->insert(@features);
+        push @{ $descs{$heading} }, $feats if @features;
+    }
+    return \%descs;
+}
+
+sub read_translation_file {
+    my $xlate_file_name = shift;
+    my %xlates;
+    print STDERR "Reading translations...\n";
+    open my $xlate_file, '<', $xlate_file_name
+        or die "Can't open '$xlate_file_name': $!";
+    while ( my $xlate = <$xlate_file> ) {
+        chomp $xlate;
+        next if $xlate =~ /^$/;
+        next if $xlate =~ /#/;
+        my ($from, $to) = split(/\|/, $xlate);
+        if (exists $xlates{$from})
+        {
+            warn "duplicate translation from '$from': $.";
+            next;
+        }
+        $xlates{$from} = $to;
+    }
+    return \%xlates;
+}
+
+
+__END__
+
+=head1 NAME
+
+check_indexing.pl - Check indexing quality
+
+=head1 VERSION
+
+This documentation refers to check_indexing version 0.02
+
+=head1 DESCRIPTION
+
+Checks several aspects of indexing of items:
+
+=over
+
+=item *
+
+Validity
+
+Are the headings and features valid?
+
+=item *
+
+Uniqueness for Ordinary headings
+
+Does each description have sufficient detail so that the
+armory only appears in one of the headings in the Ordinary.
+That is, if "ROSE" is divided up by tincture and number,
+are tincture and number specified or not?
+
+=item * 
+
+Uniqueness by translation
+
+Is uniqueness preserved after rewriting descriptions 
+according to a translation file? For example, suppose we
+want to put FOIL-5, FLOWER, HERALDIC ROSE, and FLOWER, 
+FEW PETALS all together, is uniqueness still preserved?
+
+=back
+
+The output of the program is a list of items that were found
+to "have problems", annotated with the problems as notes. The 
+output is suitable as input to the indexing programs.
+
+=head1 USAGE
+
+    check_indexing -in file.db -out file.db -category category_file
+        -descs description_file -trans category_rewrite_file
+
+=head1 REQUIRED
+
+=over
+
+=back
+
+=head1 OPTIONS
+
+=over
+
+=item -i[n] [-] <file>
+
+Specify input database file. Default is standard input
+
+=for Euclid:
+    file.type:    readable
+    file.default: '-'
+
+=item -o[ut] [=] <file>
+
+Specify output database file that contains records identified as
+"needing more indexing". Default is standard output.
+
+=for Euclid:
+    file.type:    writable
+    file.default: '-'
+
+=item -c[at[egory]] [=] <file>
+
+Specify category file that details the categories and features
+used in the input file.
+
+The default file is /Users/herveus/aux/mike.cat
+
+=for Euclid:
+    file.type:  readable
+    file.default: '/Users/herveus/aux/mike.cat'
+
+=item -d[escs] [=] <file>
+
+Specify the list of descriptions to be checked against. Each 
+description in the input file is expected to map to exactly one
+description in this file. If a translation file is specified,
+the descriptions in this file are in terms of the translated
+headings and features.
+
+The default file is /Users/herveus/aux/old_new.desc.
+
+=for Euclid:
+    file.type: readable
+    file.default: '/Users/herveus/aux/old_new.desc'
+
+=item -t[rans] [=] <file>
+
+Specify a translation file to rewrite descriptions before checking
+them against the descriptions file. If no translation file is given,
+no translations are performed.
+
+=for Euclid:
+    file.type: readable
+    file.default: '/dev/null'
+
+=item -v
+
+=item --verbose
+
+Print all warnings and information messages.
+
+=item --version
+
+=item --usage
+
+=item --help
+
+=item --man
+
+=back
+
+=head1 TODO
+
+Add value checking to date argument
+
+=head1 COPYRIGHT
+
+Copyright (c) 2005 Michael Houghton. All rights reserved.
+
+This program may be used under the same terms as Perl.

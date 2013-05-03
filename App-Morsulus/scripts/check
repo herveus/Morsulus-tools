@@ -1,0 +1,964 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+
+use Getopt::Std;
+
+my %opts = (a => 0, c => '/Users/herveus/aux/mike.cat');
+
+my $USAGE = q{
+Usage: check -d lastdate [-a] [-c categoryfile ] dbfile
+    lastdate is yyyymm format
+    -a invokes armorial mode
+    -c defaults to /Users/herveus/aux/mike.cat
+};
+
+getopts("d:ac:", \%opts) or die $USAGE;
+
+$opts{d} or die $USAGE;
+
+my $firstdate = 197002;   # earliest entry in database
+my $splitdate = 197909;   # first month for which all names and armory are split
+my $lastdate  = $opts{d}; # latest entry in database
+my $armorial_mode = $opts{a};
+
+use Daud;
+
+my %known_daud = map { $_, 1 } Daud::get_daud_list;
+
+my %known_category;
+my %known_feature;
+{
+	open my $CATS, $opts{c} or die "cannot open category file $opts{c}: $!";
+	while (<$CATS>)
+	{
+		chomp;
+		if (/^[|]([0-9a-z_]+)[:]([ 0-9a-z_~]+)/)
+		{
+			$known_feature{$2} = $1;
+		}
+		elsif (/^[ 0-9a-z,'&]+[|]([ 0-9A-Z_,'&.*()+-]+)([|][0-9a-z:_]*)?$/)
+		{
+			$known_category{$1} = 1;
+		}
+	}
+}
+
+# The following features have been completely broken down in the database:
+delete $known_feature{'2 or more'};
+delete $known_feature{'3 or more'};
+delete $known_feature{'5 or more'};
+delete $known_feature{'neutral'};
+delete $known_feature{'of 3 or 4'};
+delete $known_feature{'other bird posture'};
+
+# The following features have been abbreviated out of the database:
+delete $known_feature{'sole primary not alone'};
+delete $known_feature{'sole primary alone'};
+delete $known_feature{'group primary not alone'};
+delete $known_feature{'group primary alone'};
+delete $known_feature{'uncharged'};
+delete $known_feature{'plain line'};
+delete $known_feature{'secondary'};
+
+while (<>)
+{
+	chomp;
+	set_record($_, $.);
+
+	my ($name, $dates, $type, $text, $notes, @descriptions) =
+		split(/\|/, $_, 99);
+	report("too few stiles in record") unless defined $notes;
+	report("name and text fields are identical") if $name eq $text;
+	count('record');
+
+	# check the type
+	my $has_blazon      = has_blazon($type);
+	my $combined        = combined($type);
+	my $historical_type = historical_type($type);
+	my $name_only       = name_only($type);
+	my $other_type      = other_type($type);
+	report("unknown record type ($type)")
+		unless $has_blazon || $historical_type || $name_only || $other_type;
+
+	# check the date
+	my $temp_dates = $dates;
+	$temp_dates = "-$dates" if $historical_type && $dates !~ /-/;
+	my ($d1, $d2) = check_dates($temp_dates);
+	report("name and armory ought to be split")
+		if $combined && $d1 ne '' && $d1 >= $splitdate;
+
+	# check notes
+	my $nonsca = 0;
+	foreach my $note (split_notes($notes, $type))
+	{
+		report("un-enclosed text in notes field ($notes)") if $note =~ /[)(]/;
+		$nonsca ||= check_note($note, $type, $dates);
+	}
+	
+	# check name
+	if ($type eq 'C')
+	{
+		report("name field of comment should be blank")
+			if $name ne ' ';
+	}
+	elsif ($type eq 'HNC')
+	{
+		check_household_name($name);
+	}
+	elsif ($type =~ /^([BDNOv]|ANC?|N[Cc]|OC|vc)$/)
+	{
+		check_name($name, 1);
+	}
+	elsif ($type =~ /^(BN|t)$/)
+	{
+		check_name($name, 2);
+	}
+	else
+	{
+		check_name($name, 0);
+	}
+	
+	# check descs
+	if (@descriptions)
+	{
+		report("record has descriptions but no blazon")
+			unless $has_blazon;
+		report("historical record has descriptions")
+			if $historical_type;
+	}
+	elsif ($has_blazon && !defined($d2) && !$armorial_mode)
+	{
+		report("record has blazon but no descriptions");
+	}
+	foreach my $desc (@descriptions)
+	{
+		check_description($desc);
+	}
+	
+	# check text
+	if ($has_blazon)
+	{
+		check_blazon($text, $type, $dates, $nonsca);
+	}
+	elsif ($type eq 'NC')
+	{
+		if ($text =~ /^See (.+)$/)
+		{
+			my $t = $1;
+			check_name($t, 0);
+			report("names in accurate name change are identical ($notes)")
+				if $name eq $t && $notes !~ /inaccurate/;
+		}
+		else
+		{
+			report("new name not prefixed with 'See'");
+		}
+	}
+	elsif ($type eq 'AN')
+	{
+		if ($text =~ /^For (.+)$/)
+		{
+			my $t = $1;
+			check_name($t, 1);
+			report("name and alt name are identical")
+				if $name eq $t;
+		}
+		else
+		{
+			report("holder's name not prefixed with 'For'");
+		}
+	}
+	elsif ($type eq 'R')
+	{
+		if ($text =~ /^See "(.+)"$/)
+		{
+			foreach my $t (split(/" or "/, $1))
+			{
+				check_name($t, 0);
+				report("name and xref are identical")
+					if $name eq $t;
+			}
+		}
+		elsif ($text =~ /^See (.+)$/)
+		{
+			my $t = $1;
+			check_name($t, 0);
+			report("name and xref are identical")
+				if $name eq $t;
+		}
+		else
+		{
+			report("cross reference not prefixed with 'See'");
+		}
+	}
+	elsif ($type eq 'BNC')
+	{
+		if ($text =~ /^See (.+)$/)
+		{
+			my $t = $1;
+			check_name($t, 0);
+			report("names in branch name change are identical")
+				if delangle($name) eq delangle($t);
+		}
+		else
+		{
+			report("new branch name not prefixed with 'See'");
+		}
+	}
+	else
+	{
+		if ($text =~ /^(See|For) (.+)$/)
+		{
+			report("text field begins with '$1'");
+		}
+		if ($type eq 'u')
+		{
+			report("names in designator update are not identical")
+				unless delangle($name) eq delangle($text);
+		}
+		elsif ($type =~ /^(O|t)$/)
+		{
+			check_name($text, 2);
+		}
+	}
+}
+
+print_statistics();
+
+{
+	my $record;
+	my $line;
+	my %messages;
+	sub set_record { ($record, $line) = @_; }
+
+	sub report
+	{
+		my $message = shift;
+		return if exists $messages{$line}->{$message};
+		$messages{$line}->{$message} = 1;
+		print "-> $message in line $line:\n$record\n";
+	}
+}
+
+sub has_blazon { shift() =~ /^([BDabdgs]|BD|D[?])$/; }
+sub combined { shift() =~ /^([BD]|BD)$/; }
+sub historical_type { shift() =~ /^(ANC|BNC|BNc|Bvc|HNC|NC|Nc|OC|u|vc)$/; }
+sub name_only { shift() =~ /^(N|BN)$/; }
+sub other_type { shift() =~ /^([CORjtv]|AN|Bv|HN)$/; }
+
+sub split_notes
+{
+	my $notes = shift;
+	my $type  = shift;
+	return unless defined $notes;
+	$notes =~ s/\(Owner: [^)]+\)//;
+	return if $notes eq '';
+	report("unexpected notes field")
+		if ($type =~ /^([Cu]|ANC|BNc|Bvc|HNC|OC)$/);
+	if ($notes =~ /^\((.*)\)$/)
+	{
+		return split(/\)\(/, $1);
+	}
+	else
+	{
+		report("un-enclosed text in notes field ($notes)");
+		return split(/\)\(/, $notes);
+	}
+}
+
+sub check_dates
+{
+	my $dates = shift;
+	my $count = shift;
+	$count = !$count;
+	my @dates = split(/[-]/, $dates, 9);
+	{
+		my $nd = @dates - 1;
+		report("too many dashes ($nd) in ndate field") if $nd > 1;
+	}
+	my $historical = @dates == 2;
+
+	# TODO: should not be a registration date for inaccurate name ch or corr
+	# TODO: should be only one date for B, D, and BD type records
+	$dates[0] ||= '';
+	count('missing registration date') if $count && $dates[0] eq '';
+	my $d1 = check_date($dates[0]);
+	my $d2;
+	if ($historical)
+	{
+		if ($dates[1] eq '')
+		{
+			count('missing disposition date') if $count;
+		}
+		else
+		{
+			count('disposition date') if $count;
+		}
+		$d2 = check_date($dates[1]);
+		report("dates ($dates) are out-of-order") if $d2 ne '' && $d1 ne '' && $d1 > $d2;
+		report("dates ($dates) are same")         if $d2 ne '' && $d1 ne '' && $d1 == $d2;
+	}
+
+	return ($d1, $d2);
+}
+
+sub check_date
+{
+	my $date = shift or return '';
+	if ($date =~ /^(\d\d)(\d\d)([A-Za-z]?)$/)
+	{
+		my ($loar, $mm, $k) = ("$1$2", $2, $3);
+		report("invalid month ($mm) in date") if $mm < 1 || $mm > 12;
+		$loar += $loar < 6600 ? 200000 : 190000;
+		report("no LoAR with that date ($loar)")
+			if $loar == 197909 || $loar == 197912 || $loar == 199302;
+		report("LoAR date out of range ($loar)")
+			if $loar < $firstdate || $loar > $lastdate;
+		if ($k eq '')
+		{
+			count('kingdom-less date');
+			report("missing kingdom id in date ($date)")
+			    if $loar >= $splitdate;
+		}
+		elsif ($k !~ /^[ACDEGHKLMmnNOQRSTXWw]$/)
+		{
+			report("unknown kingdom id ($k) in date");
+		}
+		return $loar;
+	}
+	else
+	{
+		report("invalid date ($date)") unless $date eq '';
+		return '';
+	}
+}
+
+{
+	my %count;
+
+	sub count
+	{
+		my $label = shift;
+		$count{$label}++;
+	}
+
+	sub print_statistics
+	{
+		no warnings 'uninitialized';
+		print "\n";
+
+		if ($count{'record'} > 0)
+		{
+			foreach my $what (
+			    'record',
+			    'missing registration date',
+			    'disposition date',
+			    'missing disposition date',
+			    'note date'
+			    )
+			{
+				$count{$what} ||= 0;
+			    printf "%7d %s (%.2f%%)\n", $count{$what}, plural($what),
+				    100 * $count{$what} / $count{'record'};
+			}
+
+			my $total_dates = $count{'record'} + $count{'historical date'} -
+			    $count{'missing registration date'} + $count{'note date'};
+			printf "%7d dates, total\n", $total_dates;
+		}
+	}
+
+	sub plural
+	{
+		my $label = shift;
+		$count{label} ||= 0;
+		return $count{$label} == 1 ? $label : $label . "s";
+	}
+}
+
+sub check_name
+{
+	my $name = shift;
+	my $not_a_branch_or_title = shift;
+	if ($name =~ /^(.*)<(.+)>(.*)$/)
+	{
+		report("unexpected angle-brackets in name ($name)")
+			if $not_a_branch_or_title == 1;
+		$name = "$1$2$3"; # strip out one set of angle brackets
+	}
+	elsif ($not_a_branch_or_title == 2) # no <> and we're expecting them
+	{
+		my @exceptions = ( qr/^Atenveldt, /, qr/^Mists, /,
+			qr/^Society for Creative Anachronism$/,
+			qr/^Institute for the Preservation of Outlandish Culture$/,
+			qr/^Great Britain$/, qr/^unknown owner$/,
+			qr/^Leafolk Shire$/,
+			); # groups that won't be bracketed; lowers false positives
+		# space in name means there's a word that probably should be
+		# bracketed...personally held titles all come up false positive.
+		if (!grep $name =~ $_, @exceptions and $name =~ / /)
+		{
+			report("designator not bracketed ($name)");
+		}
+	}
+	report("null name") if $name eq '';
+	
+	$name = check_daud_codes($name, 'name');
+	if ($name =~ /(.+) [&] (.+)$/)
+	{
+		$name = "$1 and $2"; # remove one ampersand from name
+	}
+	report("unexpected final character ($1) in name ($name)")
+		if $name =~ /([^a-zAIO'.)])$/;
+	report("unexpected character ($1) in name ($name)")
+		if $name =~ /([^ A-Za-z`'.,:()-])/;
+	report("leading blank in nname ($name)") if $name =~ /^ /;
+	report("trailing blank in name ($name)") if $name =~ / $/;
+	report("extraneous blank in name ($name)")
+		if $name =~ /[ ][ .,:)-]|[`(-][ ]/;
+	report("missing blank from name ($name)")
+		if $name =~ /[^ ][(]|[,:][^ ]/;
+}
+
+sub check_daud_codes
+{
+	my $input = shift;
+	my $type = shift;
+	while ($input =~ /^(.*?)[{](..?)[}](.*)$/)
+	{
+		report("unknown daud-code ($2) in $type ($input)")
+			unless exists $known_daud{$2};
+		$input = "$1x$3"; # strip out daud code
+	}
+		return $input;
+}
+
+sub check_note_date
+{
+	my $note_date = check_date(shift());
+	my ($d1, $d2) = check_dates(shift(), 1);
+	count('note date');
+	report("note date is out-of-order ($d1, $note_date)")
+		if $d1 >= $note_date;
+}
+
+sub check_note
+{
+	no warnings 'uninitialized';
+	my $note = shift;
+	my $type = shift;
+	my $dates = shift;
+	my $nonsca = 0;
+	if ($note =~ /^For (.+)$/)
+	{
+		my $chk = $1;
+		report("unexpected designation note ($note)")
+			unless ($type =~ /^[Babdgjst]$/);
+		check_name($chk, 0);
+	}
+	elsif ($note =~ /^JB: (.+)$/)
+	{
+		my $chk = $1;
+		report("unexpected joint-badge note ($note)")
+			unless ($type =~ /^[Bb]$/);
+		check_name($chk, 0);
+	}
+	elsif ($note =~ /^JHN: (.+)$/)
+	{
+		my $chk = $1;
+		report("unexpected joint-household-name note ($note)")
+			unless ($type =~ /^HN$/);
+		check_name($chk, 0);
+	}
+	elsif ($note =~ /^(Banner|Ensign|Flag|Seal|Standard)$/
+		|| $note =~
+		/^((Civil|Household|Naval|Royal|War) (badge|banner|ensign))$/
+		|| $note eq "King's battle flag"
+		|| $note =~ /^(Household|Secondary) mon$/)
+	{
+		report("unexpected SCA badge subtype ($type)")
+			unless ($type =~ /^[Bb]$/);
+	}
+	elsif ($note =~ /^([A-Za-z]+)'s arms$/ || $note eq 'Mon')
+	{
+		report("unexpected SCA device subtype ($type)")
+			if ($type ne 'd' && $type ne 'D');
+	}
+	elsif ($note =~ /^Important non-SCA (.+)$/)
+	{
+		$nonsca = 1;
+		my $chk = $1;
+		if ($type eq 'b')
+		{
+			report("unrecognized non-SCA badge subtype ($chk)")
+			    if ($chk ne 'm{o^}n'
+			    && $chk ne 'badge'
+			    && $chk ne 'flag'
+			    && $chk ne 'battle flag'
+			    && $chk ne 'royal badge');
+		}
+		elsif ($type eq 'a')
+		{
+			report("unrecognized non-SCA augmentation subtype ($chk)")
+			    if ($chk ne 'augmentation' && $chk ne 'arms');
+		}
+		elsif ($type eq 'd' || $type eq 'R')
+		{
+			report("unrecognized non-SCA device subtype ($chk)")
+			    if ($chk ne 'arms');
+		}
+		else
+		{
+			report("unexpected non-SCA registration type ($type)");
+		}
+	}
+	elsif ($note eq 'alternate branch designator')
+	{
+		report("unexpected note ($note)")
+			if ($type ne 'R');
+	}
+	elsif ($note =~ /^([?] )?duplicate name registration$/)
+	{
+		report("unexpected note ($note)")
+			if ($type ne 'N');
+	}
+	elsif ($note =~ /^([?] )?should have been a name change$/)
+	{
+		report("unexpected note ($note)")
+			if ($type ne 'N');
+	}
+	elsif ($note =~ /^([?] )?missing name change$/)
+	{
+		report("unexpected note ($note)")
+			if ($type ne 'v');
+
+	}
+	elsif ($note =~
+		m#^(.*)(designation|name|title) (change(/conversion)?|correction)$#)
+	{
+		my ($rem, $ct) = ($1, $2);
+
+		if ($rem =~
+			/^(erroneous |inaccurate (and erroneous )?|redundant )?(.*)$/)
+		{
+			$rem = $3;
+		}
+		else
+		{
+			report("unparseable historical $ct note ($rem)");
+		}
+		if ($rem =~ /^(administrative |belated )?(.*)$/)
+		{
+			$rem = $2;
+		}
+		else
+		{
+			report("unparseable historical $ct note ($rem)");
+		}
+		if ($ct eq 'name')
+		{
+			if ($rem =~ /^(branch |household |order )?$/)
+			{
+			    $ct = $rem . $ct;
+			}
+			else
+			{
+			    report("unparseable historical $ct note ($note)");
+			}
+		}
+		else
+		{
+			report("unparseable historical $ct note ($note)")
+			    if ($rem ne '');
+		}
+		if ($ct eq 'branch name')
+		{
+			report("unexpected historical $ct note ($note)")
+			    if ($type ne 'BNC');
+		}
+		else
+		{
+			report("unexpected historical $ct note ($note)")
+			    if ($type ne 'NC');
+		}
+	}
+	elsif ($note =~ m#^(.*)(designation|name|title) variant( correction)?$#)
+	{
+		my ($rem, $ct, $corr) = ($1, $2, $3);
+
+		if ($rem =~
+			/^(erroneous |inaccurate (and erroneous )?|redundant )?(.*)$/)
+		{
+			$rem = $3;
+		}
+		else
+		{
+			report("unparseable $ct variant note ($rem)");
+		}
+		if ($rem =~ /^(administrative |belated )?(.*)$/)
+		{
+			$rem = $2;
+		}
+		else
+		{
+			report("unparseable $ct variant note ($rem)");
+		}
+		if ($ct eq 'name')
+		{
+			report("unparseable $ct variant note ($note)")
+			    if ($rem !~ /^(household |order )?$/);
+			$ct = $rem . $ct;
+		}
+		else
+		{
+			report("unparseable $ct variant note ($note)")
+			    if ($rem ne '');
+		}
+
+		if ($corr eq '')
+		{
+			if ($ct eq 'branch name')
+			{
+			    report("unexpected branch variant note ($note)")
+				    if ($type ne 'Bv');
+			}
+			else
+			{
+			    report("unexpected variant note ($note)")
+				    if ($type ne 'v');
+			}
+		}
+		else
+		{
+			if ($ct eq 'branch name')
+			{
+			    report("unexpected branch variant correction note ($note)")
+				    if ($type ne 'Bvc');
+			}
+			else
+			{
+			    report("unexpected variant correction note ($note)")
+				    if ($type ne 'vc');
+			}
+		}
+	}
+	elsif ($note =~ /^-(.+)$/)
+	{
+		$note = $1;
+		report("unexpected disposition note ($note) with historical type")
+			if (historical_type($type));
+		report("unexpected disposition note ($note) with single date")
+			unless ($dates =~ /-/);
+		if ($note =~ /^transferred to (.+)$/)
+		{
+			check_name($1, 0);
+		}
+		elsif ($note =~ /^converted to branch name for (.+)$/)
+		{
+			check_name($1, 0);
+		}
+		elsif ($note eq 'reblazoned')
+		{
+			report("unexpected reblazoning note ($note) with blazonless type")
+			    unless (has_blazon($type));
+		}
+		elsif ($note =~
+/^(belatedly |erroneously |should have been )?(add|chang|convert|correct|redesignat|releas|remov|return|transferr)ed/
+			)
+		{
+
+			# ok
+		}
+		else
+		{
+			report("unrecognized disposition note ($note)");
+		}
+	}
+	elsif ($note eq 'Closed')
+	{
+		report("unexpected order note ($note)")
+			unless ($type eq 'O');
+	}
+	elsif ($note eq 'Deceased')
+	{
+		report("unexpected personal note ($note)")
+			if ($type eq 'BN' || $type eq 'BD');
+	}
+	elsif ($note =~ /^(Defunct|Disbanded)( as of (.*))?$/)
+	{
+		report("unexpected branch note ($note)")
+			if ($type eq 'N' || $type eq 'D');
+		check_note_date($3, $dates) if ($3 ne '');
+
+	}
+	elsif ($note =~ /^re-(register|correct)ed (with new blazon )?(.+)$/)
+	{
+		check_note_date($3, $dates);
+	}
+	elsif ($note =~ /^(blazon|name) appeared in (.+)$/)
+	{
+		check_note_date($2, $dates);
+	}
+	elsif ($note =~ /^clarified (.+)$/)
+	{
+		check_note_date($1, $dates);
+
+	}
+	elsif ($note =~ /^([?] )?blazon typo for "[^"]+"$/)
+	{
+		report("unexpected blazon note ($note)")
+			unless (has_blazon($type));
+	}
+	elsif ($note =~ /^([?] )?name typo for "[^"]+"$/)
+	{
+
+		# ok
+
+	}
+	elsif ($note =~ /^([?] )?same as (.+)$/)
+	{
+		check_name($2, 0);
+	}
+	elsif ($note =~ /^([?] )?(not the )?same branch as (.+)$/)
+	{
+		check_name($3, 0);
+	}
+	elsif ($note =~ /^([?] )?(not the )?same person as (.+)$/)
+	{
+		my ($namesake) = $3;
+		if ($namesake =~ /^(\d\d\d\d\S) registration$/)
+		{
+			check_date($1);
+			count('note date');
+		}
+		elsif ($namesake =~ /^["]([^"]+)["] or ["]([^"]+)["]$/)
+		{
+			my $chk  = $1;
+			my $chk2 = $2;
+			check_name($chk,  1);
+			check_name($chk2, 1);
+		}
+		else
+		{
+			check_name($namesake, 1);
+		}
+	}
+	elsif ($note =~ /^Also the arms of (.+)$/)
+	{
+		report("unexpected device note ($note)")
+			unless ($type eq 'd');
+		check_name($1, 0);
+	}
+	elsif ($note =~ /^([?] )?same badge also registered to ([^;]+)/)
+	{
+		my $chk = $2;
+		report("unexpected badge note ($note)")
+			unless ($type =~ /^[Bb]$/);
+		check_name($chk, 0);
+	}
+	elsif ($note =~ /^([?] )?same household name also registered to (.+)$/)
+	{
+		report("unexpected household name note ($note)")
+			if ($type ne 'HN');
+		check_name($2, 0);
+
+	}
+	elsif ($note eq 'attributed' || $note eq 'cant' || $note eq 'pun')
+	{
+		report("unexpected blazon note ($note)")
+			unless (has_blazon($type));
+	}
+	elsif ($note =~ /^(first|second) use of this holding name$/)
+	{
+
+		# ok
+	}
+	elsif ($note =~ /^(first|second) registration of this name$/)
+	{
+
+		# ok
+	}
+	elsif ($note eq 'name appeal')
+	{
+		report("unexpected name-change note ($note)")
+			unless ($type eq 'NC');
+	}
+	elsif ($note eq 'branch name appeal')
+	{
+		report("unexpected branch name-change note ($note)")
+			unless ($type eq 'BNC');
+	}
+	elsif ($note eq '?')
+	{
+
+		# ok
+
+	}
+	elsif ($note =~ /^Owner:/)
+	{
+	}
+	else
+	{    # misc
+		report("unexpected character ($1) in miscellaneous note")
+			if ($note =~ m#([^ 0-9A-Za-z'.,:";?/{}-])#);
+
+      #report("miscellaneous note ($note)")
+      #  unless ($note =~ /^(An?|The) .+ (is,?|are|looks? like|points) .+[.]$/);
+	}
+	return $nonsca;
+}
+
+sub check_blazon
+{
+	my $blazon = shift;
+	my $type = shift;
+	my ($d1, $d2) = check_dates(shift(), 1);
+	my $nonsca = shift;
+	
+	return if $blazon eq 'blazon?';
+	my $work = $blazon;
+	if ($blazon =~ /^\((Light|Dark|Tinctureless)\) (.*)$/)
+	{
+		$work = $2;
+		report("unexpected tinctureless armory")
+			if $type !~ /^[Bbgs]$/;
+	}
+	elsif ($blazon =~ /^\(Fieldless\) (.*)$/)
+	{
+		$work = $1;
+		report("unexpected fieldless armory")
+			if $type !~ /^([Bbadg])$/;
+	}
+	else
+	{
+		report("unexpected fielded armory")
+			if $type !~ /^([BDabd]|D[?]|BD)$/;
+	}
+	report("core blazon ($work) does not begin with a capital letter")
+		if $work !~ /^[A-Z]/;
+	
+  while ($work =~ /^(.*)"([^"\[\]]+)"(.*)$/) {
+    $work = "$1$2$3";
+  }
+  while ($work =~ /^(.+) \[[^"\[\]]+\](.*)$/) {
+    $work = $1.$2;
+  }
+  while ($work =~ /^(.+)\(([^"\(\)]+)\)(.*)$/) {
+    $work = "$1$2$3";
+  }
+	report("word 'Or' not capitalized in recent blazon")
+		if $work =~ /\bor\b/ && $d1 > 198007;
+	report("blazon does not end with a dot")
+		unless $work =~ /\.$/;
+	
+	$blazon = check_daud_codes($blazon, 'blazon');
+	while ($blazon =~ /^(.*)[(]([^()]+)[)](.*)$/)
+	{
+		$blazon = "$1$2$3"; # de-parenthesize
+	}
+	while ($blazon =~ /^(.*)"([^"\[\]]+)"(.*)$/)
+	{
+		$blazon = "$1$2$3"; # remove pair of double-quotes
+	}
+	while ($blazon =~ /^(.*)\[([^\]\[]+)\](.*)$/)
+	{
+		report("unexpected square-brackets in blazon") if $nonsca;
+		$blazon = "$1$2$3"; # remove a set of square-brackets
+	}
+	if ($blazon =~ /^(.+) [&] (.+)$/)
+	{
+		$blazon = "$1 and $2"; # remove an ampersand
+	}
+	
+	report("unexpected character ($1) in blazon")
+		if $blazon =~ /([^ A-Za-z0-9'.,:;?!()-])/;
+	
+	report("leading blank in blazon") if $blazon =~ /^ /;
+	report("trailing blain in blazon") if $blazon =~ / $/;
+	report("extraneous blank in blazon") if $blazon =~ /[ ][ .,:)-]|[`(-][ ]/;
+	report("missing blank in blazon") if $blazon =~ /[^ ][(]|[,:)][^ ]/;
+}
+
+sub check_description
+{
+	my $desc = shift;
+	my ($category, @features) = split(/:/, $desc);
+	report("unknown category ($category) in description")
+		unless exists $known_category{$category};
+	my %f;
+	foreach my $feature (@features)
+	{
+		my $fg = $known_feature{$feature};
+		if (not exists $known_feature{$feature})
+		{
+			report("unknown feature ($feature) in description ($desc)");
+		}
+		elsif ($f{$fg})
+		{
+			report("multiple $fg features in description ($desc)");
+		}
+		else
+		{
+			$f{$fg} = $feature;
+		}
+	}
+	my $fgr = $f{'group'} || '';
+	my $fnu = $f{'number'} || '';
+	if ($fnu eq 'seme')
+	{
+		$fnu = 6;
+	}
+	elsif ($fnu =~ /^(\d+) or more$/)
+	{
+		$fnu = $1;
+	}
+	elsif ($fnu eq '' || $fnu =~ /^(\d+) or fewer$/)
+	{
+		$fnu = 1;
+	}
+	elsif ($fnu !~ /^(\d+)$/)
+	{
+		report("unknown numeric feature ($fnu) in description ($desc)");
+	}
+	
+	if ($fnu > 3 and $fgr =~ /^g3/)
+	{
+		report("more than three primaries ($fnu) in description ($desc)");
+	}
+	elsif ($fnu > 2 and $fgr =~ /^g2/)
+	{
+		report("more than two primaries ($fnu) in description ($desc)");
+	}
+	elsif ($fnu > 1 and $fgr =~ /^s[op]/)
+	{
+		report("more than one primary ($fnu) in description ($desc)");
+	}
+}
+
+sub check_household_name
+{
+	my $name = shift;
+  if ($name =~ /^([A-Za-z]+) /) {
+    # look at the first word
+    my $w1 = $1;
+    if ($w1 =~ /^(braithrean|brotherhood|casa|clann?|company|fellowship|freehold|house?|household|hus|keep|league|maison)$/i) {
+      report("household name begins with designator ($w1)");
+    } elsif (
+        $w1 =~ /^(af|an|aus|d[eou]|de[ils]|della|in|na|o|of|van|vo[mn])$/i) {
+      report("household name begins with preposition ($w1)");
+    } elsif (
+        $w1 =~ /^(das|de[mnr]|die|els?|las?|les?|the)$/i) {
+      report("household name begins with article ($w1)");
+    }
+  }
+  
+  check_name ($name, 1);
+}
+
+sub delangle
+{
+	my $text = shift;
+	$text =~ s/^([^<>]*)<([^<>]+)>([^<>]*)$/$1$3/;
+	return $text;
+}

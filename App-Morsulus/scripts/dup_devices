@@ -1,0 +1,21 @@
+#!/usr/local/bin/perl
+use strict;
+use warnings;
+
+my %devices;
+while (<>)
+{
+	chomp;
+	my ($name, $source, $type, $text, $notes, undef) = split /\|/;
+	next unless ($type eq 'd' or $type eq 'D');
+	next if $source =~ /-/;
+	next if $notes =~ /ancient arms/i;
+	next if $notes =~ /important non-sca/i;
+	push @{$devices{$name}}, $_;
+}
+
+for my $dup (sort grep {scalar @{$devices{$_}} > 1} keys %devices)
+{
+	print "-----------\n",
+		join("\n", @{$devices{$dup}}), "\n";
+}

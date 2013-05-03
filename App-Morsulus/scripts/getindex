@@ -1,0 +1,923 @@
+#!/usr/bin/perl
+use strict;
+$|++;
+
+push @ARGV, 'ft119a.ps' unless @ARGV;
+
+my @heads;
+my $head;
+my $lasthead;
+my $page;
+print STDERR "making list...";
+my %list = make_list();
+print STDERR "made\n";
+push @heads, "page $page";
+while (<>)
+{
+	/^\%\%Page: (\d+) / and $page = $1 and next;
+	if (/^(72.00|330.00|36.00|294.00).*TB10$/.../^(72.00|330.00|36.00|294.00)/)
+	{
+		chomp;
+		next if /continued/;
+		/\((.*)\)/;
+		$head .= " $1";
+	}
+	elsif ($head)
+	{
+		$head =~ s/ \S+$//;
+		$head =~ s/^\s+//;
+		if (exists $list{$head} and $head ne $lasthead)
+		{
+			push @heads, "$page\t$list{$head}";
+		}
+		#push @heads, "$page\t$head" if $head ne $lasthead && exists $list{$head};
+		$lasthead = $head;
+		$head = '';
+	}
+	next;
+	if (/Armorial through December 2007/)
+	{
+		/\((\d+) -/ and $page = $1;
+		/2007 (\d+)\)/ and $page = $1;
+		$page++;
+		$page = 537 if $page == 536;
+		#push @heads, "page $page";
+	}
+}
+
+print join("\n", @heads);
+
+sub make_list
+{
+	my @targets = points_of_interest();
+	my @labels = index_entry_names();
+	my %list;
+	while (@targets)
+	{
+		$list{shift(@targets)} = shift(@labels);
+	}
+	return %list;
+}
+
+sub points_of_interest
+{
+	split(/\n/, <<POI);
+Abacus
+Alembic
+Amphibian
+Anchor
+Annulet - 1 - Argent
+Annulet - 2
+Anvil
+Architecture
+Arm
+Armor
+Arrangement - Creature - Addorsed
+Arrangement - Creature - Combattant - Argent
+Arrangement - Creature - Respectant
+Arrangement - Head - Addorsed
+Arrangement - In annulo - 4 or fewer
+Arrangement - In arch
+Arrangement - In bend - 2
+Arrangement - In bend sinister
+Arrangement - In cross - Argent
+Arrangement - In estoile
+Arrangement - In fess - 2
+Arrangement - In mascle
+Arrangement - In orle - Argent
+Arrangement - In pall
+Arrangement - In saltire - 2 - Primary - Argent
+Arrangement - In saltire - 2 - Tertiary
+Arrangement - In saltire - 4 or more
+Arrangement - In triquetra
+Arrow - 1
+Arthropod - Ant
+Axe - 1 - Argent
+Axe - 2
+Axle bracket
+Balance
+Barrel
+Base - Uncharged - Plain line
+Base - Uncharged - Complex line - Argent
+Base - Charged - Plain line
+Basket
+Battering ram
+Beacon
+Beast - Anteater
+Beast - Bear - 1 - Argent
+Beast - Bear - 2
+Beast - Boar
+Beast - Cat - 1 - Argent - Couchant
+Beast - Cat - 1 - Azure
+Beast - Cat - 1 - Or - Couchant
+Beast - Cat - 1 - Purpure
+Beast - Cat - 1 - Sable - Couchant
+Beast - Cat - 1 - Vert
+Beast - Cat - 2 - Argent
+Beast - Cat - 3 or more
+Beast - Deer - Argent
+Beast - Demi
+Beast - Dog - 1 - Argent - Couchant
+Beast - Dog - 1 - Azure
+Beast - Dog - 1 - Sable - Couchant
+Beast - Dog - 1 - Vert
+Beast - Dog - 2 - Argent
+Beast - Dog - 3 or more
+Beast - Elephant
+Beast - Horse - 1 - Argent
+Beast - Horse - 2
+Beast - Monkey
+Beehive
+Bell
+Bend - 1 - Uncharged - Plain line - Argent
+Bend - 1 - Uncharged - Complex line
+Bend - 1 - Charged - Plain line - Argent
+Bend - 1 - Charged - Complex line
+Bend - 2 or more
+Bend sinister - 1 - Uncharged - Plain line - Argent
+Bend sinister - 1 - Uncharged - Complex line
+Bend sinister - 1 - Charged - Plain line - Argent
+Bend sinister - 1 - Charged - Complex line
+Bend sinister - 2 or more
+Billet
+Bird - Demi
+Bird - Whole - 1 - Bird affronty
+Bird - Whole - 1 - Close to dexter - Argent
+Bird - Whole - 1 - Close to sinister
+Bird - Whole - 1 - Displayed - Argent
+Bird - Whole - 1 - Migrant to base
+Bird - Whole - 1 - Stooping to dexter
+Bird - Whole - 1 - Volant to dexter
+Bird - Whole - 1 - Other bird posture
+Bird - Whole - 2 - Argent
+Bird - Whole - 3 or more
+Body part
+Bone
+Book - Sole primary
+Bordure - Uncharged - Plain line - Argent - Not surrounding
+Bordure - Uncharged - Plain line - Azure
+Bordure - Uncharged - Plain line - Multicolor -   argent -  and azure
+Bordure - Uncharged - Plain line - Or - Not surrounding
+Bordure - Uncharged - Plain line - Purpure
+Bordure - Uncharged - Plain line - Sable - Not surrounding
+Bordure - Uncharged - Plain line - Vert
+Bordure - Uncharged - Jagged - Argent
+Bordure - Charged - Plain line - Argent
+Bottle
+Bow
+Box
+Broom
+Buckle
+Caliper
+Caltrap
+Candle
+Candlestick
+Canton
+Card pique
+Cartouche
+Castle - Sole primary - Argent
+Cauldron
+Chain
+Chair
+Chess piece
+Chevron - 1 - Uncharged - Plain line - Argent
+Chevron - 1 - Charged - Plain line - Argent
+Chevron - 1 - Charged - Complex line
+Chevron - 2 - Argent
+Chevron - 3 or more
+Chevron inverted - 1 - Uncharged
+Chevron inverted - 2 or more
+Chief - Uncharged - Plain line - Argent
+Chief - Charged - Plain line - Argent - Not above
+Chief - Charged - Plain line - Argent - Above 1 argent only
+Chief - Charged - Plain line - Argent - Above 1 azure
+Chief - Charged - Plain line - Argent - Above 1 or only
+Chief - Charged - Plain line - Argent - Above 1 purpure
+Chief - Charged - Plain line - Argent - Above 2
+Chief - Charged - Plain line - Azure
+Chief - Charged - Plain line - Or - Not above
+Chief - Charged - Plain line - Or - Above 1 argent only
+Chief - Charged - Plain line - Or - Above 1 azure
+Chief - Charged - Plain line - Or - Above 1 or only
+Chief - Charged - Plain line - Or - Above 1 purpure
+Chief - Charged - Plain line - Or - Above 2
+Chief - Charged - Plain line - Purpure
+Chief - Charged - Plain line - Sable - Not above
+Chief - Charged - Plain line - Sable - Above 1 argent
+Chief - Charged - Plain line - Sable - Above 1 gules only
+Chief - Charged - Plain line - Sable - Above 1 multicolor
+Chief - Charged - Plain line - Sable - Above 1 sable only
+Chief - Charged - Plain line - Sable - Above 1 vert
+Chief - Charged - Plain line - Sable - Above 2
+Chief - Charged - Plain line - Vert
+Chief - Charged - Jagged - Argent
+Chief - Charged - Long
+Chief - Charged - Square - Argent
+Chief - Charged - Wavy - Argent
+Clarion
+Claw
+Clothing - Belt
+Cloud
+Coffin
+Comet
+Compass rose
+Cornucopia
+Cradle
+Crescent - 1 - Argent - Decrescent
+Crescent - 1 - Fur
+Crescent - 1 - Gules - Decrescent
+Crescent - 1 - Purpure
+Crescent - 1 - Sable - Decrescent
+Crescent - 2
+Cross - As charge - Sole primary - Argent
+Cross - Throughout - Uncharged - Plain line
+Crown
+Crutch
+Cup - 1 - Argent
+Cup - 2 or more
+Die
+Dragon scale
+Drinking horn
+Ermine spot
+Escarbuncle
+Escutcheon
+Estoile - 1
+Ewer
+Eye
+Eyeglasses
+Fan
+Feather - Argent
+Fer a loup
+Fess - 1 - Uncharged - Plain line
+Fess - 1 - Uncharged - Complex line - Argent
+Fess - 1 - Charged - Plain line - Argent
+Fess - 1 - Charged - Complex line
+Fess - 2
+Field division - Barry - Plain line - Argent
+Field division - Bendy
+Field division - Checky - Argent -  and azure
+Field division - Chevronelly
+Field division - Gyronny - Argent -  and azure
+Field division - Lozengy
+Field division - Paly
+Field division - Per bend - Argent -  and azure
+Field division - Per bend sinister - Argent -  and azure
+Field division - Per chevron - Argent -  and azure
+Field division - Per chevron inverted - Argent -  and azure
+Field division - Per fess - Argent -  and azure
+Field division - Per pale - Argent -  and azure
+Field division - Per pall
+Field division - Per saltire - Argent -  and azure
+Field division - Quarterly - Argent -  and azure
+Field division - Vetu
+Field only
+Field treatment - Ermined
+Field treatment - Papelonny
+Fire
+Fish - Angelfish
+Fish - Dolphin - 1
+Fish - Ray
+Flag
+Flaunch - Argent
+Fleam
+Fleur de lys - 1
+Fleur de lys - 2 - Argent
+Flower - Bouquet
+Flower - Rose - 1 - Argent
+Flower - Rose - 2
+Flower - Rose - 3 - Argent
+Flower - Rose - 4 or more
+Flower - Thistle - 1
+Flower - Trumpet shape
+Foil - Trefoil
+Foodstuff
+Footprint
+Fret - Argent
+Fruit - Apple
+Fruit - Nut - Acorn
+Fruit - Pinecone
+Fungus
+Furison
+Garb
+Gate
+Gore
+Goute - Argent
+Grenade
+Gun
+Gurges
+Gyron
+Hammer - 1
+Hand - 1 - Argent
+Hand - 2 or more
+Handle
+Head - Beast - Badger
+Head - Beast - Cat - Sole primary
+Head - Beast - Deer
+Head - Beast - Dog - Sole primary
+Head - Beast - Elephant
+Head - Bird
+Head - Monster - Dragon
+Head - Reptile
+Heart - 1 - Argent
+Heart - 2 or more
+Helm crest
+Helmet
+Hide
+Hook
+Horn - Creature
+Horseshoe
+Hourglass
+Human figure
+Inkhorn
+Jewelry
+Key
+Keyhole
+Keystone
+Knot - Argent
+Label
+Ladder
+Lamp
+Leaf - 1
+Leg - Beast
+Lightning bolt
+Lock
+Lozenge - 1
+Lure - Hawk's
+Mace
+Manacle
+Mascle
+Mask
+Maunch
+Millrind
+Mirror
+Mollusk - Octopus
+Monster - Antelope
+Monster - Dragon - 1 - Argent
+Monster - Dragon - 2 or more
+Monster - Enfield
+Monster - Griffin - 1 - Argent
+Monster - Griffin - 2 or more
+Monster - Humanoid
+Monster - Pegasus - Sole primary - Argent
+Monster - Pegasus - Group primary
+Monster - Phoenix
+Monster - Sea - Dragon
+Monster - Sea - Horse - 1 - Argent
+Monster - Sea - Horse - 2 or more
+Monster - Sea - Lion
+Monster - Sphinx
+Monster - Unicorn - 1 - Argent
+Monster - Unicorn - 2 or more
+Monster - Winged - 1 - Argent
+Monster - Winged - 2 or more
+Monster - Other
+Mortar & pestle
+Mountain
+Moustache
+Mullet - Uncharged - 1 - Argent - Sole primary
+Mullet - Uncharged - 1 - Azure
+Mullet - Uncharged - 1 - Or - Sole primary
+Mullet - Uncharged - 1 - Purpure
+Mullet - Uncharged - 2 - Argent
+Mullet - Charged - Argent
+Musical instrument - Bagpipe
+Musical instrument - Harp - Sole primary
+Musical instrument - Horn
+Nail
+Needle
+Nesselblatt
+Orle - 1 - Argent
+Orle - 2 or more
+Pale - 1 - Uncharged - Plain line
+Pale - 1 - Charged - Plain line - Argent
+Pale - 1 - Charged - Complex line
+Pale - 2 or more
+Pall - Uncharged - Plain line
+Pall - Charged
+Pall inverted
+Pavilion
+Paw print
+Pen
+Pen box
+Peripheral only
+Pheon
+Pile - 1 - Uncharged - Plain line
+Pile - 2 or more
+Pile inverted - 1 - Uncharged
+Pile inverted - 2 or more
+Pillow
+Pipe - Smoking
+Plant - Cactus
+Plant - Sprig
+Pole axe
+Polygon
+Press
+Quintain
+Quiver
+Rainbow
+Reptile - Lizard
+Reptile - Snake - Argent
+Reptile - Turtle
+Ribbon
+Rivet
+Rock
+Roundel - Demi
+Roundel - Whole - 1 - Uncharged - Plain line - Argent
+Roundel - Whole - 1 - Uncharged - Complex line
+Roundel - Whole - 1 - Charged - Argent
+Roundel - Whole - 2
+Roundel - Whole - 3 or more - Argent
+Saddlery
+Saltcellar
+Saltire - As charge
+Saltire - Throughout - Uncharged - Plain line
+Seed
+Shear
+Shell - Escallop - 1
+Shell - Other
+Ship - 1 - Argent
+Ship - 2
+Ship - Part
+Sickle
+Siege engine
+Sling
+Sparks
+Spear
+Spider web
+Spindle
+Staff
+Stream
+Sun - Demi - Argent
+Sun - Whole - Uncharged - 1 - Argent
+Sun - Whole - Uncharged - 2
+Sunburst
+Sword - 1 - Bendwise
+Sword - 1 - Palewise - Argent - Sole primary
+Sword - 1 - Palewise - Azure
+Sword - 2 - Argent
+Sword - 3 or more
+Symbol
+Table
+Tail
+Thunderbolt
+Tongue
+Tool - Agricultural
+Tooth
+Torch
+Torse
+Toy
+Tree - Blasted
+Tree - Rounded shape - 1 - Argent
+Tree - Rounded shape - 2 or more
+Tree - Stump
+Tree branch
+Triangle
+Trident
+Tripod
+Triquetra
+Triskelion
+Wagon
+Water bouget
+Wave
+Well - Water
+Wheel
+Windmill
+Wing - 1
+Winged object
+Wolf's tooth
+Wreath - Laurel - Sole primary - Argent
+Wreath - Not laurel
+POI
+}
+
+sub index_entry_names
+{
+	split(/\n/, <<POI);
+Abacus
+Alembic
+Amphibian
+Anchor
+Annulet - 1 - 9 tinctures
+Annulet - 2, 3, 4 or more
+Anvil
+Architecture
+Arm
+Armor
+Arrangement - Creature - Addorsed
+Arrangement - Creature - Combattant - 9 tinctures
+Arrangement - Creature - Respectant
+Arrangement - Head - Addorsed, Respectant
+Arrangement - In annulo - 4 or fewer, 5 or more
+Arrangement - In arch
+Arrangement - In bend - 2, 3, 4 or more
+Arrangement - In bend sinister, In chevron, In chevron inverted
+Arrangement - In cross - 9 tinctures
+Arrangement - In estoile
+Arrangement - In fess - 2, 3, 4 or more
+Arrangement - In mascle
+Arrangement - In orle - 9 tinctures
+Arrangement - In pall, In pall inverted, In pile
+Arrangement - In saltire - 2 - Primary, Secondary - 9 tinctures
+Arrangement - In saltire - 2 - Tertiary
+Arrangement - In saltire - 4 or more
+Arrangement - In triquetra
+Arrow - 1, 2, 3, 4 or more
+Arthropod - Ant, Bee, Beetle, Dragonfly, Lobster, Mantis, Moth, Scorpion, Spider
+Axe - 1 - 9 tinctures
+Axe - 2, 3 or more
+Axle bracket
+Balance
+Barrel
+Base - Uncharged - Plain line
+Base - Uncharged - Complex line - 9 tinctures
+Base - Charged - Plain line, Complex line
+Basket
+Battering ram
+Beacon
+Beast - Anteater, Badger, Bat
+Beast - Bear - 1 - 9 tinctures
+Beast - Bear - 2, 3 or more
+Beast - Boar, Bull, Camel
+Beast - Cat - 1 - Argent - four postures
+Beast - Cat - 1 - Azure, Fur, Gules, Multicolor
+Beast - Cat - 1 - Or - four postures
+Beast - Cat - 1 - Purpure
+Beast - Cat - 1 - Sable - four postures
+Beast - Cat - 1 - Vert
+Beast - Cat - 2 - 9 tinctures
+Beast - Cat - 3 or more
+Beast - Deer - 9 tinctures
+Beast - Demi
+Beast - Dog - 1 - Argent - four postures
+Beast - Dog - 1 - Azure, Fur, Gules, Multicolor, Or, Purpure
+Beast - Dog - 1 - Sable - four postures
+Beast - Dog - 1 - Vert
+Beast - Dog - 2 - 9 tinctures
+Beast - Dog - 3 or more
+Beast - Elephant, Goat, Hedgehog, Hippopotamus
+Beast - Horse - 1 - 9 tinctures
+Beast - Horse - 2, 3 or more
+Beast - Monkey, Mouse, Rabbit, Seal, Squirrel, Weasel, Other
+Beehive
+Bell
+Bend - 1 - Uncharged - Plain line - 9 tinctures
+Bend - 1 - Uncharged - Complex line
+Bend - 1 - Charged - Plain line - 9 tinctures
+Bend - 1 - Charged - Complex line
+Bend - 2 or more
+Bend sinister - 1 - Uncharged - Plain line - 9 tinctures
+Bend sinister - 1 - Uncharged - Complex line
+Bend sinister - 1 - Charged - Plain line - 9 tinctures
+Bend sinister - 1 - Charged - Complex line
+Bend sinister - 2 or more
+Billet
+Bird - Demi
+Bird - Whole - 1 - Bird affronty
+Bird - Whole - 1 - Close to dexter - 10 tinctures
+Bird - Whole - 1 - Close to sinister
+Bird - Whole - 1 - Displayed - 10 tinctures
+Bird - Whole - 1 - Migrant to base, Rising to dexter, Rising to sinister
+Bird - Whole - 1 - Stooping to dexter, Stooping to sinister
+Bird - Whole - 1 - Volant to dexter, Volant to sinister
+Bird - Whole - 1 - Other bird posture
+Bird - Whole - 2 - 10 tinctures
+Bird - Whole - 3 or more
+Body part
+Bone
+Book - 4 groups
+Bordure - Uncharged - Plain line - Argent - 0, 1, 1+, 2, 3 or more
+Bordure - Uncharged - Plain line - Azure, Fur, Gules
+Bordure - Uncharged - Plain line - Multicolor - 37 tincture pairs
+Bordure - Uncharged - Plain line - Or - 0, 1, 1+, 2, 3 or more
+Bordure - Uncharged - Plain line - Purpure
+Bordure - Uncharged - Plain line - Sable - 0, 1, 1+, 2, 3 or more
+Bordure - Uncharged - Plain line - Vert
+Bordure - Uncharged - Jagged, Long, Square, Wavy - 9 tinctures
+Bordure - Charged - Plain line, Complex line - 9 tinctures
+Bottle
+Bow
+Box
+Broom
+Buckle
+Caliper
+Caltrap
+Candle
+Candlestick
+Canton
+Card pique
+Cartouche
+Castle - 4 groups - 9 tinctures
+Cauldron
+Chain
+Chair
+Chess piece
+Chevron - 1 - Uncharged - Plain line, Complex line - 9 tinctures
+Chevron - 1 - Charged - Plain line - 9 tinctures
+Chevron - 1 - Charged - Complex line
+Chevron - 2 - 9 tinctures
+Chevron - 3 or more
+Chevron inverted - 1 - Uncharged, Charged
+Chevron inverted - 2 or more
+Chief - Uncharged - Plain line, Complex line - 9 tinctures
+Chief - Charged - Plain line - Argent - Not above
+Chief - Charged - Plain line - Argent - Above 1 argent only, plus
+Chief - Charged - Plain line - Argent - Above 1 azure, fur, gules, multicolor
+Chief - Charged - Plain line - Argent - Above 1 or only, plus
+Chief - Charged - Plain line - Argent - Above 1 purpure, sable, vert
+Chief - Charged - Plain line - Argent - Above 2, Above 3 or more
+Chief - Charged - Plain line - Azure, Fur, Gules, Multicolor
+Chief - Charged - Plain line - Or - Not above
+Chief - Charged - Plain line - Or - Above 1 argent only, plus
+Chief - Charged - Plain line - Or - Above 1 azure, fur, gules, multicolor
+Chief - Charged - Plain line - Or - Above 1 or only, plus
+Chief - Charged - Plain line - Or - Above 1 purpure, sable, vert
+Chief - Charged - Plain line - Or - Above 2, Above 3 or more
+Chief - Charged - Plain line - Purpure
+Chief - Charged - Plain line - Sable - Not above
+Chief - Charged - Plain line - Sable - Above 1 argent, azure, fur
+Chief - Charged - Plain line - Sable - Above 1 gules only, plus
+Chief - Charged - Plain line - Sable - Above 1 multicolor, or, purpure
+Chief - Charged - Plain line - Sable - Above 1 sable only, plus
+Chief - Charged - Plain line - Sable - Above 1 vert
+Chief - Charged - Plain line - Sable - Above 2, Above 3 or more
+Chief - Charged - Plain line - Vert
+Chief - Charged - Jagged - 9 tinctures
+Chief - Charged - Long
+Chief - Charged - Square - 9 tinctures
+Chief - Charged - Wavy - 9 tinctures
+Clarion
+Claw
+Clothing - Belt, Fool's motley, Footgear, Gown, Headgear, Pouch
+Cloud
+Coffin
+Comet
+Compass rose
+Cornucopia
+Cradle
+Crescent - 1 - Argent, Azure - 5 orientations
+Crescent - 1 - Fur
+Crescent - 1 - Gules, Multicolor, Or - 5 orientations
+Crescent - 1 - Purpure
+Crescent - 1 - Sable, Vert - 5 orientations
+Crescent - 2, 3, 4 or more
+Cross - As charge - 4 groups - 9 tinctures
+Cross - Throughout - Uncharged, Charged - Plain line, Complex line
+Crown
+Crutch
+Cup - 1 - 9 tinctures
+Cup - 2 or more
+Die
+Dragon scale
+Drinking horn
+Ermine spot
+Escarbuncle
+Escutcheon
+Estoile - 1, 2 or more
+Ewer
+Eye
+Eyeglasses
+Fan
+Feather - 9 tinctures
+Fer a loup
+Fess - 1 - Uncharged - Plain line
+Fess - 1 - Uncharged - Complex line - 9 tinctures
+Fess - 1 - Charged - Plain line - 9 tinctures
+Fess - 1 - Charged - Complex line
+Fess - 2, 3, 4 or more
+Field division - Barry - Plain line, Complex line - 9 tinctures
+Field division - Bendy, Bendy sinister
+Field division - Checky - 38 tincture pairs
+Field division - Chevronelly
+Field division - Gyronny - 38 tincture pairs
+Field division - Lozengy
+Field division - Paly
+Field division - Per bend - 58 tincture pairs
+Field division - Per bend sinister - 58 tincture pairs
+Field division - Per chevron - 58 tincture pairs
+Field division - Per chevron inverted - 58 tincture pairs
+Field division - Per fess - 58 tincture pairs
+Field division - Per pale - 58 tincture pairs
+Field division - Per pall, Per pall inverted
+Field division - Per saltire - 58 tincture pairs
+Field division - Quarterly - 58 tincture pairs
+Field division - Vetu, Other
+Field only
+Field treatment - Ermined, Honeycombed, Mailed, Mascully, Masoned
+Field treatment - Papelonny, Plumetty, Potenty, Scaly, Vairy
+Fire
+Fish - Angelfish
+Fish - Dolphin - 1, 2, 3 or more
+Fish - Ray, Seahorse, Whale, Other
+Flag
+Flaunch - 9 tinctures
+Fleam
+Fleur de lys - 1
+Fleur de lys - 2, 3 or more - 9 tinctures
+Flower - Bouquet, Cup shape, Few petals, Iris, Multifloreted, Multipetaled
+Flower - Rose - 1 - 9 tinctures
+Flower - Rose - 2
+Flower - Rose - 3 - 9 tinctures
+Flower - Rose - 4 or more
+Flower - Thistle - 1, 2 or more
+Flower - Trumpet shape
+Foil - Trefoil, Quatrefoil, Cinquefoil, Sexfoil, Septfoil, Octofoil
+Foodstuff
+Footprint
+Fret - 9 tinctures
+Fruit - Apple, Berry
+Fruit - Nut - Acorn, Not acorn
+Fruit - Pinecone, Pomegranate, Strawberry, Other
+Fungus
+Furison
+Garb
+Gate
+Gore
+Goute - 9 tinctures
+Grenade
+Gun
+Gurges
+Gyron
+Hammer - 1, 2 or more
+Hand - 1 - 9 tinctures
+Hand - 2 or more
+Handle
+Head - Beast - Badger, Bear, Boar, Bull
+Head - Beast - Cat - 4 groups
+Head - Beast - Deer
+Head - Beast - Dog - 4 groups
+Head - Beast - Elephant, Goat, Horse, Marten, Rabbit, Skull, Other
+Head - Bird, Fish, Human, Human skull, Jessant de lys
+Head - Monster - Dragon, Griffin, Tyger, Unicorn, Other
+Head - Reptile, Weapon
+Heart - 1 - 9 tinctures
+Heart - 2 or more
+Helm crest
+Helmet
+Hide
+Hook
+Horn - Creature
+Horseshoe
+Hourglass
+Human figure
+Inkhorn
+Jewelry
+Key
+Keyhole
+Keystone
+Knot - 9 tinctures
+Label
+Ladder
+Lamp
+Leaf - 1, 2, 3, 4 or more
+Leg - Beast, Bird, Human, Monster
+Lightning bolt
+Lock
+Lozenge - 1, 2 or more
+Lure - Hawk's
+Mace
+Manacle
+Mascle
+Mask
+Maunch
+Millrind
+Mirror
+Mollusk - Octopus, Snail
+Monster - Antelope, Bog beast, Centaur, Demi
+Monster - Dragon - 1 - 9 tinctures
+Monster - Dragon - 2 or more
+Monster - Enfield
+Monster - Griffin - 1 - 9 tinctures
+Monster - Griffin - 2 or more
+Monster - Humanoid, Knotted, Manticore, Merfolk, Multibodied, Multiheaded, Panther
+Monster - Pegasus - Sole primary - 9 tinctures
+Monster - Pegasus - Group primary, Secondary, Tertiary
+Monster - Phoenix, Pithon
+Monster - Sea - Dragon
+Monster - Sea - Horse - 1 - 9 tinctures
+Monster - Sea - Horse - 2 or more
+Monster - Sea - Lion, Serpent, Wolf, Other
+Monster - Sphinx, Tyger
+Monster - Unicorn - 1 - 9 tinctures
+Monster - Unicorn - 2 or more
+Monster - Winged - 1 - 9 tinctures
+Monster - Winged - 2 or more
+Monster - Other
+Mortar & pestle
+Mountain
+Moustache
+Mullet - Uncharged - 1 - Argent - 4 groups
+Mullet - Uncharged - 1 - Azure, Fur, Gules, Multicolor
+Mullet - Uncharged - 1 - Or - 4 groups
+Mullet - Uncharged - 1 - Purpure, Sable, Vert
+Mullet - Uncharged - 2, 3, 4 or more - 9 tinctures
+Mullet - Charged - 9 tinctures
+Musical instrument - Bagpipe, Drum, Dulcimer
+Musical instrument - Harp - 4 groups
+Musical instrument - Horn, Lute, Organ, Pan pipe, Recorder, Zils
+Nail
+Needle
+Nesselblatt
+Orle - 1 - 9 tinctures
+Orle - 2 or more
+Pale - 1 - Uncharged - Plain line, Complex line
+Pale - 1 - Charged - Plain line - 9 tinctures
+Pale - 1 - Charged - Complex line
+Pale - 2 or more
+Pall - Uncharged - Plain line, Complex line
+Pall - Charged
+Pall inverted
+Pavilion
+Paw print
+Pen
+Pen box
+Peripheral only
+Pheon
+Pile - 1 - Uncharged, Charged - Plain line, Complex line
+Pile - 2 or more
+Pile inverted - 1 - Uncharged, Charged
+Pile inverted - 2 or more
+Pillow
+Pipe - Smoking
+Plant - Cactus, Fern, Heather, Herb, Holly, Onion, Reed
+Plant - Sprig, Strawberry, Thorn, Vine, Wheat, Other
+Pole axe
+Polygon
+Press
+Quintain
+Quiver
+Rainbow
+Reptile - Lizard
+Reptile - Snake - 9 tinctures
+Reptile - Turtle, Worm
+Ribbon
+Rivet
+Rock
+Roundel - Demi
+Roundel - Whole - 1 - Uncharged - Plain line - 9 tinctures
+Roundel - Whole - 1 - Uncharged - Complex line
+Roundel - Whole - 1 - Charged - 9 tinctures
+Roundel - Whole - 2
+Roundel - Whole - 3 or more - 9 tinctures
+Saddlery
+Saltcellar
+Saltire - As charge
+Saltire - Throughout - Uncharged, Charged - Plain line, Complex line
+Seed
+Shear
+Shell - Escallop - 1, 2 or more
+Shell - Other
+Ship - 1 - 9 tinctures
+Ship - 2, 3 or more
+Ship - Part
+Sickle
+Siege engine
+Sling
+Sparks
+Spear
+Spider web
+Spindle
+Staff
+Stream
+Sun - Demi - 9 tinctures
+Sun - Whole - Uncharged - 1 - 9 tinctures
+Sun - Whole - Uncharged - 2, 3 or more
+Sunburst
+Sword - 1 - Bendwise, Bendwise sinister, Fesswise
+Sword - 1 - Palewise - Argent - 4 groups
+Sword - 1 - Palewise - Azure, Fur, Gules, Multicolor, Or, Purpure, Sable, Vert
+Sword - 2 - 9 tinctures
+Sword - 3 or more
+Symbol
+Table
+Tail
+Thunderbolt
+Tongue
+Tool - Agricultural, Artistic, Astronomical, Carpentry, Eating, Textile, Writing, Other
+Tooth
+Torch
+Torse
+Toy
+Tree - Blasted, Elongated shape, Multiple, Palm tree shape, Pine tree shape
+Tree - Rounded shape - 1 - 9 tinctures
+Tree - Rounded shape - 2 or more
+Tree - Stump, Willow
+Tree branch
+Triangle
+Trident
+Tripod
+Triquetra
+Triskelion
+Wagon
+Water bouget
+Wave
+Well - Water
+Wheel
+Windmill
+Wing - 1, 2 or more
+Winged object
+Wolf's tooth
+Wreath - Laurel - 4 groups - 9 tinctures
+Wreath - Not laurel
+POI
+}
+
