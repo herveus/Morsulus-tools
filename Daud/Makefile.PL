@@ -1,4 +1,14 @@
-use ExtUtils::MakeMaker;
+use 5.006;
+use strict;
+use warnings;
+use inc::Module::Install;
+
+name 'Daud';
+all_from 'Daud.pm';
+
+WriteAll;
+__END__
+#use ExtUtils::MakeMaker;
 # See lib/ExtUtils/MakeMaker.pm for details of how to influence
 # the contents of the Makefile that is written.
 WriteMakefile(

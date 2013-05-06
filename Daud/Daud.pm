@@ -268,11 +268,18 @@ Returns the converted string.
 
 =head1 AUTHOR
 
-Michael Houghton, copyright (c) 2002, all rights reserved.
+Michael Houghton, C<< <herveus at cpan.org> >>
 
-This software may be used under the same terms as Perl itself.
+=head1 LICENSE AND COPYRIGHT
 
-=head1 SEE ALSO
+Copyright 2012 Michael Houghton.
+
+This program is free software; you can redistribute it and/or modify it
+under the terms of either: the GNU General Public License as published
+by the Free Software Foundation; or the Artistic License.
+
+See http://dev.perl.org/licenses/ for more information.
+
 
 =head1 TODO
 
