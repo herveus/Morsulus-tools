@@ -4,7 +4,7 @@ use warnings;
 use inc::Module::Install;
 
 name 'Daud';
-all_from 'Daud.pm';
+all_from 'lib/Daud.pm';
 
 WriteAll;
 __END__
