@@ -1,0 +1,240 @@
+#!/usr/local/bin/perl
+
+use strict;
+use warnings;
+use Morsulus::Ordinary::Classic;
+use Morsulus::Ordinary::Legacy;
+use Getopt::Euclid;
+use IO::Prompter;
+use 5.16.0;
+
+my $ord = Morsulus::Ordinary::Classic->new(dbname => $ARGV{-db});
+
+while (prompt "Search by...", "-s", -menu => [ qw/ reg_owner_name blazon description exit / ])
+{
+    if ($_ eq 'reg_owner_name') { search_by_owner_name(); next; }
+    if ($_ eq 'blazon') { search_by_blazon(); next; }
+    if ($_ eq 'description') { search_by_description(); next; }
+    last;
+}
+
+sub search_by_owner_name
+{
+    my $pat = prompt("Enter name pattern:");
+    return if $pat eq '';
+    my @regs = $ord->Registration->search({reg_owner_name => { 'regexp', "$pat" }});
+    my %regs = map { $ord->get_registration($_)->canonicalize->to_string => $_ } @regs;
+    while ((my $reg_txt = prompt -number, "Select an item:", -menu => ["done", keys %regs]) ne "done")
+    {
+        edit_entry($regs{$reg_txt});
+    }
+}
+
+sub search_by_blazon
+{
+    my $pat = prompt "Enter blazon pattern:";
+    return if $pat eq '';
+    my @regs = $ord->Registration->search({
+        'text_blazon.blazon' => { 'regexp', "$pat" },
+        },
+        { join => 'text_blazon' });
+    my %regs = map { $ord->get_registration($_)->canonicalize->to_string => $_ } @regs;
+    while ((my $reg_txt = prompt -number, "Select an item:", -menu => ["done", keys %regs]) ne "done")
+    {
+        edit_entry($regs{$reg_txt});
+    }
+}
+
+sub search_by_description
+{
+    say "search by description";
+}
+
+sub edit_entry
+{
+    my ($item) = @_;
+    display_registration($item);
+    while ((my $field = prompt "edit which field? ", "-s") ne 'x')
+    {
+        print "edit field $field\n";
+        edit_reg_owner_name($item) if $field eq 'a';
+        edit_dates($item) if $field eq 'b';
+        edit_action($item) if $field eq 'c';
+        edit_text($item) if $field eq 'd';
+        edit_notes($item) if $field eq 'e';
+        edit_descs($item) if $field eq 'f';
+        $item->update if $field eq 's';
+        
+        display_registration($item);
+    }
+}
+
+sub display_registration
+{
+    my ($item) = @_;
+    my $classic = $ord->get_registration($item)->canonicalize;
+    print "\na) reg_owner_name: ", $classic->name, "\n",
+        "b) dates: ", $classic->source, "\n",
+        "c) action: ", $classic->type, "\n",
+        "d) text: ", $classic->text, "\n",
+        "e) notes: ", $classic->notes, "\n",
+        "f) descs: ", $classic->descs, "\n",
+        "s) save edits \n",
+        "x) done",  "\n";
+}
+
+sub display_dates
+{
+    my ($item) = @_;
+    print "\na) registration date: ", $item->registration_date->date, "\n",
+        "b) registration kingdom: ", $item->registration_kingdom->kingdom_id, "\n",
+        "c) release date: ", $item->release_date->date, "\n",
+        "d) release kingdom: ", $item->release_kingdom->kingdom_id, "\n",
+        "x) done\n";
+}
+
+sub edit_dates
+{
+    my ($item) = @_;
+    display_dates($item);
+    while ((my $field = prompt "edit which part? ", "-s") ne 'x')
+    {
+        $item->registration_date(edit_date($item->registration_date)) if $field eq 'a';
+        $item->release_date(edit_date($item->release_date)) if $field eq 'c';
+        $item->registration_kingdom(edit_kingdom($item->registration_kingdom)) if $field eq 'b';
+        $item->release_kingdom(edit_kingdom($item->release_kingdom)) if $field eq 'd';
+        display_dates($item);
+    }
+}
+
+sub edit_date
+{
+    my ($date) = @_;
+    while (1)
+    {
+        my $newdate = prompt "\ncurrent value: '", $date->date, "'\npress ENTER to leave alone\nenter - to blank out\nenter new date as yyyymm: ";
+        return $date if $newdate eq '';
+        $newdate = '' if $newdate eq '-';
+        my $checked_date = $ord->Date->find({ date => "$newdate" });
+        return $checked_date if defined $checked_date;
+        print "bad input\n";
+    }
+}
+
+sub edit_kingdom
+{
+    my ($kingdom) = @_;
+    my @kingdoms = $ord->Kingdom->search(undef, { order_by => 'kingdom_name_nominative' });
+    my %kingdoms = map { $_->kingdom_id => $_} @kingdoms; # keyed on name
+    while (1)
+    {
+        print join("\n", map { join(': ', $_->kingdom_id || '-', $_->kingdom_name_nominative || '<none>') } @kingdoms);
+        my $newkingdom = prompt "\ncurrentvalue: '", $kingdom->kingdom_id || '<none>',
+            "\npress ENTER to leave alone\nenter - to blank out\nor select code from list: ", "-s";
+        return $kingdom if $newkingdom eq '';
+        return $kingdoms{$newkingdom} if exists $kingdoms{$newkingdom};
+        return $kingdoms{''} if $newkingdom eq '-';
+    }
+}
+
+sub check_date
+{
+    my ($date) = @_;
+    return 1 if $date eq '';
+    return unless $date =~ /^([0-9]{4})([0-9]{2})$/;
+    my ($year, $month) = ($1, $2);
+    return unless $year > 1965;
+    return unless $month >= 1 && $month <= 12;
+    return 1;
+}
+
+sub edit_notes
+{
+    my ($item) = @_;
+    while (1)
+    {
+        my @notes = $item->notes;
+        print "a) add a new note\n",
+            "x) exit\n",
+            "or select a note to delete it\n";
+        print $_+1, ") ", $notes[$_]->note_text, "\n" for 0..$#notes;
+        my $action = prompt "Enter action: ";
+        return if $action eq 'x';
+        add_note($item) if $action eq 'a' and next;
+        next unless $action+0 eq $action;
+        next unless $action > 0;
+        next unless $action <= @notes;
+        $ord->drop_note($item, $notes[$action-1])
+    }
+}
+
+sub add_note
+{
+    my ($item) = @_;
+    while (1)
+    {
+        my $note_text = prompt "Enter new note or note pattern: ";
+        return if $note_text eq '';
+        my @notes = $ord->Note->search({note_text => { 'regexp', "$note_text" }});
+        if (@notes == 0)
+        {   
+            my $action = prompt "Note not found in existing notes; add new note?", "-y";
+            next unless $action eq 'y';
+            $ord->add_note($item, $note_text);
+            return;
+        }
+        elsif (@notes == 1)
+        {   
+            my $action = prompt "Note found in existing notes; add new note?", "-y";
+            next unless $action eq 'y';
+            $ord->add_note($item, $note_text);
+            return;
+        }
+        $note_text = prompt "Pick an existing note or press ENTER to start over: ", 
+            -menu => [ "done", map { $_->note_text } @notes ];
+        next if $note_text eq 'done';
+        $ord->add_note($item, $note_text);
+        return;
+    }
+}
+
+=pod 
+
+while (prompt -num, 'Enter a number') {
+    say "You entered: $_";
+}
+my $selection
+    = prompt 'Choose wisely...', -menu => {
+            wealth => [ 'moderate', 'vast', 'incalculable' ],
+            health => [ 'hale', 'hearty', 'rude' ],
+            wisdom => [ 'cosmic', 'folk' ],
+      }, '>';
+
+__END__
+
+=head1 NAME
+
+edit_db - edit ordinary database
+
+=head1 SYNOPSIS
+
+    edit_db -db mydb.db 
+    
+=head1 REQUIRED
+
+=over
+
+=item -db <file>
+
+SQLite database file to be created or updated with Ordinary entries. 
+
+=for Euclid:
+    file.type: writable
+
+=back
+
+=head1 OPTIONS
+
+=over
+
+=back

@@ -68,6 +68,8 @@ for my $note ($reg->notes)
         is $note->note_name->name, 'Kultaisen Kapustan Kilta', "note has referenced name";
     }
 }
+$ord->drop_descs("Sable, a spoon Or between two wolf's heads cabossed argent.");
+is $ord->get_registration($reg)->descs, undef, "drop_descs whacked descs";
 
 done_testing();
 

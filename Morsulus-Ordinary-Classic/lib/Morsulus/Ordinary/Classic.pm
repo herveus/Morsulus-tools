@@ -169,12 +169,12 @@ sub load_notes_with_names {
 sub get_notes_with_names
 {
     return (
-        '^Also the arms of (.*)$',
-        '^For (.*)$',
+        '^Also the arms of (?:the )?(.*)$',
+        '^For (?:the )?(.*)$',
         '^JB: (.*)$',
-        '^same branch as (.*)$',
-        '^same person as (.*)$',
-        '-transferred to (.*)$',
+        '^same branch as (?:the )?(.*)$',
+        '^same person as (?:the )?(.*)$',
+        '-transferred to (?:the )?(.*)$',
     );
 }
 
@@ -325,6 +325,14 @@ sub add_note
     }
 }
 
+sub drop_note
+{
+    my $self = shift;
+    my ($reg, $note) = @_;
+    $note = $self->Note->find({note_text => $note}) unless ref($note);
+    $self->RegistrationNote->delete({reg_id => $reg->reg_id, note_id => $note->note_id});
+}
+
 sub add_desc
 {
     my $self = shift;
@@ -354,8 +362,12 @@ sub drop_descs
 {
     my $self = shift;
     my ($blazon) = @_;
-    $blazon = $self->schema->resultset('Blazon')->find($blazon) unless ref($blazon);
-    
+    $blazon = $self->Blazon->search({blazon => $blazon})->first unless ref($blazon);
+    foreach my $desc ($blazon->descriptions)
+    {
+        $self->DescFeature->search({desc_id => $desc->desc_id})->delete;
+        $desc->delete;
+    }
 }
 
 sub Action { my $self = shift; return  $self->schema->resultset('Action'); }
@@ -396,15 +408,28 @@ sub get_registration
 {
     my $self = shift;
     my ($reg) = @_;
+    return if ! defined $reg;
     my $reg_rs = $self->schema->resultset('Registration');
     $reg = $reg_rs->find($reg) unless ref $reg;
     return unless $reg;
     my $entry = Morsulus::Ordinary::Legacy->new;
     $entry->name($reg->get_column('reg_owner_name'));
     $entry->type($reg->action->action_id);
-    $entry->text($reg->text_blazon->blazon) if $entry->has_blazon;
-    $entry->text($reg->text_name->name) unless $entry->has_blazon;
+    if ($entry->has_blazon)
+    {
+        $entry->text($reg->text_blazon->blazon);
+    }
+    else
+    {
+        my $prefix = $entry->type eq 'AN' ? "For " :
+                    $entry->type eq 'NC' ? "See " :
+                    $entry->type eq 'BNC' ? "See " :
+                    $entry->type eq 'R' ? "See " : "";
+        $entry->text($prefix.$reg->text_name->name);
+    }
     # TODO: Account for For/See prefix on text
+    # NC, R get See
+    # AN gets For
     $entry->source('');
     $reg->registration_date->date ne '' and 
         $entry->set_reg_date($reg->registration_date->date);
@@ -415,10 +440,10 @@ sub get_registration
     $reg->release_kingdom->kingdom_id ne '' and 
         $entry->set_rel_kingdom($reg->release_kingdom->kingdom_id);
     $entry->notes('');
-    $entry->add_notes(map { $_->note_text } $reg->notes->all());
+    $entry->add_notes(sort map { $_->note_text } $reg->notes->all());
     if ($entry->has_blazon && ! $entry->is_historical)
     {
-        for my $desc ($reg->text_blazon->descriptions())
+        for my $desc (sort $reg->text_blazon->descriptions())
         {
             $entry->add_descs(join(':', $desc->category->heading,
                 map { $_->feature->feature } $desc->desc_features->all()));

@@ -41,7 +41,7 @@ if ($ARGV{-anydate})
 my $regs = $ord->Registration->search($search);
 while (my $reg = $regs->next)
 {
-    print $ord->get_registration($reg)->to_string, "\n";
+    print $ord->get_registration($reg)->canonicalize->to_string, "\n";
 }
 
 __END__
@@ -108,4 +108,5 @@ Limit items to those without a release date.
 =item -armonly
 
 Limit items to those with armory.
+
 =back

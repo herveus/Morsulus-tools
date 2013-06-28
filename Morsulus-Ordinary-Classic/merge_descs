@@ -12,13 +12,17 @@ open my $descs, '<', $ARGV{-i};
 
 while (my $record = <$descs>)
 {
+    print STDERR $record if $ARGV{-verbose};
     $record =~ s/\r?\n$//;
     my $entry = Morsulus::Ordinary::Legacy->from_string($record);
     next unless $entry->has_blazon;
     next unless $entry->split_descs or $ARGV{-nulls};
+    print STDERR "finding blazon" if $ARGV{-verbose};
     my ($blazon) = $ord->Blazon->search({ blazon => $entry->text } );
-    $self->drop_descs($blazon) unless $ARGV{-merge};
-    $self->add_desc($_, $blazon) for $entry->split_descs;
+    print STDERR "got blazon ", $blazon->blazon if $ARGV{-verbose};
+    $ord->drop_descs($blazon) unless $ARGV{-merge};
+    print STDERR "old descs dropped" if $ARGV{-verbose} && !$ARGV{-merge};
+    $ord->add_desc($_, $blazon) for $entry->split_descs;
 }
 
 __END__
@@ -34,6 +38,8 @@ merge_descs - update descriptions in database from legacy format flat file
 Update blazons in oanda.db from descs.db. Additional options specify
 whether to replace or merge with existing descriptions and how to handle
 input records with no descriptions.
+
+The default behavior is to replace existing descriptions.
     
 =head1 REQUIRED
 
@@ -73,5 +79,9 @@ Accept/ignore input records with no descriptions.
 
 =for Euclid:
     false: nonulls
+
+=item -verbose
+
+Emit generous output on the fly.
 
 =back
