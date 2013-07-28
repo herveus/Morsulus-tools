@@ -6,6 +6,8 @@ use Carp;
 use Moose;
 extends 'Morsulus::Actions';
 
+our $VERSION = '2013.06.001';
+
 has 'db' => (
     isa => 'Morsulus::Ordinary::Classic',
     is => 'ro',
@@ -110,7 +112,7 @@ sub NAME_FOR_ARMORY_REG
     my ($self) = @_;
     if (!$self->is_primary_name_registered($self->name_of))
     {
-        die "Name for armory not registered: ".$self->as_str;
+        die "Name for armory not registered: ".$self->name_of.":".$self->as_str;
     }
 }
 
@@ -119,7 +121,7 @@ sub NAME_FOR_OWNED_NAME_REG
     my ($self) = @_;
     if (!$self->is_primary_name_registered($self->name_of))
     {
-        die "Name for owned name not registered: ".$self->as_str;
+        die "Name for owned name not registered: ".$self->name_of.":".$self->as_str;
     }
 }
 
@@ -129,7 +131,18 @@ sub OWNED_NAME_NOT_REG
     my $owned_name = $self->permute($self->quoted_names_of->[0]);
     if ($self->is_name_registered($owned_name, [ $type ]))
     {
-        die "Owned name already registered: ".$self->as_str;
+        die "Owned name already registered: $owned_name:".$self->as_str;
+        # may need to refine this; what if title == household name? type should cover
+    }
+}
+
+sub OWNED_NAME2_NOT_REG
+{
+    my ($self, $type) = @_;
+    my $owned_name = $self->permute($self->quoted_names_of->[1]);
+    if ($self->is_name_registered($owned_name, [ $type ]))
+    {
+        die "Owned name already registered: $owned_name:".$self->as_str;
         # may need to refine this; what if title == household name? type should cover
     }
 }
@@ -140,7 +153,18 @@ sub OWNED_NAME_REG
     my $owned_name = $self->permute($self->quoted_names_of->[0]);
     if (!$self->is_name_registered($owned_name, [ $type ]))
     {
-        die "Owned name is not registered: ".$self->as_str;
+        die "Owned name is not registered: $owned_name:".$self->as_str;
+        # may need to refine this; what if title == household name? type should cover
+    }
+}
+
+sub OWNED_NAME2_REG
+{
+    my ($self, $type) = @_;
+    my $owned_name = $self->permute($self->quoted_names_of->[1]);
+    if (!$self->is_name_registered($owned_name, [ $type ]))
+    {
+        die "Owned name is not registered: $owned_name:".$self->as_str;
         # may need to refine this; what if title == household name? type should cover
     }
 }
@@ -150,7 +174,7 @@ sub NAME_NOT_REG
     my ($self, $type) = @_;
     if ($self->is_name_registered($self->name_of, [ $type ]))
     {
-        die "Name already registered: ".$self->as_str;
+        die "Name already registered: ".$self->name_of.":".$self->as_str;
     }
 }
 
@@ -159,7 +183,7 @@ sub NAME_REG
     my ($self, $type) = @_;
     if (!$self->is_name_registered($self->name_of, [ $type ]))
     {
-        die "Name is not registered: ".$self->as_str;
+        die "Name is not registered: ".$self->name_of.":".$self->as_str;
     }
 }
 
@@ -168,7 +192,7 @@ sub PRIMARY_OWNER_NAME_NOT_REG
     my ($self) = @_;
     if (!$self->is_name_registered($self->name_of, [ 'N' ]))
     {
-        die "Primary owner name not registered: ".$self->as_str;
+        die "Primary owner name not registered: ".$self->name_of.":".$self->as_str;
     }
 }
 
@@ -177,7 +201,7 @@ sub SECONDARY_OWNER_NAME_NOT_REG
     my ($self) = @_;
     if (!$self->is_name_registered($self->quoted_names_of->[0], [ 'N' ]))
     {
-        die "Secondary owner name not registered: ".$self->as_str;
+        die "Secondary owner name not registered: ".$self->quoted_names_of->[0].":".$self->as_str;
     }
 }
 
@@ -205,11 +229,14 @@ my %transforms = (
     '-acceptance of badge transfer from "x"' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_NOT_REG' => [],
         'armory' => [ 'b' ] },
+    'acceptance of badge transfer for "x" from "x"' => { 'NAME_FOR_ARMORY_REG' => [],
+        'badge_for' => [] },
     '-acceptance of badge transfer from "x" and designation as for "x"' => { 'badge_for_2' => [] },
     '-acceptance of device transfer from "x"' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_NOT_REG' => [],
         'armory' => [ 'd' ] },
-    'acceptance of transfer of heraldic title "x" from "x"' => { 'name_owned_by' => [ 't' ] },
+    'acceptance of transfer of heraldic title "x" from "x"' => { 'NAME_FOR_OWNED_NAME_REG' => [],
+        'name_owned_by' => [ 't' ] },
     '-acceptance of order name transfer "x" from "x"' => { 'NAME_FOR_OWNED_NAME_REG' => [],
         'OWNED_NAME_NOT_REG' => [ 'O' ],
         'name_owned_by' => [ 'O' ] },
@@ -231,7 +258,13 @@ my %transforms = (
         'SECONDARY_OWNER_NAME_NOT_REG' => [],
         'joint' => [], 
         'joint_badge' => [] },
-    '-alternate name "x" and badge' => { 'NAME_FOR_ARMORY_REG' => [],
+    'addition of joint owner "x" of household badge for "x"' => { 'NAME_REG' => [ 'N' ],
+        'OWNED_NAME_REG' => [ 'N' ],
+        'OWNED_NAME2_REG' => [ 'HN' ],
+        'joint' => [], 
+        'joint_badge' => [] ,
+        'armory_release' => [ 'b', 'joint owner added' ],},
+    'alternate name "x" and badge' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_NOT_REG' => [],
         'NAME_FOR_OWNED_NAME_REG' => [],
         'OWNED_NAME_NOT_REG' => [ 'AN' ],
@@ -278,7 +311,7 @@ my %transforms = (
     '-augmentation reblazoned' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_REG' => [],
         'armory_release' => [ 'a', 'reblazoned' ] },
-    '-augmentation' => { 'NAME_FOR_ARMORY_REG' => [],
+    'augmentation' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_NOT_REG' => [],
         'armory' => [ 'a' ], },
     '-augmentation of arms' => { 'NAME_FOR_ARMORY_REG' => [],
@@ -347,6 +380,9 @@ my %transforms = (
     'badge for "x"' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_NOT_REG' => [],
         'badge_for' => [] },
+    'badge change for "x"' => { 'NAME_FOR_ARMORY_REG' => [],
+        'ARMORY_NOT_REG' => [],
+        'badge_for' => [] },
     '-badge for "x" reference' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_NOT_REG' => [],
         'badge_for' => [ ],
@@ -360,7 +396,7 @@ my %transforms = (
     '-badge for the "x" reblazoned' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_REG' => [],
         'armory_release' => [ 'b', 'reblazoned' ] },
-    '-badge for "x" reblazoned' => { 'NAME_FOR_ARMORY_REG' => [],
+    'badge for "x" reblazoned' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_REG' => [],
         'armory_release' => [ 'b', 'reblazoned' ] },
     '-badge release' => { 'NAME_FOR_ARMORY_REG' => [],
@@ -420,9 +456,8 @@ my %transforms = (
     'branch name' => { 'NAME_NOT_REG' => [ 'BN' ],
         'name' => [ 'BN' ], },
     '-change of alternate name to "x" from "x"' => { 'order_name_change_reversed' => [ 'ANC' ], },
-    '-change of badge to device' => { 'NAME_FOR_ARMORY_REG' => [],
+    'change of badge to device' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_REG' => [],
-        'ARMORY_NOT_REG' => [],
         'armory_release' => [ 'b', 'converted to device' ], 
         'armory' => [ 'd' ], },
     '-change of badge association from "x" to "x"' => { 'badge_for_2' => [ ], 
@@ -433,14 +468,13 @@ my %transforms = (
         'ARMORY_REG' => [],
         'badge_for' => [ ], 
         'armory_release' => [ 'b', 'associated with new usage' ], },
-    '-change of device to badge' => { 'NAME_FOR_ARMORY_REG' => [],
+    'change of device to badge' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_REG' => [],
-        'ARMORY_NOT_REG' => [],
         'armory_release' => [ 'd', 'converted to badge' ], 
         'armory' => [ 'b' ], },
-    '-corrected blazon' => { 'NAME_FOR_ARMORY_REG' => [],
+    'corrected blazon' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_REG' => [],
-        'armory_release' => [ 'b', 'corrected blazon' ] },
+        'armory_release' => [ 'b', 'corrected blazon' ] }, # not necessarily 'b' type...
     '-correction of badge association to "x" from "x"' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_NOT_REG' => [],
         'ARMORY_REG' => [],
@@ -459,8 +493,14 @@ my %transforms = (
         'ARMORY_NOT_REG' => [],
         'designator_change' => [ 'u' ], 
         'armory' => [ 'd' ], },
-    '-designator change from "x"' => { 'designator_change' => [ 'u' ], },
-    '-device (important non-sca armory)' => { 'ARMORY_NOT_REG' => [],
+    'designator change from "x"' => { 'NAME_NOT_REG' => [ 'BN' ],
+        'OWNED_NAME_REG' => [ 'BN' ],
+        'name_change' => [ 'u' ], },
+    'designator change to "x" from "x"' => { 'NAME_REG' => [ 'BN' ],
+        'OWNED_NAME_NOT_REG' => [ 'O' ],
+        'OWNED_NAME2_REG' => [ 'O' ],
+        'order_name_change_reversed' => [ 'OC', 'designator changed' ], },
+    'device important' => { 'ARMORY_NOT_REG' => [],
         'armory' => [ 'd', 'Important non-SCA armory' ], },
     'device change' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_NOT_REG' => [],
@@ -477,6 +517,9 @@ my %transforms = (
         'ARMORY_REG' => [],
         'armory_release' => [ 'd', 'changed/retained' ], 
         'armory' => [ 'b' ], },
+    'device corrected blazon' => { 'NAME_FOR_ARMORY_REG' => [],
+        'ARMORY_REG' => [],
+        'armory_release' => [ 'd', 'corrected blazon' ] },
     'device reblazoned' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_REG' => [],
         'armory_release' => [ 'd', 'reblazoned' ] },
@@ -491,11 +534,11 @@ my %transforms = (
         'armory' => [ 'd' ], 
         'blanket_permission_armory' => [ 'BP', 'device' ], },
     '-exchange of device and badge' => {}, 
-    '-exchange of primary and alternate name "x"' => { 'NAME_FOR_OWNED_NAME_REG' => [],
-        'OWNED_NAME_NOT_REG' => [ 'AN' ],
+    'exchange of primary and alternate name "x"' => { 'NAME_REG' => [ 'N' ],
+        'OWNED_NAME_REG' => [ 'AN' ],
         'name_change' => [ 'NC' ], 
         'name_for' => [ 'AN' ], 
-        'owned_name_release_reverse' => [ 'AN', 'converted to primary name' ] },
+        'owned_name_release' => [ 'AN', 'converted to primary name' ] },
     '-exchange of primary and alternate name "x" and device' => { 'NAME_FOR_ARMORY_REG' => [],
         'NAME_FOR_OWNED_NAME_REG' => [],
         'ARMORY_NOT_REG' => [],
@@ -518,7 +561,7 @@ my %transforms = (
     '-heraldic will for heraldic title "x"' => { 'name' => [ 'W' ], },
     '-heraldic will for household name "x"' => { 'name' => [ 'W' ], },
     '-holding name' => { 'holding_name' => [] },
-    '-holding name and badge' => { 'ARMORY_NOT_REG' => [],
+    'holding name and badge' => { 'ARMORY_NOT_REG' => [],
         'holding_name' => [], 
         'armory' => [ 'b' ] },
     'holding name and device' => { 'ARMORY_NOT_REG' => [],
@@ -528,7 +571,7 @@ my %transforms = (
     '-holding name and household name "x"' => { 'holding_name' => [], 
         'OWNED_NAME_NOT_REG' => [ 'HN' ],
         'name_owned_by' => [ 'HN' ], },
-    '-household badge for "x"' => { 'NAME_FOR_ARMORY_REG' => [],
+    'household badge for "x"' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_NOT_REG' => [],
         'badge_for' => [], },
     '-household name change to "x" from "x"' => { 'order_name_change_reversed' => [ 'HNC' ], },
@@ -568,7 +611,7 @@ my %transforms = (
         'SECONDARY_OWNER_NAME_NOT_REG' => [],
         'joint' => [], 
         'joint_badge' => [] },
-    '-joint badge' => { 'normalize_joint_badge' => [] },
+    'joint badge' => { 'normalize_joint_badge' => [] },
     '-joint badge reblazoned' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_REG' => [],
         'armory_release' => [ 'b', 'reblazoned' ] },
@@ -599,7 +642,8 @@ my %transforms = (
         'armory' => [ 'd' ] },
     '-name change from "x" and badge change for "x"' => { 'name_change' => [ 'NC' ], 
         'badge_for_2' => [  ], },
-    '-name change from "x" and badge' => { 'NAME_FOR_ARMORY_REG' => [],
+    'name change from "x" and badge' => { 'NAME_NOT_REG' => [ 'N' ],
+        'OWNED_NAME_REG' => [ 'N' ],
         'ARMORY_NOT_REG' => [],
         'name_change' => [ 'NC' ], 
         'armory' => [ 'b' ], },
@@ -623,17 +667,18 @@ my %transforms = (
         'name_change' => [ 'NC' ], 
         'armory_release' => [ 'b', 'converted to device' ], 
         'armory' => [ 'd' ], },
-    'name change from "x" retained' => { 'name_change' => [ 'NC', 'retained' ], },
-    '-name change from "x" retained and device' => { 'NAME_FOR_ARMORY_REG' => [],
+    'name change from "x" retained' => { 'NAME_NOT_REG' => [ 'N' ],
+        'OWNED_NAME_REG' => [ 'N' ],
+        'name_change' => [ 'NC', 'retained' ], },
+    'name change from "x" retained and device' => { 'NAME_NOT_REG' => [ 'N' ],
         'ARMORY_NOT_REG' => [],
-        'NAME_FOR_OWNED_NAME_REG' => [],
+        'OWNED_NAME_REG' => [ 'N' ],
         'name_change' => [ 'NC' ], 
         'name_for' => [ 'AN' ],
         'armory' => [ 'd' ], },
-    '-name change from "x" retained and badge' => { 'NAME_FOR_ARMORY_REG' => [],
+    'name change from "x" retained and badge' => { 'NAME_NOT_REG' => [ 'N' ],
         'ARMORY_NOT_REG' => [],
-        'NAME_FOR_OWNED_NAME_REG' => [],
-        'OWNED_NAME_NOT_REG' => [ 'AN' ],
+        'OWNED_NAME_REG' => [ 'N' ],
         'name_change' => [ 'NC' ], 
         'name_for' => [ 'AN' ],
         'armory' => [ 'b' ], },
@@ -642,12 +687,13 @@ my %transforms = (
         'name_change' => [ 'NC' ], 
         'name_for' => [ 'AN' ],
         'armory' => [ 'd' ], },
-    'name change from "x"' => { 'name_change' => [ 'NC' ], },
-    '-name change from holding name "x" and badge' => { 'NAME_FOR_ARMORY_REG' => [],
-        'ARMORY_NOT_REG' => [],
+    'name change from "x"' => { 'NAME_NOT_REG' => [ 'N' ],
+        'OWNED_NAME_REG' => [ 'N' ],
+        'name_change' => [ 'NC' ], },
+    'name change from holding name "x" and badge' => { 'ARMORY_NOT_REG' => [],
         'name_change' => [ 'NC' ], 
         'armory' => [ 'b' ], },
-    '-name change from holding name "x" and device change' => { 'NAME_FOR_ARMORY_REG' => [],
+    'name change from holding name "x" and device change' => { 'NAME_NOT_REG' => [],
         'ARMORY_NOT_REG' => [],
         'name_change' => [ 'NC' ], 
         'armory' => [ 'd' ], },
@@ -666,8 +712,7 @@ my %transforms = (
         'OWNED_NAME_REG' => [ 'N' ],
         'name_correction' => [ 'Nc' ], },
     '-name correction from "x" to "x"' => { 'owned_name_correction_reversed' => [ 'NC', '-corrected' ], },
-    '-name reconsideration from "x" and device' => { 'NAME_FOR_ARMORY_REG' => [],
-        'ARMORY_NOT_REG' => [],
+    'name reconsideration from "x" and device' => {'ARMORY_NOT_REG' => [],
         'NAME_NOT_REG' => [],
         'OWNED_NAME_REG' => [ 'N' ],
         'name_correction' => [ 'Nc' ], 
@@ -694,7 +739,6 @@ my %transforms = (
         'armory_release' => [ 'b', 'associated with order name' ], },
     'order name "x" and badge' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_NOT_REG' => [],
-        'ARMORY_REG' => [],
         'NAME_FOR_OWNED_NAME_REG' => [],
         'OWNED_NAME_NOT_REG' => [ 'O' ],
         'name_owned_by' => [ 'O' ], 
@@ -711,7 +755,7 @@ my %transforms = (
     '-reblazon of augmentation' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_NOT_REG' => [],
         'armory' => [ 'a' ], },
-    '-reblazon of badge for "x"' => { 'NAME_FOR_ARMORY_REG' => [],
+    'reblazon of badge for "x"' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_NOT_REG' => [],
         'badge_for' => [] },
     '-reblazon of badge for the "x"' => { 'NAME_FOR_ARMORY_REG' => [],
@@ -776,7 +820,7 @@ my %transforms = (
         'armory_release' => [ 'b', 'released' ],
         'joint_release' => [],},
     '-release of name' => { 'name_release' => [ 'N', 'released' ], },
-    '-release of name and device' => { 'NAME_FOR_ARMORY_REG' => [],
+    'release of name and device' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_REG' => [],
         'name_release' => [ 'N', 'released' ], 
         'armory_release' => [ 'd', 'released' ] },
@@ -789,12 +833,16 @@ my %transforms = (
     '-seal reblazoned' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_REG' => [],
         'armory_release' => [ 's', 'reblazoned' ] },
-    'split combined entry' => { 'split_combined_entry' => [], },
+    'split combined entry' => { 'ARMORY_REG' => [],
+        'NAME_FOR_ARMORY_REG' => [],
+        'split_combined_entry' => [], },
     '-standard augmentation' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_NOT_REG' => [],
         'armory' => [ 'a', 'Standard augmentation' ], },
     '-transfer of alternate name "x" to "x"' => {  'transfer_owned_name' => [ 'AN', ], },
-    '-transfer of badge to "x"' => {  'transfer_armory' => [ 'b', ], },
+    'transfer of badge to "x"' => {  'ARMORY_REG' => [],
+        'NAME_FOR_ARMORY_REG' => [],
+        'transfer_armory' => [ 'b', ], },
     '-transfer of device to "x"' => {  'transfer_armory' => [ 'd', ], },
     'transfer of heraldic title "x" to "x"' => {  'NAME_FOR_OWNED_NAME_REG' => [ 't' ],
         'OWNED_NAME_REG' => [ 't' ],
@@ -807,6 +855,8 @@ my %transforms = (
     '-variant correction from "x"' => { 'NAME_NOT_REG' => [],
         'OWNED_NAME_REG' => [ 'N' ],
         'name_correction' => [ 'vc' ], },
+    'variant name "x"' => { #'NAME_REG' => [],
+        'variant_name' => [ 'v' ], },
     );
 }
 
@@ -851,12 +901,34 @@ sub name_for
             registration_kingdom => $self->kingdom_of,
             text_name => $self->name_of,
         })->update;
-    for my $n ($self->split_notes, "For ".$self->name_of)
+    for my $n ($self->split_notes)
     {
         next unless $n;
         $self->db->add_note($reg, $n);
     }
     return $reg;
+    
+    die $self->as_str; 
+    return [ $self->permute($self->quoted_names_of->[0]),
+        $self->source_of, $type, "For ".$self->name_of, 
+        $self->notes_of ];
+}
+
+sub variant_name
+{
+    my ($self, $type) = @_;
+    my $owned_name = $self->quoted_names_of->[0];
+    my $oname = $self->db->add_name($owned_name);
+    my $reg = $self->db->Registration->create(
+        {
+            reg_owner_name => $owned_name,
+            action => $type,
+            registration_date => $self->date_of,
+            registration_kingdom => $self->kingdom_of,
+            text_name => $self->name_of,
+        })->update;
+    return $reg;
+    
     die $self->as_str; 
     return [ $self->permute($self->quoted_names_of->[0]),
         $self->source_of, $type, "For ".$self->name_of, 
@@ -868,15 +940,16 @@ sub name_change
     my ($self, $type, $retained) = @_;
     my $ntype = $type;
     $ntype =~ s/C$//;
+    $ntype = 'BN' if $type eq 'u';
     my $pqname = $self->permute($self->quoted_names_of->[0]);
-    if (!$self->is_name_registered($pqname, [ $ntype ]))
-    {
-        die "Old name not registered: $pqname";
-    }
-    if ($self->is_name_registered($self->name_of, [ $ntype ]))
-    {
-        die "New name already registered: ".$self->name_of;
-    }
+#     if (!$self->is_name_registered($pqname, [ $ntype ]))
+#     {
+#         die "Old name not registered: $pqname";
+#     }
+#     if ($self->is_name_registered($self->name_of, [ $ntype ]))
+#     {
+#         die "New name already registered: ".$self->name_of;
+#     }
     my @regs = $self->db->Registration->search(
         {
             reg_owner_name => $pqname,
@@ -892,13 +965,13 @@ sub name_change
             # leave the current record alone for further processing
         }
     	my @name_types = qw/ BN N AN t O HN /;
-        my @armory_types = qw/ a b d g j s D? /;
+        my @armory_types = qw/ a b d g j s D? W /; # W isn't really "armory", but that will do here
     	if ($reg->action->action_id ~~ @name_types && !$got_the_primary_name)
     	{
     	    my $reg_date = $reg->registration_date;
     	    my $reg_king = $reg->registration_kingdom;
     	    $reg->action($type);
-    	    $reg->text_name("See ".$self->name_of);
+    	    $reg->text_name($self->name_of);
     	    $reg->release_date($self->date_of);
     	    $reg->release_kingdom($self->kingdom_of);
     	    $reg->update;
@@ -1004,7 +1077,37 @@ sub order_name_change
 
 sub order_name_change_reversed
 {
-    my ($self, $type) = @_;
+    my ($self, $type, $note) = @_;
+    my $ntype = $type;
+    $ntype =~ s/C$//;
+    my $pqname = $self->permute($self->quoted_names_of->[1]);
+    my @regs = $self->db->Registration->search(
+        {
+            reg_owner_name => $pqname,
+            action => $ntype,
+        });
+    die "Multiple registrations of $pqname" unless @regs == 1;
+    my $reg = $regs[0];
+    my $owner_name = $reg->text_name;
+    $reg->release_date($self->date_of);
+    $reg->release_kingdom($self->kingdom_of);
+    $reg->action($type);
+    $self->db->add_name($self->permute($self->quoted_names_of->[0]));
+    $reg->text_name($self->permute($self->quoted_names_of->[0]));
+    $reg->update;
+    
+    $self->db->add_note($reg, "-$note") if $note;
+    
+    $self->db->Registration->create(
+        {
+            reg_owner_name => $self->permute($self->quoted_names_of->[0]),
+            action => $ntype,
+            registration_date => $self->date_of,
+            registration_kingdom => $self->kingdom_of,
+            text_name => $owner_name,
+        })->update;
+    
+    return;
     die $self->as_str;
     return [ $self->permute($self->quoted_names_of->[1]),
         $self->source_of, $type, $self->permute($self->quoted_names_of->[0]),
@@ -1303,11 +1406,12 @@ sub badge_for_2
 sub normalize_joint_badge
 {
     my ($self) = @_;
-    die $self->as_str;
     my @names = split(/ and /, $self->name_of);
     $self->name_of($names[0]);
     $self->quoted_names_of->[0] = $names[1];
-    return ($self->joint_badge(), $self->joint());
+    $self->PRIMARY_OWNER_NAME_NOT_REG();
+    $self->SECONDARY_OWNER_NAME_NOT_REG();
+    return ($self->joint(), $self->joint_badge());
 }
 
 sub reblazon_joint_badge
@@ -1460,7 +1564,7 @@ sub split_combined_entry
         })->update;
     for my $n ($reg->notes)
     {
-        $self->db->add_note($areg, $n);
+        $self->db->add_note($areg, $n->note_text);
     }
     
     $reg->action($reg->action->action_id eq 'BD' ? 'BN' : 'N');
@@ -1486,7 +1590,7 @@ sub armory_release
         die "Armory registered multiple times to ".$self->name_of.'/'.$self->armory_of;
     }
     my $reg = $regs[0];
-    if ($reg->action eq 'B' or $reg->action eq 'D' or $reg->action eq 'BD') # split unified record
+    if (!defined $reg) # split unified record
     {
         die "Split unified record in armory change";
         # create fresh record for name with old date 
@@ -1509,6 +1613,22 @@ sub armory_release
 sub name_release
 {
     my ($self, $type, $reason) = @_;
+    my @regs = $self->db->Registration->search({
+        reg_owner_name => $self->name_of,
+        action => $type,
+        release_date => '',
+        release_kingdom => '',
+        });
+    die "No registration of ".$self->name_of." as $type" if @regs == 0;
+    die "Multiple registrations of ". $self->name_of." as $type" if @regs > 1;
+    
+    my $reg = $regs[0];
+    $reg->release_date($self->date_of);
+    $reg->release_kingdom($self->kingdom_of);
+    $reg->update;
+    
+    $self->db->add_note($reg, "-$reason");
+    return;
     die $self->as_str;
     return [ $self->name_of, "-".$self->source_of, $type, $EMPTY_STR,
         $self->notes_of."(-$reason)" ];
@@ -1517,15 +1637,53 @@ sub name_release
 sub owned_name_release
 {
     my ($self, $type, $reason) = @_;
+    my @regs = $self->db->Registration->search({
+        text_name => $self->name_of,
+        reg_owner_name => $self->permute($self->quoted_names_of->[0]),
+        action => $type,
+        release_date => '',
+        release_kingdom => '',
+        });
+    die "No registration of ".$self->permute($self->quoted_names_of->[0]).
+        " to ". $self->name_of." as $type" if @regs == 0;
+    die "Multiple registrations of ".$self->permute($self->quoted_names_of->[0]).
+        " to ". $self->name_of." as $type" if @regs > 1;
+    
+    my $reg = $regs[0];
+    $reg->release_date($self->date_of);
+    $reg->release_kingdom($self->kingdom_of);
+    $reg->update;
+    
+    $self->db->add_note($reg, "-$reason");
+    return;
     die $self->as_str;
     my $for = $type eq 'AN' ? 'For ' : '';
-    return [ $self->permute($self->quoted_names_of->[0]), "-".$self->source_of, $type, $for.$self->name_of,
+    return [ $self->name_of, "-".$self->source_of, $type, $for.$self->permute($self->quoted_names_of->[0]),
         $self->notes_of."(-$reason)" ];
 }
     
 sub owned_name_release_reverse
 {
     my ($self, $type, $reason) = @_;
+    my @regs = $self->db->Registration->search({
+        reg_owner_name => $self->name_of,
+        text_name => $self->permute($self->quoted_names_of->[0]),
+        action => $type,
+        release_date => '',
+        release_kingdom => '',
+        });
+    die "No registration of ".$self->permute($self->quoted_names_of->[0]).
+        " to ". $self->name_of." as $type" if @regs == 0;
+    die "Multiple registrations of ".$self->permute($self->quoted_names_of->[0]).
+        " to ". $self->name_of." as $type" if @regs > 1;
+    
+    my $reg = $regs[0];
+    $reg->release_date($self->date_of);
+    $reg->release_kingdom($self->kingdom_of);
+    $reg->update;
+    
+    $self->db->add_note($reg, "-$reason");
+    return;
     die $self->as_str;
     my $for = $type eq 'AN' ? 'For ' : '';
     return [ $self->name_of, "-".$self->source_of, $type, $for.$self->permute($self->quoted_names_of->[0]),
@@ -1535,6 +1693,26 @@ sub owned_name_release_reverse
 sub transfer_armory
 {
     my ($self, $type) = @_;
+    my @regs = $self->db->Registration->search({
+        release_kingdom => '',
+        release_date => '',
+        action => $type,
+        reg_owner_name => $self->permute($self->name_of),
+        'text_blazon.blazon' => $self->armory_of,
+        },
+        {
+            join => 'text_blazon',
+        });
+    if (@regs > 1)
+    {
+        die "Armory registered multiple times to ".$self->name_of.'/'.$self->quoted_names_of->[0];
+    }
+    my $reg = $regs[0];
+    $reg->release_date($self->date_of);
+    $reg->release_kingdom($self->kingdom_of);
+    $reg->update;
+    $self->db->add_note($reg, '-transferred to ' .  $self->permute($self->quoted_names_of->[-1]));
+    return;   
     die $self->as_str;
     return [ $self->name_of, "-".$self->source_of, $type, 
         $self->armory_of, $self->notes_of."(-transferred to ".$self->quoted_names_of->[-1].")" ];

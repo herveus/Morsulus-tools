@@ -66,5 +66,20 @@ sub test_actions_and_results {
         'Branch name "Atenveldt, Barony of"' => [
             'branch name "x"',
             'Atenveldt, Barony of', ],
+        'designator change from "Shire de l\'Ile du Dragon Dormant"' => [
+            'designator change from "x"',
+            "Ile du Dragon Dormant,< Shire de> l\'", ],
+        'designator change from "Baronnie de l\'Ile du Dragon Dormant"' => [
+            'designator change from "x"',
+            'Ile du Dragon Dormant,< Baronnie de> l\'', ],
+        'designator change from "Ile du Dragon Dormant, Shire de l\'"' => [
+            'designator change from "x"',
+            "Ile du Dragon Dormant,< Shire de> l\'", ],
+        'designator change from "Ile du Dragon Dormant, Baronnie de l\'"' => [
+            'designator change from "x"',
+            'Ile du Dragon Dormant,< Baronnie de> l\'', ],
+        'Badge for "Portia Lacarra de Navarra"' => [
+            'badge for "x"',
+            'Portia Lacarra de Navarra', ],
     );
 }

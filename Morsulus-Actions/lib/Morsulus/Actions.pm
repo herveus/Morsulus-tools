@@ -56,7 +56,7 @@ my $EMPTY_STR = q{};
 my $PERIOD    = q{.};
 my $NEWLINE = qq{\n};
 my $SPACE = qr/[ ]/;
-my $BRANCH = qr/(?: Kingdom | Principality | Barony | Bailiwick |
+my $BRANCH = qr/(?: Kingdom | Principality | Barony | Bailiwick | Baronnie |
         Province | Region | Shire | Canton | Stronghold | Port |
         College | Crown $SPACE Province | March | Dominion | Barony-Marche )/xms;
 
@@ -93,7 +93,7 @@ sub BUILD
 	$action =~ s{[ ][(]see[^)]+[)]\z}{}xsmi;
 	if ( $action =~ m{\A([^(]+)[ ]([(]important[ ]non-sca[ ].+[)])\z}ixsm )
     {
-		$action = $1;
+		$action = "$1 important";
 		$self->notes_of($self->notes_of . $2);
 	}
 	$action =~ s{\s+\z}{}xsm;
@@ -156,13 +156,13 @@ sub bracket_name
         return $q_name if $name eq 'Atenveldt';
         $q_name =~ s/$branch/<$branch>/;
     }
-    elsif ($q_name =~ m/,( $SPACE $BRANCH (?: $SPACE of )? ) $SPACE ( the | La )\z/xms)
+    elsif ($q_name =~ m/,( $SPACE $BRANCH (?: $SPACE (?: of | de ) )? ) $SPACE ( the | La | l\')\z/xms)
     {
         my $branch = $1;
         my $article = $2;
         $q_name =~ s/$branch/<$branch>/;
     }
-    elsif ($q_name =~ m/\A ($BRANCH (?: $SPACE of (?: $SPACE the)? )? )$SPACE (.+)\z/xms)
+    elsif ($q_name =~ m/\A ($BRANCH (?: $SPACE (?: of | de ) (?: $SPACE (?: the | l' ))? )? ) $SPACE? (.+)\z/xms)
     {
         my $branch = $1;
         my $name = $2;
@@ -171,7 +171,12 @@ sub bracket_name
             $branch =~ s/ the\z//;
             $q_name = "$name,< $branch> the";
         }
-        else
+        elsif ($branch =~ /l'\z/)
+        {
+            $branch =~ s/ l'\z//;
+            $q_name = "$name,< $branch> l'";
+        }
+        elsif ($q_name =~ /\A$branch /)
         {
             $q_name = "$name<, $branch>";
         }
