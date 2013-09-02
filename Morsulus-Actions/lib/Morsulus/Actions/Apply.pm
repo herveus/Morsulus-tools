@@ -539,6 +539,11 @@ my %transforms = (
         'name_change' => [ 'NC' ], 
         'name_for' => [ 'AN' ], 
         'owned_name_release' => [ 'AN', 'converted to primary name' ] },
+    'exchange of alternate and primary name "x"' => { 'NAME_REG' => [ 'AN' ],
+        'OWNED_NAME_REG' => [ 'N' ],
+        'name_change' => [ 'NC' ], 
+        'name_for' => [ 'AN' ], 
+        'owned_name_release_reverse' => [ 'AN', 'converted to primary name' ] },
     '-exchange of primary and alternate name "x" and device' => { 'NAME_FOR_ARMORY_REG' => [],
         'NAME_FOR_OWNED_NAME_REG' => [],
         'ARMORY_NOT_REG' => [],
@@ -708,7 +713,7 @@ my %transforms = (
         'OWNED_NAME_REG' => [ 'N' ],
         'name_correction' => [ 'Nc' ], 
         'armory' => [ 'd' ], },
-    '-name correction from "x"' => { 'NAME_NOT_REG' => [],
+    'name correction from "x"' => { 'NAME_NOT_REG' => [],
         'OWNED_NAME_REG' => [ 'N' ],
         'name_correction' => [ 'Nc' ], },
     '-name correction from "x" to "x"' => { 'owned_name_correction_reversed' => [ 'NC', '-corrected' ], },
@@ -819,7 +824,7 @@ my %transforms = (
         'ARMORY_REG' => [],
         'armory_release' => [ 'b', 'released' ],
         'joint_release' => [],},
-    '-release of name' => { 'name_release' => [ 'N', 'released' ], },
+    'release of name' => { 'name_release' => [ 'N', 'released' ], },
     'release of name and device' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_REG' => [],
         'name_release' => [ 'N', 'released' ], 
@@ -1135,7 +1140,7 @@ sub name_correction
             # leave the current record alone for further processing
         }
     	my @name_types = qw/ BN N AN t O HN /;
-        my @armory_types = qw/ a b d g j s D? /;
+        my @armory_types = qw/ a b d g j s D? W /;
     	if ($reg->action->action_id ~~ @name_types && !$got_the_primary_name)
     	{
     	    my $reg_date = $reg->registration_date;

@@ -94,7 +94,7 @@ sub BUILD
 	if ( $action =~ m{\A([^(]+)[ ]([(]important[ ]non-sca[ ].+[)])\z}ixsm )
     {
 		$action = "$1 important";
-		$self->notes_of($self->notes_of . $2);
+		#$self->notes_of($self->notes_of . $2);
 	}
 	$action =~ s{\s+\z}{}xsm;
 	$self->cooked_action_of($action);
