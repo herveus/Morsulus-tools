@@ -6,7 +6,7 @@ use Carp;
 use Moose;
 extends 'Morsulus::Actions';
 
-our $VERSION = '2013.06.001';
+our $VERSION = '2013.007.002';
 
 has 'db' => (
     isa => 'Morsulus::Ordinary::Classic',
@@ -825,6 +825,7 @@ my %transforms = (
         'armory_release' => [ 'b', 'released' ],
         'joint_release' => [],},
     'release of name' => { 'name_release' => [ 'N', 'released' ], },
+    'release of name "x"' => { 'owned_name_release' => [ 'AN', 'released' ] },
     'release of name and device' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_REG' => [],
         'name_release' => [ 'N', 'released' ], 
