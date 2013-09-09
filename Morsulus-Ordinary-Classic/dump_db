@@ -5,6 +5,10 @@ use warnings;
 use Morsulus::Ordinary::Classic;
 use Morsulus::Ordinary::Legacy;
 use Getopt::Euclid;
+use Data::Dumper;
+use Try::Tiny;
+
+$Data::Dumper::Pair = ":";
 
 my $ord = Morsulus::Ordinary::Classic->new(dbname => $ARGV{-db});
 
@@ -38,9 +42,20 @@ if ($ARGV{-anydate})
     }
 }
 
+if ($ARGV{-regid})
+{
+    $search->{reg_id} =  {-in => $ARGV{-regid} }
+}
+
+if ($ARGV{-verbose})
+{
+    print STDERR Dumper($search);
+}
+
 my $regs = $ord->Registration->search($search);
 while (my $reg = $regs->next)
 {
+    #print STDERR 
     print $ord->get_registration($reg)->canonicalize->to_string, "\n";
 }
 
@@ -108,5 +123,16 @@ Limit items to those without a release date.
 =item -armonly
 
 Limit items to those with armory.
+
+=item -regid <regid>...
+
+Extract the specific registrations by ID.
+
+=for Euclid:
+    regid.type: integer
+    
+=item -verbose
+
+Emit generous output as you go.
 
 =back
