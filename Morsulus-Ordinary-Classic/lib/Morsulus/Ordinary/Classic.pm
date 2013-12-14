@@ -208,6 +208,7 @@ sub load_categories
         }
     }
     $self->schema->txn_commit;
+    # TODO: now refine the feature relationships
 }
 
 sub process_heading
@@ -220,6 +221,14 @@ sub process_heading
             category => $category,
             heading => $heading,
         })->update;
+    for my $fs (split(/:/, $feature_sets))
+    {
+        $self->CategoryFeatureSet->create(
+            {
+                category => $category,
+                feature_set => $fs,
+            })->update;
+    }
 }
 
 sub process_feature
@@ -239,6 +248,12 @@ sub process_feature
         $relationship = shift @relations;
         $related_feature = shift @relations;
         $self->add_feature($related_feature, $set_name);
+        $self->FeatureRelationship->create(
+            {
+                from_feature => $feature_name, 
+                to_feature => $related_feature, 
+                relationship => $relationship,
+            })->update;
 		#TODO: capture relationships when that is added to the database
     }
 }
@@ -385,6 +400,8 @@ sub NoteWithNames { my $self = shift; return  $self->schema->resultset('NoteWith
 sub Owner { my $self = shift; return  $self->schema->resultset('Owner'); }
 sub Registration { my $self = shift; return  $self->schema->resultset('Registration'); }
 sub RegistrationNote { my $self = shift; return  $self->schema->resultset('RegistrationNote'); }
+sub CategoryFeatureSet { my $self = shift; return  $self->schema->resultset('CategoryFeatureSet'); }
+sub FeatureRelationship { my $self = shift; return  $self->schema->resultset('FeatureRelationship'); }
 
 sub get_blazon_registrations
 {
@@ -441,6 +458,7 @@ sub get_registration
         $entry->set_rel_kingdom($reg->release_kingdom->kingdom_id);
     $entry->notes('');
     $entry->add_notes(sort map { $_->note_text } $reg->notes->all());
+    $entry->add_notes(join(':', 'regid', $reg->reg_id));
     if ($entry->has_blazon && ! $entry->is_historical)
     {
         for my $desc (sort $reg->text_blazon->descriptions())
@@ -729,6 +747,23 @@ sub get_creates
         primary key (desc_id, feature)
         )
 	EOS
+	drop table if exists category_feature_sets
+	EOS
+    create table category_feature_sets (
+        category text not null references categories(category),
+        feature_set text not null references feature_sets(feature_set),
+        primary key (category, feature_set)
+        )
+    EOS
+    drop table if exists feature_relationships
+    EOS
+    create table feature_relationships (
+        from_feature text not null references features(feature),
+        to_feature text not null references features(feature),
+        relationship text not null,
+        primary key (from_feature, to_feature)
+        )
+    EOS
     drop index if exists blazons_pkx 
 	EOS
     create unique index blazons_pkx

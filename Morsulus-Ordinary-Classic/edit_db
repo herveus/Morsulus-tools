@@ -160,7 +160,8 @@ sub edit_notes
         print $_+1, ") ", $notes[$_]->note_text, "\n" for 0..$#notes;
         my $action = prompt "Enter action: ";
         return if $action eq 'x';
-        add_note($item) if $action eq 'a' and next;
+        add_note($item) if $action eq 'a';
+        next if $action eq 'a';
         next unless $action+0 eq $action;
         next unless $action > 0;
         next unless $action <= @notes;
