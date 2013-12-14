@@ -208,7 +208,7 @@ sub normalize_armory {
     $armory =~ s{\A\s+}{}xsm;
     $armory =~ s{\s+\Z}{}xsm;
     $armory =~ s{\s{2,}}{ }xsmg;
-    $armory .= $PERIOD unless $armory =~ /\.$/;
+    $armory .= $PERIOD unless $armory =~ /[\.\]]$/;
     $self->armory_of($armory);
 }
 

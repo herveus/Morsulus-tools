@@ -6,7 +6,7 @@ use Carp;
 use Moose;
 extends 'Morsulus::Actions';
 
-our $VERSION = '2013.009.002';
+our $VERSION = '2013.011.001';
 
 has 'db' => (
     isa => 'Morsulus::Ordinary::Classic',
@@ -226,8 +226,7 @@ sub ARMORY_REG
 sub get_transforms
 {
 my %transforms = (
-    '-acceptance of badge transfer from "x"' => { 'NAME_FOR_ARMORY_REG' => [],
-        'ARMORY_NOT_REG' => [],
+    'acceptance of badge transfer from "x"' => { 'NAME_FOR_ARMORY_REG' => [],
         'armory' => [ 'b' ] },
     'acceptance of badge transfer for "x" from "x"' => { 'NAME_FOR_ARMORY_REG' => [],
         'badge_for' => [] },
@@ -563,7 +562,7 @@ my %transforms = (
     '-flag' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_NOT_REG' => [],
         'armory' => [ 'b' ], },
-    '-guild name "x"' => { 'NAME_FOR_OWNED_NAME_REG' => [],
+    'guild name "x"' => { 'NAME_FOR_OWNED_NAME_REG' => [],
         'OWNED_NAME_NOT_REG' => [ 'HN' ],
         'name_owned_by' => [ 'HN', 'Guild' ], },
     'heraldic title "x"' => { 'NAME_FOR_OWNED_NAME_REG' => [],
