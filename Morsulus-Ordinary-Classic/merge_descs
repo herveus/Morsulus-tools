@@ -18,7 +18,8 @@ while (my $record = <$descs>)
     next unless $entry->has_blazon;
     next unless $entry->split_descs or $ARGV{-nulls};
     print STDERR "finding blazon" if $ARGV{-verbose};
-    my ($blazon) = $ord->Blazon->search({ blazon => $entry->text } );
+    my ($blazon) = $ord->add_blazon($entry->text);
+    #$ord->Blazon->search({ blazon => $entry->text } );
     print STDERR "got blazon ", $blazon->blazon if $ARGV{-verbose};
     $ord->drop_descs($blazon) unless $ARGV{-merge};
     print STDERR "old descs dropped" if $ARGV{-verbose} && !$ARGV{-merge};
