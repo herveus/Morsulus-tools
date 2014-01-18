@@ -1,0 +1,102 @@
+The process, given the XML file yy-mm.xml and hard copy of the LoAR:
+
+0. Use xmlcat.pl to merge XML files -- not necessary with xml2actions...
+
+1. Extract the actions from the XML file.
+
+	xml2act yy-mm.xml > yymm.act
+
+Address errors and messages. This may require modifying tables in the script.
+
+xml2actions should be tried first as it uses an XML parser and gets more
+fiddly bits. Command usage is identical.
+
+1a. Examine the .act file for all disposition items. Rewrite actions as appropriate.
+
+2. Convert actions to DB format.
+
+	act2db.pl yymm yymm.act | sortdb3f.pl > yymm.db
+
+Address errors and messages. This may require modifying the script to deal
+with new formats of input data, or regularizing the input file.
+
+    process-actions -d yymm -i yymm.act -o yymm.db is the new version
+
+If funny quotes show up, run .act file through ascii_quote.pl.
+
+Then try check_blazons (in ~/morsulus/trunk) to verify and fillin descs
+
+3. Mark up the LoAR hard copy to highlight any items of interest. These
+will mostly be items that affect existing registrations, including:
+	transfers
+	reblazons
+	releases
+	changes
+	redesignations
+	conversions
+	etc.
+
+Also note items with non-ASCII characters as well as holding names.
+
+4. Compare yymm.db with the LoAR line by line.
+
+	enclose branch designators in angle brackets <>
+	change branch name types to BN
+	check that accents and apostrophes converted correctly
+	check that kingdom IDs are correct
+	ensure that holding names are noted (Holding Name)
+	ensure that Important Non_SCA foo is so noted
+
+5. Index yymm.db, either using the indextb tool (command line only) or
+cat_tool (Tk GUI).
+
+	index yymm.db (after starting X)
+	
+	indexer -i yymm.db 
+
+6. Check the level of detail in the indexing.
+
+	xlate.pl -d yymm.db -e aux/old_new.desc -c aux/mike.cat > err.db
+	
+Examine err.db. Either modify err.db and merge in the changes or use cat_tool
+to update the indexing.
+
+Update: make that 
+    check_indexing -i yymm.db -o err.db
+
+7. Run the date through gpna.pl to abbreviate features (automatic in cat_tool).
+
+8. Edit check.pl to accept the new date then run it over the data. Fix any
+problems noted.
+
+	check.pl yymm.db -- using 
+	oldcheck.pl yyyymm yymm.db 
+	until I get the strict one working
+	
+
+9. If there is an errata letter, directly edit the master database to 
+incorporate corrections.
+
+10. Run nc.pl to incorporate name changes/corrections into the database.
+
+	nc.pl yymm.db aux/oanda.db > updated.db
+	
+	make that nc2...
+
+For each name change or correction, there will be a line indicating the number
+of existing entries modified. If the number is zero, then the old name was
+probably mistyped in the LoAR. Investigate, (probably) fix yymm.db, and rerun.
+
+11. Resort the database.
+
+	sortdescs.pl updated.db | sortnotes.pl | sortdbf.pl > sorted.db
+
+12. Clean up armory changes, retained names, and such in sorted.db (see items
+highlighted in step 3).
+
+13. Update the copyright notice in 'aux/notice.' - fixnotice generates the 
+stuff that changes. ...except the year in the copyright notice...
+
+14. Run various checks and compare with last month's output
+
+	run_checks sorted.db yyyymm
