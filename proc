@@ -1,3 +1,42 @@
+My current process...this is specifically for processing September 2013
+
+cd ~/morsulus/2013/1309
+cp ~/morsulus/bnew_sql.db oanda1309.db.bak
+cd 13-09-pp2-XML
+cp ../oanda1309.db.bak .
+
+xml2actions 13-09.xml > 1309.act
+
+#process-actions -i 1309.act -o 1309.db -err -d 201309
+cp oanda1309.db.bak oanda1309.db
+apply_actions -db oanda1309.db -date 201309 -i 1309.act
+
+all done
+
+
+dump_db -db oanda1309.db -armonly -regdate 201309 > 1309arm.db
+DISPLAY=/tmp/launch-TrOZdp/org.macosforge.xquartz:0 nohup index 1309arm.db
+
+cd ~/morsulus/2013/1309
+xlate.pl -d 1309arm.db 
+oldcheck.pl 201309 1309arm.db
+merge_descs -db oanda1309.db -i 1309arm.db
+
+mkdir checks
+(cd checks;new_run_checks  ../oanda1309.db 201309)
+
+(cd ~/morsulus/checks; new_run_checks ../bnew_sql.db 201308)
+
+bbedit checks ~/morsulus/checks
+
+
+dump_db -db oanda1309.db | sortdescs.pl | sortnotes.pl | sortdbf.pl > sorted.db
+(cd ~/aux/dbhistory; bzip2 < ../oanda_sql.db > 201308sql.db.bz2)
+cp sorted.db ~/aux/oanda.db
+cp oanda1309.db ~/aux/oanda_sql.db
+
+...the old process...
+
 The process, given the XML file yy-mm.xml and hard copy of the LoAR:
 
 0. Use xmlcat.pl to merge XML files -- not necessary with xml2actions...
