@@ -7,7 +7,7 @@ use utf8;
 use warnings qw(FATAL utf8);
 use open qw(:std :utf8);
 
-print '<table width="80%" border="1" align="left">', "\n",
+print '<table width="80%" border="1">', "\n",
     '<tr align="left" valign="top">', "\n",
     '<th>Da\'ud code</th><th>ASCII encoding</th><th>Unicode code point</th>',
     '<th>Unicode character</th><th>HTML entity</th><th>Unicode name</th>', "\n",

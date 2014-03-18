@@ -1,4 +1,4 @@
-<table width="80%" border="1" align="left">
+<table width="80%" border="1">
 <tr align="left" valign="top">
 <th>Da'ud code</th><th>ASCII encoding</th><th>Unicode code point</th><th>Unicode character</th><th>HTML entity</th><th>Unicode name</th>
 </tr>
@@ -351,6 +351,10 @@
 <tr align="left" valign="top"><td>Z'</td><td>Z</td><td>0179</td><td>Ź<td></td><td>LATIN CAPITAL LETTER Z WITH ACUTE</td>
 </tr>
 <tr align="left" valign="top"><td>z'</td><td>z</td><td>017A</td><td>ź<td></td><td>LATIN SMALL LETTER Z WITH ACUTE</td>
+</tr>
+<tr align="left" valign="top"><td>Z.</td><td>Z</td><td>017B</td><td>Ż<td></td><td>LATIN CAPITAL LETTER Z WITH DOT ABOVE</td>
+</tr>
+<tr align="left" valign="top"><td>z.</td><td>z</td><td>017C</td><td>ż<td></td><td>LATIN SMALL LETTER Z WITH DOT ABOVE</td>
 </tr>
 <tr align="left" valign="top"><td>Zv</td><td>Z</td><td>017D</td><td>Ž<td></td><td>LATIN CAPITAL LETTER Z WITH CARON</td>
 </tr>
