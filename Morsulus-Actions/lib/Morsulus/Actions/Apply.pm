@@ -6,7 +6,7 @@ use Carp;
 use Moose;
 extends 'Morsulus::Actions';
 
-our $VERSION = '2013.011.001';
+our $VERSION = '2014.002.001';
 
 has 'db' => (
     isa => 'Morsulus::Ordinary::Classic',
@@ -342,6 +342,10 @@ my %transforms = (
     '-badge and association with order name "x"' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_NOT_REG' => [],
         'badge_for' => [ ] },
+    'badge association with award name "x"' => { 'NAME_FOR_ARMORY_REG' => [],
+        'ARMORY_REG' => [],
+        'badge_for' => [ ], 
+        'armory_release' => [ 'b', 'associated with award name' ], },
     '-badge association for "x"' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_NOT_REG' => [],
         'ARMORY_REG' => [],
@@ -429,7 +433,7 @@ my %transforms = (
         'blanket_permission_secondary_name' => [ 'HN', 'household name' ],  },
     '-blanket permission to conflict with name "x"' => { 'NAME_REG' => [ 'N' ],
         'blanket_permission_name' => [ 'N', 'name' ],  },
-    '-blanket permission to conflict with name and device' => { 'NAME_REG' => [ 'N' ],
+    'blanket permission to conflict with name and device' => { 'NAME_REG' => [ 'N' ],
         'ARMORY_REG' => [],
         'blanket_permission_name' => [ 'N', 'name' ], 
         'blanket_permission_armory' => [ 'd', 'device' ], },
@@ -562,6 +566,8 @@ my %transforms = (
     '-flag' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_NOT_REG' => [],
         'armory' => [ 'b' ], },
+    'flag important' => { 'ARMORY_NOT_REG' => [],
+        'armory' => [ 'b', 'Important non-SCA armory' ], },
     'guild name "x"' => { 'NAME_FOR_OWNED_NAME_REG' => [],
         'OWNED_NAME_NOT_REG' => [ 'HN' ],
         'name_owned_by' => [ 'HN', 'Guild' ], },
@@ -571,6 +577,7 @@ my %transforms = (
     '-heraldic title' => { 'non_sca_title' => [ ] },
     'heraldic will' => { 'name' => [ 'W' ], },
     'heraldic will for badge' => { 'name' => [ 'W' ], },
+    'heraldic will for device' => { 'name' => [ 'W' ], },
     '-heraldic will for heraldic title "x"' => { 'name' => [ 'W' ], },
     '-heraldic will for household name "x"' => { 'name' => [ 'W' ], },
     '-holding name' => { 'holding_name' => [] },
@@ -607,7 +614,7 @@ my %transforms = (
         'name_owned_by' => [ 'HN' ], 
         'armory_release' => [ 'b', 'associated with household name' ], 
         'badge_for' => [], },
-    '-household name "x" and joint badge' => { 'normalize_joint_household_name' => [], 
+    '-household name "x" and joint badge' => { 'normalize_joint_household_name' => [ 'nojoint' ], 
         'normalize_joint_badge_for' => [], },
     'household name "x"' => { 'NAME_FOR_OWNED_NAME_REG' => [],
         'OWNED_NAME_NOT_REG' => [ 'HN' ],
@@ -625,16 +632,16 @@ my %transforms = (
         'joint' => [], 
         'joint_badge' => [] },
     'joint badge' => { 'normalize_joint_badge' => [] },
-    '-joint badge reblazoned' => { 'NAME_FOR_ARMORY_REG' => [],
-        'ARMORY_REG' => [],
-        'armory_release' => [ 'b', 'reblazoned' ] },
+    'joint badge reblazoned' => { 'ARMORY_REG' => [],
+        'joint_armory_release' => [ 'b', 'reblazoned' ] },
     '-joint badge transfer to "x"' => { 'transfer_joint_armory' => [ 'b', ], 
         'joint_transfer' => [] },
-    '-joint household name "x" and badge' => { 'normalize_joint_household_name' => [], 
+    'joint household name "x" and badge' => { 'ARMORY_NOT_REG' => [],
+        'normalize_joint_household_name' => [ 'nojoint' ], 
         'normalize_joint_badge_for' => [], },
     '-joint household name "x" and badge association' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_REG' => [],
-        'normalize_joint_household_name' => [], 
+        'normalize_joint_household_name' => [ 'nojoint' ], 
         'armory_release' => [ 'b', 'associated with household name' ],
         'normalize_joint_badge_for' => [], },
     '-joint household name "x"' => { 'normalize_joint_household_name' => [] },
@@ -696,6 +703,7 @@ my %transforms = (
         'name_for' => [ 'AN' ],
         'armory' => [ 'b' ], },
     'name change from "x" retained and device change' => { 'ARMORY_NOT_REG' => [],
+        'OWNED_NAME_REG' => [ 'N' ],
         'OWNED_NAME_NOT_REG' => [ 'AN' ],
         'name_change' => [ 'NC' ], 
         'name_for' => [ 'AN' ],
@@ -739,7 +747,13 @@ my %transforms = (
     'name reconsideration from "x"' => { 'NAME_NOT_REG' => [],
         'OWNED_NAME_REG' => [ 'N' ],
         'name_correction' => [ 'Nc' ], },
+    'request for name reconsideration from "x"' => { 'NAME_NOT_REG' => [],
+        'OWNED_NAME_REG' => [ 'N' ],
+        'name_correction' => [ 'Nc' ], },
     '-name reconsideration to "x" from "x"' => { 'owned_name_correction' => [ 'Nc' ], },
+    'name reconsideration for alternate name to "x" from "x"' => { 'OWNED_NAME2_REG' => [ 'AN' ],
+        'OWNED_NAME_NOT_REG' => [ 'AN' ],
+        'owned_name_correction_reversed' => [ 'AN' ], },
     'name' => { 'NAME_NOT_REG' => [ 'N' ],
         'name' => [ 'N' ], },
     'order name "x" and badge association' => { 'NAME_FOR_ARMORY_REG' => [],
@@ -776,7 +790,7 @@ my %transforms = (
     'reblazon of badge' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_NOT_REG' => [],
         'armory' => [ 'b' ], },
-    '-reblazon of joint badge' => { 'reblazon_joint_badge' => [ 'b' ], },
+    'reblazon of joint badge' => { 'reblazon_normalize_joint_badge' => [] },
     'reblazon of device' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_NOT_REG' => [],
         'armory' => [ 'd' ], },
@@ -1458,6 +1472,26 @@ sub normalize_joint_badge
     return ($self->joint(), $self->joint_badge());
 }
 
+sub reblazon_normalize_joint_badge
+{
+    my ($self) = @_;
+    my @names = split(/ and /, $self->name_of);
+    $self->name_of($names[0]);
+    $self->quoted_names_of->[0] = $names[1];
+    $self->PRIMARY_OWNER_NAME_NOT_REG();
+    $self->SECONDARY_OWNER_NAME_NOT_REG();
+    return ($self->joint_badge());
+}
+
+sub joint_armory_release
+{
+    my ($self, $type, $reason) = @_;
+    my @names = split(/ and /, $self->name_of);
+    $self->name_of($names[0]);
+    $self->quoted_names_of->[0] = $names[1];
+    return ($self->armory_release($type, $reason));
+}
+
 sub reblazon_joint_badge
 {
     my ($self) = @_;
@@ -1465,7 +1499,7 @@ sub reblazon_joint_badge
     my @names = split(/ and /, $self->name_of);
     $self->name_of($names[0]);
     $self->quoted_names_of->[0] = $names[1];
-    return ($self->joint_badge());
+    return ($self->armory_release());
 }
 
 sub joint_release
@@ -1523,30 +1557,37 @@ sub joint_transfer
 
 sub normalize_joint_badge_for
 {
-    my ($self) = @_;
+    my ($self, $nojoint) = @_;
     my @names = split(/ and /, $self->name_of);
     my $joint_badge;
-    {
-        my $household_name = $self->quoted_names_of->[0];
-        $self->quoted_names_of->[0] = $names[1];
-        $self->name_of($names[0]);
-        $joint_badge = $self->joint_badge();
-        $self->db->add_note($joint_badge, "For $household_name");
-    }
-    $self->joint();
+    my $household_name = $self->quoted_names_of->[0];
+    $self->quoted_names_of->[0] = $names[1];
+    $self->name_of($names[0]);
+    $joint_badge = $self->joint_badge();
+    $self->db->add_note($joint_badge, "For $household_name");
+    $self->joint() unless defined $nojoint;
+    
+    $self->name_of(join(' and ', @names));
+    $self->quoted_names_of->[0] = $household_name;
     return $joint_badge;
     die $self->as_str;
 }
 
 sub normalize_joint_household_name
 {
-    my ($self) = @_;
-    die $self->as_str;
+    my ($self, $nojoint) = @_;
     my @names = split(/ and /, $self->name_of);
-    return ([ $self->permute($self->quoted_names_of->[0]),
-        $self->source_of, 'HN', join(" and ", map { "\"$_\"" } @names),
-        $self->notes_of ], 
-        [$names[1], $self->source_of, 'j', $names[0], $self->notes_of ]);
+    my $joint_badge;
+    my $household_name = $self->quoted_names_of->[0];
+    $self->name_of($names[0]);
+    $self->name_owned_by('HN', 'JHN: '.$names[1]);
+    $self->quoted_names_of->[0] = $names[1];
+    $self->joint() unless defined $nojoint;
+    
+    $self->name_of(join(' and ', @names));
+    $self->quoted_names_of->[0] = $household_name;
+    return $joint_badge;
+    die $self->as_str;
 }
 
 sub joint_badge

@@ -57,7 +57,7 @@ my $PERIOD    = q{.};
 my $NEWLINE = qq{\n};
 my $SPACE = qr/[ ]/;
 my $BRANCH = qr/(?: Kingdom | Principality | Barony | Bailiwick | Baronnie |
-        Province | Region | Shire | Canton | Stronghold | Port |
+        Province | Region | Shire | Canton | Stronghold | Port | Riding | 
         College | Crown $SPACE Province | March | Dominion | Barony-Marche )/xms;
 
 # overload "" to stringify
