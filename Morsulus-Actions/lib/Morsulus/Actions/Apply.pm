@@ -6,7 +6,7 @@ use Carp;
 use Moose;
 extends 'Morsulus::Actions';
 
-our $VERSION = '2014.002.001';
+our $VERSION = '2014.002.002';
 
 has 'db' => (
     isa => 'Morsulus::Ordinary::Classic',
@@ -346,8 +346,7 @@ my %transforms = (
         'ARMORY_REG' => [],
         'badge_for' => [ ], 
         'armory_release' => [ 'b', 'associated with award name' ], },
-    '-badge association for "x"' => { 'NAME_FOR_ARMORY_REG' => [],
-        'ARMORY_NOT_REG' => [],
+    'badge association for "x"' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_REG' => [],
         'badge_for' => [ ], 
         'armory_release' => [ 'b', 'associated with usage' ],
@@ -1345,6 +1344,8 @@ sub name_owned_by
 sub reference
 {
     my ($self) = @_;
+    $self->name_owned_by('R');
+    return;
     die $self->as_str;
     my $return_list = $self->name_owned_by('R');
     $return_list->[3] = "See $return_list->[3]";
