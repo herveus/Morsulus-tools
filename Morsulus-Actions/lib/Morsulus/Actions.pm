@@ -4,7 +4,7 @@ use warnings;
 use strict;
 use Carp;
 
-our $VERSION = '2012.012.001';
+our $VERSION = '2014.003.001';
 use Daud;
 use Moose;
 use namespace::autoclean;
@@ -160,6 +160,11 @@ sub bracket_name
     {
         my $branch = $1;
         my $article = $2;
+        $q_name =~ s/$branch/<$branch>/;
+    }
+    elsif ($q_name =~ m/($SPACE $BRANCH)\z/xms)
+    {
+        my $branch = $1;
         $q_name =~ s/$branch/<$branch>/;
     }
     elsif ($q_name =~ m/\A ($BRANCH (?: $SPACE (?: of | de ) (?: $SPACE (?: the | l' ))? )? ) $SPACE? (.+)\z/xms)

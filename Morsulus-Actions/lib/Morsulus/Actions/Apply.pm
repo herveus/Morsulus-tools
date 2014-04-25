@@ -6,7 +6,7 @@ use Carp;
 use Moose;
 extends 'Morsulus::Actions';
 
-our $VERSION = '2014.002.002';
+our $VERSION = '2014.003.001';
 
 has 'db' => (
     isa => 'Morsulus::Ordinary::Classic',
@@ -382,7 +382,7 @@ my %transforms = (
     '-badge correction' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_REG' => [],
         'armory_release' => [ 'b', 'corrected blazon' ] },
-    '-badge for alternate name "x"' => { 'NAME_FOR_ARMORY_REG' => [],
+    'badge for alternate name "x"' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_NOT_REG' => [],
         'badge_for' => [] },
     'badge for "x"' => { 'NAME_FOR_ARMORY_REG' => [],
