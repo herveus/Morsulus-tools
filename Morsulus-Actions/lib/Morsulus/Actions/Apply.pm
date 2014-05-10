@@ -6,7 +6,7 @@ use Carp;
 use Moose;
 extends 'Morsulus::Actions';
 
-our $VERSION = '2014.003.001';
+our $VERSION = '2014.004.001';
 
 has 'db' => (
     isa => 'Morsulus::Ordinary::Classic',
@@ -812,7 +812,9 @@ my %transforms = (
         'ARMORY_NOT_REG' => [],
         'armory_release' => [ 'd', 'converted to badge' ], 
         'armory' => [ 'b' ], },
-    '-release of alternate name "x"' => { 'owned_name_release' => [ 'AN', 'released' ] },
+    'release of alternate name "x"' => { 'NAME_FOR_ARMORY_REG' => [],
+        'NAME_REG' => [ 'N' ],
+        'owned_name_release' => [ 'AN', 'released' ] },
     '-release of alternate name "x" and association of device with primary name' => 
         { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_REG' => [],
