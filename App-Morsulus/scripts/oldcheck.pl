@@ -95,7 +95,7 @@ while (<>) {
     $historical_type = 1;  # change/correction/update
   } elsif ($type =~ /^(N|BN)$/) {
     $name_only = 1;
-  } elsif ($type =~ /^([CORjtvW]|AN|Bv|HN|BP)$/) {
+  } elsif ($type =~ /^([CORjtvWr]|AN|Bv|HN|BP)$/) {
   } else {
     &report("unknown record type ($type)");
   }

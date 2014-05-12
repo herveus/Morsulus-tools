@@ -8,17 +8,17 @@ A=/Users/herveus/aux
 
 echo "Checking file '$DBFILE' for date $DATE"
 echo " - check:"
-echo " --> oldcheck.pl $DATE $DBFILE > check.out"
-oldcheck.pl $DATE $DBFILE > check.out
+echo " --> oldcheck -d  $DATE -db $DBFILE > check.out"
+oldcheck -d $DATE -db $DBFILE > check.out
 echo " - nd:"
-echo " --> namedates.pl $DBFILE | sort -nr > nd.out"
-namedates.pl $DBFILE | sort -nr > nd.out
+echo " --> namedates -db $DBFILE | sort -nr > nd.out"
+namedates -db $DBFILE | sort -nr > nd.out
 echo " - nc:"
-echo " --> namenc.pl $DBFILE | sort > nc.out"
-namenc.pl $DBFILE | sort > nc.out
+echo " --> namenc -db $DBFILE | sort > nc.out"
+namenc -db $DBFILE | sort > nc.out
 echo " - regsad:"
-echo " --> getnames.pl -cr $DBFILE | sort -u > regs.cur"
-getnames.pl -cr $DBFILE | sort -u > regs.cur
+echo " --> getnames -cr -db $DBFILE | sort -u > regs.cur"
+getnames -cr -db $DBFILE | sort -u > regs.cur
 echo " --> accent.pl -o regs.cur | design.pl | lcase.pl | drop.pl | freq.pl -dup regs.cur > regsad"
 accent.pl -o regs.cur | design.pl | lcase.pl | drop.pl | freq.pl -dup regs.cur > regsad
 

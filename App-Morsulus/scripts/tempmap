@@ -102,7 +102,7 @@ $map{'ESCARBUNCLE'}='ESCARB:t1';
 $map{'SNOWFLAKE'}='ESCARB:t2';
 
 $map{'FRET'}='FRET:t1';
-$map{'FIELD TREATMENT-FRETTY'}='FRET:t2';
+$map{'FIELD TREATMENT-FRETTY'}='FRET:t2:primary';
 
 $map{'FLOWER-GARDEN ROSE'}='ROSE:natural';
 $map{'FLOWER-HERALDIC ROSE'}='ROSE:heraldic';
