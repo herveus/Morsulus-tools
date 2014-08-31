@@ -6,7 +6,7 @@ use Carp;
 use Moose;
 extends 'Morsulus::Actions';
 
-our $VERSION = '2014.006.001';
+our $VERSION = '2014.007.001';
 
 has 'db' => (
     isa => 'Morsulus::Ordinary::Classic',
@@ -238,7 +238,7 @@ my %transforms = (
     '-acceptance of order name transfer "x" from "x"' => { 'NAME_FOR_OWNED_NAME_REG' => [],
         'OWNED_NAME_NOT_REG' => [ 'O' ],
         'name_owned_by' => [ 'O' ] },
-    '-acceptance of transfer of household name "x" and badge from "x"' => { 'NAME_FOR_ARMORY_REG' => [],
+    'acceptance of transfer of household name "x" and badge from "x"' => { 'NAME_FOR_ARMORY_REG' => [],
         'NAME_FOR_OWNED_NAME_REG' => [],
         'ARMORY_NOT_REG' => [],
         'OWNED_NAME_NOT_REG' => [ 'HN' ],
@@ -477,9 +477,11 @@ my %transforms = (
     '-change of badge association from "x" to "x"' => { 'badge_for_2' => [ ], 
         'ARMORY_REG' => [],
         'armory_release' => [ 'b', 'associated with new usage' ], },
-    '-change of badge association to "x" from "x"' => { 'NAME_FOR_ARMORY_REG' => [],
-        'ARMORY_NOT_REG' => [],
+    'change of badge association to "x" from "x"' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_REG' => [],
+        'badge_for' => [ ], 
+        'armory_release' => [ 'b', 'associated with new usage' ], },
+    'change of badge association to "x" from "x" important' => { 'ARMORY_REG' => [],
         'badge_for' => [ ], 
         'armory_release' => [ 'b', 'associated with new usage' ], },
     'change of device to badge' => { 'NAME_FOR_ARMORY_REG' => [],
@@ -548,11 +550,11 @@ my %transforms = (
         'armory' => [ 'd' ], 
         'blanket_permission_armory' => [ 'BP', 'device' ], },
     '-exchange of device and badge' => {}, 
-    'exchange of primary and alternate name "x"' => { 'NAME_REG' => [ 'AN' ],
-        'OWNED_NAME_REG' => [ 'N' ],
+    'exchange of primary and alternate name "x"' => { 'NAME_REG' => [ 'N' ],
+        'OWNED_NAME_REG' => [ 'AN' ],
         'name_change' => [ 'NC' ], 
         'name_for' => [ 'AN' ], 
-        'name_release' => [ 'AN', 'converted to primary name' ] },
+        'a_owned_name_release' => [ 'AN', 'converted to primary name' ] },
     'exchange of alternate and primary name "x"' => { 'NAME_REG' => [ 'AN' ],
         'OWNED_NAME_REG' => [ 'N' ],
         'name_change' => [ 'NC' ], 
@@ -648,7 +650,8 @@ my %transforms = (
         'normalize_joint_household_name' => [ 'nojoint' ], 
         'armory_release' => [ 'b', 'associated with household name' ],
         'normalize_joint_badge_for' => [], },
-    '-joint household name "x"' => { 'normalize_joint_household_name' => [] },
+    'joint household name "x"' => { 'OWNED_NAME_NOT_REG' => [ 'HN' ],
+        'normalize_joint_household_name' => [] },
     '-joint household name change to "x" from "x" and badge' => { 'order_name_change_reversed' => [ 'HNC' ], 
         'normalize_joint_badge_for' => [], 
         },
@@ -694,6 +697,9 @@ my %transforms = (
     'name change from "x" retained' => { 'NAME_NOT_REG' => [ 'N' ],
         'OWNED_NAME_REG' => [ 'N' ],
         'name_change' => [ 'NC', 'retained' ], },
+    'name change from "x" erratum' => { 'NAME_REG' => [ 'N' ],
+        'OWNED_NAME_REG' => [ 'N' ],
+        'name_change' => [ 'NC', 'erratum' ], },
     'name change from "x" retained and device' => { 'NAME_NOT_REG' => [ 'N' ],
         'ARMORY_NOT_REG' => [],
         'OWNED_NAME_REG' => [ 'N' ],
@@ -780,7 +786,7 @@ my %transforms = (
     'order name change to "x" from "x"' => { 'NAME_REG' => [ 'BN' ],
         'OWNED_NAME_NOT_REG' => [ 'O' ],
         'OWNED_NAME2_REG' => [ 'O' ],
-        'order_name_change_reversed' => [ 'OC', 'changed' ], },
+        'order_name_change_reversed' => [ 'OC', ], },
     '-order name correction to "x" from "x"' => { 'owned_name_correction' => [ 'OC', '-corrected' ], },
     '-reblazon and redesignation of badge for "x"' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_NOT_REG' => [],
@@ -846,7 +852,9 @@ my %transforms = (
         'armory_release' => [ 'd', 'released' ] },
     'release of device (non-sca armory)' => { 'ARMORY_REG' => [],
         'armory_release' => [ 'd', 'released' ] },
-    '-release of heraldic title "x"' => { 'owned_name_release' => [ 't', 'released' ] },
+    'release of heraldic title "x"' => { 'OWNED_NAME_REG' => [ 't' ],
+        'NAME_REG' => [ 'N' ],
+        'owned_name_release' => [ 't', 'released' ] },
     '-release of heraldic title' => { 'name_release' => [ 't', 'released' ] },
     '-release of household name "x" and badge' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_REG' => [],
@@ -891,7 +899,10 @@ my %transforms = (
     'transfer of household name "x" to "x"' => {  'NAME_FOR_OWNED_NAME_REG' => [ 'HN' ],
         'OWNED_NAME_REG' => [ 'HN' ],
         'transfer_name' => [ 'HN', ], },
-    '-transfer of household name "x" and badge to "x"' => {  'transfer_owned_name' => [ 'HN', ],
+    'transfer of household name "x" and badge to "x"' => {  'NAME_FOR_OWNED_NAME_REG' => [ 'HN' ],
+        'OWNED_NAME_REG' => [ 'HN' ],
+        'ARMORY_REG' => [],
+        'transfer_name' => [ 'HN', ],
         'transfer_armory' => [ 'b', ], },
     '-transfer of name and device to "x"' => {  'transfer_name' => [ 'N' ], 'transfer_armory' => [ 'd', ], },
     '-transfer of order name "x" to "x"' => {  'transfer_owned_name' => [ 'O', ], },
@@ -981,6 +992,9 @@ sub variant_name
 sub name_change
 {
     my ($self, $type, $retained) = @_;
+    # $retained eq 'retained' means create alternate name
+    # $retained eq 'erratum' means skip creating new name
+    $retained //= '';
     my $ntype = $type;
     $ntype =~ s/C$//;
     $ntype = 'BN' if $type eq 'u';
@@ -1026,7 +1040,7 @@ sub name_change
     	            action => $ntype,
     	            registration_date => $self->date_of,
     	            registration_kingdom => $self->kingdom_of,
-    	        })->update;
+    	        })->update unless $retained eq 'erratum';
     	    $got_the_primary_name = 1;
     	}
     	elsif ($reg->action->action_id ~~ @name_types)
@@ -1090,7 +1104,7 @@ sub name_change
         $reg->update;
     }
     
-    if ($retained)
+    if ($retained eq 'retained')
     {
         $self->name_for('AN', 1);
     }
@@ -1729,6 +1743,12 @@ sub name_release
     die $self->as_str;
     return [ $self->name_of, "-".$self->source_of, $type, $EMPTY_STR,
         $self->notes_of."(-$reason)" ];
+}
+
+sub a_owned_name_release
+{
+    my $self = shift;
+    $self->owned_name_release(@_);
 }
     
 sub owned_name_release

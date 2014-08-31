@@ -4,7 +4,7 @@ use warnings;
 use strict;
 use Carp;
 
-our $VERSION = '2014.003.001';
+our $VERSION = '2014.007.001';
 use Daud;
 use Moose;
 use namespace::autoclean;
@@ -143,8 +143,13 @@ sub bracket_name
     my $self = shift;
     my ($q_name) = @_;
     if ($q_name =~ m/($SPACE 
-        (?: Herald | Pursuivant | King $SPACE of $SPACE Arms | Herault | Herold) 
+        (?: Herald | Pursuivant | King $SPACE of $SPACE Arms | Herault | Herold) \b
         (?: $SPACE Extraordinary)?)/xms)
+    {
+        my $title = $1;
+        $q_name =~ s/$title/<$title>/;
+    }
+    elsif ($q_name =~ m/\A (Herold $SPACE)/xms)
     {
         my $title = $1;
         $q_name =~ s/$title/<$title>/;
