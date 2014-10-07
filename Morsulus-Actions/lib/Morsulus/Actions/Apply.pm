@@ -6,7 +6,7 @@ use Carp;
 use Moose;
 extends 'Morsulus::Actions';
 
-our $VERSION = '2014.007.001';
+our $VERSION = '2014.008.001';
 
 has 'db' => (
     isa => 'Morsulus::Ordinary::Classic',
@@ -405,6 +405,8 @@ my %transforms = (
     'badge reblazoned' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_REG' => [],
         'armory_release' => [ 'b', 'reblazoned' ] },
+    'badge reblazoned important' => { 'ARMORY_REG' => [],
+        'armory_release' => [ 'b', 'reblazoned' ] },
     '-badge for the "x" reblazoned' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_REG' => [],
         'armory_release' => [ 'b', 'reblazoned' ] },
@@ -539,7 +541,9 @@ my %transforms = (
     'device reblazoned' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_REG' => [],
         'armory_release' => [ 'd', 'reblazoned' ] },
-    '-device released' => { 'NAME_FOR_ARMORY_REG' => [],
+    'device reblazoned important' => { 'ARMORY_REG' => [],
+        'armory_release' => [ 'd', 'reblazoned' ] },
+    'device released' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_REG' => [],
         'armory_release' => [ 'd', 'released' ] },
     'device' => { 'NAME_FOR_ARMORY_REG' => [],
@@ -556,6 +560,11 @@ my %transforms = (
         'name_for' => [ 'AN' ], 
         'a_owned_name_release' => [ 'AN', 'converted to primary name' ] },
     'exchange of alternate and primary name "x"' => { 'NAME_REG' => [ 'AN' ],
+        'OWNED_NAME_REG' => [ 'N' ],
+        'name_change' => [ 'NC' ], 
+        'name_for' => [ 'AN' ], 
+        'owned_name_release_reverse' => [ 'AN', 'converted to primary name' ] },
+    'exchange of alternate name and primary name "x"' => { 'NAME_REG' => [ 'AN' ],
         'OWNED_NAME_REG' => [ 'N' ],
         'name_change' => [ 'NC' ], 
         'name_for' => [ 'AN' ], 
@@ -630,7 +639,7 @@ my %transforms = (
         'armory' => [ 'b', 'Important non-SCA badge' ], },
     '-important non-sca flag' => { 'ARMORY_NOT_REG' => [],
         'armory' => [ 'b', 'Important non-SCA flag' ], },
-    '-joint badge for "x"' => { 'normalize_joint_badge_for' => [] },
+    'joint badge for "x"' => { 'normalize_joint_badge_for' => [] },
     'joint household badge for "x"' => { 'normalize_joint_badge_for' => [] },
     'joint household badge change for "x"' => { 'normalize_joint_badge_for' => [] },
     'joint badge with "x"' => { 'PRIMARY_OWNER_NAME_NOT_REG' => [],
@@ -813,6 +822,10 @@ my %transforms = (
     '-reblazon of important non-sca arms' => { 'ARMORY_NOT_REG' => [],
         'ARMORY_NOT_REG' => [],
         'armory' => [ 'b', 'Important non-SCA arms' ], },
+    'reblazon of important non-sca device' => { 'ARMORY_NOT_REG' => [],
+        'armory' => [ 'b', 'Important non-SCA arms' ], },
+    'reblazon of important non-sca mon' => { 'ARMORY_NOT_REG' => [],
+        'armory' => [ 'b', 'Important non-SCA mon' ], },
     '-reblazon of seal' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_NOT_REG' => [],
         'armory' => [ 's' ], },
