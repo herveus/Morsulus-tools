@@ -19,8 +19,10 @@ for my $daud (Daud::_raw_data())
     chomp $daud;
     my ($daud, $ascii, $unicode, $html, $name) = split(/;/, $daud);
     $html =~ s/&/&amp;/;
+    $html ||= '&nbsp;';
     print '<tr align="left" valign="top">', 
-        "<td>$daud</td><td>$ascii</td><td>$unicode</td><td>", chr(hex($unicode)),
+        "<td>$daud</td><td>$ascii</td><td>$unicode</td><td>",
+        chr(hex($unicode)), "</td>",
         "<td>$html</td><td>$name</td>", "\n",
         '</tr>', "\n";
 }
