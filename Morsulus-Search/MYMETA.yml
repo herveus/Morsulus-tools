@@ -1,0 +1,29 @@
+---
+abstract: 'The great new Morsulus::Search!'
+author:
+  - 'Michael Houghton, C<< <herveus at cpan.org> >>'
+  - 'Michael Houghton <herveus@cpan.org>'
+build_requires:
+  ExtUtils::MakeMaker: 6.59
+  Module::Install: 0
+  Test::More: 0
+configure_requires:
+  ExtUtils::MakeMaker: 6.59
+  Module::Install: 0
+dynamic_config: 0
+generated_by: 'Module::Install version 1.06, CPAN::Meta::Converter version 2.120921'
+license: artistic_2
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: Morsulus-Search
+no_index:
+  directory:
+    - inc
+    - t
+requires:
+  perl: 5.006
+resources:
+  bugtracker: http://rt.cpan.org/NoAuth/Bugs.html?Dist=Morsulus-Search
+  license: http://www.perlfoundation.org/artistic_license_2_0
+version: 0.01

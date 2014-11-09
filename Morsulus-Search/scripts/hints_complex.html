@@ -1,0 +1,109 @@
+<html>
+<head><title>Complex Search Hints</title>
+<base href="XXComplexHintsPageUrlXX">XXHeadXX
+</head>
+<h2>Complex Search Hints</h2>
+<p>
+Here are some hints for using the 
+<a href="XXComplexSearchUrlXX">Complex Search Form</a>.
+The purpose of the form is to combine several search methods
+into a single search.  Before using this form, you should
+familiarize yourself with the following search methods:
+<ul>
+<li>Name Pattern Search:
+  <a href="XXNpHintsPageUrlXX">view the hints</a>
+  <a href="XXNpSearchUrlXX">use the form</a>
+<li>Blazon Pattern Search:
+  <a href="XXBpHintsPageUrlXX">view the hints</a>
+  <a href="XXBpSearchUrlXX">use the form</a>
+<li>Armory Description Search:
+  <a href="XXDescHintsPageUrlXX">view the hints</a>
+  <a href="XXDescSearchUrlXX">use the form</a>
+</ul>
+
+<h3>Scoring Criteria</h3>
+<p>
+This portion of the form allows you to specify up to five search
+criteria in order to find the registration(s) of interest to you.
+A certain number of registrations will match each criterion.
+Usually, the result of a complex search consists of all registrations
+which match one or more of the criteria specified.
+
+<p>
+In a search with multiple criteria, you may only be interested in
+registrations which match <em>all</em> the criteria.  These are, of course,
+included in the result.  To make these registrations easy to locate,
+each item in the search result is given a score based on how many
+criteria it satisfied.  Items matching all the criteria naturally
+have the highest score; when you sort the results by their score,
+you can easily locate these items.
+
+<p>
+Sometimes you may want to give some criteria more weight than others.
+For instance, suppose you are looking for a registration connected the name
+"Alaric" which probably contains a chief (but you're less certain
+of the charge).  In this case, you want the search results to appear in the
+following order:
+<ol>
+<li>registrations containing "Alaric" and a chief
+<li>registrations containing "Alaric" but no chief
+<li>other registrations
+</ol>
+You can achieve this results by giving the name pattern criterion a
+weight of 20 and the armory-description search a weight of only 10.
+
+<p>
+There are currently four methods available for specifying criteria:
+<ul>
+<li>armory description:  works just like the
+  <a href="XXDescSearchUrlXX">Armory Description Search Form</a>
+<li>name pattern:  works just like the
+  <a href="XXNpSearchUrlXX">Name Pattern Search Form</a>
+<li>blazon pattern:  works just like the
+  <a href="XXBpSearchUrlXX">Blazon Pattern Search Form</a>
+<li>record type:  a list of database item-types,
+  separated by stiles (|), such as "AN" or "B|b".
+  A complete list of record-types appears in the
+  <a href="XXDbFormatPageUrlXX#recordtype">file format document</a>.
+</ul>
+
+<h3>Maximum Number of Items to Display</h3>
+<p>
+You can control the size of your search result by typing a number
+of items (1-500) in this box.  If you do not fill in the box, at most
+25 items will be displayed.  Note that there is a
+<a href="XXLimitPageUrlXX">built-in limit</a>
+of 500 items, which you cannot override.
+<p>
+<h3>Display Options</h3>
+<p>
+You can specify how you want your search results sorted.
+Currently there are two options:  by name and by date.
+It is usually easiest to find names when they are sorted by name.
+You might want to sort by date if you know that the item
+you are looking for is particularly old.
+<p>
+You can also specify whether you want dates shown in modern style
+(Common Era year/A.D.) or SCA style (Anno Societatis).
+The SCA calendar marks time from the "First Tournament" (1 May 1966)
+and its years are traditionally noted in Roman numerals.
+<p>
+<h3>Submitting the Search</h3>
+<p>
+The button at the bottom of the form marked "search for items
+matching the name pattern" is used to launch the search.
+The server takes no action until you press the button.
+<p>
+
+<h3>Related web pages:</h3>
+
+<ul>
+<li><a href="XXComplexSearchUrlXX">Complex Search Form</a>
+<li><a href="XXSearchMenuUrlXX">Search Forms</a>
+<li><a href="XXLimitPageUrlXX">Search Limits</a>
+<li><a href="XXOverviewPageUrlXX">About SCA Heraldry</a>
+</ul>
+
+XXTrailerXX
+XXTrailer2XX
+XXCloseHtmlXX

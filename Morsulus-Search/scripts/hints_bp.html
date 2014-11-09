@@ -1,0 +1,120 @@
+<html>
+<head><title>Blazon Pattern Search Hints</title>
+<base href="XXBpHintsPageUrlXX">XXHeadXX
+</head><body>
+
+<h2>Blazon Pattern Search Hints</h2>
+<p>
+Here are some hints for using the 
+<a href="XXBpSearchUrlXX">Blazon Pattern Search Form</a>.
+The purpose of the form is to find registered blazons that 
+contain particular words or patterns.
+
+<h3>Patterns</h3>
+<p>
+The first text entry field is where you type the pattern.
+The simplest pattern is simply a portion of the blazon you are
+seeking.  For instance, you could type "bat" in this box
+to find all the blazons containing "bat".  This would bring up not
+only blazons containing the word "bat", but also those containing
+words such as "batwing", "embattled", "combattant", and "baton".
+<p>
+You can seach for blazons that contain a particular <em>word</em>
+by sandwiching the word between "\b"s.  ("\b" matches any word-boundary.)
+For instance, you could type the pattern "\bbat\b"
+to find all blazons containing the word "bat"
+ignoring words like "combattant" and "bats".
+<p>
+You can specify that you want the pattern to appear at the
+beginning of a word by placing "\b" in front of the
+pattern.  For instance, you could type the pattern "\bbat"
+to find all items with batons, bats, and batwings, while
+ignoring words like "combattant" and "embattled".
+<p>
+You can specify that you want the pattern to appear at the
+beginning of the blazon by placing a carat (^) in front of the
+pattern.  For instance, you could type the pattern "^Or"
+to find all registered items with fields Or.
+<p>
+Some punctuation marks have special meaning in patterns.
+When your pattern includes punctuation marks such as periods (.),
+question marks (?), or parentheses,
+it is a good idea to put a backslash (\) in front of each
+punctuation mark.  For instance, to search for names containing
+"St." you should use the pattern "St\.".
+<p>
+Some common blazon-terms are not consistently spelled.
+For instance, if you are looking for the word "fleur-de-lys",
+you might use the pattern "\bfleur-de-l.s\b" to catch both
+common spellings of the word (fleur-de-lys, fleur-de-lis);
+the period (.) matches any single character.
+Alternately, you could use "\bfleur-de-l[iy]s".  The portion in
+square brackets matches a single character which must be one of the
+two listed (i or y).  To specify a wildcard that matches any
+character except whitespace, use "\S".
+<p>
+If there are multiple letters that
+you are unsure of, you can use multiple wildcards.
+If you are unsure of the exact number of wildcards needed, a plus-sign
+(+) may be used after any wildcard to indicate repetion.  For instance,
+the pattern "\bchevron\b.+\bgules\b" matches any blazon that contains
+the words "chevron" and "gules" in that order.
+<p>
+You can specify accented characters (such as the &#234; in v&#234;tu)
+by typing a backslash (\) followed by the three-digit
+<a href="XXDbSymbolsPageUrlXX">"Oct" code</a>.
+For instance, to find "v&#234;tu" you can type the pattern
+"v\353tu".
+<p>
+<h3>Search Types</h3>
+<p>
+You can specify a name search that is "case-sensitive" or
+"case-insensitive".  A case-sensitive search differentiates upper-case
+and lower-case letters.  For instance, the pattern "or" would match
+"gore" but not "Or".  A case-insensitive search would
+treat "O" and "o" as being the same, so that "or" would match both
+"gore" and "Or".
+<p>
+<h3>Maximum Number of Items to Display</h3>
+<p>
+You can control the size of your search result by typing a number
+of items (1-500) in this box.  If you do not fill in the box, at most
+25 items will be displayed.  Note that there is a
+<a href="XXLimitPageUrlXX">built-in limit</a>
+of 500 items, which you cannot override.
+<p>
+<h3>Display Options</h3>
+<p>
+You can specify how you want your search results sorted.
+Currently there are three sort options:  by name, by date, and by blazon.
+You might want to sort by date if you know that the item
+you are looking for is particularly old.
+<p>
+You can also specify whether you want dates to be shown in modern style
+(Common Era year/A.D.) or SCA style (Anno Societatis).
+The SCA calendar counts years from the SCA's "First Tournament"
+(1 May 1966) and traditionally uses Roman numerals.
+<p>
+You can also specify whether you want blazons to be displayed with
+links to the heraldic glossary.  These links are helpful if you are
+unclear on the meanings of basic blazon terms.
+<p>
+<h3>Submitting the Search</h3>
+<p>
+The button at the bottom of the form marked "search for items
+matching the blazon pattern" is used to launch the search.
+No action is taken by the server until you click on the button.
+<p>
+
+<h3>Related Web Pages:</h3>
+
+<ul>
+<li><a href="XXBpSearchUrlXX">Blazon Pattern Search Form</a>
+<li><a href="XXSearchMenuUrlXX">Search Forms</a>
+<li><a href="XXLimitPageUrlXX">Search Limits</a>
+<li><a href="XXOverviewPageUrlXX">About SCA Heraldry</a>
+</ul>
+
+XXTrailerXX
+XXTrailer2XX
+XXCloseHtmlXX

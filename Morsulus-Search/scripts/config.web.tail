@@ -1,0 +1,324 @@
+$ConfigDbScript .= $Helpers;
+
+$ConfigDbScript .= $ConfigDbScriptB;
+
+#=====================================================#
+# config.web has now slurped up all the files to be   #
+# installed on the webserver.                         #
+#=====================================================#
+
+# Define the common config functions.
+
+eval $Helpers;
+
+print "\nThe following web pages will be installed on the webserver:\n";
+&print_list (values %pages);
+
+print "\nThe following CGI scripts will be installed on the webserver:\n";
+&print_list (values %scripts);
+
+print "\nThe following other files will also be installed on the webserver:\n";
+&print_list (
+  'ordinary master index',
+  'common Perl code',
+  'database server config script',
+  'ordinary index pages (A-Z)'
+);
+
+# Get the path to the current working directory.
+
+$cwd = `pwd`; chop ($cwd);
+
+print "\nPress Enter to proceed, or else interrupt the installation now.\n";
+$_ = &input ('');
+
+# Get old config values, if available.
+
+$conf_file = '.configweb';
+&read_config_file ();
+
+$config{'XXPrimerUrlXX'} = 'http://heraldry.sca.org/armory/newprimer/';
+$config{'XXLoARUrlXX'} = 'http://heraldry.sca.org/loar';
+$config_version = 20140921;
+$config{'XXVersionXX'} = $config_version;
+$config{'XXHeadXX'} = '';
+
+$config{'XXTrailerXX'} = "<hr><address>config.web version $config_version ";
+$config{'XXTrailer2XX'} = '';
+$config{'XXCloseHtmlXX'} = '</address></body></html>';
+
+#============================#
+# Set webserver parameters.  #
+#============================#
+
+&machine_questions ('XXPerlPathXX', 'XXAF_INETXX', 'XXSOCK_STREAMXX');
+
+# Set $ServerName.
+
+servername:
+$ServerName = $config{'XXServerNameXX'};
+$ServerName = 'heraldry.sca.org' if ($ServerName eq '');
+print <<'EOF';
+
+What is the DNS hostname of this machine?
+
+  (This should be listed as the ServerName
+  in the webserver configuration file.)
+
+EOF
+print "[$ServerName] ";
+$ServerName = &input ($ServerName);
+@a = gethostbyname ($ServerName);
+if (@a != 5 && $ServerName ne 'localhost') {
+  print "Sorry, `$ServerName' is not an accessible host.\n";
+  print "Try again...\n";
+  goto servername;
+}
+$config{'XXServerNameXX'} = $ServerName;
+
+# Set $ServerPort.
+
+serverport:
+$ServerPort = $config{'XXServerPortXX'};
+$ServerPort = 80 if ($ServerPort < 1);
+print <<'EOF';
+
+To which port does this machine listen for incoming HTTP requests?
+
+  (This should be listed as the ServerPort in the webserver
+  configuration file.)
+
+EOF
+print "[$ServerPort] ";
+$ServerPort = &input ($ServerPort);
+if ($ServerPort < 1 || $ServerPort > 32767) {
+  print "Sorry, `$ServerPort' is not a valid port.\n";
+  print "Try again...\n";
+  goto serverport;
+}
+$config{'XXServerPortXX'} = $ServerPort;
+
+# Set $DocumentRoot.
+
+documentroot:
+$DocumentRoot = $config{'XXDocumentRootXX'};
+$DocumentRoot = '/local' if ($DocumentRoot eq '');
+$DocumentRoot = "$cwd/$DocumentRoot" if ($DocumentRoot =~ m#^[^/]#);
+print "\nWhat is the pathname of the directory corresponding to\n`http://$ServerName:$ServerPort/'?\n\n  (This should be listed as the DocumentRoot\n  in the webserver configuration file.)\n\n";
+print "[$DocumentRoot] ";
+$DocumentRoot = &input ($DocumentRoot);
+$DocumentRoot = "$cwd/$DocumentRoot" if ($DocumentRoot =~ m#^[^/]#);
+if (!-e $DocumentRoot) {
+  print "Sorry, `$DocumentRoot' does not exist.\n";
+  print "Try again...\n";
+  goto documentroot;
+}
+if (!-d $DocumentRoot) {
+  print "Sorry, `$DocumentRoot' is not a directory.\n";
+  print "Try again...\n";
+  goto documentroot;
+}
+$config{'XXDocumentRootXX'} = $DocumentRoot;
+
+if ($Cgibin) {
+  # Set $ScriptAlias.
+
+  scriptalias:
+  $ScriptAlias = $config{'XXScriptAliasXX'};
+  $ScriptAlias = '/usr/local/etc/httpd/cgi-bin' if ($ScriptAlias eq '');
+  $ScriptAlias = "$cwd/$ScriptAlias" if ($ScriptAlias =~ m#^[^/]#);
+  print "\nWhat is the pathname of the directory corresponding to\n`http://$ServerName:$ServerPort/cgi-bin/'?\n\n  (This should be listed as the ScriptAlias\n  in the webserver configuration file.)\n\n";
+  print "[$ScriptAlias] ";
+  $ScriptAlias = &input ($ScriptAlias);
+  $ScriptAlias = "$cwd/$ScriptAlias" if ($ScriptAlias =~ m#^[^/]#);
+  if (!-e $ScriptAlias) {
+    print "Sorry, `$ScriptAlias' does not exist.\n";
+    print "Try again...\n";
+    goto scriptalias;
+  }
+  if (!-d $ScriptAlias) {
+    print "Sorry, `$ScriptAlias' is not a directory.\n";
+    print "Try again...\n";
+    goto scriptalias;
+  }
+  $config{'XXScriptAliasXX'} = $ScriptAlias;
+}
+
+#====================================#
+
+print <<'EOF';
+
+
+Now you get to choose where the files will be installed.
+
+For each group of files:
+ +  The default location is given in [brackets].
+ +  To override the default location, enter your
+      choice in the space next to the brackets.
+ +  To accept the default location, enter a blank line.
+
+EOF
+
+#====================================#
+# Set paths and URLs for HTML pages. #
+#====================================#
+
+$PagePath = &get_dirpath ('XXPagePathXX',
+  'O&A web pages', "$DocumentRoot/heraldry/OandA", $DocumentRoot);
+$PageUrl = &get_html_url ('XXPageUrlXX', 'O&A web pages', $PagePath);
+
+$WebDataPath = &get_filepath ('XXWebDataPathXX', 'database file',
+   'oanda.db', $DocumentRoot);
+$WebDataUrl = &get_html_url ('XXWebDataUrlXX', 'database file', $WebDataPath);
+
+foreach $tag (keys %pages) {
+  &set_page_info ($tag);
+}
+
+$IndexDirPath = &get_dirpath ('XXIndexDirPathXX',
+  'SCA Ordinary index pages', "$PagePath/ordinary", $DocumentRoot);
+$IndexDirUrl = &get_html_url ('XXIndexDirUrlXX',
+   'SCA Ordinary index pages', $IndexDirPath);
+
+#=====================================#
+# Set paths and URLs for CGI scripts. #
+#=====================================#
+
+if ($Cgibin) {
+  $ScriptPath = &get_dirpath ('XXScriptPathXX',
+    'CGI scripts', $ScriptAlias, $ScriptAlias);
+} else {
+  $ScriptPath = &get_dirpath ('XXScriptPathXX',
+    'CGI scripts', $PagePath, $DocumentRoot);
+}
+$ScriptUrl = &get_cgi_url ('XXScriptUrlXX', 'CGI scripts', $ScriptPath);
+
+foreach $tag (keys %scripts) {
+  &set_script_info ($tag);
+}
+
+#========================#
+# Set $CommonClientPath. #
+#========================#
+
+if ($Cgibin) {
+  $ScriptAlias =~ m#^(.*)[/][^/]+[/]?$#;
+} else {
+  $PagePath =~ m#^(.*)[/][^/]+[/]?$#;
+}
+$CommonClientPath = &get_filepath ('XXCommonClientPathXX',
+   'common Perl code', "$1/common.pl", '/');
+
+#=========================#
+# Set $CorrectionLogPath. #
+#=========================#
+
+# $CorrectionLogPath = &get_filepath ('XXCorrectionLogPathXX',
+#   'correction log', 'correction.log', '/');
+
+#====================================#
+# Set parameters of database server. #
+#====================================#
+
+print <<'EOF';
+
+
+Now I need you to answer a few questions about the database server.
+This may or may not be the same machine as the webserver, but
+it must be accessable via TCP/IP and it must have disk space to
+install the 5MB Armorial database.
+
+For each question:
+ +  The default answer is given in [brackets].
+ +  To override the default answer, enter the
+      correct answer in the space next to the brackets.
+ +  To accept the default answer, enter a blank line.
+
+EOF
+
+# Set $DataHost.
+
+datahost:
+$DataHost = $config{'XXDataHostXX'};
+$DataHost = $ServerName if ($DataHost eq '');
+print "\nWhat is the DNS hostname of the database server?\n[$DataHost] ";
+$DataHost = &input ($DataHost);
+@a = gethostbyname ($DataHost);
+if (@a != 5 && $ServerName ne 'localhost') {
+  print "Sorry, `$DataHost' is not an accessible host.\n";
+  print "Try again...\n";
+  goto datahost;
+}
+$config{'XXDataHostXX'} = $DataHost;
+
+# Set $DataPort.
+
+dataport:
+$DataPort = $config{'XXDataPortXX'};
+$DataPort = 1066 if ($DataPort < 1);
+print "\nTo which port will the database server\nlisten for incoming database requests?\n[$DataPort] ";
+$DataPort = &input ($DataPort);
+if ($DataPort < 1 || $DataPort > 32767) {
+  print "Sorry, `$DataPort' is not a valid port number.\n";
+  print "Try again...\n";
+  goto dataport;
+}
+$config{'XXDataPortXX'} = $DataPort;
+
+# Set $ConfigDbPath.
+$ConfigDbPath = &get_filepath ('XXConfigDbPathXX',
+   'database server config script', 'configdb', '/');
+
+#=======================================#
+# Save the new webserver configuration. #
+#=======================================#
+
+&save_config ();
+
+#============================================#
+# Configure and install the webserver files. #
+#============================================#
+
+&page_install ($SearchMenu, 'SearchMenu');
+&page_install ($NameHintsPage, 'NameHintsPage');
+&page_install ($DateHintsPage, 'DateHintsPage');
+&page_install ($DescHintsPage, 'DescHintsPage');
+&page_install ($NpHintsPage, 'NpHintsPage');
+&page_install ($BpHintsPage, 'BpHintsPage');
+&page_install ($ComplexHintsPage, 'ComplexHintsPage');
+&page_install ($OverviewPage, 'OverviewPage');
+&page_install ($LimitPage, 'LimitPage');
+&page_install ($DownloadPage, 'DownloadPage');
+&page_install ($DbFormatPage, 'DbFormatPage');
+&page_install ($DbSymbolsPage, 'DbSymbolsPage');
+
+&install ($IndexPage, "$IndexDirPath/index.html", 0444,
+  'ordinary master index');
+
+for $letter ('A' .. 'Z') {
+  &install ($IndexPage{$letter}, "$IndexDirPath/$letter.html", 0444,
+    "ordinary index page ($letter)");
+}
+
+&script_install ($GlossaryScript, 'Glossary');
+&script_install ($CopyrightScript, 'Copyright');
+&script_install ($VersionScript, 'Version');
+&script_install ($NameSearchScript, 'NameSearch');
+&script_install ($DescSearchScript, 'DescSearch');
+&script_install ($NpSearchScript, 'NpSearch');
+&script_install ($BpSearchScript, 'BpSearch');
+&script_install ($DateSearchScript, 'DateSearch');
+&script_install ($ComplexSearchScript, 'ComplexSearch');
+# &script_install ($CorrectionScript, 'Correction');
+
+&key_install ($CommonClientCode, 'CommonClient', 0444, 'common Perl code');
+&key_install ($ConfigDbScript, 'ConfigDb', 0444,
+  'database server config script');
+
+#=================================#
+# Final message to the installer. #
+#=================================#
+
+print "\nYou have successfully installed the webserver files.\n";
+print "Now copy `$ConfigDbPath' to the machine `$DataHost'\n";
+print " and execute `perl $ConfigDbPath' there.\n";

@@ -1,0 +1,140 @@
+<html>
+<head><title>Name Pattern Search Hints</title>
+<base href="XXNpHintsPageUrlXX">XXHeadXX
+</head><body>
+
+<h2>Name Pattern Search Hints</h2>
+<p>
+Here are some hints for using the 
+<a href="XXNpSearchUrlXX">Name Pattern Search Form</a>.
+The purpose of the form is to find items
+associated with a name, even if you don't know the
+exact spelling of the name.
+
+<h3>Patterns</h3>
+<p>
+The first text entry field is where you type the pattern.
+The simplest pattern is simply a portion of the name you are
+seeking.  For instance, you could type "Peter" in this box
+to find all the names containing "Peter".  This would bring up
+items such as
+<a href="XXNameSearchUrlXX?p=Ulf%20Johannes%20Peter%20von%20Greiffenburg">
+Ulf Johannes Peter von Greiffenburg</a>, and even
+<a href="XXNameSearchUrlXX?p=Aelfwine%20of%20Peterborough">
+Aelfwine of Peterborough</a>.
+<p>
+You can specify that you want the pattern to appear at the
+beginning of the name, by placing a carat (^) in front of the
+pattern.  For instance, you could type the pattern "^Peter"
+to find all names that begin with "Peter".  This would exclude
+the examples above, but would match 
+<a href="XXNameSearchUrlXX?p=Peter%20Bentarrow">
+Peter Bentarrow</a>, for instance.
+<p>
+You can specify that you want the pattern to appear at the 
+end of the name by placing a dollar-sign ($) after the pattern.
+For instance, the pattern "wing$" would match 
+<a href="XXNameSearchUrlXX?p=Arthur%20Whitewing">
+Arthur Whitewing</a>, for instance.
+<p>
+Some punctuation marks have special meaning in patterns.
+When your pattern includes punctuation marks such as periods (.)
+it is a good idea to put a backslash (\) in front of each
+punctuation mark.  For instance, to search for names containing
+"St." you should use the pattern "St\.".
+<p>
+If you are unsure of a particular letter in a name, you can use
+wild-cards to find it quickly.  For instance, if you are looking
+for someone Tatiana, you might use the pattern "Tat.ana" in
+case the person you were looking for happened to spell her name
+"Tatjana" or "Tatyana"; the period (.) matches any single character.
+Alternately, you could use "Tat[ijy]ana".  The portion in
+square brackets matches a single character which must be one of the
+three listed (i, j, or y).  To specify a wildcard that matches any
+character except whitespace, use "\S".
+<p>
+If there are multiple letters that
+you are unsure of, you can use multiple wildcards.  For instance,
+"M\S\S\Swood" will match "Mirkwood", "Marewood", and "Muirwood".
+If you are unsure of the exact number of wildcards needed, a plus-sign
+(+) may be used after any wildcard to indicate repetions.  For instance
+"M\S+wood" will match names containing "Mirkwood", "Maplewood",
+"Marionwood" and so on.
+<p>
+You can specify accented characters or ligatures in a "narrow" search
+(see below)
+by typing a backslash (\) followed by the three-digit
+<a href="XXDbSymbolsPageUrlXX">"Oct" code</a>.
+For instance, to find "&#198;thelric" you can type the pattern
+"\306thelric".
+<p>
+<h3>Search Types</h3>
+<p>
+You can specify a name search that is "broad" or "narrow".
+A broad search finds all items associated with a name.
+A narrow search excludes those items in which the name appears only
+as the owner of an order, title, household, or alternate name,
+as the target of a cross-reference, name-change, or transfer, or
+as the designation or joint holder of a badge.
+A broad search often finds more items than a narrow one; since
+this may or may not be what you want, both types of search are available.
+<p>
+Another difference between broad and narrow searches is in their
+handling of accented characters and ligatures.  In broad searches
+(as in the <a href="XXNameSearchUrlXX">name search form</a>)
+non-ASCII symbols are reduced to their nearest ASCII equivalents.
+For instance, "&#198;thelric" is treated exactly like "AEthelric".
+In narrow searches the "&#198;" is treated as a single character
+which matches "\306" but not "A" nor "E".
+<p>
+You can specify a name search that is "case-sensitive" or
+"case-insensitive".  A case-sensitive search differentiates upper-case
+and lower-case letters.  For instance, the name pattern "And" would match
+"Andrew" but not "Holland".  In case-insensitive search would
+treat "A" and "a" as being the same, so that "And" would match both
+"Andrew" and "Holland".
+<p>
+<h3>Maximum Number of Items to Display</h3>
+<p>
+You can control the size of your search result by typing a number
+of items (1-500) in this box.  If you do not fill in the box, at most
+25 items will be displayed.  Note that there is a
+<a href="XXLimitPageUrlXX">built-in limit</a>
+of 500 items, which you cannot override.
+<p>
+<h3>Display Options</h3>
+<p>
+You can specify how you want your search results sorted.
+Currently there are two options:  by name and by date.
+It is usually easiest to find names when they are sorted by name, but
+you might want to sort by date if the item
+you are looking for is particularly old or particularly recent.
+<p>
+You can also specify whether you want dates shown in modern style
+(Common Era year/A.D.) or SCA style (Anno Societatis).
+The SCA calendar counts years from the SCA's "First Tournament"
+(1 May 1966) and traditionally uses Roman numerals.
+<p>
+You can also specify whether you want blazons to be displayed with
+links to the heraldic glossary.  These links are helpful if you are
+unclear on the meanings of basic blazon terms.
+<p>
+<h3>Submitting the Search</h3>
+<p>
+The button at the bottom of the form marked "search for items
+matching the name pattern" is used to launch the search.
+The server takes no action until you click on the button.
+<p>
+
+<h3>Related Web Pages:</h3>
+
+<ul>
+<li><a href="XXNpSearchUrlXX">Name Pattern Search Form</a>
+<li><a href="XXSearchMenuUrlXX">Search Forms</a>
+<li><a href="XXLimitPageUrlXX">Search Limits</a>
+<li><a href="XXOverviewPageUrlXX">About SCA Heraldry</a>
+</ul>
+
+XXTrailerXX
+XXTrailer2XX
+XXCloseHtmlXX

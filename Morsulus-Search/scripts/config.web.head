@@ -1,0 +1,170 @@
+exit
+  if ($not_running_Perl);
+
+#==========================================================#
+# Print introductory messages to the config.web installer. #
+#==========================================================#
+
+print <<'EOF';
+
+This Perl script configures and installs web-based tools for viewing
+the SCA Ordinary and searching the SCA Armorial.
+
+This portion of the installation should be performed ON THE WEBSERVER.
+EOF
+
+$opt = shift;
+$Cgibin = 0;
+if ($opt eq '-c') {
+  $Cgibin = 1;
+  $opt = shift;
+}
+$Y = 'n';
+if ($opt eq '-f') {
+  $Y = 'y';
+  $opt = shift;
+}
+$Rcs = 0;
+if ($opt eq '-r') {
+  $Rcs = 1;
+}
+
+%pages = (
+  'SearchMenu', 'search menu:index',  
+  'NameHintsPage', 'name search hints:hints_name',
+  'DateHintsPage', 'date search hints:hints_date',
+  'DescHintsPage', 'armory description search hints:hints_desc',
+  'NpHintsPage', 'name pattern search hints:hints_np',
+  'BpHintsPage', 'blazon pattern search hints:hints_bp',
+  'ComplexHintsPage', 'complex search hints:hints_complex',
+  'OverviewPage', 'about SCA heraldry:heraldry_overview',
+  'LimitPage', 'about search limits:search_limits',
+  'DownloadPage', 'about obtaining the database:data_obtain',
+  'DbFormatPage', 'about the database format:data_format',
+  'DbSymbolsPage', 'non-ASCII symbols:data_symbols'
+);
+
+%scripts = (
+  'Glossary', 'glossary:glossary',
+  'Copyright', 'database copyright:data_copyright',
+  'Version', 'database version:version',
+  'NameSearch', 'name search:oanda_name',
+  'DescSearch', 'armory description search:oanda_desc',
+  'NpSearch', 'name pattern search:oanda_np',
+  'BpSearch', 'blazon pattern search:oanda_bp',
+  'DateSearch', 'date/kingdom search:oanda_date',
+  'ComplexSearch', 'complex search:oanda_complex'
+  #  'Correction', 'correction request:correction'
+);
+
+#==============================================#
+# Functions specific to the config.web script. #
+#==============================================#
+
+# config.web function to install an HTML page in a file,
+# taking the path from %config.
+
+sub page_install {
+  #global (%pages);
+  local ($text, $tag) = @_;
+  local ($what, $file) = split (/\:/, $pages{$tag});
+
+  &key_install ($text, $tag, 0444, $what);
+}
+
+# config.web function to install a CGI script in a file,
+# taking the path from %config.
+
+sub script_install {
+  #global (%scripts);
+  local ($text, $tag) = @_;
+  local ($what, $file) = split (/\:/, $scripts{$tag});
+
+  &key_install ($text, $tag, 0555, $what);
+}
+
+# config.web function to print a list.
+
+sub print_list {
+  local ($i) = 0;
+
+  foreach $file (sort @_) {
+    local ($what, $name) = split (/\:/, $file);
+    printf " + %-35s", $what;
+    if ($i++%2) {
+      printf "\n";
+    } else {
+      printf ' ';
+    }
+  }
+  printf "\n" if ($i%2);
+}
+
+# config.web function to set the path and URL of an HTML page.
+
+sub set_page_info {
+  #global (%config, %pages);
+  local ($tag) = @_;
+  local ($what, $file) = split (/\:/, $pages{$tag});
+
+  $config{'XX'.$tag.'PathXX'} = $config{'XXPagePathXX'} . "/$file.html";
+  $config{'XX'.$tag.'UrlXX'}  = $config{'XXPageUrlXX' } . "/$file.html";
+}
+
+# config.web function to set the path and URL of a CGI script.
+
+sub set_script_info {
+  #global (%config, %scripts);
+  local ($tag) = @_;
+  local ($what, $file) = split (/\:/, $scripts{$tag});
+
+  $config{'XX'.$tag.'PathXX'} = $config{'XXScriptPathXX'} . "/$file.cgi";
+  $config{'XX'.$tag.'UrlXX'}  = $config{'XXScriptUrlXX' } . "/$file.cgi";
+}
+
+# config.web function to get the URL for an HTML page.
+
+sub get_html_url {
+  #global (%config, $ServerName, $ServerPort);
+  local ($tag, $what, $path) = @_;
+  local ($url, $_);
+
+  $url = $config{$tag};
+  if ($url eq '') {
+    $url = $path;
+    $url =~ s/^$DocumentRoot//;
+    $url = "http://$ServerName:$ServerPort$url";
+  }
+  print "\nURL for $what:\n[$url] ";
+  $url = &input ($url);
+  $config{$tag} = $url;
+  return $url;
+}
+
+# config.web function to set the URL for a CGI script.
+
+sub get_cgi_url {
+  #global (%config, $ServerName, $ServerPort, $Cgibin);
+  local ($tag, $what, $path) = @_;
+  local ($url, $_);
+
+  $url = $config{$tag};
+  if ($url eq '') {
+    $url = $path;
+    if ($Cgibin) {
+      $url =~ s/^$ScriptAlias//;
+      $url = "http://$ServerName:$ServerPort/cgi-bin$url";
+    } else {
+      $url =~ s/^$DocumentRoot//;
+      $url = "http://$ServerName:$ServerPort$url";
+    }
+  }
+  print "\nURL for $what:\n[$url] ";
+  $url = &input ($url);
+  $config{$tag} = $url;
+  return $url;
+}
+
+#===============================================#
+# Slurp hunks of text into config.web's memory. #
+#===============================================#
