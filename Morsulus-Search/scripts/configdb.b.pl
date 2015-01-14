@@ -15,13 +15,13 @@ $_ = &input ('');
 # Get old config values, if available.
 
 $conf_file = '.configdb';
-&read_config_file ();
+&read_config_file ($conf_file);
 
 #=================================#
 # Set database server parameters. #
 #=================================#
 
-&machine_questions ('XPerlPathX', 'XAF_INETX', 'XSOCK_STREAMX');
+$config{XPerlPathX} = &machine_questions ('XPerlPathX', 'XAF_INETX', 'XSOCK_STREAMX');
 
 # Set $WNOHANG.
 
@@ -134,7 +134,7 @@ $config{'XLogFileNameX'} = $LogFileName;
 # Save the new configuration. #
 #=============================#
 
-&save_config ();
+&save_config ($conf_file);
 
 #==================================================#
 # Configure and install the database server files. #

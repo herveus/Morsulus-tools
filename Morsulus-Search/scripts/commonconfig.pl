@@ -96,14 +96,14 @@ sub read_config_file {
 # Common config function to save the configuration to $conf_file.
 
 sub save_config {
-    my ($config) = @_;
-    my $conf_file = $config->{CONF_FILE};
+    my ($conf_file) = @_;
     open my $CONF, '>', $conf_file;
     print "\nSaving new configuration to $conf_file ...";
     
-    while (($tag, $value) = each %{$config})
+    for my $tag (sort keys %config)
     {
         next if $tag eq 'CONF_FILE';
+        my $value = $config{$tag};
         print $CONF "$tag|$value\n";
     }
     print " done.\n";

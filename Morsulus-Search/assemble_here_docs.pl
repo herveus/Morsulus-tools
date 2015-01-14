@@ -146,7 +146,6 @@ $tail = <<'XXXEOFXXX';
 XXTrailerXX
 XXTrailer2XX
 XXCloseHtmlXX
-XXEOFXX
 XXXEOFXXX
 
 # read tprint.cat
@@ -224,7 +223,7 @@ print $fh $tail unless ($last eq '');
 my $textblob = read_file('scripts/config.web.head');
 for my $textname (@textnames)
 {
-    $textblob .= "\$$textname = <<'XXEOFXX'\n";
+    $textblob .= "\$$textname = <<'XXEOFXX';\n";
     $textblob .= read_file(join('/', 'scripts', $textblobs{$textname}));
     $textblob .= "\nXXEOFXX\n\n";
 }

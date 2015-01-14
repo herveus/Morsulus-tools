@@ -7,7 +7,7 @@
 # and XXComplexSearchPathXX.
 # This should be installed at XXCommonClientPathXX on XXServerNameXX.
 
-require 'ctime.pl';
+#require 'ctime.pl';
 
 # name of host running the database server code:
 $them = 'XXDataHostXX';

@@ -35,11 +35,11 @@ $_ = &input ('');
 # Get old config values, if available.
 
 $conf_file = '.configweb';
-&read_config_file ();
+%config = &read_config_file ($conf_file);
 
 $config{'XXPrimerUrlXX'} = 'http://heraldry.sca.org/armory/newprimer/';
 $config{'XXLoARUrlXX'} = 'http://heraldry.sca.org/loar';
-$config_version = 20140921;
+$config_version = 20141116;
 $config{'XXVersionXX'} = $config_version;
 $config{'XXHeadXX'} = '';
 
@@ -51,7 +51,7 @@ $config{'XXCloseHtmlXX'} = '</address></body></html>';
 # Set webserver parameters.  #
 #============================#
 
-&machine_questions ('XXPerlPathXX', 'XXAF_INETXX', 'XXSOCK_STREAMXX');
+$config{XXPerlPathXX} = &machine_questions ('XXPerlPathXX', 'XXAF_INETXX', 'XXSOCK_STREAMXX');
 
 # Set $ServerName.
 
@@ -273,7 +273,7 @@ $ConfigDbPath = &get_filepath ('XXConfigDbPathXX',
 # Save the new webserver configuration. #
 #=======================================#
 
-&save_config ();
+&save_config ($conf_file);
 
 #============================================#
 # Configure and install the webserver files. #

@@ -168,7 +168,7 @@ sub get_cgi_url {
 #===============================================#
 # Slurp hunks of text into config.web's memory. #
 #===============================================#
-$Helpers = <<'XXEOFXX'
+$Helpers = <<'XXEOFXX';
 
 # Common config function to advise user on machine questions.
 
@@ -267,14 +267,14 @@ sub read_config_file {
 # Common config function to save the configuration to $conf_file.
 
 sub save_config {
-    my ($config) = @_;
-    my $conf_file = $config->{CONF_FILE};
+    my ($conf_file) = @_;
     open my $CONF, '>', $conf_file;
     print "\nSaving new configuration to $conf_file ...";
     
-    while (($tag, $value) = each %{$config})
+    for my $tag (sort keys %config)
     {
         next if $tag eq 'CONF_FILE';
+        my $value = $config{$tag};
         print $CONF "$tag|$value\n";
     }
     print " done.\n";
@@ -467,7 +467,7 @@ EOF
 
 XXEOFXX
 
-$SearchMenu = <<'XXEOFXX'
+$SearchMenu = <<'XXEOFXX';
 <html>
 <head><title>Search Forms for the SCA Armorial</title>
 <base href="XXSearchMenuUrlXX">XXHeadXX
@@ -551,7 +551,7 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$NameHintsPage = <<'XXEOFXX'
+$NameHintsPage = <<'XXEOFXX';
 <html>
 <head><title>Name Search Hints</title>
 <base href="XXNameHintsPageUrlXX">XXHeadXX
@@ -605,7 +605,7 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$DateHintsPage = <<'XXEOFXX'
+$DateHintsPage = <<'XXEOFXX';
 <html>
 <head><title>Date/Kingdom Search Hints</title>
 <base href="XXDateHintsPageUrlXX">XXHeadXX
@@ -677,7 +677,7 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$DescHintsPage = <<'XXEOFXX'
+$DescHintsPage = <<'XXEOFXX';
 <html>
 <head><title>Armory Description Search Hints</title>
 <base href="XXDescHintsPageUrlXX">XXHeadXX
@@ -766,7 +766,7 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$NpHintsPage = <<'XXEOFXX'
+$NpHintsPage = <<'XXEOFXX';
 <html>
 <head><title>Name Pattern Search Hints</title>
 <base href="XXNpHintsPageUrlXX">XXHeadXX
@@ -910,7 +910,7 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$BpHintsPage = <<'XXEOFXX'
+$BpHintsPage = <<'XXEOFXX';
 <html>
 <head><title>Blazon Pattern Search Hints</title>
 <base href="XXBpHintsPageUrlXX">XXHeadXX
@@ -1034,7 +1034,7 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$ComplexHintsPage = <<'XXEOFXX'
+$ComplexHintsPage = <<'XXEOFXX';
 <html>
 <head><title>Complex Search Hints</title>
 <base href="XXComplexHintsPageUrlXX">XXHeadXX
@@ -1147,7 +1147,7 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$OverviewPage = <<'XXEOFXX'
+$OverviewPage = <<'XXEOFXX';
 <html>
 <head><title>About SCA Heraldry</title>
 <base href="XXOverviewPageUrlXX">XXHeadXX
@@ -1247,7 +1247,7 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$LimitPage = <<'XXEOFXX'
+$LimitPage = <<'XXEOFXX';
 <html>
 <head><title>Search Limits</title>
 <base href="XXLimitPageUrlXX">XXHeadXX
@@ -1292,7 +1292,7 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$DownloadPage = <<'XXEOFXX'
+$DownloadPage = <<'XXEOFXX';
 <html>
 <head><title>SCA Armorial Database</title>
 <base href="XXDownloadPageUrlXX">XXHeadXX
@@ -1323,7 +1323,7 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$DbFormatPage = <<'XXEOFXX'
+$DbFormatPage = <<'XXEOFXX';
 <html>
 <head><title>Format of the SCA Armorial Database</title>
 <base href="XXDbFormatPageUrlXX">XXHeadXX
@@ -1638,7 +1638,7 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$DbSymbolsPage = <<'XXEOFXX'
+$DbSymbolsPage = <<'XXEOFXX';
 <html>
 <head><title>Title</title>
 <base href="XXDbSymbolsPageUrlXX">XXHeadXX
@@ -2366,7 +2366,7 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$IndexPage = <<'XXEOFXX'
+$IndexPage = <<'XXEOFXX';
 <html>
 <head><title>Online SCA Ordinary - Master Index</title>
 <base href="XXIndexDirUrlXX/index.html">XXHeadXX
@@ -2417,7 +2417,7 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$IndexPageA = <<'XXEOFXX'
+$IndexPageA = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter A.
 #
@@ -2779,12 +2779,11 @@ $IndexPage{'A'} = <<'XXEOFXX';
 XXTrailerXX
 XXTrailer2XX
 XXCloseHtmlXX
-XXEOFXX
 
 
 XXEOFXX
 
-$IndexPageB = <<'XXEOFXX'
+$IndexPageB = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter B.
 #
@@ -3710,12 +3709,11 @@ $IndexPage{'B'} = <<'XXEOFXX';
 XXTrailerXX
 XXTrailer2XX
 XXCloseHtmlXX
-XXEOFXX
 
 
 XXEOFXX
 
-$IndexPageC = <<'XXEOFXX'
+$IndexPageC = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter C.
 #
@@ -4436,12 +4434,11 @@ $IndexPage{'C'} = <<'XXEOFXX';
 XXTrailerXX
 XXTrailer2XX
 XXCloseHtmlXX
-XXEOFXX
 
 
 XXEOFXX
 
-$IndexPageD = <<'XXEOFXX'
+$IndexPageD = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter D.
 #
@@ -4606,12 +4603,11 @@ $IndexPage{'D'} = <<'XXEOFXX';
 XXTrailerXX
 XXTrailer2XX
 XXCloseHtmlXX
-XXEOFXX
 
 
 XXEOFXX
 
-$IndexPageE = <<'XXEOFXX'
+$IndexPageE = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter E.
 #
@@ -4726,12 +4722,11 @@ $IndexPage{'E'} = <<'XXEOFXX';
 XXTrailerXX
 XXTrailer2XX
 XXCloseHtmlXX
-XXEOFXX
 
 
 XXEOFXX
 
-$IndexPageF = <<'XXEOFXX'
+$IndexPageF = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter F.
 #
@@ -5986,12 +5981,11 @@ $IndexPage{'F'} = <<'XXEOFXX';
 XXTrailerXX
 XXTrailer2XX
 XXCloseHtmlXX
-XXEOFXX
 
 
 XXEOFXX
 
-$IndexPageG = <<'XXEOFXX'
+$IndexPageG = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter G.
 #
@@ -6175,12 +6169,11 @@ $IndexPage{'G'} = <<'XXEOFXX';
 XXTrailerXX
 XXTrailer2XX
 XXCloseHtmlXX
-XXEOFXX
 
 
 XXEOFXX
 
-$IndexPageH = <<'XXEOFXX'
+$IndexPageH = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter H.
 #
@@ -6583,12 +6576,11 @@ $IndexPage{'H'} = <<'XXEOFXX';
 XXTrailerXX
 XXTrailer2XX
 XXCloseHtmlXX
-XXEOFXX
 
 
 XXEOFXX
 
-$IndexPageI = <<'XXEOFXX'
+$IndexPageI = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter I.
 #
@@ -6655,12 +6647,11 @@ $IndexPage{'I'} = <<'XXEOFXX';
 XXTrailerXX
 XXTrailer2XX
 XXCloseHtmlXX
-XXEOFXX
 
 
 XXEOFXX
 
-$IndexPageJ = <<'XXEOFXX'
+$IndexPageJ = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter J.
 #
@@ -6709,12 +6700,11 @@ $IndexPage{'J'} = <<'XXEOFXX';
 XXTrailerXX
 XXTrailer2XX
 XXCloseHtmlXX
-XXEOFXX
 
 
 XXEOFXX
 
-$IndexPageK = <<'XXEOFXX'
+$IndexPageK = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter K.
 #
@@ -6799,12 +6789,11 @@ $IndexPage{'K'} = <<'XXEOFXX';
 XXTrailerXX
 XXTrailer2XX
 XXCloseHtmlXX
-XXEOFXX
 
 
 XXEOFXX
 
-$IndexPageL = <<'XXEOFXX'
+$IndexPageL = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter L.
 #
@@ -6982,12 +6971,11 @@ $IndexPage{'L'} = <<'XXEOFXX';
 XXTrailerXX
 XXTrailer2XX
 XXCloseHtmlXX
-XXEOFXX
 
 
 XXEOFXX
 
-$IndexPageM = <<'XXEOFXX'
+$IndexPageM = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter M.
 #
@@ -7546,12 +7534,11 @@ $IndexPage{'M'} = <<'XXEOFXX';
 XXTrailerXX
 XXTrailer2XX
 XXCloseHtmlXX
-XXEOFXX
 
 
 XXEOFXX
 
-$IndexPageN = <<'XXEOFXX'
+$IndexPageN = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter N.
 #
@@ -7616,12 +7603,11 @@ $IndexPage{'N'} = <<'XXEOFXX';
 XXTrailerXX
 XXTrailer2XX
 XXCloseHtmlXX
-XXEOFXX
 
 
 XXEOFXX
 
-$IndexPageO = <<'XXEOFXX'
+$IndexPageO = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter O.
 #
@@ -7716,12 +7702,11 @@ $IndexPage{'O'} = <<'XXEOFXX';
 XXTrailerXX
 XXTrailer2XX
 XXCloseHtmlXX
-XXEOFXX
 
 
 XXEOFXX
 
-$IndexPageP = <<'XXEOFXX'
+$IndexPageP = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter P.
 #
@@ -8170,12 +8155,11 @@ $IndexPage{'P'} = <<'XXEOFXX';
 XXTrailerXX
 XXTrailer2XX
 XXCloseHtmlXX
-XXEOFXX
 
 
 XXEOFXX
 
-$IndexPageQ = <<'XXEOFXX'
+$IndexPageQ = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter Q.
 #
@@ -8217,12 +8201,11 @@ $IndexPage{'Q'} = <<'XXEOFXX';
 XXTrailerXX
 XXTrailer2XX
 XXCloseHtmlXX
-XXEOFXX
 
 
 XXEOFXX
 
-$IndexPageR = <<'XXEOFXX'
+$IndexPageR = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter R.
 #
@@ -8468,12 +8451,11 @@ $IndexPage{'R'} = <<'XXEOFXX';
 XXTrailerXX
 XXTrailer2XX
 XXCloseHtmlXX
-XXEOFXX
 
 
 XXEOFXX
 
-$IndexPageS = <<'XXEOFXX'
+$IndexPageS = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter S.
 #
@@ -9027,12 +9009,11 @@ $IndexPage{'S'} = <<'XXEOFXX';
 XXTrailerXX
 XXTrailer2XX
 XXCloseHtmlXX
-XXEOFXX
 
 
 XXEOFXX
 
-$IndexPageT = <<'XXEOFXX'
+$IndexPageT = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter T.
 #
@@ -9396,12 +9377,11 @@ $IndexPage{'T'} = <<'XXEOFXX';
 XXTrailerXX
 XXTrailer2XX
 XXCloseHtmlXX
-XXEOFXX
 
 
 XXEOFXX
 
-$IndexPageU = <<'XXEOFXX'
+$IndexPageU = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter U.
 #
@@ -9439,12 +9419,11 @@ $IndexPage{'U'} = <<'XXEOFXX';
 XXTrailerXX
 XXTrailer2XX
 XXCloseHtmlXX
-XXEOFXX
 
 
 XXEOFXX
 
-$IndexPageV = <<'XXEOFXX'
+$IndexPageV = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter V.
 #
@@ -9498,12 +9477,11 @@ $IndexPage{'V'} = <<'XXEOFXX';
 XXTrailerXX
 XXTrailer2XX
 XXCloseHtmlXX
-XXEOFXX
 
 
 XXEOFXX
 
-$IndexPageW = <<'XXEOFXX'
+$IndexPageW = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter W.
 #
@@ -9703,12 +9681,11 @@ $IndexPage{'W'} = <<'XXEOFXX';
 XXTrailerXX
 XXTrailer2XX
 XXCloseHtmlXX
-XXEOFXX
 
 
 XXEOFXX
 
-$IndexPageX = <<'XXEOFXX'
+$IndexPageX = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter X.
 #
@@ -9728,12 +9705,11 @@ $IndexPage{'X'} = <<'XXEOFXX';
 XXTrailerXX
 XXTrailer2XX
 XXCloseHtmlXX
-XXEOFXX
 
 
 XXEOFXX
 
-$IndexPageY = <<'XXEOFXX'
+$IndexPageY = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter Y.
 #
@@ -9767,16 +9743,15 @@ $IndexPage{'Y'} = <<'XXEOFXX';
 XXTrailerXX
 XXTrailer2XX
 XXCloseHtmlXX
-XXEOFXX
 
 
 XXEOFXX
 
-$IndexPageZ = <<'XXEOFXX'
+$IndexPageZ = <<'XXEOFXX';
 
 XXEOFXX
 
-$GlossaryScript = <<'XXEOFXX'
+$GlossaryScript = <<'XXEOFXX';
 #!XXPerlPathXX
 
 # This is a CGI script to do a lookup on the glossary of heraldic terms.
@@ -10128,7 +10103,7 @@ print '<input type="submit" value="look up the definition">';
 
 XXEOFXX
 
-$CopyrightScript = <<'XXEOFXX'
+$CopyrightScript = <<'XXEOFXX';
 #!XXPerlPathXX
 
 # This is a CGI script to get the version data on the database and server.
@@ -10158,7 +10133,7 @@ print '<hr>';
 
 XXEOFXX
 
-$VersionScript = <<'XXEOFXX'
+$VersionScript = <<'XXEOFXX';
 #!XXPerlPathXX
 
 # This is a CGI script to get the version data on the database and server.
@@ -10188,7 +10163,7 @@ print '<hr>';
 
 XXEOFXX
 
-$NameSearchScript = <<'XXEOFXX'
+$NameSearchScript = <<'XXEOFXX';
 #!XXPerlPathXX
 
 # This is a CGI script to do a name search of the oanda database.
@@ -10318,7 +10293,7 @@ if ($p ne '') {
 
 XXEOFXX
 
-$DescSearchScript = <<'XXEOFXX'
+$DescSearchScript = <<'XXEOFXX';
 #!XXPerlPathXX
 
 # This is a CGI script to do a desc search of the oanda database.
@@ -10376,7 +10351,7 @@ if ($p ne '') {
 
 XXEOFXX
 
-$NpSearchScript = <<'XXEOFXX'
+$NpSearchScript = <<'XXEOFXX';
 #!XXPerlPathXX
 
 # This is a CGI script to do a name pattern search of the oanda database.
@@ -10480,7 +10455,7 @@ if ($p ne '') {
 
 XXEOFXX
 
-$BpSearchScript = <<'XXEOFXX'
+$BpSearchScript = <<'XXEOFXX';
 #!XXPerlPathXX
 
 # This is a CGI script to do a blazon pattern search of the oanda database.
@@ -10574,7 +10549,7 @@ if ($p ne '') {
 
 XXEOFXX
 
-$DateSearchScript = <<'XXEOFXX'
+$DateSearchScript = <<'XXEOFXX';
 #!XXPerlPathXX
 
 # This is a CGI script to do a date/kingdom search of the oanda database.
@@ -10695,7 +10670,7 @@ if ($p ne '') {
 
 XXEOFXX
 
-$ComplexSearchScript = <<'XXEOFXX'
+$ComplexSearchScript = <<'XXEOFXX';
 #!XXPerlPathXX
 
 # This is a CGI script to do a complex search of the oanda database.
@@ -10843,7 +10818,7 @@ if ($valid) {
 
 XXEOFXX
 
-$CorrectionScript = <<'XXEOFXX'
+$CorrectionScript = <<'XXEOFXX';
 #!XXPerlPathXX
 
 # This is a CGI script to submit a correction to the Ordinary or Armorial.
@@ -11083,7 +11058,7 @@ EOF
 
 XXEOFXX
 
-$CommonClientCode = <<'XXEOFXX'
+$CommonClientCode = <<'XXEOFXX';
 
 # This file contains Perl routines shared between XXNameSearchPathXX,
 # XXDescSearchPathXX,
@@ -11093,7 +11068,7 @@ $CommonClientCode = <<'XXEOFXX'
 # and XXComplexSearchPathXX.
 # This should be installed at XXCommonClientPathXX on XXServerNameXX.
 
-require 'ctime.pl';
+#require 'ctime.pl';
 
 # name of host running the database server code:
 $them = 'XXDataHostXX';
@@ -12111,7 +12086,7 @@ sub fixcase # make heading UC, features lc
 
 XXEOFXX
 
-$ConfigDbScript = <<'XXEOFXX'
+$ConfigDbScript = <<'XXEOFXX';
 exit
 if ($not_running_Perl);
 
@@ -12926,7 +12901,7 @@ XEOFX
 
 XXEOFXX
 
-$ConfigDbScriptB = <<'XXEOFXX'
+$ConfigDbScriptB = <<'XXEOFXX';
 
 # Get the path to the current working directory.
 
@@ -12944,13 +12919,13 @@ $_ = &input ('');
 # Get old config values, if available.
 
 $conf_file = '.configdb';
-&read_config_file ();
+&read_config_file ($conf_file);
 
 #=================================#
 # Set database server parameters. #
 #=================================#
 
-&machine_questions ('XPerlPathX', 'XAF_INETX', 'XSOCK_STREAMX');
+$config{XPerlPathX} = &machine_questions ('XPerlPathX', 'XAF_INETX', 'XSOCK_STREAMX');
 
 # Set $WNOHANG.
 
@@ -13063,7 +13038,7 @@ $config{'XLogFileNameX'} = $LogFileName;
 # Save the new configuration. #
 #=============================#
 
-&save_config ();
+&save_config ($conf_file);
 
 #==================================================#
 # Configure and install the database server files. #
@@ -13137,11 +13112,11 @@ $_ = &input ('');
 # Get old config values, if available.
 
 $conf_file = '.configweb';
-&read_config_file ();
+%config = &read_config_file ($conf_file);
 
 $config{'XXPrimerUrlXX'} = 'http://heraldry.sca.org/armory/newprimer/';
 $config{'XXLoARUrlXX'} = 'http://heraldry.sca.org/loar';
-$config_version = 20140921;
+$config_version = 20141116;
 $config{'XXVersionXX'} = $config_version;
 $config{'XXHeadXX'} = '';
 
@@ -13153,7 +13128,7 @@ $config{'XXCloseHtmlXX'} = '</address></body></html>';
 # Set webserver parameters.  #
 #============================#
 
-&machine_questions ('XXPerlPathXX', 'XXAF_INETXX', 'XXSOCK_STREAMXX');
+$config{XXPerlPathXX} = &machine_questions ('XXPerlPathXX', 'XXAF_INETXX', 'XXSOCK_STREAMXX');
 
 # Set $ServerName.
 
@@ -13375,7 +13350,7 @@ $ConfigDbPath = &get_filepath ('XXConfigDbPathXX',
 # Save the new webserver configuration. #
 #=======================================#
 
-&save_config ();
+&save_config ($conf_file);
 
 #============================================#
 # Configure and install the webserver files. #
