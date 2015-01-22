@@ -6,7 +6,7 @@ use Carp;
 use Moose;
 extends 'Morsulus::Actions';
 
-our $VERSION = '2014.011.003';
+our $VERSION = '2014.012.002';
 
 has 'db' => (
     isa => 'Morsulus::Ordinary::Classic',
@@ -348,6 +348,10 @@ my %transforms = (
         'ARMORY_REG' => [],
         'badge_for' => [ ], 
         'armory_release' => [ 'b', 'associated with award name' ], },
+    'badge association with household name "x"' => { 'NAME_FOR_ARMORY_REG' => [],
+        'ARMORY_REG' => [],
+        'badge_for' => [ ], 
+        'armory_release' => [ 'b', 'associated with household name' ], },
     'badge association with alternate name "x"' => { 'NAME_FOR_ARMORY_REG' => [],
         'ARMORY_REG' => [],
         'badge_for' => [ ], 
@@ -860,7 +864,7 @@ my %transforms = (
         'armory_release' => [ 'd', 'converted to badge' ], 
         'armory' => [ 'b' ], },
     'regalia for "x"' => { 'ARMORY_NOT_REG' => [],
-        'badge_for' => [] },
+        'regalia_for' => [] },
     'release of alternate name "x"' => { 'NAME_FOR_ARMORY_REG' => [],
         'NAME_REG' => [ 'N' ],
         'owned_name_release' => [ 'AN', 'released' ] },
@@ -931,6 +935,8 @@ my %transforms = (
         'transfer_armory' => [ 'd', ], },
     'transfer of heraldic title "x" to "x"' => {  'NAME_FOR_OWNED_NAME_REG' => [ 't' ],
         'OWNED_NAME_REG' => [ 't' ],
+        'transfer_name' => [ 't', ], },
+    'transfer of heraldic title "x" to "x" important' => { 'OWNED_NAME_REG' => [ 't' ],
         'transfer_name' => [ 't', ], },
     'transfer of household name "x" to "x"' => {  'NAME_FOR_OWNED_NAME_REG' => [ 'HN' ],
         'OWNED_NAME_REG' => [ 'HN' ],
@@ -1497,15 +1503,15 @@ sub joint
         $self->name_of, $self->notes_of ];
 }
 
-sub badge_for
+sub armory_for
 {
-    my ($self, $article) = @_;
+    my ($self, $type, $article) = @_;
     $article //= '';
     my $blazon = $self->db->add_blazon($self->armory_of);
     my $reg = $self->db->Registration->create(
         {
             reg_owner_name => $self->name_of,
-            action => 'b',
+            action => $type,
             registration_date => $self->date_of,
             registration_kingdom => $self->kingdom_of,
             text_blazon_id => $blazon->blazon_id,
@@ -1522,25 +1528,30 @@ sub badge_for
         $self->notes_of."(For $article".$self->quoted_names_of->[0].")" ];
 }
 
+sub badge_for
+{
+    my ($self, $article) = @_;
+    return $self->armory_for('b', $article);
+    die $self->as_str;
+    $article ||= $EMPTY_STR;
+    return [ $self->name_of, $self->source_of, 'b', $self->armory_of,
+        $self->notes_of."(For $article".$self->quoted_names_of->[0].")" ];
+}
+
+sub regalia_for
+{
+    my ($self, $article) = @_;
+    return $self->armory_for('g', $article);
+    die $self->as_str;
+    $article ||= $EMPTY_STR;
+    return [ $self->name_of, $self->source_of, 'b', $self->armory_of,
+        $self->notes_of."(For $article".$self->quoted_names_of->[0].")" ];
+}
+
 sub device_for
 {
     my ($self, $article) = @_;
-    $article //= '';
-    my $blazon = $self->db->add_blazon($self->armory_of);
-    my $reg = $self->db->Registration->create(
-        {
-            reg_owner_name => $self->name_of,
-            action => 'd',
-            registration_date => $self->date_of,
-            registration_kingdom => $self->kingdom_of,
-            text_blazon_id => $blazon->blazon_id,
-        })->update;
-    for my $n ($self->split_notes, "For $article".$self->quoted_names_of->[0])
-    {
-        next unless $n;
-        $self->db->add_note($reg, $n);
-    }
-    return $reg;
+    return $self->armory_for('d', $article);
     die $self->as_str;
     $article ||= $EMPTY_STR;
     return [ $self->name_of, $self->source_of, 'b', $self->armory_of,
