@@ -311,7 +311,8 @@ $\ = "\n";
  'm', 'Ealdormere',
  'n', 'Northshield',
  'w', 'Lochac',
- 'X', 'Ansteorra');
+ 'X', 'Ansteorra',
+ 'V', 'Avacal',);
 
 %mmap = (
  'January', '01',
