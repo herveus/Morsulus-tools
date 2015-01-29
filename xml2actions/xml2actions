@@ -28,6 +28,7 @@ my %Ktab = (
    'ansteorra', 'X',
    'artemisia', 'R',
    'atenveldt', 'A',
+   'avacal', 'V',
    'kraken', 'Q',
    'atlantia', 'Q',
    'batonvert' => 'C',
