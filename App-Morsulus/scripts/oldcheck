@@ -66,14 +66,19 @@ delete $known_feature{'uncharged'};
 delete $known_feature{'plain line'};
 delete $known_feature{'secondary'};
 
-my $ord = Morsulus::Ordinary::Classic->new(dbname => $ARGV{-db});
-my $recs = $ord->Registration->search();
+#my $ord = Morsulus::Ordinary::Classic->new(dbname => $ARGV{-db});
+#my $recs = $ord->Registration->search();
 my $record;
 my $regid;
-while (my $reg = $recs->next)
+my @recs = `/usr/local/bin/dump_db_all -db $ARGV{-db}`;
+
+#while (my $reg = $recs->next)
+for my $rec (@recs)
 {
-    $record = $ord->get_registration($reg)->canonicalize;
-    $regid = $reg->reg_id;
+    #$record = $ord->get_registration($reg)->canonicalize;
+    #$regid = $reg->reg_id;
+    $record = Morsulus::Ordinary::Legacy->from_string($rec);
+    $regid = ($record->notes =~ /\(regid:(\d+)\)/)[0] || 0;
 
     #($name, $dates, $type, $text, $notes, @descriptions) = @fields;
     

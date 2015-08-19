@@ -22,6 +22,7 @@ while (my $action_line = <$input_fh>)
     my ( undef, $kingdom, $action, $name, $armory, $name2, $notes )
         = split( /[|]/, $action_line );
     next if $action eq 'disposition';
+    next if $action =~ /^ignore/;
     
     $action =~ s/\s+$//;
 

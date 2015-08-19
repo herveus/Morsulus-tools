@@ -10,13 +10,16 @@ use feature 'say';
 my %referenced;
 my %registered;
 
-my $ord = Morsulus::Ordinary::Classic->new(dbname => $ARGV{-db});
-my $recs = $ord->Registration->search();
-while (my $rec = $ord->get_registration($recs->next))
+#my $ord = Morsulus::Ordinary::Classic->new(dbname => $ARGV{-db});
+#my $recs = $ord->Registration->search();
+my @recs = `/usr/local/bin/dump_db_all -db $ARGV{-db}`;
+
+#while (my $rec = $ord->get_registration($recs->next))
+for my $rec (@recs)
 {
     # Split the record into fields.
     my ($name, $source, $type, $text, $notes, $other) =
-        split(/\|/, $rec->to_string);
+        split(/\|/, $rec);
     $text =~ s/^See // if ($type eq 'NC' || $type eq 'BNC');
     my ($reg, $rel) = split(/\-/, $source);
     if ($type eq 'u')

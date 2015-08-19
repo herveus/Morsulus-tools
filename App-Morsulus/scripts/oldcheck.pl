@@ -724,7 +724,7 @@ sub check_date {
       &count ('kingdom-less date');
       &report("missing kingdom id in date ($date)")
         if ($loar >= $splitdate);
-    } elsif ($k !~ /^[ACDEGHKLMmnNOQRSTWXw]$/) {
+    } elsif ($k !~ /^[ACDEGHKLMmnNOQRSTVWXw]$/) {
       &report("unknown kingdom id ($k) in date")
     }
     return $loar;
