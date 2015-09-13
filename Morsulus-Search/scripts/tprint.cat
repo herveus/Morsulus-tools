@@ -260,6 +260,7 @@ beaker
 bean pod
 bear
 bear's head
+beard
 beast, aardvark
 beast, alaunt
 beast, amphibian
@@ -768,6 +769,7 @@ branch
 brazier
 bread
 breadloaf
+breast
 breastplate
 breys
 briar
@@ -803,9 +805,11 @@ bush, thorn
 bustard
 buttercup
 butterfly
+cabbage
 cactus
 caduceus
 cairn
+calamarie
 caliper
 calla lily
 caltrap
@@ -898,6 +902,7 @@ chausse
 checky
 cheese
 cheetah
+chemise
 chequy
 cherry
 cherry blossom
@@ -1072,6 +1077,8 @@ clarion trumpet
 claw
 claw hammer
 claymore
+clew
+clew of yarn
 cloak
 cloth snip
 clothing, baldric
@@ -1151,6 +1158,7 @@ corsica
 cougar
 counter vair
 cow
+coxcomb
 crab
 cradle
 crampet
@@ -1322,6 +1330,7 @@ dome
 domed oven
 dondril blossom
 donkey
+donnelly knot
 door
 dove
 dove's head
@@ -1334,6 +1343,7 @@ dragon's jambe
 dragonship
 drake
 drakkar
+drawknife
 drinking cup
 drinking horn
 dromedary
@@ -1356,9 +1366,12 @@ earthworm
 earwig
 eating fork
 edelweiss
+eel
+eel fork
 egg
 eglantine
 egret
+elderflower
 elephant
 elephant's head
 elf bolt
@@ -2105,6 +2118,7 @@ flaunch, vert
 flax blossom
 fleam
 fleece
+flesh hook
 fleur de lys, 1
 fleur de lys, 2, argent
 fleur de lys, 2, azure
@@ -2135,6 +2149,7 @@ flower, bluebottle
 flower, borage
 flower, bouquet
 flower, brooklime
+flower, bryony
 flower, buttercup
 flower, calla lily
 flower, camellia
@@ -2158,6 +2173,7 @@ flower, dondril
 flower, dryas
 flower, edelweiss
 flower, eglantine
+flower, elderflower
 flower, few petals
 flower, firewheel
 flower, flax
@@ -2231,7 +2247,9 @@ flower, rose, 4 or more
 flower, sedum
 flower, sexfoil
 flower, silver bell
+flower, spiderwort
 flower, starflower
+flower, stitchwort
 flower, sunflower
 flower, thistle, 1
 flower, thistle, 2 or more
@@ -2242,6 +2260,7 @@ flower, trumpet shape
 flower, tulip
 flower, violet
 flower, water lily
+flower, wild ginger
 flower, wisteria
 flute
 foi
@@ -2258,6 +2277,7 @@ fool's cap
 fool's head
 fool's motley
 foot
+footbridge
 footgear
 footprint
 ford
@@ -2628,6 +2648,7 @@ ink pot
 ink well
 inkhorn
 inkmoline
+inkpot
 inkwell
 inscription
 insect
@@ -2738,6 +2759,7 @@ linden leaf
 linden tree
 linnet
 lion
+lion dragon
 lion, bicorporate
 lion, sea
 lion, sea, natural
@@ -3287,6 +3309,7 @@ pipe, bag
 pipe, pan
 pipe, smoking
 pipe, water
+pipkin
 pique
 pistol
 pitcher
@@ -3355,6 +3378,7 @@ poison ivy
 pole axe
 polecat
 polygon
+polypus
 pomegranate
 pomme
 poodle
@@ -3363,6 +3387,7 @@ poplar
 poppy
 porcupine
 portcullis
+porte arnois
 pot, cooking
 pot, ink
 potent
@@ -3399,6 +3424,7 @@ quintain
 quiver
 rabbit
 raccoon
+radish
 ragweed
 rainbow
 rake
@@ -3406,6 +3432,7 @@ rake, mash
 ram
 ram, battering
 rampion stalk
+ramson flower
 ram's head
 ram's horn
 ram's skull
@@ -3521,6 +3548,7 @@ roundel, whole, 3 or more, sable
 roundel, whole, 3 or more, vert
 roundelly
 rowan
+rowboat
 rowel
 rudder
 rune
@@ -3561,6 +3589,7 @@ saw
 scabbard
 scale
 scale, dragon
+scallop
 scaly
 scarab
 scarf
@@ -3606,6 +3635,7 @@ sea unicorn
 sea urchin
 sea weed
 sea wolf
+sea-nettle
 seagull
 seal
 sealion
@@ -3692,6 +3722,7 @@ sling
 slip
 slipper
 sloth
+slow match
 slug
 snail
 snake
@@ -3704,9 +3735,9 @@ spade, shape
 spade, tool
 spangenhelm
 spaniel
+sparks
 sparrow
 sparrowhawk
-sparks
 spear
 spear head
 spearhead
@@ -3754,6 +3785,7 @@ stoat
 stone
 stool
 stork
+strainer
 strap
 strawberry
 stream
@@ -3963,7 +3995,9 @@ trefly
 trefoil
 trefoil knot
 trefoily
+trenket
 tressure
+trews
 triangle
 tricune
 trident
@@ -3979,6 +4013,7 @@ triton shell
 trivet
 trojan horse
 troll
+trousers
 trout
 trout, winged
 trowel
