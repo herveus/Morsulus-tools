@@ -219,11 +219,12 @@ while (<PRINT_FILE>) {
   }
 }
 print $fh $tail unless ($last eq '');
+close $fh;
 
 my $textblob = read_file('scripts/config.web.head');
 for my $textname (@textnames)
 {
-    $textblob .= "\$$textname = <<'XXEOFXX';\n";
+    $textblob .= "\$$textname = <<'XXEOFXX';\n" unless $textname =~ /^IndexPage[A-Z]$/;
     $textblob .= read_file(join('/', 'scripts', $textblobs{$textname}));
     $textblob .= "\nXXEOFXX\n\n";
 }

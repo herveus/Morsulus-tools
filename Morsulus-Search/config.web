@@ -1474,6 +1474,8 @@ and notes, in that order.
 <li>
 	  T = Trimaris
 <li>
+	  V = Avacal
+<li>
 	  W = West
 <li>
 	  w = Lochac
@@ -2417,7 +2419,6 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$IndexPageA = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter A.
 #
@@ -2783,7 +2784,6 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$IndexPageB = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter B.
 #
@@ -2888,6 +2888,8 @@ $IndexPage{'B'} = <<'XXEOFXX';
  - see <a href="B.html#beastbear">Beast - Bear</a>
 <li>Bear's head
  - see <a href="H.html#headbeastbear">Head - Beast - Bear</a>
+<li>Beard
+ - see <a href="M.html#moustache">Moustache</a>
 <li>Beast - Aardvark
  - see <a href="B.html#beastanteater">Beast - Anteater</a>
 <li>Beast - Alaunt
@@ -3635,6 +3637,8 @@ $IndexPage{'B'} = <<'XXEOFXX';
  - see <a href="F.html#foodstuff">Foodstuff</a>
 <li>Breadloaf
  - see <a href="F.html#foodstuff">Foodstuff</a>
+<li>Breast
+ - see <a href="B.html#bodypart">Body part</a> and <a href="R.html#roundelwhole">Roundel - Whole</a>
 <li>Breastplate
  - see <a href="A.html#armor">Armor</a>
 <li>Breys
@@ -3713,7 +3717,6 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$IndexPageC = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter C.
 #
@@ -3726,12 +3729,16 @@ $IndexPage{'C'} = <<'XXEOFXX';
 <h2>Index of the SCA Ordinary - The Letter C</h2>
 
 <ul>
+<li>Cabbage
+ - see <a href="F.html#fruitother">Fruit - Other</a>
 <li>Cactus
  - see <a href="P.html#plantcactus">Plant - Cactus</a>
 <li>Caduceus
  - see <a href="S.html#staff">Staff</a>
 <li>Cairn
  - see <a href="A.html#architecture">Architecture</a>
+<li>Calamarie
+ - see <a href="M.html#molluskoctopus">Mollusk - Octopus</a>
 <a name="caliper">
 <li><a href="XXDescSearchUrlXX?p=CALIPER%20AND%20COMPASS">Caliper</a>
  - see also <a href="T.html#toolother">Tool - Other</a>
@@ -3889,6 +3896,8 @@ $IndexPage{'C'} = <<'XXEOFXX';
  - see <a href="F.html#foodstuff">Foodstuff</a>
 <li>Cheetah
  - see <a href="B.html#beastcat">Beast - Cat</a>
+<li>Chemise
+ - see <a href="C.html#clothinggown">Clothing - Gown</a>
 <li>Chequy
  - see <a href="F.html#fielddivisionchecky">Field division - Checky</a>
 <li>Cherry
@@ -3908,7 +3917,7 @@ $IndexPage{'C'} = <<'XXEOFXX';
 <a name="chesspiece">
 <li><a href="XXDescSearchUrlXX?p=CHESS%20PIECE">Chess piece</a>
 <li>Chess rook
- - see <a href="C.html#chesspiece">Chess piece</a> and <a href="C.html#castle">Castle</a>
+ - see <a href="C.html#chesspiece">Chess piece</a>
 <li>Chest
  - see <a href="B.html#box">Box</a>
 <a name="chevron">
@@ -4105,6 +4114,10 @@ $IndexPage{'C'} = <<'XXEOFXX';
  - see <a href="H.html#hammer">Hammer</a>
 <li>Claymore
  - see <a href="S.html#sword">Sword</a>
+<li>Clew
+ - see <a href="R.html#roundel">Roundel</a>
+<li>Clew of yarn
+ - see <a href="R.html#roundel">Roundel</a>
 <li>Cloak
  - see <a href="C.html#clothinggown">Clothing - Gown</a>
 <li>Cloth snip
@@ -4264,6 +4277,8 @@ $IndexPage{'C'} = <<'XXEOFXX';
  - see <a href="F.html#fieldtreatmentvairy">Field treatment - Vairy</a>
 <li>Cow
  - see <a href="B.html#beastbull">Beast - Bull</a>
+<li>Coxcomb
+ - see <a href="B.html#bodypart">Body part</a>
 <li>Crab
  - see <a href="A.html#arthropodlobster">Arthropod - Lobster</a>
 <li><a href="XXDescSearchUrlXX?p=CRADLE">Cradle</a>
@@ -4438,7 +4453,6 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$IndexPageD = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter D.
 #
@@ -4548,6 +4562,8 @@ $IndexPage{'D'} = <<'XXEOFXX';
  - see <a href="F.html#flowerrose">Flower - Rose</a>
 <li>Donkey
  - see <a href="B.html#beasthorse">Beast - Horse</a>
+<li>Donnelly knot
+ - see <a href="K.html#knot">Knot</a>
 <li>Door
  - see <a href="G.html#gate">Gate</a>
 <li>Dove
@@ -4572,6 +4588,8 @@ $IndexPage{'D'} = <<'XXEOFXX';
  - see <a href="B.html#bird">Bird</a>
 <li>Drakkar
  - see <a href="S.html#ship">Ship</a>
+<li>Drawknife
+ - see <a href="T.html#toolcarpentry">Tool - Carpentry</a>
 <li>Drinking cup
  - see <a href="C.html#cup">Cup</a>
 <a name="drinkinghorn">
@@ -4607,7 +4625,6 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$IndexPageE = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter E.
 #
@@ -4638,12 +4655,18 @@ $IndexPage{'E'} = <<'XXEOFXX';
  - see <a href="T.html#tooleating">Tool - Eating</a>
 <li>Edelweiss
  - see <a href="F.html#flowermultipetaled">Flower - Multipetaled</a>
+<li>Eel
+ - see <a href="F.html#fishother">Fish - Other</a>
+<li>Eel fork
+ - see <a href="T.html#trident">Trident</a> and <a href="T.html#toolother">Tool - Other</a>
 <li>Egg
  - see <a href="C.html#cartouche">Cartouche</a> and <a href="F.html#foodstuff">Foodstuff</a>
 <li>Eglantine
  - see <a href="F.html#flowerrose">Flower - Rose</a>
 <li>Egret
  - see <a href="B.html#bird">Bird</a>
+<li>Elderflower
+ - see <a href="F.html#flowerroseheraldic">Flower - Rose - Heraldic</a>
 <li>Elephant
  - see <a href="B.html#beastelephant">Beast - Elephant</a>
 <li>Elephant's head
@@ -4726,7 +4749,6 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$IndexPageF = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter F.
 #
@@ -5589,6 +5611,8 @@ $IndexPage{'F'} = <<'XXEOFXX';
 <li><a href="XXDescSearchUrlXX?p=FLEAM">Fleam</a>
 <li>Fleece
  - see <a href="H.html#hide">Hide</a> and <a href="B.html#beastgoat">Beast - Goat</a>
+<li>Flesh hook
+ - see <a href="T.html#tooleating">Tool - Eating</a>
 <a name="fleurdelys">
 <li><a href="XXDescSearchUrlXX?p=FDL%3a1">Fleur de lys - 1</a>
 <li><a href="XXDescSearchUrlXX?p=FDL%3aargent%3a2">Fleur de lys - 2 - Argent</a>
@@ -5632,6 +5656,8 @@ $IndexPage{'F'} = <<'XXEOFXX';
 <li><a href="XXDescSearchUrlXX?p=FLOWER9BOUQUET">Flower - Bouquet</a>
 <li>Flower - Brooklime
  - see <a href="F.html#flowerrose">Flower - Rose</a>
+<li>Flower - Bryony
+ - see <a href="F.html#flowerfewpetals">Flower - Few petals</a>
 <li>Flower - Buttercup
  - see <a href="F.html#flowercupshape">Flower - Cup shape</a>
 <li>Flower - Calla lily
@@ -5678,6 +5704,8 @@ $IndexPage{'F'} = <<'XXEOFXX';
  - see <a href="F.html#flowermultipetaled">Flower - Multipetaled</a>
 <li>Flower - Eglantine
  - see <a href="F.html#flowerrose">Flower - Rose</a>
+<li>Flower - Elderflower
+ - see <a href="F.html#flowerroseheraldic">Flower - Rose - Heraldic</a>
 <a name="flowerfewpetals">
 <li><a href="XXDescSearchUrlXX?p=FLOWER%2dFEW%20PETALS">Flower - Few petals</a>
 <li>Flower - Firewheel
@@ -5797,8 +5825,12 @@ $IndexPage{'F'} = <<'XXEOFXX';
  - see <a href="F.html#foilsexfoil">Foil - Sexfoil</a>
 <li>Flower - Silver bell
  - see <a href="F.html#flowertrumpetshape">Flower - Trumpet shape</a>
+<li>Flower - Spiderwort
+ - see <a href="F.html#flowerfewpetals">Flower - Few petals</a>
 <li>Flower - Starflower
  - see <a href="M.html#mullet">Mullet</a>
+<li>Flower - Stitchwort
+ - see <a href="F.html#flowerfewpetals">Flower - Few petals</a>
 <li>Flower - Sunflower
  - see <a href="F.html#flowermultipetaled">Flower - Multipetaled</a>
 <a name="flowerthistle">
@@ -5813,11 +5845,13 @@ $IndexPage{'F'} = <<'XXEOFXX';
 <a name="flowertrumpetshape">
 <li><a href="XXDescSearchUrlXX?p=FLOWER%2dTRUMPET%20SHAPE">Flower - Trumpet shape</a>
 <li>Flower - Tulip
- - see <a href="F.html#flowercupshape">Flower - Cup shape</a>
+ - see <a href="F.html#flowertrumpetshape">Flower - Trumpet shape</a>
 <li>Flower - Violet
  - see <a href="F.html#flowerrose">Flower - Rose</a>
 <li>Flower - Water lily
  - see <a href="F.html#flowercupshape">Flower - Cup shape</a>
+<li>Flower - Wild ginger
+ - see <a href="F.html#flowerfewpetals">Flower - Few petals</a>
 <li>Flower - Wisteria
  - see <a href="F.html#flowermultifloreted">Flower - Multifloreted</a>
 <li>Flute
@@ -5853,6 +5887,8 @@ $IndexPage{'F'} = <<'XXEOFXX';
  - see <a href="C.html#clothingfoolsmotley">Clothing - Fool's motley</a>
 <li>Foot
  - see <a href="L.html#leghuman">Leg - Human</a> and <a href="L.html#legmonster">Leg - Monster</a> and <a href="C.html#clothingfootgear">Clothing - Footgear</a>
+<li>Footbridge
+ - see <a href="A.html#architecture">Architecture</a>
 <li>Footgear
  - see <a href="C.html#clothingfootgear">Clothing - Footgear</a>
 <li><a href="XXDescSearchUrlXX?p=FOOTPRINT">Footprint</a>
@@ -5985,7 +6021,6 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$IndexPageG = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter G.
 #
@@ -6173,7 +6208,6 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$IndexPageH = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter H.
 #
@@ -6580,7 +6614,6 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$IndexPageI = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter I.
 #
@@ -6624,6 +6657,8 @@ $IndexPage{'I'} = <<'XXEOFXX';
  - see also <a href="T.html#toolwriting">Tool - Writing</a>
 <li>Inkmoline
  - see <a href="M.html#millrind">Millrind</a>
+<li>Inkpot
+ - see <a href="I.html#inkhorn">Inkhorn</a>
 <li>Inkwell
  - see <a href="I.html#inkhorn">Inkhorn</a>
 <li>Inscription
@@ -6651,7 +6686,6 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$IndexPageJ = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter J.
 #
@@ -6704,7 +6738,6 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$IndexPageK = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter K.
 #
@@ -6793,7 +6826,6 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$IndexPageL = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter L.
 #
@@ -6900,6 +6932,8 @@ $IndexPage{'L'} = <<'XXEOFXX';
  - see <a href="B.html#bird">Bird</a>
 <li>Lion
  - see <a href="B.html#beastcat">Beast - Cat</a>
+<li>Lion dragon
+ - see <a href="M.html#monsterother">Monster - Other</a> and <a href="M.html#monsterdragon">Monster - Dragon</a> and <a href="B.html#beastcat">Beast - Cat</a> and <a href="M.html#monstersealion">Monster - Sea - Lion</a>
 <li>Lion - Bicorporate
  - see <a href="B.html#beastcat">Beast - Cat</a> and <a href="M.html#monstermultibodied">Monster - Multibodied</a>
 <li>Lion - Sea
@@ -6975,7 +7009,6 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$IndexPageM = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter M.
 #
@@ -7538,7 +7571,6 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$IndexPageN = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter N.
 #
@@ -7607,7 +7639,6 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$IndexPageO = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter O.
 #
@@ -7706,7 +7737,6 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$IndexPageP = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter P.
 #
@@ -7953,6 +7983,8 @@ $IndexPage{'P'} = <<'XXEOFXX';
 <li><a href="XXDescSearchUrlXX?p=PIPE%2dSMOKING">Pipe - Smoking</a>
 <li>Pipe - Water
  - see <a href="P.html#pipesmoking">Pipe - Smoking</a>
+<li>Pipkin
+ - see <a href="C.html#cauldron">Cauldron</a>
 <li>Pique
  - see <a href="C.html#cardpique">Card pique</a>
 <li>Pistol
@@ -8091,6 +8123,8 @@ $IndexPage{'P'} = <<'XXEOFXX';
 <a name="polygon">
 <li><a href="XXDescSearchUrlXX?p=POLYGON">Polygon</a>
  - see also <a href="B.html#billet">Billet</a> and <a href="T.html#triangle">Triangle</a>
+<li>Polypus
+ - see <a href="M.html#molluskoctopus">Mollusk - Octopus</a>
 <li>Pomegranate
  - see <a href="F.html#fruitpomegranate">Fruit - Pomegranate</a>
 <li>Pomme
@@ -8107,6 +8141,8 @@ $IndexPage{'P'} = <<'XXEOFXX';
  - see <a href="B.html#beasthedgehog">Beast - Hedgehog</a>
 <li>Portcullis
  - see <a href="G.html#gate">Gate</a>
+<li>Porte arnois
+ - see <a href="T.html#toolother">Tool - Other</a>
 <li>Pot - Cooking
  - see <a href="C.html#cauldron">Cauldron</a>
 <li>Pot - Ink
@@ -8159,7 +8195,6 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$IndexPageQ = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter Q.
 #
@@ -8205,7 +8240,6 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$IndexPageR = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter R.
 #
@@ -8222,6 +8256,8 @@ $IndexPage{'R'} = <<'XXEOFXX';
  - see <a href="B.html#beastrabbit">Beast - Rabbit</a>
 <li>Raccoon
  - see <a href="B.html#beastbadger">Beast - Badger</a>
+<li>Radish
+ - see <a href="F.html#fruitother">Fruit - Other</a>
 <li>Ragweed
  - see <a href="P.html#plantherb">Plant - Herb</a>
 <a name="rainbow">
@@ -8236,6 +8272,8 @@ $IndexPage{'R'} = <<'XXEOFXX';
  - see <a href="B.html#batteringram">Battering ram</a>
 <li>Rampion stalk
  - see <a href="F.html#flowertrumpetshape">Flower - Trumpet shape</a>
+<li>Ramson flower
+ - see <a href="F.html#flowerfewpetals">Flower - Few petals</a>
 <li>Ram's head
  - see <a href="H.html#headbeastgoat">Head - Beast - Goat</a>
 <li>Ram's horn
@@ -8432,6 +8470,8 @@ $IndexPage{'R'} = <<'XXEOFXX';
  - see <a href="R.html#roundelwhole">Roundel - Whole</a>
 <li>Rowan
  - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
+<li>Rowboat
+ - see <a href="S.html#ship">Ship</a>
 <li>Rowel
  - see <a href="M.html#mullet">Mullet</a>
 <li>Rudder
@@ -8455,7 +8495,6 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$IndexPageS = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter S.
 #
@@ -8530,6 +8569,8 @@ $IndexPage{'S'} = <<'XXEOFXX';
  - see <a href="B.html#balance">Balance</a>
 <li>Scale - Dragon
  - see <a href="D.html#dragonscale">Dragon scale</a>
+<li>Scallop
+ - see <a href="S.html#shellescallop">Shell - Escallop</a>
 <li>Scaly
  - see <a href="F.html#fieldtreatmentscaly">Field treatment - Scaly</a>
 <li>Scarab
@@ -8621,6 +8662,8 @@ $IndexPage{'S'} = <<'XXEOFXX';
  - see <a href="P.html#plantother">Plant - Other</a>
 <li>Sea wolf
  - see <a href="M.html#monsterseawolf">Monster - Sea - Wolf</a>
+<li>Sea-nettle
+ - see <a href="M.html#monsterseaother">Monster - Sea - Other</a>
 <li>Seagull
  - see <a href="B.html#bird">Bird</a>
 <li>Seal
@@ -8786,6 +8829,8 @@ $IndexPage{'S'} = <<'XXEOFXX';
  - see <a href="C.html#clothingfootgear">Clothing - Footgear</a>
 <li>Sloth
  - see <a href="B.html#beastother">Beast - Other</a>
+<li>Slow match
+ - see <a href="K.html#knot">Knot</a>
 <li>Slug
  - see <a href="M.html#mollusksnail">Mollusk - Snail</a>
 <li>Snail
@@ -8810,12 +8855,12 @@ $IndexPage{'S'} = <<'XXEOFXX';
  - see <a href="H.html#helmet">Helmet</a>
 <li>Spaniel
  - see <a href="B.html#beastdog">Beast - Dog</a>
+<a name="sparks">
+<li><a href="XXDescSearchUrlXX?p=SPARKS">Sparks</a>
 <li>Sparrow
  - see <a href="B.html#bird">Bird</a>
 <li>Sparrowhawk
  - see <a href="B.html#bird">Bird</a>
-<a name="sparks">
-<li><a href="XXDescSearchUrlXX?p=SPARKS">Sparks</a>
 <a name="spear">
 <li><a href="XXDescSearchUrlXX?p=SPEAR%20AND%20LANCE">Spear</a>
 <li>Spear head
@@ -8913,6 +8958,8 @@ $IndexPage{'S'} = <<'XXEOFXX';
  - see <a href="C.html#chair">Chair</a>
 <li>Stork
  - see <a href="B.html#bird">Bird</a>
+<li>Strainer
+ - see <a href="T.html#tooleating">Tool - Eating</a>
 <li>Strap
  - see <a href="C.html#clothingbelt">Clothing - Belt</a>
 <li>Strawberry
@@ -8948,8 +8995,10 @@ $IndexPage{'S'} = <<'XXEOFXX';
 <li><a href="XXDescSearchUrlXX?p=SUN%3avert%3a1%3auncharged">Sun - Whole - Uncharged - 1 - Vert</a>
 <li><a href="XXDescSearchUrlXX?p=SUN%3a2%3auncharged">Sun - Whole - Uncharged - 2</a>
 <li><a href="XXDescSearchUrlXX?p=SUN%3a3%20or%20more%3auncharged">Sun - Whole - Uncharged - 3 or more</a>
+<a name="sunwholecharged">
 <li><a href="XXDescSearchUrlXX?p=SUN%3acharged">Sun - Whole - Charged</a>
-<li><a href="XXDescSearchUrlXX?p=SUN%3aeclipsed">Sun - Whole - Eclipsed</a>
+<li>Sun - Whole - Eclipsed
+ - see <a href="S.html#sunwholecharged">Sun - Whole - Charged</a>
 <li>Sun issuant
  - see <a href="S.html#sundemi">Sun - Demi</a>
 <li>Sun wheel
@@ -9013,7 +9062,6 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$IndexPageT = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter T.
 #
@@ -9300,8 +9348,12 @@ $IndexPage{'T'} = <<'XXEOFXX';
  - see <a href="K.html#knot">Knot</a>
 <li>Trefoily
  - see <a href="F.html#foiltrefoil">Foil - Trefoil</a>
+<li>Trenket
+ - see <a href="T.html#toolother">Tool - Other</a>
 <li>Tressure
  - see <a href="O.html#orle">Orle</a>
+<li>Trews
+ - see <a href="C.html#clothingother">Clothing - Other</a>
 <a name="triangle">
 <li><a href="XXDescSearchUrlXX?p=TRIANGLE">Triangle</a>
  - see also <a href="P.html#polygon">Polygon</a>
@@ -9332,6 +9384,8 @@ $IndexPage{'T'} = <<'XXEOFXX';
  - see <a href="T.html#toy">Toy</a>
 <li>Troll
  - see <a href="M.html#monsterhumanoid">Monster - Humanoid</a>
+<li>Trousers
+ - see <a href="C.html#clothingother">Clothing - Other</a>
 <li>Trout
  - see <a href="F.html#fishother">Fish - Other</a>
 <li>Trout - Winged
@@ -9351,7 +9405,7 @@ $IndexPage{'T'} = <<'XXEOFXX';
 <li>Tuba
  - see <a href="M.html#musicalinstrumenthorn">Musical instrument - Horn</a>
 <li>Tulip
- - see <a href="F.html#flowercupshape">Flower - Cup shape</a>
+ - see <a href="F.html#flowertrumpetshape">Flower - Trumpet shape</a>
 <li>Tun
  - see <a href="B.html#barrel">Barrel</a>
 <li>Turkey
@@ -9381,7 +9435,6 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$IndexPageU = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter U.
 #
@@ -9423,7 +9476,6 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$IndexPageV = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter V.
 #
@@ -9481,7 +9533,6 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$IndexPageW = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter W.
 #
@@ -9685,7 +9736,6 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$IndexPageX = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter X.
 #
@@ -9709,7 +9759,6 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$IndexPageY = <<'XXEOFXX';
 #
 # config.web slurps up index page for the letter Y.
 #
@@ -9747,7 +9796,34 @@ XXCloseHtmlXX
 
 XXEOFXX
 
-$IndexPageZ = <<'XXEOFXX';
+#
+# config.web slurps up index page for the letter Z.
+#
+
+$IndexPage{'Z'} = <<'XXEOFXX';
+<html>
+<head><title>Index of the SCA Ordinary - The Letter Z</title>
+<base href="XXIndexDirUrlXX/Z.html">XXHeadXX
+</head><body>
+<h2>Index of the SCA Ordinary - The Letter Z</h2>
+
+<ul>
+<li>Zebra
+ - see <a href="B.html#beasthorse">Beast - Horse</a>
+<li>Zephyr
+ - see <a href="C.html#cloud">Cloud</a> and <a href="H.html#headhuman">Head - Human</a>
+<li>Zils
+ - see <a href="M.html#musicalinstrumentzils">Musical instrument - Zils</a>
+<li>Zither
+ - see <a href="M.html#musicalinstrumentharp">Musical instrument - Harp</a>
+<li>Zule
+ - see <a href="C.html#chesspiece">Chess piece</a>
+</ul>
+
+XXTrailerXX
+XXTrailer2XX
+XXCloseHtmlXX
+
 
 XXEOFXX
 
@@ -11372,7 +11448,8 @@ $\ = "\n";
  'm', 'Ealdormere',
  'n', 'Northshield',
  'w', 'Lochac',
- 'X', 'Ansteorra');
+ 'X', 'Ansteorra',
+ 'V', 'Avacal',);
 
 %mmap = (
  'January', '01',
