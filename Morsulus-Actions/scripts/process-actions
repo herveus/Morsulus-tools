@@ -20,6 +20,7 @@ sub main {
         my ( undef, $kingdom, $action, $name, $armory, $name2, $notes )
             = split( /[|]/, $action_line );
         next if $action eq 'disposition';
+        next if $action eq 'ignore';
         
         $action =~ s/\s+$//;
 

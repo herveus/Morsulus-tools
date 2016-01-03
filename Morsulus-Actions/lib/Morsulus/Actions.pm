@@ -4,7 +4,7 @@ use warnings;
 use strict;
 use Carp;
 
-our $VERSION = '2014.007.001';
+our $VERSION = '2015.006.001';
 use Daud;
 use Moose;
 use namespace::autoclean;
@@ -58,7 +58,8 @@ my $NEWLINE = qq{\n};
 my $SPACE = qr/[ ]/;
 my $BRANCH = qr/(?: Kingdom | Principality | Barony | Bailiwick | Baronnie |
         Province | Region | Shire | Canton | Stronghold | Port | Riding | 
-        College | Crown $SPACE Province | March | Dominion | Barony-Marche )/xms;
+        College | Crown $SPACE Province | March | Dominion | Barony-Marche |
+        Fortaleza )/xms;
 
 # overload "" to stringify
 use overload
@@ -147,12 +148,12 @@ sub bracket_name
         (?: $SPACE Extraordinary)?)/xms)
     {
         my $title = $1;
-        $q_name =~ s/$title/<$title>/;
+        $q_name =~ s/$title/<$title>/ if $self->cooked_action_of =~ /title|seal/i;
     }
     elsif ($q_name =~ m/\A (Herold $SPACE)/xms)
     {
         my $title = $1;
-        $q_name =~ s/$title/<$title>/;
+        $q_name =~ s/$title/<$title>/ if $self->cooked_action_of =~ /title/i;
     }
     elsif ($q_name =~ m/\A(.+)(, $SPACE $BRANCH (?: $SPACE of )? )\z/xms)
     {
@@ -161,7 +162,7 @@ sub bracket_name
         return $q_name if $name eq 'Atenveldt';
         $q_name =~ s/$branch/<$branch>/;
     }
-    elsif ($q_name =~ m/,( $SPACE $BRANCH (?: $SPACE (?: of | de ) )? ) $SPACE ( the | La | l\')\z/xms)
+    elsif ($q_name =~ m/,( $SPACE $BRANCH (?: $SPACE (?: of | de ) )? ) $SPACE ( the | La | l\' | la )\z/xms)
     {
         my $branch = $1;
         my $article = $2;
@@ -172,7 +173,7 @@ sub bracket_name
         my $branch = $1;
         $q_name =~ s/$branch/<$branch>/;
     }
-    elsif ($q_name =~ m/\A ($BRANCH (?: $SPACE (?: of | de ) (?: $SPACE (?: the | l' ))? )? ) $SPACE? (.+)\z/xms)
+    elsif ($q_name =~ m/\A ($BRANCH (?: $SPACE (?: of | de ) (?: $SPACE (?: the | l' | la | La ))? )? ) $SPACE? (.+)\z/xms)
     {
         my $branch = $1;
         my $name = $2;
