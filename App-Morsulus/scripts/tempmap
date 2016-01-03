@@ -2,7 +2,7 @@
 
 #% Convert a database to temp format for generating an ordinary.
 
-#$[ = 1;                 # set array base to 1
+$[ = 1;                 # set array base to 1
 
 my $tertiaries = 1;
 # if ($ARGV[0] =~ /^-notert/)
@@ -115,8 +115,6 @@ $map{'SHIP-CANOE'}='SHIP:t3';
 $map{'SHIP-DRAKKAR'}='SHIP:t2';
 $map{'SHIP-LYMPHAD AND GALLEY'}='SHIP:t1';
 
-$map{'SUN'}='SUN:unc';
-
 $map{'SWORD AND DAGGER*1B'}='SWORD:broken';
 $map{'SWORD AND DAGGER'}='SWORD:plain blade';
 $map{'SWORD AND DAGGER*1C'}='SWORD:obscured';
@@ -126,6 +124,7 @@ $map{'SWORD AND DAGGER,2'}='SWORD:2';
 $map{'SWORD AND DAGGER,3+'}='SWORD:3 or more';
 
 $map{'TREE-BLASTED'} = 'TREE-ROUNDED SHAPE';
+$map{'TREE-WILLOW'} = 'TREE-ROUNDED SHAPE';
 
 while (<>) {
   chop;       # strip record separator
