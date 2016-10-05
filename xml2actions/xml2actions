@@ -218,8 +218,8 @@ sub extract_action
 	    $action =~ s/$title/"$title"/ unless $title =~ /"/;
 	    $action =~ s/$who/"$who"/ unless $who =~ /"/;
 	}
-	if ($action =~ /transfer of order name (.+) (?:to|from)/i
-	    || $action =~ /order name transfer (.+) (?:to|from)/i)
+	if ($action =~ /transfer of order name ([^"]+) (?:to|from)/i
+	    || $action =~ /order name transfer ([^"]+) (?:to|from)/i)
 	{
 	    my $order = $1;
 	    $action =~ s/$order/"$order"/;
@@ -227,7 +227,7 @@ sub extract_action
 	mark_retained($action, $action_name[0], $discussion);
 	if ($action =~ /exchange of device and badge/i)
 	{
-	    my ($old_device) = grep {$discussion =~ /(?:previous|former) device, $_/} @disc_blazons;
+	    my ($old_device) = grep {$discussion =~ /(?:previous|former|old) device, $_/} @disc_blazons;
 	    my ($old_badge) = grep {$_ ne $old_device} @disc_blazons, $armory;
 	    if (@disc_blazons == 2 && defined $old_device)
 	    {
