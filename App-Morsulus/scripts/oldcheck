@@ -155,6 +155,7 @@ for my $rec (@recs)
     my $nonsca = 0;
     my $notes = $record->notes;
         $notes =~ s/\(Owner: [^)]+\)//;
+        $notes =~ s/\(regid:\d+\)//;
     if ($notes ne '') {
         report("unexpected notes field")
             if ($type =~ /^([Cu]|ANC|BNc|Bvc|HNC|OC)$/);

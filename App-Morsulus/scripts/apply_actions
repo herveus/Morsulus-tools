@@ -21,6 +21,7 @@ while (my $action_line = <$input_fh>)
     
     my ( undef, $kingdom, $action, $name, $armory, $name2, $notes )
         = split( /[|]/, $action_line );
+    print STDERR $action_line if $ARGV{-verbose};
     next if $action eq 'disposition';
     next if $action =~ /^ignore/;
     
@@ -109,6 +110,10 @@ YYYYMM date for actions.
 
 Include errata records in processing. Default is to ignore errata. 
 Actions which begin with "err" are considered errata.
+
+=item -verbose
+
+Print each input line before processing it.
 
 =head1 LICENSE AND COPYRIGHT
 
