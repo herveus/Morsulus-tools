@@ -751,7 +751,8 @@ sub make_search_frame {
             bird_posture => 4, fish_posture => 5, crescent_dir => 6,
             line => 7, orientation => 8, tincture =>  9, tincture1 => 9.5,
             tincture2 => 10, relation => 11, chrelation => 12, group => 13,
-            tertiaries => 0.5, arrangement => 14);
+            tertiaries => 0.5, arrangement => 14, cross_family => 0.4,
+            ordinary => 0.3);
         @feature_group_order = sort feature_group_order keys %feature_group_order;
         for my $i (0 .. @feature_group_order-1)
         {
@@ -908,7 +909,7 @@ sub make_search_frame {
     sub is_armory_type
     {
         my $type = shift;
-        return $type =~ /^(:?[abdsABDS]|D\?|BD)$/;
+        return $type =~ /^(:?[abdsgABDS]|D\?|BD)$/;
     }
     
     sub is_historical_date
@@ -978,7 +979,7 @@ sub make_search_frame {
     sub Save_Indexing
     {
         my $item = get_parsed_item($current_item);
-        if ($item->{text} !~ /[.]$/)
+        if ($item->{text} !~ /[.\]]$/)
         {
             $item->{text} .= '.';
         }

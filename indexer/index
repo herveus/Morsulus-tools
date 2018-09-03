@@ -4,4 +4,4 @@ if [ $Xlines -eq 1 ]
 then
     open /Applications/Utilities/X11.app
 fi
-indexer -i $1 
+/usr/local/bin/indexer -i $1 
