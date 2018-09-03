@@ -33,6 +33,7 @@ ampulla
 anchor
 angel
 angelfish
+angevine
 angle
 ankh
 ankhus
@@ -58,10 +59,12 @@ antelope, natural
 antler
 anvil
 ape
+ape clog
 apothecary jar
 apple
 apple tree
 arachnid
+arbalest stock
 arch
 archer
 architecture
@@ -156,6 +159,7 @@ arrow, 1
 arrow, 2
 arrow, 3
 arrow, 4 or more
+arrow fletching
 arrow head
 arrow notch
 arrow pointer
@@ -183,6 +187,7 @@ arthropod, spider
 arthropod, wasp
 artichoke
 artistic tool
+arum lily
 ash
 ash key
 asp
@@ -195,6 +200,7 @@ athanor
 attire
 aurochs
 avosetta
+awl
 axe, 1, argent
 axe, 1, azure
 axe, 1, fur
@@ -219,6 +225,8 @@ bagwyn
 balance
 baldric
 ball
+banana
+banana leaf
 banner
 bar
 bar gemel
@@ -245,6 +253,7 @@ base, charged, complex line
 basil flower
 basilisk
 basket
+bass cornetto
 bat
 baton
 baton sinister
@@ -296,6 +305,7 @@ beast, bull
 beast, camel
 beast, camelopard
 beast, canine
+beast, cat, 1, argent, affronte
 beast, cat, 1, argent, couchant
 beast, cat, 1, argent, passant
 beast, cat, 1, argent, rampant
@@ -304,11 +314,13 @@ beast, cat, 1, azure
 beast, cat, 1, fur
 beast, cat, 1, gules
 beast, cat, 1, multicolor
+beast, cat, 1, or, affronte
 beast, cat, 1, or, couchant
 beast, cat, 1, or, passant
 beast, cat, 1, or, rampant
 beast, cat, 1, or, sejant
 beast, cat, 1, purpure
+beast, cat, 1, sable, affronte
 beast, cat, 1, sable, couchant
 beast, cat, 1, sable, passant
 beast, cat, 1, sable, rampant
@@ -341,6 +353,7 @@ beast, deer, sable
 beast, deer, vert
 beast, demi
 beast, doe
+beast, dog, 1, argent, affronte
 beast, dog, 1, argent, couchant
 beast, dog, 1, argent, passant
 beast, dog, 1, argent, rampant
@@ -351,6 +364,7 @@ beast, dog, 1, gules
 beast, dog, 1, multicolor
 beast, dog, 1, or
 beast, dog, 1, purpure
+beast, dog, 1, sable, affronte
 beast, dog, 1, sable, couchant
 beast, dog, 1, sable, passant
 beast, dog, 1, sable, rampant
@@ -414,6 +428,7 @@ beast, leopard
 beast, levrier
 beast, lion
 beast, lioness
+beast, llama
 beast, loat
 beast, loris
 beast, lynx
@@ -631,6 +646,7 @@ book, group primary
 book, secondary
 book, tertiary
 book, debruising
+bookbinder's plough
 bookroll
 boot
 borage flower
@@ -812,8 +828,10 @@ cairn
 calamarie
 caliper
 calla lily
+calligrapher's knife
 caltrap
 calygreyhound
+camail
 camel
 camellia
 camelopard
@@ -835,6 +853,7 @@ card pique
 carnation
 carpentry tool
 carrack
+carpenter's square
 carriage
 carrot
 cart
@@ -875,6 +894,7 @@ catamount
 catamount, sea
 catapult
 catfish
+caterpillar
 catherine wheel
 catnip
 cat's face
@@ -885,6 +905,7 @@ cedar
 celery stalk
 centaur
 centauress
+chabot
 chain
 chair
 chalice
@@ -1057,6 +1078,7 @@ chief, charged, wavy, sable
 chief, charged, wavy, vert
 child
 child's head
+chimera
 chipmunk
 chough
 chrysanthemum
@@ -1080,6 +1102,8 @@ claymore
 clew
 clew of yarn
 cloak
+clockface
+clog, ape
 cloth snip
 clothing, baldric
 clothing, belt
@@ -1128,6 +1152,7 @@ cockatrice
 cockroach
 coffin
 cogwheel
+coin die set
 collie
 columbine
 column
@@ -1146,16 +1171,19 @@ coney
 constellation
 cooking pot
 copihue
+coral
 corbie
 corbie's head
 cormorant
 corn
+corncrake
 cornetto
 cornflower
 cornucopia
 coronet
 corsica
 cougar
+coulter
 counter vair
 cow
 coxcomb
@@ -1167,6 +1195,7 @@ crane
 crane, building
 cranequin
 crawfish
+crayfish
 crequier plant
 crescent, 1, argent, decrescent
 crescent, 1, argent, increscent
@@ -1254,6 +1283,7 @@ cross of
 crossbow
 crow
 crown
+crowth
 crozier
 crusily
 crustacean
@@ -1317,12 +1347,14 @@ dinosaur
 dirk
 distaff
 dittany
+dividing iron
 dodo
 doe
 dog
 dog, sea
 dog's head
 dogwood blossom
+dogwood flower
 doll
 dolmen
 dolphin
@@ -1353,6 +1385,7 @@ dryas flower
 ducal coronet
 duck
 dulcimer
+dulcimer hammer
 dumbeg
 dumbek
 dune
@@ -1380,6 +1413,7 @@ elk's head
 elm
 embroiderer's broach
 emerald
+emmet
 endorse
 enfield
 enflamed object
@@ -2062,6 +2096,7 @@ fire
 firearm
 fireball
 firebird
+firebrand
 fireplace
 firewheel blossom
 fish, alewife
@@ -2119,6 +2154,7 @@ flax blossom
 fleam
 fleece
 flesh hook
+fleshpot
 fleur de lys, 1
 fleur de lys, 2, argent
 fleur de lys, 2, azure
@@ -2202,10 +2238,12 @@ flower, lilac
 flower, lily
 flower, lily of the valley
 flower, lotus
+flower, lupin
 flower, marguerite
 flower, marigold
 flower, multifloreted
 flower, multipetaled
+flower, mustard
 flower, narcissus
 flower, orchid
 flower, peony
@@ -2244,9 +2282,11 @@ flower, rose, 3, purpure
 flower, rose, 3, sable
 flower, rose, 3, vert
 flower, rose, 4 or more
+flower, rue
 flower, sedum
 flower, sexfoil
 flower, silver bell
+flower, snowdrop
 flower, spiderwort
 flower, starflower
 flower, stitchwort
@@ -2339,6 +2379,7 @@ fruit, strawberry
 fruit, turnip
 fruit, vegetable
 fruit, other
+frying pan
 fungus
 furison
 fusil
@@ -2366,6 +2407,7 @@ gendy flower
 gentian blossom
 gerbil
 gillyflower
+gimlet
 giraffe
 girl
 gittern
@@ -2433,6 +2475,7 @@ hachet
 hair
 halberd
 halberd head
+half moon knife
 hames
 hammer, 1
 hammer, 2 or more
@@ -2447,6 +2490,7 @@ hand, 1, sable
 hand, 1, vert
 hand, 2 or more
 hand axe
+hand sling
 handbasket
 handbell
 handgonne rest
@@ -2468,6 +2512,7 @@ hawthorn blossom
 hayfork
 hazel nut
 hazel tree
+hazelnut
 head, arrow
 head, badger
 head, bear
@@ -2523,6 +2568,7 @@ head, monster, tyger
 head, monster, unicorn
 head, monster, other
 head, rabbit
+head, raccoon
 head, ram
 head, reptile
 head, rhino
@@ -2531,6 +2577,7 @@ head, sheep
 head, skull
 head, stag
 head, ursine
+head, troll
 head, weapon
 head, wolf
 headgear
@@ -2551,6 +2598,7 @@ heather
 heather blossom
 heather vine
 heavenly body
+heckle
 hedgehog
 heliotrope
 hellene
@@ -2588,6 +2636,7 @@ hoofprint
 hook
 hookah
 hop
+hop cone
 horn, bugle
 horn, creature
 horn, drinking
@@ -2611,6 +2660,7 @@ hosen
 hound
 hound's head
 hourglass
+house
 hulk
 human
 human body
@@ -2626,6 +2676,7 @@ human skull
 humanoid monster
 hummingbird
 hunting horn
+hurdy-gurdy
 hurst
 hurt
 husky
@@ -2660,6 +2711,7 @@ island
 ivy
 jaculus
 jambe
+Japanese nail puller
 jar
 jasmine blossom
 javelin
@@ -2713,6 +2765,7 @@ krummhorn
 kudzu vine
 label
 labrys
+labyrinth
 lacy knot
 ladder
 ladle
@@ -2727,6 +2780,7 @@ lanthorn
 lanthorne
 lark
 lathe
+laurel branch
 laurel tree
 laurel wreath
 lavender flower
@@ -2771,10 +2825,12 @@ lion's head
 lion's jambe
 lip
 lizard
+llama
 loaf
 loat
 lobster
 lock
+lock-plate
 log
 longbow
 longship
@@ -2787,6 +2843,7 @@ lozenge, 1
 lozenge, 2 or more
 lozengy
 lucy
+lupin
 lure, arrangement
 lure, hawk's
 lute
@@ -2798,6 +2855,7 @@ macaw
 mace
 madrone
 madu
+magnolia blossom
 magpie
 mahi mahi
 maiden
@@ -2825,6 +2883,7 @@ marten's head
 martlet
 mascle
 mascully
+masculyn
 mash rake
 mask
 masoned
@@ -2842,6 +2901,7 @@ mermaid
 merman
 mew, sea
 mice
+mill
 mill, wind
 millrind
 millstone
@@ -3003,6 +3063,7 @@ mountain
 mountain lion
 mountain range
 mouse
+mouse of India
 moustache
 mowing fork
 mug
@@ -3116,10 +3177,14 @@ musical instrument, zither
 musical note
 musimon
 musimon's head
+mustard flower
+naga
 naginata
 nail
+nail puller, Japanese
 narcissus blossom
 narwhal
+nautilus
 necklace
 necklet
 needle
@@ -3151,11 +3216,13 @@ olive tree
 onion
 opinicus
 orange
+orange blossom
 orange tree
 orb
 orca
 orchid
 organ
+organ pipe
 oriole
 orle, 1, argent
 orle, 1, azure
@@ -3205,6 +3272,7 @@ pall, charged
 pall inverted
 pallet
 pallium
+palm frond
 palm tree
 palmer
 palmer's staff
@@ -3220,12 +3288,14 @@ panther's face
 panther's head
 papelonny
 papillion
+papyrus
 paraclete
 parchment
 parrot
 parsley
 partisan
 passion nail
+paternoster
 pavilion
 paw
 paw print
@@ -3270,6 +3340,7 @@ perch
 peregrine
 peripheral only
 periwinkle
+perruque
 persimmon
 pestle
 petrel
@@ -3278,6 +3349,7 @@ pheon
 phoenix
 pick
 pick axe
+pickaxe
 pie
 pig, beast
 pig, guinea
@@ -3369,7 +3441,10 @@ plate
 platy
 platypus
 plaything
+plough
 plover
+plow
+plumb-line
 plume
 plumetty
 pod
@@ -3386,6 +3461,7 @@ popinjay
 poplar
 poppy
 porcupine
+porphyrio
 portcullis
 porte arnois
 pot, cooking
@@ -3393,6 +3469,7 @@ pot, ink
 potent
 potenty
 pouch
+prawn
 press
 pretzel
 prickspur
@@ -3405,7 +3482,9 @@ pruning hook
 psaltry
 puffin
 pumpkin
+punch
 puncheon
+punner
 puppet
 purse
 python
@@ -3424,6 +3503,7 @@ quintain
 quiver
 rabbit
 raccoon
+raccoon head
 radish
 ragweed
 rainbow
@@ -3508,10 +3588,12 @@ rocket
 rod
 roebuck
 rogacina
+Roman dining couch
 roman numeral
 rook
 rooster
 rope
+rosary
 rose
 rose bud
 rosemary
@@ -3551,6 +3633,7 @@ rowan
 rowboat
 rowel
 rudder
+rue flower
 rune
 rush
 rushlight
@@ -3611,6 +3694,7 @@ scythe
 sea bear
 sea bird
 sea bull
+sea catamount
 sea dog
 sea dragon
 sea elephant
@@ -3626,6 +3710,7 @@ sea magpie
 sea mew
 sea monster
 sea moose
+sea nettle
 sea otter
 sea pegasus
 sea serpent
@@ -3644,6 +3729,7 @@ seax
 sedum blossum
 seeblatt
 seed
+selkie
 semy de lys
 septfoil
 seraph
@@ -3702,12 +3788,14 @@ sickle
 side
 siege engine
 siege tower
+sieve
 silkie
 silver bell flower
 simurgh
 sitar
 skeleton
 skene
+skillet
 skin, beast
 skin, snake
 skold
@@ -3728,7 +3816,9 @@ snail
 snake
 snake skin
 snip, cloth
+snowdrop
 snowflake
+sock
 songbird
 sow
 spade, shape
@@ -3750,6 +3840,8 @@ spiderweb
 spindle
 spiral
 spiral horn
+spool
+spool of thread
 spoon
 spot
 spray
@@ -3773,6 +3865,7 @@ star, morning
 star, shooting
 star, straight rayed
 star, wavy rayed
+star of Bethlehem
 star of david
 starflower
 starling
@@ -3789,6 +3882,7 @@ strainer
 strap
 strawberry
 stream
+streitgabelklinge
 stringed instrument
 stump
 sun, demi, argent
@@ -3859,6 +3953,7 @@ symbol
 syrinx
 table
 tablet
+tablet, weaver's
 tabor
 tack
 tadpole
@@ -3872,6 +3967,7 @@ tambourine
 tank, container
 tankard
 tapir
+tarasque
 targe
 tassel
 tau
@@ -3881,6 +3977,7 @@ teazle
 teeth
 tennis racket
 tent
+tentacle
 tenterhook
 tern
 terrapin
@@ -3896,6 +3993,7 @@ thrush
 thunderbolt
 thylacine
 thyme
+thyrsus
 tiara
 tierce
 tierced in point
@@ -3904,6 +4002,7 @@ tiger's head
 toad
 toe
 tomahawk
+tomato hornworm
 tong
 tongue
 tool, agricultural
@@ -4006,6 +4105,7 @@ trillium
 trimount
 tripod
 triquetra
+trireme
 triskele
 triskelion
 triton
@@ -4013,6 +4113,7 @@ triton shell
 trivet
 trojan horse
 troll
+troll's head
 trousers
 trout
 trout, winged
@@ -4034,6 +4135,7 @@ tusk
 twig
 tyger
 tyger's head
+umebachi
 uncial
 unicorn
 unicorn, sea
@@ -4043,6 +4145,7 @@ unicorn's head
 unicorn's horn
 urchin
 urchin, sea
+urinal
 urn
 vair bell
 vairy
@@ -4076,9 +4179,12 @@ wasp
 water bouget
 water buffalo
 water lily
+waterlily
+waterwheel
 wave
 weapon
 weasel
+weaver's tablet
 weaving tool
 web
 weed
@@ -4096,6 +4202,8 @@ whippet
 whirlpool
 wildman
 willow
+willow-herb blossom
+willowherb
 wind
 windmill
 wing, 1
@@ -4128,6 +4236,7 @@ wool fleece
 wool pack
 wool sack
 wool wheel
+wool-comb
 wooly mammoth
 word
 worm
@@ -4181,3 +4290,4 @@ zephyr
 zils
 zither
 zule
+zydrach

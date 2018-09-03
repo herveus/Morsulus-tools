@@ -39,7 +39,7 @@ $conf_file = '.configweb';
 
 $config{'XXPrimerUrlXX'} = 'http://heraldry.sca.org/armory/newprimer/';
 $config{'XXLoARUrlXX'} = 'http://heraldry.sca.org/loar';
-$config_version = 20141116;
+$config_version = 20160910;
 $config{'XXVersionXX'} = $config_version;
 $config{'XXHeadXX'} = '';
 

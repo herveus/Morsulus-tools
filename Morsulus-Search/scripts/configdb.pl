@@ -120,6 +120,7 @@ while (1) {
   $child = fork ();
   if ($child == 0) {
     #  The child process executes the following.
+    open (DB_FILE, $db_file_name);
 
     #  Note the IP address of the client.
     ($af, $port, $inetaddr) = unpack ($sockaddr, $addr);
@@ -163,7 +164,7 @@ while (1) {
         $pat =~ s#[/]##g;
 
         if ($ind eq 'b') {
-          $cond = sprintf ('$f4=~/%s/%s&&$f3=~/^[abds]$/i', $pat, $flags);
+          $cond = sprintf ('$f4=~/%s/%s&&$f3=~/^[abdgs]d?$/i', $pat, $flags);
         } else {
           $cond = sprintf ('$f%s=~/%s/%s', $ind, $pat, $flags);
         }
@@ -223,7 +224,7 @@ while (1) {
         local ($op, $weight, $pat, @pos);
         $op = $1;
         $weight = $2;
-        $pat = $3;
+        $pat = ascii($3);
  
         %match = ();
         @pos = unpack ('L*', $itemsn{$pat});
@@ -376,6 +377,7 @@ while (1) {
     #&log (". @inetaddr");
 
     close (NS);
+    close DB_FIle;
     exit;
   } 
   close (NS);
@@ -541,7 +543,7 @@ sub read_cat_file {
   #    info on feature compatibility; the rest of the table
   #    is inferred from the data in the file.
 
-  do {
+  while (1) {
     local ($progress, @entries);
 
     $progress = 0;   #  Reset the progress indicator.
@@ -603,8 +605,8 @@ sub read_cat_file {
         }
       }
     }
-  
-  } while ($progress > 0);
+    last if $progress == 0;
+  } #while ($progress > 0);
   #  Keep expanding the %compatible table until no more progress is made.
 }
   
@@ -767,6 +769,7 @@ sub read_db_file {
     
     $pos = pack ('L', tell (DB_FILE));
   }
+  close DB_FILE;
   # don't close DB_FILE; we'll use it again later
 }
 

@@ -29,7 +29,7 @@ $sockaddr = 'S n a4 x8';   # format of socket address
 $AF_INET = XXAF_INETXX;
 $SOCK_STREAM = XXSOCK_STREAMXX;
 
-$[ = 1;
+#$[ = 1;
 $" = '|';
 $\ = "\n";
 
@@ -328,7 +328,7 @@ $\ = "\n";
  'November', '11',
  'December', '12');
 
-@month_name = (
+@month_name = ( '',
  'January',
  'February',
  'March',
@@ -463,8 +463,8 @@ sub print_match {
   if ($type eq 'Nc') {
     print 'This name';
     if ($source =~ /-/) {
-      print ', registered ', &source ($source[1]), ',';
-      $source = $source[2];
+      print ', registered ', &source ($source[0]), ',';
+      $source = $source[1];
     }
     print ' was corrected to ', &name ($text);
     print ' ', &source ($source), '.';
@@ -472,8 +472,8 @@ sub print_match {
   } elsif ($type eq 'BNc') {
     print 'This branch-name';
     if ($source =~ /-/) {
-      print ', registered ', &source ($source[1]), ',';
-      $source = $source[2];
+      print ', registered ', &source ($source[0]), ',';
+      $source = $source[1];
     }
     print ' was corrected to ', &name ($text);
     print ' ', &source ($source), '.';
@@ -481,8 +481,8 @@ sub print_match {
   } elsif ($type eq 'u') {
     print 'This branch name';
     if ($source =~ /-/) {
-      print ', registered ', &source ($source[1]), ',';
-      $source = $source[2];
+      print ', registered ', &source ($source[0]), ',';
+      $source = $source[1];
     }
     print ' was updated to ', &name ($text);
     print ' ', &source ($source), '.';
@@ -490,8 +490,8 @@ sub print_match {
   } elsif ($type eq 'ANC') {
     print 'This alternate name';
     if ($source =~ /-/) {
-      print ', registered ', &source ($source[1]), ',';
-      $source = $source[2];
+      print ', registered ', &source ($source[0]), ',';
+      $source = $source[1];
     }
     print ' was changed to ', &name ($text);
     print ' ', &source ($source), '.';
@@ -499,8 +499,8 @@ sub print_match {
   } elsif ($type eq 'HNC') {
     print 'This household name';
     if ($source =~ /-/) {
-      print ', registered ', &source ($source[1]), ',';
-      $source = $source[2];
+      print ', registered ', &source ($source[0]), ',';
+      $source = $source[1];
     }
     print ' was changed to ', &name ($text);
     print ' ', &source ($source), '.';
@@ -508,8 +508,8 @@ sub print_match {
   } elsif ($type eq 'OC') {
     print 'This order name';
     if ($source =~ /-/) {
-      print ', registered ', &source ($source[1]), ',';
-      $source = $source[2];
+      print ', registered ', &source ($source[0]), ',';
+      $source = $source[1];
     }
     print ' was changed to ', &name ($text);
     print ' ', &source ($source), '.';
@@ -518,8 +518,8 @@ sub print_match {
     $text =~ s/^See //;
     print 'This branch-name';
     if ($source =~ /-/) {
-      print ', registered ', &source ($source[1]), ',';
-      $source = $source[2];
+      print ', registered ', &source ($source[0]), ',';
+      $source = $source[1];
     }
     print ' was changed to ', &name ($text);
     print ' ', &source ($source), '.';
@@ -528,20 +528,20 @@ sub print_match {
     $text =~ s/^See //;
     print 'This name';
     if ($source =~ /-/) {
-      print ', registered ', &source ($source[1]), ',';
-      $source = $source[2];
+      print ', registered ', &source ($source[0]), ',';
+      $source = $source[1];
     }
     print ' was changed to ', &name ($text);
     print ' ', &source ($source), '.';
 
   } elsif ($type eq 'j') {
-    print 'This name was referenced ', &source ($source[1]);
+    print 'This name was referenced ', &source ($source[0]);
     print ' as joint registrant of a badge';
     print ' with ', &name ($text), '.';
 
   } elsif ($type eq 'R') {
     $text =~ s/^See (also )?//;
-    print 'This name was referenced ', &source ($source[1]);
+    print 'This name was referenced ', &source ($source[0]);
     if ($text =~ /^\"(.+)\"$/) {
       print ' in registrations by ';
       @targs = split (/\" or \"/, $1);
@@ -555,62 +555,62 @@ sub print_match {
 
   } elsif ($type eq 'vc' || $type eq 'Bvc') {
     if ($source !~ /-/) {
-      $source[1] = $source[2];
-      $source[2] = $source;
+      $source[0] = $source[1];
+      $source[1] = $source;
     }
-    print 'This appeared ', &source ($source[1]);
+    print 'This appeared ', &source ($source[0]);
     print ' as a mis-spelling of ', &name ($text), '. ';
-    print 'The error was corrected ', &source ($source[2]);
+    print 'The error was corrected ', &source ($source[1]);
 
   } elsif ($type eq 'v' || $type eq 'Bv') {
-    print 'This appeared ', &source ($source[1]);
+    print 'This appeared ', &source ($source[0]);
     print '.<br>It appears to have been a mis-spelling of ';
     print &name ($text), '.';
 
   } elsif ($type eq 'BN') {
-    print 'This branch-name was registered ', &source ($source[1]);
-    print ' and released ', &source ($source[2]) if ($source =~ /-/);
+    print 'This branch-name was registered ', &source ($source[0]);
+    print ' and released ', &source ($source[1]) if ($source =~ /-/);
     print '.';
 
   } elsif ($type eq 'N') {
-    print 'This name was registered ', &source ($source[1]);
-    print ' and released ', &source ($source[2]) if ($source =~ /-/);
+    print 'This name was registered ', &source ($source[0]);
+    print ' and released ', &source ($source[1]) if ($source =~ /-/);
     print '.';
 
   } elsif ($type eq 't' || $type eq 'AN' || $type eq 'HN' || $type eq 'O') {
     $text =~ s/^For // if ($type eq 'AN');
     print 'This ', $type_name{$type}, ' was registered to ';
-    print &name ($text), ' ', &source ($source[1]);
-    print ' and ', $disp, ' ', &source ($source[2]) if ($source =~ /-/);
+    print &name ($text), ' ', &source ($source[0]);
+    print ' and ', $disp, ' ', &source ($source[1]) if ($source =~ /-/);
     print '.';
 
   } elsif ($type eq 'BD') {
     print 'Either the branch-name or the following arms';
-    print ' associated it (or both) were registered ', &source ($source[1]);
-    print ' and ', $disp, ' ', &source ($source[2]) if ($source =~ /-/);
+    print ' associated it (or both) were registered ', &source ($source[0]);
+    print ' and ', $disp, ' ', &source ($source[1]) if ($source =~ /-/);
     print ':<br><b>', &blazon ($text), '</b>';
 
   } elsif ($type =~ /^[ABDS]$/) {
     $type =~ tr/ABDS/abds/;
     print 'Either the name or the following ', $type_name{$type};
-    print ' associated it (or both) were registered ', &source ($source[1]);
-    print ' and ', $disp, ' ', &source ($source[2]) if ($source =~ /-/);
+    print ' associated it (or both) were registered ', &source ($source[0]);
+    print ' and ', $disp, ' ', &source ($source[1]) if ($source =~ /-/);
     print ':<br><b>', &blazon ($text), '</b>';
 
   } elsif ($type =~ /^[abdgs]$/ || $type eq 'D?') {
     print 'The following ', $type_name{$type};
-    print ' associated with this name was registered ', &source ($source[1]);
-    print ' and ', $disp, ' ', &source ($source[2]) if ($source =~ /-/);
+    print ' associated with this name was registered ', &source ($source[0]);
+    print ' and ', $disp, ' ', &source ($source[1]) if ($source =~ /-/);
     print ':<br><b>', &blazon ($text), '</b>';
 
   } elsif ($type eq 'W') {
-    print 'An heraldic will was filed with Laurel ', source($source[1]);
+    print 'An heraldic will was filed with Laurel ', source($source[0]);
 
   } elsif ($type eq 'C') {
     print 'A database comment:<br>', $text;
 
   } elsif ($type eq 'r') {
-    print 'Is a reserved word or phrase noted ', source($source[1]);
+    print 'Is a reserved word or phrase noted ', source($source[0]);
 
   } else {
     print "An unknown record (type=`$type') was found in the database.";
@@ -790,7 +790,7 @@ sub byscoreblazon {
 #  Non-ASCII chars, ampersands, angle-brackets, etc. are escaped.
 sub escape {
   local($out) = '';
-  foreach (split (//, $_[1])) {
+  foreach (split (//, $_[0])) {
     if (m&^[ !'()*+,./0-9:;?A-Za-z-]$&) {
       $out .= $_;
     } else {
@@ -803,7 +803,7 @@ sub escape {
 # Common client function to translate a Latin-1 string into a URL fragment.
 
 sub encodeway {
-  local($_) = $_[1];
+  local($_) = $_[0];
 
   tr/\300\301\302\303\304\305\307\310\311\312\313\314\315\316\317\321\322\323\324\325\326\330\331\332\333\334\335\340\341\342\343\344\345\347\350\351\352\353\354\355\356\357\361\362\363\364\365\366\370\371\372\373\374\375\377/AAAAAACEEEEIIIINOOOOOOUUUUYaaaaaaceeeeiiiinoooooouuuuyy/;
   s/\306/AE/g;
@@ -819,7 +819,7 @@ sub encodeway {
 
 sub encode {
   local($out) = '';
-  local($_) = $_[1];
+  local($_) = $_[0];
 
   local(@chars) = split (//, $_);
 
@@ -861,6 +861,7 @@ sub source {
       ++$year if ($month > 4);
 
       # Convert the numeric SCA year (1 .. 99) to Roman numerals.
+      #FIXME?
       $year = 'A.S. ' . ('', 'X', 'XX', 'XXX', 'XL', 'L',
                        'LX', 'LXX', 'LXXX', 'XC')[$[ + int($year/10)]
                     . ('', 'I', 'II', 'III', 'IV', 'V', 
