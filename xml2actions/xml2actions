@@ -2,7 +2,7 @@
 use strict;
 $|++;
 
-my $VERSION = "2014.1201";
+my $VERSION = "2018.006.001";
 my $USAGE = <<USAGE;
 Usage: $0 [input_file] > output_file
        reads STDIN if input_file not given
@@ -237,6 +237,11 @@ sub extract_action
 	    print join('|', $seq++, $kingdom, "change of badge to device", $owner, $old_badge, "\n");
 	    print join('|', $seq++, $kingdom, "change of device to badge", $owner, $old_device, "\n");
 	}
+	elsif ($action =~ /exchange of alternate and primary name/i)
+	{
+	    my ($old_primary_name);
+	    
+	}
 	else
 	{
 	    print join('|', $seq++, $kingdom, $action, $owner, $armory, "\n");
@@ -256,7 +261,7 @@ sub mark_retained
 {
     my ($action, $name, $discussion) = @_;
     return unless $action =~ /^name change/i;
-    return unless $discussion =~ /previous name, $name, is retained/;
+    return unless $discussion =~ /(?:previous|prior|old|former|current) name, $name, is retained/;
     $_[0] =~ s/"$name"/"$name" retained/;
     return;
 }
@@ -264,9 +269,14 @@ sub mark_retained
 sub guess_disposition
 {
     my ($blazon, $discussion, $action) = @_;
-    if ($discussion =~ /(?:old|previous|former) (device|badge), \Q$blazon\E, is (?:to be )?(retained|released)/)
+    if ($discussion =~ /(?:old|previous|prior|former) (device|badge|augmentation), \Q$blazon\E, is (?:to be )?(retained|released)/)
     {
-        return "$1 changed/$2";
+        my $retval = "$1 changed/$2";
+        if ($discussion =~ /(ancient arms)/)
+        {
+            return "$retval as ancient arms";
+        }
+        return $retval;
     }
     elsif ($action =~ /^Reblazon of (.+)$/)
     {
