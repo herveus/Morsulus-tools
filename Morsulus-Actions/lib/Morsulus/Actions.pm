@@ -4,7 +4,7 @@ use warnings;
 use strict;
 use Carp;
 
-our $VERSION = '2016.006.001';
+our $VERSION = '2018.004.001';
 use Daud;
 use Moose;
 use namespace::autoclean;
@@ -59,7 +59,7 @@ my $SPACE = qr/[ ]/;
 my $BRANCH = qr/(?: Kingdom | Principality | Barony | Bailiwick | Baronnie |
         Province | Region | Shire | Canton | Stronghold | Port | Riding | 
         College | Crown $SPACE Province | March | Dominion | Barony-Marche |
-        Fortaleza )/xms;
+        Fortaleza | Hamlet )/xms;
 
 # overload "" to stringify
 use overload
@@ -144,7 +144,7 @@ sub bracket_name
     my $self = shift;
     my ($q_name) = @_;
     if ($q_name =~ m/($SPACE 
-        (?: Herald | Pursuivant | King $SPACE of $SPACE Arms | Herault | Herold) \b
+        (?: Herald | Pursuivant | King $SPACE of $SPACE Arms | Herault | Herold | herault) \b
         (?: $SPACE Extraordinary)?)/xms)
     {
         my $title = $1;
@@ -242,7 +242,7 @@ sub permute {
 
     $string =~ s/^the //i;
     if ( $string
-        =~ /^(award|barony|braithrean|brotherhood|canton|casa|chateau|clann?|companions|companionate|company|crown principality|domus|dun|fellowship|freehold|guild|honou?r of the|house|household|hous|ha?us|h\{u'\}sa|keep|kingdom|league|l'ordre|la companie|la tavernehous|maison|orde[nr]|ord[eo]|ordre|principality|province|riding|shire|university) (.*)/i
+        =~ /^(award|barony|braithrean|brotherhood|canton|casa|chateau|clann?|companions|companionate|company|crown principality|domus|dun|fellowship|freehold|guild|honou?r of the|house|household|hous|ha?us|h\{u'\}sa|keep|kingdom|league|l'ordre|la companie|la tavernehous|maison|manoir|orde[nr]|ord[eo]|ordre|principality|province|riding|shire|university) (.*)/i
         )
     {
         $string = "$2, $1";
