@@ -1016,10 +1016,13 @@ sub print_header {
   print "Content-Type:  text/html\n";
 
   # Print HTML header.
-  print '<html><head><title>', $form_title, '</title></head>';
+  print '<html><head><title>', $form_title, '</title>';
+  print q{XXHeadXX};
+  print '</head>';
 
   # Print first part of HTML body.
   print '<body>';
+  print q{XXSiteHeadXX};
   print '<form action="', $cgi_url, '",type="POST",enctype="', $enctype, '">';
   print '<h2>', $form_title, '</h2>';
 }
