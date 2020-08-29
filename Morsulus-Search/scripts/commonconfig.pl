@@ -82,12 +82,18 @@ sub read_config_file {
     return unless -r $conf_file;
     print "\nReading previous configuration from $conf_file ...";
     open my $CONF, '<', $conf_file or die "Can't open config file $conf_file: $?";
+    my $last_tag;
     while (<$CONF>)
     {
         next if /^#/;
         chomp;
-        my ($tag, $value) = split(/\|/);
-        $config{$tag} = $value;
+        my ($tag, $value) = split(/\|/, $_, 2);
+        if ( ! length $tag ) {
+            $config{$last_tag} .= "\n" . $value;
+        } else {
+            $config{$tag} = $value;
+            $last_tag = $tag;
+        }
     }
     print " done.\n";
     return %config;
@@ -104,6 +110,7 @@ sub save_config {
     {
         next if $tag eq 'CONF_FILE';
         my $value = $config{$tag};
+        $value =~ s/\n/\n|/g;
         print $CONF "$tag|$value\n";
     }
     print " done.\n";
