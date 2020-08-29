@@ -14625,6 +14625,7 @@ $config_version = '2022-12-16 (1:127+)';
 $config{'XXVersionXX'} = $config_version;
 $config{'XXHeadXX'} = '';
 
+undef $config{'XXTrailerXX'} if ( $config{'XXTrailerXX'} =~ /2016/ );
 $config{'XXTrailerXX'} ||= "<hr><address>config.web version XXVersionXX ";
 $config{'XXTrailer2XX'} ||= '';
 $config{'XXCloseHtmlXX'} ||= '</address></body></html>';
