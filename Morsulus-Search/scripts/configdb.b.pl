@@ -15,7 +15,7 @@ $_ = &input ('');
 # Get old config values, if available.
 
 $conf_file = '.configdb';
-&read_config_file ($conf_file);
+%config = &read_config_file ($conf_file);
 
 #=================================#
 # Set database server parameters. #
@@ -118,7 +118,8 @@ $DatabaseServerPath = &get_filepath ('XDatabaseServerPathX',
 # Set $LogFileName.
 
 logfilename:
-$LogFileName = '/tmp/dbserver.log';
+$LogFileName = $config{'XLogFileNameX'};
+$LogFileName = '/tmp/dbserver.log' if ($LogFileName eq '');
 $LogFileName = "$cwd/$LogFileName" if ($LogFileName =~ m#^[^/]#);
 print "\nPath for database server log:\n[$LogFileName] ";
 $LogFileName = &input ($LogFileName);
