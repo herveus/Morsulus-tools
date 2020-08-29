@@ -67,6 +67,7 @@ print '<html><head><title>', $form_title, '</title></head>';
 
 # Print first part of HTML body.
 print '<body>';
+print q{XXSiteHeadXX};
 
 $valid = 0;
 
