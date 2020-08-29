@@ -125,9 +125,18 @@ sub configure {
 
   print "\nConfiguring $what.\n";
 
-  while (($tag, $value) = each %config) {
-    s/$tag/$value/g;
+  my $rerun = 1;
+  while ( $rerun ) {
+      $rerun = 0;
+      while (($tag, $value) = each %config) {
+        if ( s/$tag/$value/g ) {
+            if ( $value =~ /XX\w+XX/ ) {
+                $rerun ++;
+            }
+        }
+      }
   }
+
   return $_;
 }
 
