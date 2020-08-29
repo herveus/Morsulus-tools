@@ -291,9 +291,18 @@ sub configure {
 
   print "\nConfiguring $what.\n";
 
-  while (($tag, $value) = each %config) {
-    s/$tag/$value/g;
+  my $rerun = 1;
+  while ( $rerun ) {
+      $rerun = 0;
+      while (($tag, $value) = each %config) {
+        if ( s/$tag/$value/g ) {
+            if ( $value =~ /XX\w+XX/ ) {
+                $rerun ++;
+            }
+        }
+      }
   }
+
   return $_;
 }
 
@@ -14616,7 +14625,7 @@ $config_version = '2022-12-16 (1:127+)';
 $config{'XXVersionXX'} = $config_version;
 $config{'XXHeadXX'} = '';
 
-$config{'XXTrailerXX'} ||= "<hr><address>config.web version $config_version ";
+$config{'XXTrailerXX'} ||= "<hr><address>config.web version XXVersionXX ";
 $config{'XXTrailer2XX'} ||= '';
 $config{'XXCloseHtmlXX'} ||= '</address></body></html>';
 

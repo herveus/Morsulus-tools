@@ -43,7 +43,7 @@ $config_version = 'XXConfigVersionFromAssemblerXX';
 $config{'XXVersionXX'} = $config_version;
 $config{'XXHeadXX'} ||= '';
 
-$config{'XXTrailerXX'} ||= "<hr><address>config.web version $config_version ";
+$config{'XXTrailerXX'} ||= "<hr><address>config.web version XXVersionXX ";
 $config{'XXTrailer2XX'} ||= '';
 $config{'XXCloseHtmlXX'} ||= '</address></body></html>';
 
