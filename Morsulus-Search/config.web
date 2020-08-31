@@ -1337,7 +1337,7 @@ $DbFormatPage = <<'XXEOFXX';
 <br>
     updated by Herveus d'Ormonde
 <br>
-    28 March 2014
+    1 December 2018
 
 </h3><p>
 This document describes the format used to record names and armory in
@@ -1364,35 +1364,35 @@ after the end-of-notice.
 </h4><p>
 Each record occupies a single line in the file, and each line contains
 one record.  A record has at least five fields, separated by stiles
-(`|').  The five required fields are:  name, source, type, text,
+('|').  The five required fields are:  name, source, type, text,
 and notes, in that order.
 
 <p><ul><li>
   (1)  a name associated with the item
 <ul><li>
-	  If the type is one of `B' `D' `N' `a' `b' `d' `g' `j' `s'
-            `BD' `BN' `W' or `D?', this is the registrant's name.
+	  If the type is one of 'B' 'D' 'N' 'a' 'b' 'd' 'g' 'j' 's'
+            'BD' 'BN' 'W', or 'D?', this is the registrant's name.
 <li>
-	  If the type is `AN', this is the alternate name.
+	  If the type is 'AN', this is the alternate name.
 <li>
-	  If the type is `HN', this is the household name.
+	  If the type is 'HN', this is the household name.
 <li>
-	  If the type is `O', this is the name of the award or order.
+	  If the type is 'O', this is the name of the award or order.
 <li>
-	  If the type is `t', this is the heraldic title.
+	  If the type is 't', this is the heraldic title.
 <li>
-	  If the type is one of `ANC' `BNC' `BNc' `NC' `Nc'
-            `HNC' or `OC', this is the earlier name.
+	  If the type is one of 'ANC' 'BNC' 'BNc' 'NC' 'Nc'
+            'HNC', 'OC', or 'u', this is the earlier name.
 <li>
-	  If the type is one of `Bv' `Bvc' `v' or `vc', this is the
+	  If the type is one of 'Bv' 'Bvc' 'v', or 'vc', this is the
             incorrect spelling of the name.
 <li>
-	  If the type is `C', this is a blank.
+	  If the type is 'C', this is a blank.
 <li>
-	  If the type is `R', this indicates where the cross-reference
+	  If the type is 'R', this indicates where the cross-reference
             appears in the Armorial.
 <li>
-	  If the type is `r', this indicates a word or phrase that is
+	  If the type is 'r', this indicates a word or phrase that is
 	        reserved or too generic for registration by itself. 
              
 
@@ -1409,16 +1409,16 @@ and notes, in that order.
 <p>
 	     Examples:
 <p><ul><li>
-                `197010'  (= the October 1970 LoAR or errata letter)
+                '197010'  (= the October 1970 LoAR or errata letter)
 <li>
-		`199001E' (= the January 1990 LoAR or errata letter under "EAST")
+		'199001E' (= the January 1990 LoAR or errata letter under "EAST")
 <li>
-		`205912W' (= the December 2059 LoAR or errata letter under "WEST")
+		'205912W' (= the December 2059 LoAR or errata letter under "WEST")
 
 </ul><p>
 	     In this case, the LoAR date indicates the date of the
 	     Laurel action that created the record.  For combined
-             records (record types `B' `BD' and `D') this is not
+             records (record types 'B' 'BD' and 'D') this is not
              necessarily the date the name was registered, nor
 	     is it necessarily the date the armory was registered.
 <p><li>
@@ -1541,6 +1541,8 @@ and notes, in that order.
 <li>
 	  t    = heraldic Title
 <li>
+	  u    = branch designator update
+<li>
           v    = personal name Variant without correction (probable error)
 <li>
           vc   = personal name Variant with Correction
@@ -1550,45 +1552,45 @@ and notes, in that order.
 </ul><p><li>
   (4)  text:
 <ul><li>
-	  If the type is one of `B' `D' `a' `b' `d' `g' `s' `BD' or `D?',
+	  If the type is one of 'B' 'D' 'a' 'b' 'd' 'g' 's' 'BD', or 'D?',
             this is the blazon.
 <li>
-	  If the type is `BN' `N' or `W', this must be empty.
+	  If the type is 'BN' 'N', or 'W', this must be empty.
 <li>
-	  If the type is `j', this is the name of other registrant of the
+	  If the type is 'j', this is the name of other registrant of the
             joint badge.  (The other registrant's record will have the
             complete blazon.)
 <li>
-	  If the type is `AN', this is `For' followed by the
+	  If the type is 'AN', this is 'For' followed by the
 	    primary name of the registrant.
 <li>
-	  If the type is `HN', this is the name of the registrant, or
+	  If the type is 'HN', this is the name of the registrant, or
             a list of registrants, enclosed in double-quotes and
-            separated by `and'.
+            separated by 'and'.
 <li>
-	  If the type is `O', this is the name of the
+	  If the type is 'O', this is the name of the
 	    branch that registered the award or order.
 <li>
-	  If the type is `t', this is the name of the branch
+	  If the type is 't', this is the name of the branch or person
             which registered the title.
 <li>
-	  If the type is `BNC' or `NC', this is the word `See' followed by
+	  If the type is 'BNC', or 'NC', this is the word 'See' followed by
 	    the new (branch or personal) name.
 <li>
-	  If the type is `ANC' `HNC' or 'OC' this is the new (alternate,
+	  If the type is 'ANC' 'HNC', or 'OC' this is the new (alternate,
             household, or award/order) name.
 <li>
-	  If the type is `BNc', `Bv', `Bvc', `Nc', `v' or 'vc',
+	  If the type is 'BNc', 'Bv', 'Bvc', 'Nc', 'u', 'v', or 'vc',
             this is the corrected form of the (branch or personal) name.
 <li>
-	  If the type is `C', this is the text of the comment.
+	  If the type is 'C', this is the text of the comment.
 <li>
-	  If the type is `R', this is the word `See' followed by
+	  If the type is 'R', this is the word 'See' followed by
 	    the name under which the referenced item appears,
             or a list of names enclosed in double-quotes and separated
-            by `or'.
+            by 'or'.
 <li>
-      If the type is `r', this is 'Society for Creative Anachronism'.
+      If the type is 'r', this is 'Society for Creative Anachronism'.
 
 </ul><p>
 	  There is no official limit on the length of the text field.
@@ -1597,19 +1599,19 @@ and notes, in that order.
   (5)  notes, individually enclosed in parentheses:
 <ul><li>
 	  To clarify the blazon:
-	    `A Cross of Samildanach is four Menorahs in cross'
+	    'A Cross of Samildanach is four Menorahs in cross'
 <li>
 	  To indicate the status the item:
-	    `Closed' `Deceased' `Disbanded' `-released' `-corrected blazon'
+	    'Closed' 'Deceased' 'Disbanded' '-released' '-corrected blazon'
 <li>
 	  To indicate a special class of armory:
-	    `Civil Ensign' `Ensign' `Flag' `Naval Ensign' `War Banner'
+	    'Civil Ensign' 'Ensign' 'Flag' 'Naval Ensign' 'War Banner'
 <li>
 	  To indicate the intended use of the item:
-	    `For House of Duckford' `For the populace'
+	    'For House of Duckford' 'For the populace'
 <li>
 	  To indicate the other holder of a joint badge:
-	    `JB: Elinor Aurora of Rosewood'
+	    'JB: Elinor Aurora of Rosewood'
 
 </ul><p>
 	  There is no official limit on the number of notes or their length.
@@ -1621,7 +1623,7 @@ and notes, in that order.
           (and thus five fields).
 <p>
 
-          For armory items (types `B' `D' `a' `b' `d' `g' `s' `BD' and `D?')
+          For armory items (types 'B' 'D' 'a' 'b' 'd' 'g' 's' 'BD' and 'D?')
           additional fields are used to describe the headings under which
           the armory is indexed in the SCA Ordinary.  Obsolete armory
           is not indexed, and there is no official limit on the number
@@ -1643,6 +1645,7 @@ XXEOFXX
 $DbSymbolsPage = <<'XXEOFXX';
 <html>
 <head><title>Da'ud Encodings</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <base href="XXDbSymbolsPageUrlXX">XXHeadXX
 </head><body><h2>
               Non-ASCII Symbols in the SCA Armorial Database
@@ -1804,557 +1807,561 @@ how to proceed. Don't simply Make Something Up. Please.
 </tr>
 <tr align="left" valign="top"><td>y:</td><td>y</td><td>00FF</td><td>ÿ</td><td>&amp;yuml</td><td>LATIN SMALL LETTER Y WITH DIAERESIS</td>
 </tr>
-<tr align="left" valign="top"><td>A-</td><td>A</td><td>0100</td><td>Ā</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER A WITH MACRON</td>
+<tr align="left" valign="top"><td>A-</td><td>A</td><td>0100</td><td>Ā</td><td>&amp;#x0100;</td><td>LATIN CAPITAL LETTER A WITH MACRON</td>
 </tr>
 <tr align="left" valign="top"><td>a-</td><td>a</td><td>0101</td><td>ā</td><td>&amp;amacr</td><td>LATIN SMALL LETTER A WITH MACRON</td>
 </tr>
-<tr align="left" valign="top"><td>Au</td><td>A</td><td>0102</td><td>Ă</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER A WITH BREVE</td>
+<tr align="left" valign="top"><td>Au</td><td>A</td><td>0102</td><td>Ă</td><td>&amp;#x0102;</td><td>LATIN CAPITAL LETTER A WITH BREVE</td>
 </tr>
-<tr align="left" valign="top"><td>au</td><td>a</td><td>0103</td><td>ă</td><td>&nbsp;</td><td>LATIN SMALL LETTER A WITH BREVE</td>
+<tr align="left" valign="top"><td>au</td><td>a</td><td>0103</td><td>ă</td><td>&amp;#x0103;</td><td>LATIN SMALL LETTER A WITH BREVE</td>
 </tr>
-<tr align="left" valign="top"><td>A,</td><td>A</td><td>0104</td><td>Ą</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER A WITH OGONEK</td>
+<tr align="left" valign="top"><td>A,</td><td>A</td><td>0104</td><td>Ą</td><td>&amp;#x0104;</td><td>LATIN CAPITAL LETTER A WITH OGONEK</td>
 </tr>
-<tr align="left" valign="top"><td>a,</td><td>a</td><td>0105</td><td>ą</td><td>&nbsp;</td><td>LATIN SMALL LETTER A WITH OGONEK</td>
+<tr align="left" valign="top"><td>a,</td><td>a</td><td>0105</td><td>ą</td><td>&amp;#x0105;</td><td>LATIN SMALL LETTER A WITH OGONEK</td>
 </tr>
-<tr align="left" valign="top"><td>C'</td><td>C</td><td>0106</td><td>Ć</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER C WITH ACUTE</td>
+<tr align="left" valign="top"><td>C'</td><td>C</td><td>0106</td><td>Ć</td><td>&amp;#x0106;</td><td>LATIN CAPITAL LETTER C WITH ACUTE</td>
 </tr>
-<tr align="left" valign="top"><td>c'</td><td>c</td><td>0107</td><td>ć</td><td>&nbsp;</td><td>LATIN SMALL LETTER C WITH ACUTE</td>
+<tr align="left" valign="top"><td>c'</td><td>c</td><td>0107</td><td>ć</td><td>&amp;#x0107;</td><td>LATIN SMALL LETTER C WITH ACUTE</td>
 </tr>
-<tr align="left" valign="top"><td>C^</td><td>C</td><td>0108</td><td>Ĉ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER C WITH CIRCUMFLEX</td>
+<tr align="left" valign="top"><td>C^</td><td>C</td><td>0108</td><td>Ĉ</td><td>&amp;#x0108;</td><td>LATIN CAPITAL LETTER C WITH CIRCUMFLEX</td>
 </tr>
-<tr align="left" valign="top"><td>c^</td><td>c</td><td>0109</td><td>ĉ</td><td>&nbsp;</td><td>LATIN SMALL LETTER C WITH CIRCUMFLEX</td>
+<tr align="left" valign="top"><td>c^</td><td>c</td><td>0109</td><td>ĉ</td><td>&amp;#x0109;</td><td>LATIN SMALL LETTER C WITH CIRCUMFLEX</td>
 </tr>
-<tr align="left" valign="top"><td>Cv</td><td>C</td><td>010C</td><td>Č</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER C WITH CARON</td>
+<tr align="left" valign="top"><td>Cv</td><td>C</td><td>010C</td><td>Č</td><td>&amp;#x010C;</td><td>LATIN CAPITAL LETTER C WITH CARON</td>
 </tr>
-<tr align="left" valign="top"><td>cv</td><td>c</td><td>010D</td><td>č</td><td>&nbsp;</td><td>LATIN SMALL LETTER C WITH CARON</td>
+<tr align="left" valign="top"><td>cv</td><td>c</td><td>010D</td><td>č</td><td>&amp;#x010D;</td><td>LATIN SMALL LETTER C WITH CARON</td>
 </tr>
-<tr align="left" valign="top"><td>Dv</td><td>D</td><td>010E</td><td>Ď</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER D WITH CARON</td>
+<tr align="left" valign="top"><td>Dv</td><td>D</td><td>010E</td><td>Ď</td><td>&amp;#x010E;</td><td>LATIN CAPITAL LETTER D WITH CARON</td>
 </tr>
-<tr align="left" valign="top"><td>dv</td><td>d</td><td>010F</td><td>ď</td><td>&nbsp;</td><td>LATIN SMALL LETTER D WITH CARON</td>
+<tr align="left" valign="top"><td>dv</td><td>d</td><td>010F</td><td>ď</td><td>&amp;#x010F;</td><td>LATIN SMALL LETTER D WITH CARON</td>
 </tr>
-<tr align="left" valign="top"><td>D/</td><td>D</td><td>0110</td><td>Đ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER D WITH STROKE</td>
+<tr align="left" valign="top"><td>D/</td><td>D</td><td>0110</td><td>Đ</td><td>&amp;#x0110;</td><td>LATIN CAPITAL LETTER D WITH STROKE</td>
 </tr>
-<tr align="left" valign="top"><td>d/</td><td>d</td><td>0111</td><td>đ</td><td>&nbsp;</td><td>LATIN SMALL LETTER D WITH STROKE</td>
+<tr align="left" valign="top"><td>d/</td><td>d</td><td>0111</td><td>đ</td><td>&amp;#x0111;</td><td>LATIN SMALL LETTER D WITH STROKE</td>
 </tr>
-<tr align="left" valign="top"><td>E-</td><td>E</td><td>0112</td><td>Ē</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER E WITH MACRON</td>
+<tr align="left" valign="top"><td>E-</td><td>E</td><td>0112</td><td>Ē</td><td>&amp;#x0112;</td><td>LATIN CAPITAL LETTER E WITH MACRON</td>
 </tr>
-<tr align="left" valign="top"><td>e-</td><td>e</td><td>0113</td><td>ē</td><td>&nbsp;</td><td>LATIN SMALL LETTER E WITH MACRON</td>
+<tr align="left" valign="top"><td>e-</td><td>e</td><td>0113</td><td>ē</td><td>&amp;#x0113;</td><td>LATIN SMALL LETTER E WITH MACRON</td>
 </tr>
-<tr align="left" valign="top"><td>Eu</td><td>E</td><td>0114</td><td>Ĕ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER E WITH BREVE</td>
+<tr align="left" valign="top"><td>Eu</td><td>E</td><td>0114</td><td>Ĕ</td><td>&amp;#x0114;</td><td>LATIN CAPITAL LETTER E WITH BREVE</td>
 </tr>
-<tr align="left" valign="top"><td>eu</td><td>e</td><td>0115</td><td>ĕ</td><td>&nbsp;</td><td>LATIN SMALL LETTER E WITH BREVE</td>
+<tr align="left" valign="top"><td>eu</td><td>e</td><td>0115</td><td>ĕ</td><td>&amp;#x0115;</td><td>LATIN SMALL LETTER E WITH BREVE</td>
 </tr>
-<tr align="left" valign="top"><td>.E</td><td>E</td><td>0116</td><td>Ė</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER E WITH DOT ABOVE</td>
+<tr align="left" valign="top"><td>.E</td><td>E</td><td>0116</td><td>Ė</td><td>&amp;#x0116;</td><td>LATIN CAPITAL LETTER E WITH DOT ABOVE</td>
 </tr>
-<tr align="left" valign="top"><td>.e</td><td>e</td><td>0117</td><td>ė</td><td>&nbsp;</td><td>LATIN SMALL LETTER E WITH DOT ABOVE</td>
+<tr align="left" valign="top"><td>.e</td><td>e</td><td>0117</td><td>ė</td><td>&amp;#x0117;</td><td>LATIN SMALL LETTER E WITH DOT ABOVE</td>
 </tr>
-<tr align="left" valign="top"><td>E,</td><td>E</td><td>0118</td><td>Ę</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER E WITH OGONEK</td>
+<tr align="left" valign="top"><td>E,</td><td>E</td><td>0118</td><td>Ę</td><td>&amp;#x0118;</td><td>LATIN CAPITAL LETTER E WITH OGONEK</td>
 </tr>
-<tr align="left" valign="top"><td>e,</td><td>e</td><td>0119</td><td>ę</td><td>&nbsp;</td><td>LATIN SMALL LETTER E WITH OGONEK</td>
+<tr align="left" valign="top"><td>e,</td><td>e</td><td>0119</td><td>ę</td><td>&amp;#x0119;</td><td>LATIN SMALL LETTER E WITH OGONEK</td>
 </tr>
-<tr align="left" valign="top"><td>Ev</td><td>E</td><td>011A</td><td>Ě</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER E WITH CARON</td>
+<tr align="left" valign="top"><td>Ev</td><td>E</td><td>011A</td><td>Ě</td><td>&amp;#x011A;</td><td>LATIN CAPITAL LETTER E WITH CARON</td>
 </tr>
-<tr align="left" valign="top"><td>ev</td><td>e</td><td>011B</td><td>ě</td><td>&nbsp;</td><td>LATIN SMALL LETTER E WITH CARON</td>
+<tr align="left" valign="top"><td>ev</td><td>e</td><td>011B</td><td>ě</td><td>&amp;#x011B;</td><td>LATIN SMALL LETTER E WITH CARON</td>
 </tr>
-<tr align="left" valign="top"><td>G^</td><td>G</td><td>011C</td><td>Ĝ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER G WITH CIRCUMFLEX</td>
+<tr align="left" valign="top"><td>G^</td><td>G</td><td>011C</td><td>Ĝ</td><td>&amp;#x011C;</td><td>LATIN CAPITAL LETTER G WITH CIRCUMFLEX</td>
 </tr>
-<tr align="left" valign="top"><td>g^</td><td>g</td><td>011D</td><td>ĝ</td><td>&nbsp;</td><td>LATIN SMALL LETTER G WITH CIRCUMFLEX</td>
+<tr align="left" valign="top"><td>g^</td><td>g</td><td>011D</td><td>ĝ</td><td>&amp;#x011D;</td><td>LATIN SMALL LETTER G WITH CIRCUMFLEX</td>
 </tr>
-<tr align="left" valign="top"><td>Gu</td><td>G</td><td>011E</td><td>Ğ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER G WITH BREVE</td>
+<tr align="left" valign="top"><td>Gu</td><td>G</td><td>011E</td><td>Ğ</td><td>&amp;#x011E;</td><td>LATIN CAPITAL LETTER G WITH BREVE</td>
 </tr>
-<tr align="left" valign="top"><td>gu</td><td>g</td><td>011F</td><td>ğ</td><td>&nbsp;</td><td>LATIN SMALL LETTER G WITH BREVE</td>
+<tr align="left" valign="top"><td>gu</td><td>g</td><td>011F</td><td>ğ</td><td>&amp;#x011F;</td><td>LATIN SMALL LETTER G WITH BREVE</td>
 </tr>
-<tr align="left" valign="top"><td>G,</td><td>G</td><td>0122</td><td>Ģ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER G WITH CEDILLA</td>
+<tr align="left" valign="top"><td>G,</td><td>G</td><td>0122</td><td>Ģ</td><td>&amp;#x0122;</td><td>LATIN CAPITAL LETTER G WITH CEDILLA</td>
 </tr>
-<tr align="left" valign="top"><td>g,</td><td>g</td><td>0123</td><td>ģ</td><td>&nbsp;</td><td>LATIN SMALL LETTER G WITH CEDILLA</td>
+<tr align="left" valign="top"><td>g,</td><td>g</td><td>0123</td><td>ģ</td><td>&amp;#x0123;</td><td>LATIN SMALL LETTER G WITH CEDILLA</td>
 </tr>
-<tr align="left" valign="top"><td>H^</td><td>H</td><td>0124</td><td>Ĥ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER H WITH CIRCUMFLEX</td>
+<tr align="left" valign="top"><td>H^</td><td>H</td><td>0124</td><td>Ĥ</td><td>&amp;#x0124;</td><td>LATIN CAPITAL LETTER H WITH CIRCUMFLEX</td>
 </tr>
-<tr align="left" valign="top"><td>h^</td><td>h</td><td>0125</td><td>ĥ</td><td>&nbsp;</td><td>LATIN SMALL LETTER H WITH CIRCUMFLEX</td>
+<tr align="left" valign="top"><td>h^</td><td>h</td><td>0125</td><td>ĥ</td><td>&amp;#x0125;</td><td>LATIN SMALL LETTER H WITH CIRCUMFLEX</td>
 </tr>
-<tr align="left" valign="top"><td>H/</td><td>H</td><td>0126</td><td>Ħ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER H WITH STROKE</td>
+<tr align="left" valign="top"><td>H/</td><td>H</td><td>0126</td><td>Ħ</td><td>&amp;#x0126;</td><td>LATIN CAPITAL LETTER H WITH STROKE</td>
 </tr>
-<tr align="left" valign="top"><td>h/</td><td>h</td><td>0127</td><td>ħ</td><td>&nbsp;</td><td>LATIN SMALL LETTER H WITH STROKE</td>
+<tr align="left" valign="top"><td>h/</td><td>h</td><td>0127</td><td>ħ</td><td>&amp;#x0127;</td><td>LATIN SMALL LETTER H WITH STROKE</td>
 </tr>
-<tr align="left" valign="top"><td>I~</td><td>I</td><td>0128</td><td>Ĩ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER I WITH TILDE</td>
+<tr align="left" valign="top"><td>I~</td><td>I</td><td>0128</td><td>Ĩ</td><td>&amp;#x0128;</td><td>LATIN CAPITAL LETTER I WITH TILDE</td>
 </tr>
-<tr align="left" valign="top"><td>i~</td><td>i</td><td>0129</td><td>ĩ</td><td>&nbsp;</td><td>LATIN SMALL LETTER I WITH TILDE</td>
+<tr align="left" valign="top"><td>i~</td><td>i</td><td>0129</td><td>ĩ</td><td>&amp;#x0129;</td><td>LATIN SMALL LETTER I WITH TILDE</td>
 </tr>
-<tr align="left" valign="top"><td>I-</td><td>I</td><td>012A</td><td>Ī</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER I WITH MACRON</td>
+<tr align="left" valign="top"><td>I-</td><td>I</td><td>012A</td><td>Ī</td><td>&amp;#x012A;</td><td>LATIN CAPITAL LETTER I WITH MACRON</td>
 </tr>
-<tr align="left" valign="top"><td>i-</td><td>i</td><td>012B</td><td>ī</td><td>&nbsp;</td><td>LATIN SMALL LETTER I WITH MACRON</td>
+<tr align="left" valign="top"><td>i-</td><td>i</td><td>012B</td><td>ī</td><td>&amp;#x012B;</td><td>LATIN SMALL LETTER I WITH MACRON</td>
 </tr>
-<tr align="left" valign="top"><td>Iu</td><td>I</td><td>012C</td><td>Ĭ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER I WITH BREVE</td>
+<tr align="left" valign="top"><td>Iu</td><td>I</td><td>012C</td><td>Ĭ</td><td>&amp;#x012C;</td><td>LATIN CAPITAL LETTER I WITH BREVE</td>
 </tr>
-<tr align="left" valign="top"><td>iu</td><td>i</td><td>012D</td><td>ĭ</td><td>&nbsp;</td><td>LATIN SMALL LETTER I WITH BREVE</td>
+<tr align="left" valign="top"><td>iu</td><td>i</td><td>012D</td><td>ĭ</td><td>&amp;#x012D;</td><td>LATIN SMALL LETTER I WITH BREVE</td>
 </tr>
-<tr align="left" valign="top"><td>I,</td><td>I</td><td>012E</td><td>Į</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER I WITH OGONEK</td>
+<tr align="left" valign="top"><td>I,</td><td>I</td><td>012E</td><td>Į</td><td>&amp;#x012E;</td><td>LATIN CAPITAL LETTER I WITH OGONEK</td>
 </tr>
-<tr align="left" valign="top"><td>i,</td><td>i</td><td>012F</td><td>į</td><td>&nbsp;</td><td>LATIN SMALL LETTER I WITH OGONEK</td>
+<tr align="left" valign="top"><td>i,</td><td>i</td><td>012F</td><td>į</td><td>&amp;#x012F;</td><td>LATIN SMALL LETTER I WITH OGONEK</td>
 </tr>
-<tr align="left" valign="top"><td>.I</td><td>I</td><td>0130</td><td>İ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER I WITH DOT ABOVE</td>
+<tr align="left" valign="top"><td>.I</td><td>I</td><td>0130</td><td>İ</td><td>&amp;#x0130;</td><td>LATIN CAPITAL LETTER I WITH DOT ABOVE</td>
 </tr>
-<tr align="left" valign="top"><td>i</td><td>i</td><td>0131</td><td>ı</td><td>&nbsp;</td><td>LATIN SMALL LETTER DOTLESS I</td>
+<tr align="left" valign="top"><td>i</td><td>i</td><td>0131</td><td>ı</td><td>&amp;#x0131;</td><td>LATIN SMALL LETTER DOTLESS I</td>
 </tr>
-<tr align="left" valign="top"><td>IJ</td><td>IJ</td><td>0132</td><td>Ĳ</td><td>&nbsp;</td><td>LATIN CAPITAL LIGATURE IJ</td>
+<tr align="left" valign="top"><td>IJ</td><td>IJ</td><td>0132</td><td>Ĳ</td><td>&amp;#x0132;</td><td>LATIN CAPITAL LIGATURE IJ</td>
 </tr>
-<tr align="left" valign="top"><td>ij</td><td>ij</td><td>0133</td><td>ĳ</td><td>&nbsp;</td><td>LATIN SMALL LIGATURE IJ</td>
+<tr align="left" valign="top"><td>ij</td><td>ij</td><td>0133</td><td>ĳ</td><td>&amp;#x0133;</td><td>LATIN SMALL LIGATURE IJ</td>
 </tr>
-<tr align="left" valign="top"><td>J^</td><td>J</td><td>0134</td><td>Ĵ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER J WITH CIRCUMFLEX</td>
+<tr align="left" valign="top"><td>J^</td><td>J</td><td>0134</td><td>Ĵ</td><td>&amp;#x0134;</td><td>LATIN CAPITAL LETTER J WITH CIRCUMFLEX</td>
 </tr>
-<tr align="left" valign="top"><td>j^</td><td>j</td><td>0135</td><td>ĵ</td><td>&nbsp;</td><td>LATIN SMALL LETTER J WITH CIRCUMFLEX</td>
+<tr align="left" valign="top"><td>j^</td><td>j</td><td>0135</td><td>ĵ</td><td>&amp;#x0135;</td><td>LATIN SMALL LETTER J WITH CIRCUMFLEX</td>
 </tr>
-<tr align="left" valign="top"><td>K,</td><td>K</td><td>0136</td><td>Ķ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER K WITH CEDILLA</td>
+<tr align="left" valign="top"><td>K,</td><td>K</td><td>0136</td><td>Ķ</td><td>&amp;#x0136;</td><td>LATIN CAPITAL LETTER K WITH CEDILLA</td>
 </tr>
-<tr align="left" valign="top"><td>k,</td><td>k</td><td>0137</td><td>ķ</td><td>&nbsp;</td><td>LATIN SMALL LETTER K WITH CEDILLA</td>
+<tr align="left" valign="top"><td>k,</td><td>k</td><td>0137</td><td>ķ</td><td>&amp;#x0137;</td><td>LATIN SMALL LETTER K WITH CEDILLA</td>
 </tr>
-<tr align="left" valign="top"><td>L'</td><td>L</td><td>0139</td><td>Ĺ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER L WITH ACUTE</td>
+<tr align="left" valign="top"><td>L'</td><td>L</td><td>0139</td><td>Ĺ</td><td>&amp;#x0139;</td><td>LATIN CAPITAL LETTER L WITH ACUTE</td>
 </tr>
-<tr align="left" valign="top"><td>l'</td><td>l</td><td>013A</td><td>ĺ</td><td>&nbsp;</td><td>LATIN SMALL LETTER L WITH ACUTE</td>
+<tr align="left" valign="top"><td>l'</td><td>l</td><td>013A</td><td>ĺ</td><td>&amp;#x013A;</td><td>LATIN SMALL LETTER L WITH ACUTE</td>
 </tr>
-<tr align="left" valign="top"><td>L,</td><td>L</td><td>013B</td><td>Ļ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER L WITH CEDILLA</td>
+<tr align="left" valign="top"><td>L,</td><td>L</td><td>013B</td><td>Ļ</td><td>&amp;#x013B;</td><td>LATIN CAPITAL LETTER L WITH CEDILLA</td>
 </tr>
-<tr align="left" valign="top"><td>l,</td><td>l</td><td>013C</td><td>ļ</td><td>&nbsp;</td><td>LATIN SMALL LETTER L WITH CEDILLA</td>
+<tr align="left" valign="top"><td>l,</td><td>l</td><td>013C</td><td>ļ</td><td>&amp;#x013C;</td><td>LATIN SMALL LETTER L WITH CEDILLA</td>
 </tr>
-<tr align="left" valign="top"><td>Lv</td><td>L</td><td>013D</td><td>Ľ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER L WITH CARON</td>
+<tr align="left" valign="top"><td>Lv</td><td>L</td><td>013D</td><td>Ľ</td><td>&amp;#x013D;</td><td>LATIN CAPITAL LETTER L WITH CARON</td>
 </tr>
-<tr align="left" valign="top"><td>lv</td><td>l</td><td>013E</td><td>ľ</td><td>&nbsp;</td><td>LATIN SMALL LETTER L WITH CARON</td>
+<tr align="left" valign="top"><td>lv</td><td>l</td><td>013E</td><td>ľ</td><td>&amp;#x013E;</td><td>LATIN SMALL LETTER L WITH CARON</td>
 </tr>
-<tr align="left" valign="top"><td>L/</td><td>L</td><td>0141</td><td>Ł</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER L WITH STROKE</td>
+<tr align="left" valign="top"><td>L/</td><td>L</td><td>0141</td><td>Ł</td><td>&amp;#x0141;</td><td>LATIN CAPITAL LETTER L WITH STROKE</td>
 </tr>
-<tr align="left" valign="top"><td>l/</td><td>l</td><td>0142</td><td>ł</td><td>&nbsp;</td><td>LATIN SMALL LETTER L WITH STROKE</td>
+<tr align="left" valign="top"><td>l/</td><td>l</td><td>0142</td><td>ł</td><td>&amp;#x0142;</td><td>LATIN SMALL LETTER L WITH STROKE</td>
 </tr>
-<tr align="left" valign="top"><td>N'</td><td>N</td><td>0143</td><td>Ń</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER N WITH ACUTE</td>
+<tr align="left" valign="top"><td>N'</td><td>N</td><td>0143</td><td>Ń</td><td>&amp;#x0143;</td><td>LATIN CAPITAL LETTER N WITH ACUTE</td>
 </tr>
-<tr align="left" valign="top"><td>n'</td><td>n</td><td>0144</td><td>ń</td><td>&nbsp;</td><td>LATIN SMALL LETTER N WITH ACUTE</td>
+<tr align="left" valign="top"><td>n'</td><td>n</td><td>0144</td><td>ń</td><td>&amp;#x0144;</td><td>LATIN SMALL LETTER N WITH ACUTE</td>
 </tr>
-<tr align="left" valign="top"><td>N,</td><td>N</td><td>0145</td><td>Ņ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER N WITH CEDILLA</td>
+<tr align="left" valign="top"><td>N,</td><td>N</td><td>0145</td><td>Ņ</td><td>&amp;#x0145;</td><td>LATIN CAPITAL LETTER N WITH CEDILLA</td>
 </tr>
-<tr align="left" valign="top"><td>n,</td><td>n</td><td>0146</td><td>ņ</td><td>&nbsp;</td><td>LATIN SMALL LETTER N WITH CEDILLA</td>
+<tr align="left" valign="top"><td>n,</td><td>n</td><td>0146</td><td>ņ</td><td>&amp;#x0146;</td><td>LATIN SMALL LETTER N WITH CEDILLA</td>
 </tr>
-<tr align="left" valign="top"><td>Nv</td><td>N</td><td>0147</td><td>Ň</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER N WITH CARON</td>
+<tr align="left" valign="top"><td>Nv</td><td>N</td><td>0147</td><td>Ň</td><td>&amp;#x0147;</td><td>LATIN CAPITAL LETTER N WITH CARON</td>
 </tr>
-<tr align="left" valign="top"><td>nv</td><td>n</td><td>0148</td><td>ň</td><td>&nbsp;</td><td>LATIN SMALL LETTER N WITH CARON</td>
+<tr align="left" valign="top"><td>nv</td><td>n</td><td>0148</td><td>ň</td><td>&amp;#x0148;</td><td>LATIN SMALL LETTER N WITH CARON</td>
 </tr>
-<tr align="left" valign="top"><td>Ng</td><td>Ng</td><td>014A</td><td>Ŋ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER ENG</td>
+<tr align="left" valign="top"><td>Ng</td><td>Ng</td><td>014A</td><td>Ŋ</td><td>&amp;#x014A;</td><td>LATIN CAPITAL LETTER ENG</td>
 </tr>
-<tr align="left" valign="top"><td>ng</td><td>ng</td><td>014B</td><td>ŋ</td><td>&nbsp;</td><td>LATIN SMALL LETTER ENG</td>
+<tr align="left" valign="top"><td>ng</td><td>ng</td><td>014B</td><td>ŋ</td><td>&amp;#x014B;</td><td>LATIN SMALL LETTER ENG</td>
 </tr>
-<tr align="left" valign="top"><td>O-</td><td>O</td><td>014C</td><td>Ō</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER O WITH MACRON</td>
+<tr align="left" valign="top"><td>O-</td><td>O</td><td>014C</td><td>Ō</td><td>&amp;#x014C;</td><td>LATIN CAPITAL LETTER O WITH MACRON</td>
 </tr>
-<tr align="left" valign="top"><td>o-</td><td>o</td><td>014D</td><td>ō</td><td>&nbsp;</td><td>LATIN SMALL LETTER O WITH MACRON</td>
+<tr align="left" valign="top"><td>o-</td><td>o</td><td>014D</td><td>ō</td><td>&amp;#x014D;</td><td>LATIN SMALL LETTER O WITH MACRON</td>
 </tr>
-<tr align="left" valign="top"><td>Ou</td><td>O</td><td>014E</td><td>Ŏ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER O WITH BREVE</td>
+<tr align="left" valign="top"><td>Ou</td><td>O</td><td>014E</td><td>Ŏ</td><td>&amp;#x014E;</td><td>LATIN CAPITAL LETTER O WITH BREVE</td>
 </tr>
-<tr align="left" valign="top"><td>ou</td><td>o</td><td>014F</td><td>ŏ</td><td>&nbsp;</td><td>LATIN SMALL LETTER O WITH BREVE</td>
+<tr align="left" valign="top"><td>ou</td><td>o</td><td>014F</td><td>ŏ</td><td>&amp;#x014F;</td><td>LATIN SMALL LETTER O WITH BREVE</td>
 </tr>
-<tr align="left" valign="top"><td>O"</td><td>O</td><td>0150</td><td>Ő</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER O WITH DOUBLE ACUTE</td>
+<tr align="left" valign="top"><td>O"</td><td>O</td><td>0150</td><td>Ő</td><td>&amp;#x0150;</td><td>LATIN CAPITAL LETTER O WITH DOUBLE ACUTE</td>
 </tr>
-<tr align="left" valign="top"><td>o"</td><td>o</td><td>0151</td><td>ő</td><td>&nbsp;</td><td>LATIN SMALL LETTER O WITH DOUBLE ACUTE</td>
+<tr align="left" valign="top"><td>o"</td><td>o</td><td>0151</td><td>ő</td><td>&amp;#x0151;</td><td>LATIN SMALL LETTER O WITH DOUBLE ACUTE</td>
 </tr>
 <tr align="left" valign="top"><td>OE</td><td>OE</td><td>0152</td><td>Œ</td><td>&amp;OElig</td><td>LATIN CAPITAL LIGATURE OE</td>
 </tr>
 <tr align="left" valign="top"><td>oe</td><td>oe</td><td>0153</td><td>œ</td><td>&amp;oelig</td><td>LATIN SMALL LIGATURE OE</td>
 </tr>
-<tr align="left" valign="top"><td>R'</td><td>R</td><td>0154</td><td>Ŕ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER R WITH ACUTE</td>
+<tr align="left" valign="top"><td>R'</td><td>R</td><td>0154</td><td>Ŕ</td><td>&amp;#x0154;</td><td>LATIN CAPITAL LETTER R WITH ACUTE</td>
 </tr>
-<tr align="left" valign="top"><td>r'</td><td>r</td><td>0155</td><td>ŕ</td><td>&nbsp;</td><td>LATIN SMALL LETTER R WITH ACUTE</td>
+<tr align="left" valign="top"><td>r'</td><td>r</td><td>0155</td><td>ŕ</td><td>&amp;#x0155;</td><td>LATIN SMALL LETTER R WITH ACUTE</td>
 </tr>
-<tr align="left" valign="top"><td>R,</td><td>R</td><td>0156</td><td>Ŗ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER R WITH CEDILLA</td>
+<tr align="left" valign="top"><td>R,</td><td>R</td><td>0156</td><td>Ŗ</td><td>&amp;#x0156;</td><td>LATIN CAPITAL LETTER R WITH CEDILLA</td>
 </tr>
-<tr align="left" valign="top"><td>r,</td><td>r</td><td>0157</td><td>ŗ</td><td>&nbsp;</td><td>LATIN SMALL LETTER R WITH CEDILLA</td>
+<tr align="left" valign="top"><td>r,</td><td>r</td><td>0157</td><td>ŗ</td><td>&amp;#x0157;</td><td>LATIN SMALL LETTER R WITH CEDILLA</td>
 </tr>
-<tr align="left" valign="top"><td>Rv</td><td>R</td><td>0158</td><td>Ř</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER R WITH CARON</td>
+<tr align="left" valign="top"><td>Rv</td><td>R</td><td>0158</td><td>Ř</td><td>&amp;#x0158;</td><td>LATIN CAPITAL LETTER R WITH CARON</td>
 </tr>
-<tr align="left" valign="top"><td>rv</td><td>r</td><td>0159</td><td>ř</td><td>&nbsp;</td><td>LATIN SMALL LETTER R WITH CARON</td>
+<tr align="left" valign="top"><td>rv</td><td>r</td><td>0159</td><td>ř</td><td>&amp;#x0159;</td><td>LATIN SMALL LETTER R WITH CARON</td>
 </tr>
-<tr align="left" valign="top"><td>S'</td><td>S</td><td>015A</td><td>Ś</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER S WITH ACUTE</td>
+<tr align="left" valign="top"><td>S'</td><td>S</td><td>015A</td><td>Ś</td><td>&amp;#x015A;</td><td>LATIN CAPITAL LETTER S WITH ACUTE</td>
 </tr>
-<tr align="left" valign="top"><td>s'</td><td>s</td><td>015B</td><td>ś</td><td>&nbsp;</td><td>LATIN SMALL LETTER S WITH ACUTE</td>
+<tr align="left" valign="top"><td>s'</td><td>s</td><td>015B</td><td>ś</td><td>&amp;#x015B;</td><td>LATIN SMALL LETTER S WITH ACUTE</td>
 </tr>
-<tr align="left" valign="top"><td>S^</td><td>S</td><td>015C</td><td>Ŝ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER S WITH CIRCUMFLEX</td>
+<tr align="left" valign="top"><td>S^</td><td>S</td><td>015C</td><td>Ŝ</td><td>&amp;#x015C;</td><td>LATIN CAPITAL LETTER S WITH CIRCUMFLEX</td>
 </tr>
-<tr align="left" valign="top"><td>s^</td><td>s</td><td>015D</td><td>ŝ</td><td>&nbsp;</td><td>LATIN SMALL LETTER S WITH CIRCUMFLEX</td>
+<tr align="left" valign="top"><td>s^</td><td>s</td><td>015D</td><td>ŝ</td><td>&amp;#x015D;</td><td>LATIN SMALL LETTER S WITH CIRCUMFLEX</td>
 </tr>
-<tr align="left" valign="top"><td>S,</td><td>S</td><td>015E</td><td>Ş</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER S WITH CEDILLA</td>
+<tr align="left" valign="top"><td>S,</td><td>S</td><td>015E</td><td>Ş</td><td>&amp;#x015E;</td><td>LATIN CAPITAL LETTER S WITH CEDILLA</td>
 </tr>
-<tr align="left" valign="top"><td>s,</td><td>s</td><td>015F</td><td>ş</td><td>&nbsp;</td><td>LATIN SMALL LETTER S WITH CEDILLA</td>
+<tr align="left" valign="top"><td>s,</td><td>s</td><td>015F</td><td>ş</td><td>&amp;#x015F;</td><td>LATIN SMALL LETTER S WITH CEDILLA</td>
 </tr>
 <tr align="left" valign="top"><td>Sv</td><td>S</td><td>0160</td><td>Š</td><td>&amp;Scaron</td><td>LATIN CAPITAL LETTER S WITH CARON</td>
 </tr>
 <tr align="left" valign="top"><td>sv</td><td>s</td><td>0161</td><td>š</td><td>&amp;scaron</td><td>LATIN SMALL LETTER S WITH CARON</td>
 </tr>
-<tr align="left" valign="top"><td>T,</td><td>T</td><td>0162</td><td>Ţ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER T WITH CEDILLA</td>
+<tr align="left" valign="top"><td>T,</td><td>T</td><td>0162</td><td>Ţ</td><td>&amp;#x0162;</td><td>LATIN CAPITAL LETTER T WITH CEDILLA</td>
 </tr>
-<tr align="left" valign="top"><td>t,</td><td>t</td><td>0163</td><td>ţ</td><td>&nbsp;</td><td>LATIN SMALL LETTER T WITH CEDILLA</td>
+<tr align="left" valign="top"><td>t,</td><td>t</td><td>0163</td><td>ţ</td><td>&amp;#x0163;</td><td>LATIN SMALL LETTER T WITH CEDILLA</td>
 </tr>
-<tr align="left" valign="top"><td>Tv</td><td>T</td><td>0164</td><td>Ť</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER T WITH CARON</td>
+<tr align="left" valign="top"><td>Tv</td><td>T</td><td>0164</td><td>Ť</td><td>&amp;#x0164;</td><td>LATIN CAPITAL LETTER T WITH CARON</td>
 </tr>
-<tr align="left" valign="top"><td>tv</td><td>t</td><td>0165</td><td>ť</td><td>&nbsp;</td><td>LATIN SMALL LETTER T WITH CARON</td>
+<tr align="left" valign="top"><td>tv</td><td>t</td><td>0165</td><td>ť</td><td>&amp;#x0165;</td><td>LATIN SMALL LETTER T WITH CARON</td>
 </tr>
-<tr align="left" valign="top"><td>T/</td><td>T</td><td>0166</td><td>Ŧ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER T WITH STROKE</td>
+<tr align="left" valign="top"><td>T/</td><td>T</td><td>0166</td><td>Ŧ</td><td>&amp;#x0166;</td><td>LATIN CAPITAL LETTER T WITH STROKE</td>
 </tr>
-<tr align="left" valign="top"><td>t/</td><td>t</td><td>0167</td><td>ŧ</td><td>&nbsp;</td><td>LATIN SMALL LETTER T WITH STROKE</td>
+<tr align="left" valign="top"><td>t/</td><td>t</td><td>0167</td><td>ŧ</td><td>&amp;#x0167;</td><td>LATIN SMALL LETTER T WITH STROKE</td>
 </tr>
-<tr align="left" valign="top"><td>U~</td><td>U</td><td>0168</td><td>Ũ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER U WITH TILDE</td>
+<tr align="left" valign="top"><td>U~</td><td>U</td><td>0168</td><td>Ũ</td><td>&amp;#x0168;</td><td>LATIN CAPITAL LETTER U WITH TILDE</td>
 </tr>
-<tr align="left" valign="top"><td>u~</td><td>u</td><td>0169</td><td>ũ</td><td>&nbsp;</td><td>LATIN SMALL LETTER U WITH TILDE</td>
+<tr align="left" valign="top"><td>u~</td><td>u</td><td>0169</td><td>ũ</td><td>&amp;#x0169;</td><td>LATIN SMALL LETTER U WITH TILDE</td>
 </tr>
-<tr align="left" valign="top"><td>U-</td><td>U</td><td>016A</td><td>Ū</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER U WITH MACRON</td>
+<tr align="left" valign="top"><td>U-</td><td>U</td><td>016A</td><td>Ū</td><td>&amp;#x016A;</td><td>LATIN CAPITAL LETTER U WITH MACRON</td>
 </tr>
-<tr align="left" valign="top"><td>u-</td><td>u</td><td>016B</td><td>ū</td><td>&nbsp;</td><td>LATIN SMALL LETTER U WITH MACRON</td>
+<tr align="left" valign="top"><td>u-</td><td>u</td><td>016B</td><td>ū</td><td>&amp;#x016B;</td><td>LATIN SMALL LETTER U WITH MACRON</td>
 </tr>
-<tr align="left" valign="top"><td>Uu</td><td>U</td><td>016C</td><td>Ŭ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER U WITH BREVE</td>
+<tr align="left" valign="top"><td>Uu</td><td>U</td><td>016C</td><td>Ŭ</td><td>&amp;#x016C;</td><td>LATIN CAPITAL LETTER U WITH BREVE</td>
 </tr>
-<tr align="left" valign="top"><td>uu</td><td>u</td><td>016D</td><td>ŭ</td><td>&nbsp;</td><td>LATIN SMALL LETTER U WITH BREVE</td>
+<tr align="left" valign="top"><td>uu</td><td>u</td><td>016D</td><td>ŭ</td><td>&amp;#x016D;</td><td>LATIN SMALL LETTER U WITH BREVE</td>
 </tr>
-<tr align="left" valign="top"><td>Uo</td><td>U</td><td>016E</td><td>Ů</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER U WITH RING ABOVE</td>
+<tr align="left" valign="top"><td>Uo</td><td>U</td><td>016E</td><td>Ů</td><td>&amp;#x016E;</td><td>LATIN CAPITAL LETTER U WITH RING ABOVE</td>
 </tr>
-<tr align="left" valign="top"><td>uo</td><td>u</td><td>016F</td><td>ů</td><td>&nbsp;</td><td>LATIN SMALL LETTER U WITH RING ABOVE</td>
+<tr align="left" valign="top"><td>uo</td><td>u</td><td>016F</td><td>ů</td><td>&amp;#x016F;</td><td>LATIN SMALL LETTER U WITH RING ABOVE</td>
 </tr>
-<tr align="left" valign="top"><td>U"</td><td>U</td><td>0170</td><td>Ű</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER U WITH DOUBLE ACUTE</td>
+<tr align="left" valign="top"><td>U"</td><td>U</td><td>0170</td><td>Ű</td><td>&amp;#x0170;</td><td>LATIN CAPITAL LETTER U WITH DOUBLE ACUTE</td>
 </tr>
-<tr align="left" valign="top"><td>u"</td><td>u</td><td>0171</td><td>ű</td><td>&nbsp;</td><td>LATIN SMALL LETTER U WITH DOUBLE ACUTE</td>
+<tr align="left" valign="top"><td>u"</td><td>u</td><td>0171</td><td>ű</td><td>&amp;#x0171;</td><td>LATIN SMALL LETTER U WITH DOUBLE ACUTE</td>
 </tr>
-<tr align="left" valign="top"><td>U,</td><td>U</td><td>0172</td><td>Ų</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER U WITH OGONEK</td>
+<tr align="left" valign="top"><td>U,</td><td>U</td><td>0172</td><td>Ų</td><td>&amp;#x0172;</td><td>LATIN CAPITAL LETTER U WITH OGONEK</td>
 </tr>
-<tr align="left" valign="top"><td>u,</td><td>u</td><td>0173</td><td>ų</td><td>&nbsp;</td><td>LATIN SMALL LETTER U WITH OGONEK</td>
+<tr align="left" valign="top"><td>u,</td><td>u</td><td>0173</td><td>ų</td><td>&amp;#x0173;</td><td>LATIN SMALL LETTER U WITH OGONEK</td>
 </tr>
-<tr align="left" valign="top"><td>W^</td><td>W</td><td>0174</td><td>Ŵ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER W WITH CIRCUMFLEX</td>
+<tr align="left" valign="top"><td>W^</td><td>W</td><td>0174</td><td>Ŵ</td><td>&amp;#x0174;</td><td>LATIN CAPITAL LETTER W WITH CIRCUMFLEX</td>
 </tr>
-<tr align="left" valign="top"><td>w^</td><td>w</td><td>0175</td><td>ŵ</td><td>&nbsp;</td><td>LATIN SMALL LETTER W WITH CIRCUMFLEX</td>
+<tr align="left" valign="top"><td>w^</td><td>w</td><td>0175</td><td>ŵ</td><td>&amp;#x0175;</td><td>LATIN SMALL LETTER W WITH CIRCUMFLEX</td>
 </tr>
-<tr align="left" valign="top"><td>Y^</td><td>Y</td><td>0176</td><td>Ŷ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER Y WITH CIRCUMFLEX</td>
+<tr align="left" valign="top"><td>Y^</td><td>Y</td><td>0176</td><td>Ŷ</td><td>&amp;#x0176;</td><td>LATIN CAPITAL LETTER Y WITH CIRCUMFLEX</td>
 </tr>
-<tr align="left" valign="top"><td>y^</td><td>y</td><td>0177</td><td>ŷ</td><td>&nbsp;</td><td>LATIN SMALL LETTER Y WITH CIRCUMFLEX</td>
+<tr align="left" valign="top"><td>y^</td><td>y</td><td>0177</td><td>ŷ</td><td>&amp;#x0177;</td><td>LATIN SMALL LETTER Y WITH CIRCUMFLEX</td>
 </tr>
 <tr align="left" valign="top"><td>Y:</td><td>Y</td><td>0178</td><td>Ÿ</td><td>&amp;Yuml</td><td>LATIN CAPITAL LETTER Y WITH DIAERESIS</td>
 </tr>
-<tr align="left" valign="top"><td>Z'</td><td>Z</td><td>0179</td><td>Ź</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER Z WITH ACUTE</td>
+<tr align="left" valign="top"><td>Z'</td><td>Z</td><td>0179</td><td>Ź</td><td>&amp;#x0179;</td><td>LATIN CAPITAL LETTER Z WITH ACUTE</td>
 </tr>
-<tr align="left" valign="top"><td>z'</td><td>z</td><td>017A</td><td>ź</td><td>&nbsp;</td><td>LATIN SMALL LETTER Z WITH ACUTE</td>
+<tr align="left" valign="top"><td>z'</td><td>z</td><td>017A</td><td>ź</td><td>&amp;#x017A;</td><td>LATIN SMALL LETTER Z WITH ACUTE</td>
 </tr>
-<tr align="left" valign="top"><td>.Z</td><td>Z</td><td>017B</td><td>Ż</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER Z WITH DOT ABOVE</td>
+<tr align="left" valign="top"><td>.Z</td><td>Z</td><td>017B</td><td>Ż</td><td>&amp;#x017B;</td><td>LATIN CAPITAL LETTER Z WITH DOT ABOVE</td>
 </tr>
-<tr align="left" valign="top"><td>.z</td><td>z</td><td>017C</td><td>ż</td><td>&nbsp;</td><td>LATIN SMALL LETTER Z WITH DOT ABOVE</td>
+<tr align="left" valign="top"><td>.z</td><td>z</td><td>017C</td><td>ż</td><td>&amp;#x017C;</td><td>LATIN SMALL LETTER Z WITH DOT ABOVE</td>
 </tr>
-<tr align="left" valign="top"><td>Zv</td><td>Z</td><td>017D</td><td>Ž</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER Z WITH CARON</td>
+<tr align="left" valign="top"><td>Zv</td><td>Z</td><td>017D</td><td>Ž</td><td>&amp;#x017D;</td><td>LATIN CAPITAL LETTER Z WITH CARON</td>
 </tr>
 <tr align="left" valign="top"><td>zv</td><td>z</td><td>017E</td><td>ž</td><td>&amp;zcaron</td><td>LATIN SMALL LETTER Z WITH CARON</td>
 </tr>
-<tr align="left" valign="top"><td>b/</td><td>b</td><td>0180</td><td>ƀ</td><td>&nbsp;</td><td>LATIN SMALL LETTER B WITH STROKE</td>
+<tr align="left" valign="top"><td>b/</td><td>b</td><td>0180</td><td>ƀ</td><td>&amp;#x0180;</td><td>LATIN SMALL LETTER B WITH STROKE</td>
 </tr>
-<tr align="left" valign="top"><td>B-</td><td>Bh</td><td>0182</td><td>Ƃ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER B WITH TOPBAR</td>
+<tr align="left" valign="top"><td>B-</td><td>Bh</td><td>0182</td><td>Ƃ</td><td>&amp;#x0182;</td><td>LATIN CAPITAL LETTER B WITH TOPBAR</td>
 </tr>
-<tr align="left" valign="top"><td>b-</td><td>bh</td><td>0183</td><td>ƃ</td><td>&nbsp;</td><td>LATIN SMALL LETTER B WITH TOPBAR</td>
+<tr align="left" valign="top"><td>b-</td><td>bh</td><td>0183</td><td>ƃ</td><td>&amp;#x0183;</td><td>LATIN SMALL LETTER B WITH TOPBAR</td>
 </tr>
-<tr align="left" valign="top"><td>D-</td><td>Dh</td><td>018B</td><td>Ƌ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER D WITH TOPBAR</td>
+<tr align="left" valign="top"><td>D-</td><td>Dh</td><td>018B</td><td>Ƌ</td><td>&amp;#x018B;</td><td>LATIN CAPITAL LETTER D WITH TOPBAR</td>
 </tr>
-<tr align="left" valign="top"><td>d-</td><td>dh</td><td>018C</td><td>ƌ</td><td>&nbsp;</td><td>LATIN SMALL LETTER D WITH TOPBAR</td>
+<tr align="left" valign="top"><td>d-</td><td>dh</td><td>018C</td><td>ƌ</td><td>&amp;#x018C;</td><td>LATIN SMALL LETTER D WITH TOPBAR</td>
 </tr>
-<tr align="left" valign="top"><td>I/</td><td>I</td><td>0197</td><td>Ɨ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER I WITH STROKE</td>
+<tr align="left" valign="top"><td>I/</td><td>I</td><td>0197</td><td>Ɨ</td><td>&amp;#x0197;</td><td>LATIN CAPITAL LETTER I WITH STROKE</td>
 </tr>
-<tr align="left" valign="top"><td>Z/</td><td>Z</td><td>01B5</td><td>Ƶ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER Z WITH STROKE</td>
+<tr align="left" valign="top"><td>Z/</td><td>Z</td><td>01B5</td><td>Ƶ</td><td>&amp;#x01B5;</td><td>LATIN CAPITAL LETTER Z WITH STROKE</td>
 </tr>
-<tr align="left" valign="top"><td>z/</td><td>z</td><td>01B6</td><td>ƶ</td><td>&nbsp;</td><td>LATIN SMALL LETTER Z WITH STROKE</td>
+<tr align="left" valign="top"><td>z/</td><td>z</td><td>01B6</td><td>ƶ</td><td>&amp;#x01B6;</td><td>LATIN SMALL LETTER Z WITH STROKE</td>
 </tr>
-<tr align="left" valign="top"><td>Zh</td><td>Zh</td><td>01B7</td><td>Ʒ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER EZH</td>
+<tr align="left" valign="top"><td>Zh</td><td>Zh</td><td>01B7</td><td>Ʒ</td><td>&amp;#x01B7;</td><td>LATIN CAPITAL LETTER EZH</td>
 </tr>
-<tr align="left" valign="top"><td>Av</td><td>A</td><td>01CD</td><td>Ǎ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER A WITH CARON</td>
+<tr align="left" valign="top"><td>W</td><td>W</td><td>01F7</td><td>Ƿ</td><td>&amp;#x01F7;</td><td>LATIN CAPITAL LETTER WYNN</td>
 </tr>
-<tr align="left" valign="top"><td>av</td><td>a</td><td>01CE</td><td>ǎ</td><td>&nbsp;</td><td>LATIN SMALL LETTER A WITH CARON</td>
+<tr align="left" valign="top"><td>w</td><td>w</td><td>01BF</td><td>ƿ</td><td>&amp;#x01BF;</td><td>LATIN LETTER WYNN</td>
 </tr>
-<tr align="left" valign="top"><td>Iv</td><td>I</td><td>01CF</td><td>Ǐ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER I WITH CARON</td>
+<tr align="left" valign="top"><td>Av</td><td>A</td><td>01CD</td><td>Ǎ</td><td>&amp;#x01CD;</td><td>LATIN CAPITAL LETTER A WITH CARON</td>
 </tr>
-<tr align="left" valign="top"><td>iv</td><td>i</td><td>01D0</td><td>ǐ</td><td>&nbsp;</td><td>LATIN SMALL LETTER I WITH CARON</td>
+<tr align="left" valign="top"><td>av</td><td>a</td><td>01CE</td><td>ǎ</td><td>&amp;#x01CE;</td><td>LATIN SMALL LETTER A WITH CARON</td>
 </tr>
-<tr align="left" valign="top"><td>Ov</td><td>O</td><td>01D1</td><td>Ǒ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER O WITH CARON</td>
+<tr align="left" valign="top"><td>Iv</td><td>I</td><td>01CF</td><td>Ǐ</td><td>&amp;#x01CF;</td><td>LATIN CAPITAL LETTER I WITH CARON</td>
 </tr>
-<tr align="left" valign="top"><td>ov</td><td>o</td><td>01D2</td><td>ǒ</td><td>&nbsp;</td><td>LATIN SMALL LETTER O WITH CARON</td>
+<tr align="left" valign="top"><td>iv</td><td>i</td><td>01D0</td><td>ǐ</td><td>&amp;#x01D0;</td><td>LATIN SMALL LETTER I WITH CARON</td>
 </tr>
-<tr align="left" valign="top"><td>Uv</td><td>U</td><td>01D3</td><td>Ǔ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER U WITH CARON</td>
+<tr align="left" valign="top"><td>Ov</td><td>O</td><td>01D1</td><td>Ǒ</td><td>&amp;#x01D1;</td><td>LATIN CAPITAL LETTER O WITH CARON</td>
 </tr>
-<tr align="left" valign="top"><td>uv</td><td>u</td><td>01D4</td><td>ǔ</td><td>&nbsp;</td><td>LATIN SMALL LETTER U WITH CARON</td>
+<tr align="left" valign="top"><td>ov</td><td>o</td><td>01D2</td><td>ǒ</td><td>&amp;#x01D2;</td><td>LATIN SMALL LETTER O WITH CARON</td>
 </tr>
-<tr align="left" valign="top"><td>G/</td><td>G</td><td>01E4</td><td>Ǥ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER G WITH STROKE</td>
+<tr align="left" valign="top"><td>Uv</td><td>U</td><td>01D3</td><td>Ǔ</td><td>&amp;#x01D3;</td><td>LATIN CAPITAL LETTER U WITH CARON</td>
 </tr>
-<tr align="left" valign="top"><td>g/</td><td>g</td><td>01E5</td><td>ǥ</td><td>&nbsp;</td><td>LATIN SMALL LETTER G WITH STROKE</td>
+<tr align="left" valign="top"><td>uv</td><td>u</td><td>01D4</td><td>ǔ</td><td>&amp;#x01D4;</td><td>LATIN SMALL LETTER U WITH CARON</td>
 </tr>
-<tr align="left" valign="top"><td>Gv</td><td>G</td><td>01E6</td><td>Ǧ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER G WITH CARON</td>
+<tr align="left" valign="top"><td>G/</td><td>G</td><td>01E4</td><td>Ǥ</td><td>&amp;#x01E4;</td><td>LATIN CAPITAL LETTER G WITH STROKE</td>
 </tr>
-<tr align="left" valign="top"><td>gv</td><td>g</td><td>01E7</td><td>ǧ</td><td>&nbsp;</td><td>LATIN SMALL LETTER G WITH CARON</td>
+<tr align="left" valign="top"><td>g/</td><td>g</td><td>01E5</td><td>ǥ</td><td>&amp;#x01E5;</td><td>LATIN SMALL LETTER G WITH STROKE</td>
 </tr>
-<tr align="left" valign="top"><td>Kv</td><td>K</td><td>01E8</td><td>Ǩ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER K WITH CARON</td>
+<tr align="left" valign="top"><td>Gv</td><td>G</td><td>01E6</td><td>Ǧ</td><td>&amp;#x01E6;</td><td>LATIN CAPITAL LETTER G WITH CARON</td>
 </tr>
-<tr align="left" valign="top"><td>kv</td><td>k</td><td>01E9</td><td>ǩ</td><td>&nbsp;</td><td>LATIN SMALL LETTER K WITH CARON</td>
+<tr align="left" valign="top"><td>gv</td><td>g</td><td>01E7</td><td>ǧ</td><td>&amp;#x01E7;</td><td>LATIN SMALL LETTER G WITH CARON</td>
 </tr>
-<tr align="left" valign="top"><td>O,</td><td>O</td><td>01EA</td><td>Ǫ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER O WITH OGONEK</td>
+<tr align="left" valign="top"><td>Kv</td><td>K</td><td>01E8</td><td>Ǩ</td><td>&amp;#x01E8;</td><td>LATIN CAPITAL LETTER K WITH CARON</td>
 </tr>
-<tr align="left" valign="top"><td>o,</td><td>o</td><td>01EB</td><td>ǫ</td><td>&nbsp;</td><td>LATIN SMALL LETTER O WITH OGONEK</td>
+<tr align="left" valign="top"><td>kv</td><td>k</td><td>01E9</td><td>ǩ</td><td>&amp;#x01E9;</td><td>LATIN SMALL LETTER K WITH CARON</td>
 </tr>
-<tr align="left" valign="top"><td>jv</td><td>j</td><td>01F0</td><td>ǰ</td><td>&nbsp;</td><td>LATIN SMALL LETTER J WITH CARON</td>
+<tr align="left" valign="top"><td>O,</td><td>O</td><td>01EA</td><td>Ǫ</td><td>&amp;#x01EA;</td><td>LATIN CAPITAL LETTER O WITH OGONEK</td>
 </tr>
-<tr align="left" valign="top"><td>G'</td><td>G</td><td>01F4</td><td>Ǵ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER G WITH ACUTE</td>
+<tr align="left" valign="top"><td>o,</td><td>o</td><td>01EB</td><td>ǫ</td><td>&amp;#x01EB;</td><td>LATIN SMALL LETTER O WITH OGONEK</td>
 </tr>
-<tr align="left" valign="top"><td>g'</td><td>g</td><td>01F5</td><td>ǵ</td><td>&nbsp;</td><td>LATIN SMALL LETTER G WITH ACUTE</td>
+<tr align="left" valign="top"><td>jv</td><td>j</td><td>01F0</td><td>ǰ</td><td>&amp;#x01F0;</td><td>LATIN SMALL LETTER J WITH CARON</td>
 </tr>
-<tr align="left" valign="top"><td>"A</td><td>A</td><td>0200</td><td>Ȁ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER A WITH DOUBLE GRAVE</td>
+<tr align="left" valign="top"><td>G'</td><td>G</td><td>01F4</td><td>Ǵ</td><td>&amp;#x01F4;</td><td>LATIN CAPITAL LETTER G WITH ACUTE</td>
 </tr>
-<tr align="left" valign="top"><td>"a</td><td>a</td><td>0201</td><td>ȁ</td><td>&nbsp;</td><td>LATIN SMALL LETTER A WITH DOUBLE GRAVE</td>
+<tr align="left" valign="top"><td>g'</td><td>g</td><td>01F5</td><td>ǵ</td><td>&amp;#x01F5;</td><td>LATIN SMALL LETTER G WITH ACUTE</td>
 </tr>
-<tr align="left" valign="top"><td>An</td><td>A</td><td>0202</td><td>Ȃ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER A WITH INVERTED BREVE</td>
+<tr align="left" valign="top"><td>"A</td><td>A</td><td>0200</td><td>Ȁ</td><td>&amp;#x0200;</td><td>LATIN CAPITAL LETTER A WITH DOUBLE GRAVE</td>
 </tr>
-<tr align="left" valign="top"><td>an</td><td>a</td><td>0203</td><td>ȃ</td><td>&nbsp;</td><td>LATIN SMALL LETTER A WITH INVERTED BREVE</td>
+<tr align="left" valign="top"><td>"a</td><td>a</td><td>0201</td><td>ȁ</td><td>&amp;#x0201;</td><td>LATIN SMALL LETTER A WITH DOUBLE GRAVE</td>
 </tr>
-<tr align="left" valign="top"><td>"E</td><td>E</td><td>0204</td><td>Ȅ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER E WITH DOUBLE GRAVE</td>
+<tr align="left" valign="top"><td>An</td><td>A</td><td>0202</td><td>Ȃ</td><td>&amp;#x0202;</td><td>LATIN CAPITAL LETTER A WITH INVERTED BREVE</td>
 </tr>
-<tr align="left" valign="top"><td>"e</td><td>e</td><td>0205</td><td>ȅ</td><td>&nbsp;</td><td>LATIN SMALL LETTER E WITH DOUBLE GRAVE</td>
+<tr align="left" valign="top"><td>an</td><td>a</td><td>0203</td><td>ȃ</td><td>&amp;#x0203;</td><td>LATIN SMALL LETTER A WITH INVERTED BREVE</td>
 </tr>
-<tr align="left" valign="top"><td>En</td><td>E</td><td>0206</td><td>Ȇ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER E WITH INVERTED BREVE</td>
+<tr align="left" valign="top"><td>"E</td><td>E</td><td>0204</td><td>Ȅ</td><td>&amp;#x0204;</td><td>LATIN CAPITAL LETTER E WITH DOUBLE GRAVE</td>
 </tr>
-<tr align="left" valign="top"><td>en</td><td>e</td><td>0207</td><td>ȇ</td><td>&nbsp;</td><td>LATIN SMALL LETTER E WITH INVERTED BREVE</td>
+<tr align="left" valign="top"><td>"e</td><td>e</td><td>0205</td><td>ȅ</td><td>&amp;#x0205;</td><td>LATIN SMALL LETTER E WITH DOUBLE GRAVE</td>
 </tr>
-<tr align="left" valign="top"><td>"I</td><td>I</td><td>0208</td><td>Ȉ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER I WITH DOUBLE GRAVE</td>
+<tr align="left" valign="top"><td>En</td><td>E</td><td>0206</td><td>Ȇ</td><td>&amp;#x0206;</td><td>LATIN CAPITAL LETTER E WITH INVERTED BREVE</td>
 </tr>
-<tr align="left" valign="top"><td>"i</td><td>i</td><td>0209</td><td>ȉ</td><td>&nbsp;</td><td>LATIN SMALL LETTER I WITH DOUBLE GRAVE</td>
+<tr align="left" valign="top"><td>en</td><td>e</td><td>0207</td><td>ȇ</td><td>&amp;#x0207;</td><td>LATIN SMALL LETTER E WITH INVERTED BREVE</td>
 </tr>
-<tr align="left" valign="top"><td>In</td><td>I</td><td>020A</td><td>Ȋ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER I WITH INVERTED BREVE</td>
+<tr align="left" valign="top"><td>"I</td><td>I</td><td>0208</td><td>Ȉ</td><td>&amp;#x0208;</td><td>LATIN CAPITAL LETTER I WITH DOUBLE GRAVE</td>
 </tr>
-<tr align="left" valign="top"><td>in</td><td>i</td><td>020B</td><td>ȋ</td><td>&nbsp;</td><td>LATIN SMALL LETTER I WITH INVERTED BREVE</td>
+<tr align="left" valign="top"><td>"i</td><td>i</td><td>0209</td><td>ȉ</td><td>&amp;#x0209;</td><td>LATIN SMALL LETTER I WITH DOUBLE GRAVE</td>
 </tr>
-<tr align="left" valign="top"><td>"O</td><td>O</td><td>020C</td><td>Ȍ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER O WITH DOUBLE GRAVE</td>
+<tr align="left" valign="top"><td>In</td><td>I</td><td>020A</td><td>Ȋ</td><td>&amp;#x020A;</td><td>LATIN CAPITAL LETTER I WITH INVERTED BREVE</td>
 </tr>
-<tr align="left" valign="top"><td>"o</td><td>o</td><td>020D</td><td>ȍ</td><td>&nbsp;</td><td>LATIN SMALL LETTER O WITH DOUBLE GRAVE</td>
+<tr align="left" valign="top"><td>in</td><td>i</td><td>020B</td><td>ȋ</td><td>&amp;#x020B;</td><td>LATIN SMALL LETTER I WITH INVERTED BREVE</td>
 </tr>
-<tr align="left" valign="top"><td>On</td><td>O</td><td>020E</td><td>Ȏ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER O WITH INVERTED BREVE</td>
+<tr align="left" valign="top"><td>"O</td><td>O</td><td>020C</td><td>Ȍ</td><td>&amp;#x020C;</td><td>LATIN CAPITAL LETTER O WITH DOUBLE GRAVE</td>
 </tr>
-<tr align="left" valign="top"><td>on</td><td>o</td><td>020F</td><td>ȏ</td><td>&nbsp;</td><td>LATIN SMALL LETTER O WITH INVERTED BREVE</td>
+<tr align="left" valign="top"><td>"o</td><td>o</td><td>020D</td><td>ȍ</td><td>&amp;#x020D;</td><td>LATIN SMALL LETTER O WITH DOUBLE GRAVE</td>
 </tr>
-<tr align="left" valign="top"><td>"R</td><td>R</td><td>0210</td><td>Ȑ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER R WITH DOUBLE GRAVE</td>
+<tr align="left" valign="top"><td>On</td><td>O</td><td>020E</td><td>Ȏ</td><td>&amp;#x020E;</td><td>LATIN CAPITAL LETTER O WITH INVERTED BREVE</td>
 </tr>
-<tr align="left" valign="top"><td>"r</td><td>r</td><td>0211</td><td>ȑ</td><td>&nbsp;</td><td>LATIN SMALL LETTER R WITH DOUBLE GRAVE</td>
+<tr align="left" valign="top"><td>on</td><td>o</td><td>020F</td><td>ȏ</td><td>&amp;#x020F;</td><td>LATIN SMALL LETTER O WITH INVERTED BREVE</td>
 </tr>
-<tr align="left" valign="top"><td>Rn</td><td>R</td><td>0212</td><td>Ȓ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER R WITH INVERTED BREVE</td>
+<tr align="left" valign="top"><td>"R</td><td>R</td><td>0210</td><td>Ȑ</td><td>&amp;#x0210;</td><td>LATIN CAPITAL LETTER R WITH DOUBLE GRAVE</td>
 </tr>
-<tr align="left" valign="top"><td>rn</td><td>r</td><td>0213</td><td>ȓ</td><td>&nbsp;</td><td>LATIN SMALL LETTER R WITH INVERTED BREVE</td>
+<tr align="left" valign="top"><td>"r</td><td>r</td><td>0211</td><td>ȑ</td><td>&amp;#x0211;</td><td>LATIN SMALL LETTER R WITH DOUBLE GRAVE</td>
 </tr>
-<tr align="left" valign="top"><td>"U</td><td>U</td><td>0214</td><td>Ȕ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER U WITH DOUBLE GRAVE</td>
+<tr align="left" valign="top"><td>Rn</td><td>R</td><td>0212</td><td>Ȓ</td><td>&amp;#x0212;</td><td>LATIN CAPITAL LETTER R WITH INVERTED BREVE</td>
 </tr>
-<tr align="left" valign="top"><td>"u</td><td>u</td><td>0215</td><td>ȕ</td><td>&nbsp;</td><td>LATIN SMALL LETTER U WITH DOUBLE GRAVE</td>
+<tr align="left" valign="top"><td>rn</td><td>r</td><td>0213</td><td>ȓ</td><td>&amp;#x0213;</td><td>LATIN SMALL LETTER R WITH INVERTED BREVE</td>
 </tr>
-<tr align="left" valign="top"><td>Un</td><td>U</td><td>0216</td><td>Ȗ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER U WITH INVERTED BREVE</td>
+<tr align="left" valign="top"><td>"U</td><td>U</td><td>0214</td><td>Ȕ</td><td>&amp;#x0214;</td><td>LATIN CAPITAL LETTER U WITH DOUBLE GRAVE</td>
 </tr>
-<tr align="left" valign="top"><td>un</td><td>u</td><td>0217</td><td>ȗ</td><td>&nbsp;</td><td>LATIN SMALL LETTER U WITH INVERTED BREVE</td>
+<tr align="left" valign="top"><td>"u</td><td>u</td><td>0215</td><td>ȕ</td><td>&amp;#x0215;</td><td>LATIN SMALL LETTER U WITH DOUBLE GRAVE</td>
 </tr>
-<tr align="left" valign="top"><td>Gh</td><td>3</td><td>021C</td><td>Ȝ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER YOGH</td>
+<tr align="left" valign="top"><td>Un</td><td>U</td><td>0216</td><td>Ȗ</td><td>&amp;#x0216;</td><td>LATIN CAPITAL LETTER U WITH INVERTED BREVE</td>
 </tr>
-<tr align="left" valign="top"><td>3</td><td>3</td><td>021D</td><td>ȝ</td><td>&nbsp;</td><td>LATIN SMALL LETTER YOGH</td>
+<tr align="left" valign="top"><td>un</td><td>u</td><td>0217</td><td>ȗ</td><td>&amp;#x0217;</td><td>LATIN SMALL LETTER U WITH INVERTED BREVE</td>
 </tr>
-<tr align="left" valign="top"><td>gh</td><td>3</td><td>021D</td><td>ȝ</td><td>&nbsp;</td><td>LATIN SMALL LETTER YOGH</td>
+<tr align="left" valign="top"><td>Gh</td><td>3</td><td>021C</td><td>Ȝ</td><td>&amp;#x021C;</td><td>LATIN CAPITAL LETTER YOGH</td>
 </tr>
-<tr align="left" valign="top"><td>i/</td><td>i</td><td>0268</td><td>ɨ</td><td>&nbsp;</td><td>LATIN SMALL LETTER I WITH STROKE</td>
+<tr align="left" valign="top"><td>3</td><td>3</td><td>021D</td><td>ȝ</td><td>&amp;#x021D;</td><td>LATIN SMALL LETTER YOGH</td>
 </tr>
-<tr align="left" valign="top"><td>zh</td><td>zh</td><td>0292</td><td>ʒ</td><td>&nbsp;</td><td>LATIN SMALL LETTER EZH</td>
+<tr align="left" valign="top"><td>gh</td><td>3</td><td>021D</td><td>ȝ</td><td>&amp;#x021D;</td><td>LATIN SMALL LETTER YOGH</td>
 </tr>
-<tr align="left" valign="top"><td>Ph</td><td>Ph</td><td>03A6</td><td>Φ</td><td>&nbsp;</td><td>GREEK CAPITAL LETTER PHI</td>
+<tr align="left" valign="top"><td>i/</td><td>i</td><td>0268</td><td>ɨ</td><td>&amp;#x0268;</td><td>LATIN SMALL LETTER I WITH STROKE</td>
 </tr>
-<tr align="left" valign="top"><td>Ps</td><td>Ps</td><td>03A8</td><td>Ψ</td><td>&nbsp;</td><td>GREEK CAPITAL LETTER PSI</td>
+<tr align="left" valign="top"><td>zh</td><td>zh</td><td>0292</td><td>ʒ</td><td>&amp;#x0292;</td><td>LATIN SMALL LETTER EZH</td>
 </tr>
-<tr align="left" valign="top"><td>rh</td><td>rh</td><td>03C1</td><td>ρ</td><td>&nbsp;</td><td>GREEK SMALL LETTER RHO</td>
+<tr align="left" valign="top"><td>Ph</td><td>Ph</td><td>03A6</td><td>Φ</td><td>&amp;#x03A6;</td><td>GREEK CAPITAL LETTER PHI</td>
 </tr>
-<tr align="left" valign="top"><td>ph</td><td>ph</td><td>03C6</td><td>φ</td><td>&nbsp;</td><td>GREEK SMALL LETTER PHI</td>
+<tr align="left" valign="top"><td>Ps</td><td>Ps</td><td>03A8</td><td>Ψ</td><td>&amp;#x03A8;</td><td>GREEK CAPITAL LETTER PSI</td>
 </tr>
-<tr align="left" valign="top"><td>ch</td><td>ch</td><td>03C7</td><td>χ</td><td>&nbsp;</td><td>GREEK SMALL LETTER CHI</td>
+<tr align="left" valign="top"><td>rh</td><td>rh</td><td>03C1</td><td>ρ</td><td>&amp;#x03C1;</td><td>GREEK SMALL LETTER RHO</td>
 </tr>
-<tr align="left" valign="top"><td>ps</td><td>ps</td><td>03C8</td><td>ψ</td><td>&nbsp;</td><td>GREEK SMALL LETTER PSI</td>
+<tr align="left" valign="top"><td>ph</td><td>ph</td><td>03C6</td><td>φ</td><td>&amp;#x03C6;</td><td>GREEK SMALL LETTER PHI</td>
 </tr>
-<tr align="left" valign="top"><td>B.</td><td>B</td><td>1E04</td><td>Ḅ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER B WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>ch</td><td>ch</td><td>03C7</td><td>χ</td><td>&amp;#x03C7;</td><td>GREEK SMALL LETTER CHI</td>
 </tr>
-<tr align="left" valign="top"><td>b.</td><td>b</td><td>1E05</td><td>ḅ</td><td>&nbsp;</td><td>LATIN SMALL LETTER B WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>ps</td><td>ps</td><td>03C8</td><td>ψ</td><td>&amp;#x03C8;</td><td>GREEK SMALL LETTER PSI</td>
 </tr>
-<tr align="left" valign="top"><td>B_</td><td>B</td><td>1E06</td><td>Ḇ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER B WITH LINE BELOW</td>
+<tr align="left" valign="top"><td>B.</td><td>B</td><td>1E04</td><td>Ḅ</td><td>&amp;#x1E04;</td><td>LATIN CAPITAL LETTER B WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>b_</td><td>b</td><td>1E07</td><td>ḇ</td><td>&nbsp;</td><td>LATIN SMALL LETTER B WITH LINE BELOW</td>
+<tr align="left" valign="top"><td>b.</td><td>b</td><td>1E05</td><td>ḅ</td><td>&amp;#x1E05;</td><td>LATIN SMALL LETTER B WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>D.</td><td>D</td><td>1E0C</td><td>Ḍ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER D WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>B_</td><td>B</td><td>1E06</td><td>Ḇ</td><td>&amp;#x1E06;</td><td>LATIN CAPITAL LETTER B WITH LINE BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>d.</td><td>d</td><td>1E0D</td><td>ḍ</td><td>&nbsp;</td><td>LATIN SMALL LETTER D WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>b_</td><td>b</td><td>1E07</td><td>ḇ</td><td>&amp;#x1E07;</td><td>LATIN SMALL LETTER B WITH LINE BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>D_</td><td>D</td><td>1E0E</td><td>Ḏ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER D WITH LINE BELOW</td>
+<tr align="left" valign="top"><td>D.</td><td>D</td><td>1E0C</td><td>Ḍ</td><td>&amp;#x1E0C;</td><td>LATIN CAPITAL LETTER D WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>d_</td><td>d</td><td>1E0F</td><td>ḏ</td><td>&nbsp;</td><td>LATIN SMALL LETTER D WITH LINE BELOW</td>
+<tr align="left" valign="top"><td>d.</td><td>d</td><td>1E0D</td><td>ḍ</td><td>&amp;#x1E0D;</td><td>LATIN SMALL LETTER D WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>D,</td><td>D</td><td>1E10</td><td>Ḑ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER D WITH CEDILLA</td>
+<tr align="left" valign="top"><td>D_</td><td>D</td><td>1E0E</td><td>Ḏ</td><td>&amp;#x1E0E;</td><td>LATIN CAPITAL LETTER D WITH LINE BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>d,</td><td>d</td><td>1E11</td><td>ḑ</td><td>&nbsp;</td><td>LATIN SMALL LETTER D WITH CEDILLA</td>
+<tr align="left" valign="top"><td>d_</td><td>d</td><td>1E0F</td><td>ḏ</td><td>&amp;#x1E0F;</td><td>LATIN SMALL LETTER D WITH LINE BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>G-</td><td>G</td><td>1E20</td><td>Ḡ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER G WITH MACRON</td>
+<tr align="left" valign="top"><td>D,</td><td>D</td><td>1E10</td><td>Ḑ</td><td>&amp;#x1E10;</td><td>LATIN CAPITAL LETTER D WITH CEDILLA</td>
 </tr>
-<tr align="left" valign="top"><td>g-</td><td>g</td><td>1E21</td><td>ḡ</td><td>&nbsp;</td><td>LATIN SMALL LETTER G WITH MACRON</td>
+<tr align="left" valign="top"><td>d,</td><td>d</td><td>1E11</td><td>ḑ</td><td>&amp;#x1E11;</td><td>LATIN SMALL LETTER D WITH CEDILLA</td>
 </tr>
-<tr align="left" valign="top"><td>H.</td><td>H</td><td>1E24</td><td>Ḥ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER H WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>G-</td><td>G</td><td>1E20</td><td>Ḡ</td><td>&amp;#x1E20;</td><td>LATIN CAPITAL LETTER G WITH MACRON</td>
 </tr>
-<tr align="left" valign="top"><td>h.</td><td>h</td><td>1E25</td><td>ḥ</td><td>&nbsp;</td><td>LATIN SMALL LETTER H WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>g-</td><td>g</td><td>1E21</td><td>ḡ</td><td>&amp;#x1E21;</td><td>LATIN SMALL LETTER G WITH MACRON</td>
 </tr>
-<tr align="left" valign="top"><td>H:</td><td>H</td><td>1E26</td><td>Ḧ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER H WITH DIAERESIS</td>
+<tr align="left" valign="top"><td>H.</td><td>H</td><td>1E24</td><td>Ḥ</td><td>&amp;#x1E24;</td><td>LATIN CAPITAL LETTER H WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>h:</td><td>h</td><td>1E27</td><td>ḧ</td><td>&nbsp;</td><td>LATIN SMALL LETTER H WITH DIAERESIS</td>
+<tr align="left" valign="top"><td>h.</td><td>h</td><td>1E25</td><td>ḥ</td><td>&amp;#x1E25;</td><td>LATIN SMALL LETTER H WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>H,</td><td>H</td><td>1E28</td><td>Ḩ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER H WITH CEDILLA</td>
+<tr align="left" valign="top"><td>H:</td><td>H</td><td>1E26</td><td>Ḧ</td><td>&amp;#x1E26;</td><td>LATIN CAPITAL LETTER H WITH DIAERESIS</td>
 </tr>
-<tr align="left" valign="top"><td>h,</td><td>h</td><td>1E29</td><td>ḩ</td><td>&nbsp;</td><td>LATIN SMALL LETTER H WITH CEDILLA</td>
+<tr align="left" valign="top"><td>h:</td><td>h</td><td>1E27</td><td>ḧ</td><td>&amp;#x1E27;</td><td>LATIN SMALL LETTER H WITH DIAERESIS</td>
 </tr>
-<tr align="left" valign="top"><td>K'</td><td>K</td><td>1E30</td><td>Ḱ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER K WITH ACUTE</td>
+<tr align="left" valign="top"><td>H,</td><td>H</td><td>1E28</td><td>Ḩ</td><td>&amp;#x1E28;</td><td>LATIN CAPITAL LETTER H WITH CEDILLA</td>
 </tr>
-<tr align="left" valign="top"><td>k'</td><td>k</td><td>1E31</td><td>ḱ</td><td>&nbsp;</td><td>LATIN SMALL LETTER K WITH ACUTE</td>
+<tr align="left" valign="top"><td>h,</td><td>h</td><td>1E29</td><td>ḩ</td><td>&amp;#x1E29;</td><td>LATIN SMALL LETTER H WITH CEDILLA</td>
 </tr>
-<tr align="left" valign="top"><td>K.</td><td>K</td><td>1E32</td><td>Ḳ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER K WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>K'</td><td>K</td><td>1E30</td><td>Ḱ</td><td>&amp;#x1E30;</td><td>LATIN CAPITAL LETTER K WITH ACUTE</td>
 </tr>
-<tr align="left" valign="top"><td>k.</td><td>k</td><td>1E33</td><td>ḳ</td><td>&nbsp;</td><td>LATIN SMALL LETTER K WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>k'</td><td>k</td><td>1E31</td><td>ḱ</td><td>&amp;#x1E31;</td><td>LATIN SMALL LETTER K WITH ACUTE</td>
 </tr>
-<tr align="left" valign="top"><td>K_</td><td>K</td><td>1E34</td><td>Ḵ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER K WITH LINE BELOW</td>
+<tr align="left" valign="top"><td>K.</td><td>K</td><td>1E32</td><td>Ḳ</td><td>&amp;#x1E32;</td><td>LATIN CAPITAL LETTER K WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>k_</td><td>k</td><td>1E35</td><td>ḵ</td><td>&nbsp;</td><td>LATIN SMALL LETTER K WITH LINE BELOW</td>
+<tr align="left" valign="top"><td>k.</td><td>k</td><td>1E33</td><td>ḳ</td><td>&amp;#x1E33;</td><td>LATIN SMALL LETTER K WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>L.</td><td>L</td><td>1E36</td><td>Ḷ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER L WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>K_</td><td>K</td><td>1E34</td><td>Ḵ</td><td>&amp;#x1E34;</td><td>LATIN CAPITAL LETTER K WITH LINE BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>l.</td><td>l</td><td>1E37</td><td>ḷ</td><td>&nbsp;</td><td>LATIN SMALL LETTER L WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>k_</td><td>k</td><td>1E35</td><td>ḵ</td><td>&amp;#x1E35;</td><td>LATIN SMALL LETTER K WITH LINE BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>L_</td><td>L</td><td>1E3A</td><td>Ḻ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER L WITH LINE BELOW</td>
+<tr align="left" valign="top"><td>L.</td><td>L</td><td>1E36</td><td>Ḷ</td><td>&amp;#x1E36;</td><td>LATIN CAPITAL LETTER L WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>l_</td><td>l</td><td>1E3B</td><td>ḻ</td><td>&nbsp;</td><td>LATIN SMALL LETTER L WITH LINE BELOW</td>
+<tr align="left" valign="top"><td>l.</td><td>l</td><td>1E37</td><td>ḷ</td><td>&amp;#x1E37;</td><td>LATIN SMALL LETTER L WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>M'</td><td>M</td><td>1E3E</td><td>Ḿ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER M WITH ACUTE</td>
+<tr align="left" valign="top"><td>L_</td><td>L</td><td>1E3A</td><td>Ḻ</td><td>&amp;#x1E3A;</td><td>LATIN CAPITAL LETTER L WITH LINE BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>m'</td><td>m</td><td>1E3F</td><td>ḿ</td><td>&nbsp;</td><td>LATIN SMALL LETTER M WITH ACUTE</td>
+<tr align="left" valign="top"><td>l_</td><td>l</td><td>1E3B</td><td>ḻ</td><td>&amp;#x1E3B;</td><td>LATIN SMALL LETTER L WITH LINE BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>M.</td><td>M</td><td>1E42</td><td>Ṃ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER M WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>M'</td><td>M</td><td>1E3E</td><td>Ḿ</td><td>&amp;#x1E3E;</td><td>LATIN CAPITAL LETTER M WITH ACUTE</td>
 </tr>
-<tr align="left" valign="top"><td>m.</td><td>m</td><td>1E43</td><td>ṃ</td><td>&nbsp;</td><td>LATIN SMALL LETTER M WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>m'</td><td>m</td><td>1E3F</td><td>ḿ</td><td>&amp;#x1E3F;</td><td>LATIN SMALL LETTER M WITH ACUTE</td>
 </tr>
-<tr align="left" valign="top"><td>N.</td><td>N</td><td>1E46</td><td>Ṇ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER N WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>M.</td><td>M</td><td>1E42</td><td>Ṃ</td><td>&amp;#x1E42;</td><td>LATIN CAPITAL LETTER M WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>n.</td><td>n</td><td>1E47</td><td>ṇ</td><td>&nbsp;</td><td>LATIN SMALL LETTER N WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>m.</td><td>m</td><td>1E43</td><td>ṃ</td><td>&amp;#x1E43;</td><td>LATIN SMALL LETTER M WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>N_</td><td>N</td><td>1E48</td><td>Ṉ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER N WITH LINE BELOW</td>
+<tr align="left" valign="top"><td>N.</td><td>N</td><td>1E46</td><td>Ṇ</td><td>&amp;#x1E46;</td><td>LATIN CAPITAL LETTER N WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>n_</td><td>n</td><td>1E49</td><td>ṉ</td><td>&nbsp;</td><td>LATIN SMALL LETTER N WITH LINE BELOW</td>
+<tr align="left" valign="top"><td>n.</td><td>n</td><td>1E47</td><td>ṇ</td><td>&amp;#x1E47;</td><td>LATIN SMALL LETTER N WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>P'</td><td>P</td><td>1E54</td><td>Ṕ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER P WITH ACUTE</td>
+<tr align="left" valign="top"><td>N_</td><td>N</td><td>1E48</td><td>Ṉ</td><td>&amp;#x1E48;</td><td>LATIN CAPITAL LETTER N WITH LINE BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>p'</td><td>p</td><td>1E55</td><td>ṕ</td><td>&nbsp;</td><td>LATIN SMALL LETTER P WITH ACUTE</td>
+<tr align="left" valign="top"><td>n_</td><td>n</td><td>1E49</td><td>ṉ</td><td>&amp;#x1E49;</td><td>LATIN SMALL LETTER N WITH LINE BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>R.</td><td>R</td><td>1E5A</td><td>Ṛ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER R WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>P'</td><td>P</td><td>1E54</td><td>Ṕ</td><td>&amp;#x1E54;</td><td>LATIN CAPITAL LETTER P WITH ACUTE</td>
 </tr>
-<tr align="left" valign="top"><td>r.</td><td>r</td><td>1E5B</td><td>ṛ</td><td>&nbsp;</td><td>LATIN SMALL LETTER R WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>p'</td><td>p</td><td>1E55</td><td>ṕ</td><td>&amp;#x1E55;</td><td>LATIN SMALL LETTER P WITH ACUTE</td>
 </tr>
-<tr align="left" valign="top"><td>R_</td><td>R</td><td>1E5E</td><td>Ṟ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER R WITH LINE BELOW</td>
+<tr align="left" valign="top"><td>R.</td><td>R</td><td>1E5A</td><td>Ṛ</td><td>&amp;#x1E5A;</td><td>LATIN CAPITAL LETTER R WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>r_</td><td>r</td><td>1E5F</td><td>ṟ</td><td>&nbsp;</td><td>LATIN SMALL LETTER R WITH LINE BELOW</td>
+<tr align="left" valign="top"><td>r.</td><td>r</td><td>1E5B</td><td>ṛ</td><td>&amp;#x1E5B;</td><td>LATIN SMALL LETTER R WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>S.</td><td>S</td><td>1E62</td><td>Ṣ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER S WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>R_</td><td>R</td><td>1E5E</td><td>Ṟ</td><td>&amp;#x1E5E;</td><td>LATIN CAPITAL LETTER R WITH LINE BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>s.</td><td>s</td><td>1E63</td><td>ṣ</td><td>&nbsp;</td><td>LATIN SMALL LETTER S WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>r_</td><td>r</td><td>1E5F</td><td>ṟ</td><td>&amp;#x1E5F;</td><td>LATIN SMALL LETTER R WITH LINE BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>T.</td><td>T</td><td>1E6C</td><td>Ṭ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER T WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>S.</td><td>S</td><td>1E62</td><td>Ṣ</td><td>&amp;#x1E62;</td><td>LATIN CAPITAL LETTER S WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>t.</td><td>t</td><td>1E6D</td><td>ṭ</td><td>&nbsp;</td><td>LATIN SMALL LETTER T WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>s.</td><td>s</td><td>1E63</td><td>ṣ</td><td>&amp;#x1E63;</td><td>LATIN SMALL LETTER S WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>T_</td><td>T</td><td>1E6E</td><td>Ṯ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER T WITH LINE BELOW</td>
+<tr align="left" valign="top"><td>T.</td><td>T</td><td>1E6C</td><td>Ṭ</td><td>&amp;#x1E6C;</td><td>LATIN CAPITAL LETTER T WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>t_</td><td>t</td><td>1E6F</td><td>ṯ</td><td>&nbsp;</td><td>LATIN SMALL LETTER T WITH LINE BELOW</td>
+<tr align="left" valign="top"><td>t.</td><td>t</td><td>1E6D</td><td>ṭ</td><td>&amp;#x1E6D;</td><td>LATIN SMALL LETTER T WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>V~</td><td>V</td><td>1E7C</td><td>Ṽ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER V WITH TILDE</td>
+<tr align="left" valign="top"><td>T_</td><td>T</td><td>1E6E</td><td>Ṯ</td><td>&amp;#x1E6E;</td><td>LATIN CAPITAL LETTER T WITH LINE BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>v~</td><td>v</td><td>1E7D</td><td>ṽ</td><td>&nbsp;</td><td>LATIN SMALL LETTER V WITH TILDE</td>
+<tr align="left" valign="top"><td>t_</td><td>t</td><td>1E6F</td><td>ṯ</td><td>&amp;#x1E6F;</td><td>LATIN SMALL LETTER T WITH LINE BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>V.</td><td>V</td><td>1E7E</td><td>Ṿ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER V WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>V~</td><td>V</td><td>1E7C</td><td>Ṽ</td><td>&amp;#x1E7C;</td><td>LATIN CAPITAL LETTER V WITH TILDE</td>
 </tr>
-<tr align="left" valign="top"><td>v.</td><td>v</td><td>1E7F</td><td>ṿ</td><td>&nbsp;</td><td>LATIN SMALL LETTER V WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>v~</td><td>v</td><td>1E7D</td><td>ṽ</td><td>&amp;#x1E7D;</td><td>LATIN SMALL LETTER V WITH TILDE</td>
 </tr>
-<tr align="left" valign="top"><td>'W</td><td>W</td><td>1E80</td><td>Ẁ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER W WITH GRAVE</td>
+<tr align="left" valign="top"><td>V.</td><td>V</td><td>1E7E</td><td>Ṿ</td><td>&amp;#x1E7E;</td><td>LATIN CAPITAL LETTER V WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>'w</td><td>w</td><td>1E81</td><td>ẁ</td><td>&nbsp;</td><td>LATIN SMALL LETTER W WITH GRAVE</td>
+<tr align="left" valign="top"><td>v.</td><td>v</td><td>1E7F</td><td>ṿ</td><td>&amp;#x1E7F;</td><td>LATIN SMALL LETTER V WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>W'</td><td>W</td><td>1E82</td><td>Ẃ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER W WITH ACUTE</td>
+<tr align="left" valign="top"><td>'W</td><td>W</td><td>1E80</td><td>Ẁ</td><td>&amp;#x1E80;</td><td>LATIN CAPITAL LETTER W WITH GRAVE</td>
 </tr>
-<tr align="left" valign="top"><td>w'</td><td>w</td><td>1E83</td><td>ẃ</td><td>&nbsp;</td><td>LATIN SMALL LETTER W WITH ACUTE</td>
+<tr align="left" valign="top"><td>'w</td><td>w</td><td>1E81</td><td>ẁ</td><td>&amp;#x1E81;</td><td>LATIN SMALL LETTER W WITH GRAVE</td>
 </tr>
-<tr align="left" valign="top"><td>W:</td><td>W</td><td>1E84</td><td>Ẅ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER W WITH DIAERESIS</td>
+<tr align="left" valign="top"><td>W'</td><td>W</td><td>1E82</td><td>Ẃ</td><td>&amp;#x1E82;</td><td>LATIN CAPITAL LETTER W WITH ACUTE</td>
 </tr>
-<tr align="left" valign="top"><td>w:</td><td>w</td><td>1E85</td><td>ẅ</td><td>&nbsp;</td><td>LATIN SMALL LETTER W WITH DIAERESIS</td>
+<tr align="left" valign="top"><td>w'</td><td>w</td><td>1E83</td><td>ẃ</td><td>&amp;#x1E83;</td><td>LATIN SMALL LETTER W WITH ACUTE</td>
 </tr>
-<tr align="left" valign="top"><td>W.</td><td>W</td><td>1E88</td><td>Ẉ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER W WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>W:</td><td>W</td><td>1E84</td><td>Ẅ</td><td>&amp;#x1E84;</td><td>LATIN CAPITAL LETTER W WITH DIAERESIS</td>
 </tr>
-<tr align="left" valign="top"><td>w.</td><td>w</td><td>1E89</td><td>ẉ</td><td>&nbsp;</td><td>LATIN SMALL LETTER W WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>w:</td><td>w</td><td>1E85</td><td>ẅ</td><td>&amp;#x1E85;</td><td>LATIN SMALL LETTER W WITH DIAERESIS</td>
 </tr>
-<tr align="left" valign="top"><td>X:</td><td>X</td><td>1E8C</td><td>Ẍ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER X WITH DIAERESIS</td>
+<tr align="left" valign="top"><td>W.</td><td>W</td><td>1E88</td><td>Ẉ</td><td>&amp;#x1E88;</td><td>LATIN CAPITAL LETTER W WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>x:</td><td>x</td><td>1E8D</td><td>ẍ</td><td>&nbsp;</td><td>LATIN SMALL LETTER X WITH DIAERESIS</td>
+<tr align="left" valign="top"><td>w.</td><td>w</td><td>1E89</td><td>ẉ</td><td>&amp;#x1E89;</td><td>LATIN SMALL LETTER W WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>Z^</td><td>Z</td><td>1E90</td><td>Ẑ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER Z WITH CIRCUMFLEX</td>
+<tr align="left" valign="top"><td>X:</td><td>X</td><td>1E8C</td><td>Ẍ</td><td>&amp;#x1E8C;</td><td>LATIN CAPITAL LETTER X WITH DIAERESIS</td>
 </tr>
-<tr align="left" valign="top"><td>z^</td><td>z</td><td>1E91</td><td>ẑ</td><td>&nbsp;</td><td>LATIN SMALL LETTER Z WITH CIRCUMFLEX</td>
+<tr align="left" valign="top"><td>x:</td><td>x</td><td>1E8D</td><td>ẍ</td><td>&amp;#x1E8D;</td><td>LATIN SMALL LETTER X WITH DIAERESIS</td>
 </tr>
-<tr align="left" valign="top"><td>Z.</td><td>Z</td><td>1E92</td><td>Ẓ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER Z WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>Z^</td><td>Z</td><td>1E90</td><td>Ẑ</td><td>&amp;#x1E90;</td><td>LATIN CAPITAL LETTER Z WITH CIRCUMFLEX</td>
 </tr>
-<tr align="left" valign="top"><td>z.</td><td>z</td><td>1E93</td><td>ẓ</td><td>&nbsp;</td><td>LATIN SMALL LETTER Z WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>z^</td><td>z</td><td>1E91</td><td>ẑ</td><td>&amp;#x1E91;</td><td>LATIN SMALL LETTER Z WITH CIRCUMFLEX</td>
 </tr>
-<tr align="left" valign="top"><td>Z_</td><td>Z</td><td>1E94</td><td>Ẕ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER Z WITH LINE BELOW</td>
+<tr align="left" valign="top"><td>Z.</td><td>Z</td><td>1E92</td><td>Ẓ</td><td>&amp;#x1E92;</td><td>LATIN CAPITAL LETTER Z WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>z_</td><td>z</td><td>1E95</td><td>ẕ</td><td>&nbsp;</td><td>LATIN SMALL LETTER Z WITH LINE BELOW</td>
+<tr align="left" valign="top"><td>z.</td><td>z</td><td>1E93</td><td>ẓ</td><td>&amp;#x1E93;</td><td>LATIN SMALL LETTER Z WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>h_</td><td>h</td><td>1E96</td><td>ẖ</td><td>&nbsp;</td><td>LATIN SMALL LETTER H WITH LINE BELOW</td>
+<tr align="left" valign="top"><td>Z_</td><td>Z</td><td>1E94</td><td>Ẕ</td><td>&amp;#x1E94;</td><td>LATIN CAPITAL LETTER Z WITH LINE BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>t:</td><td>t</td><td>1E97</td><td>ẗ</td><td>&nbsp;</td><td>LATIN SMALL LETTER T WITH DIAERESIS</td>
+<tr align="left" valign="top"><td>z_</td><td>z</td><td>1E95</td><td>ẕ</td><td>&amp;#x1E95;</td><td>LATIN SMALL LETTER Z WITH LINE BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>wo</td><td>w</td><td>1E98</td><td>ẘ</td><td>&nbsp;</td><td>LATIN SMALL LETTER W WITH RING ABOVE</td>
+<tr align="left" valign="top"><td>h_</td><td>h</td><td>1E96</td><td>ẖ</td><td>&amp;#x1E96;</td><td>LATIN SMALL LETTER H WITH LINE BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>yo</td><td>y</td><td>1E99</td><td>ẙ</td><td>&nbsp;</td><td>LATIN SMALL LETTER Y WITH RING ABOVE</td>
+<tr align="left" valign="top"><td>t:</td><td>t</td><td>1E97</td><td>ẗ</td><td>&amp;#x1E97;</td><td>LATIN SMALL LETTER T WITH DIAERESIS</td>
 </tr>
-<tr align="left" valign="top"><td>A.</td><td>A</td><td>1EA0</td><td>Ạ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER A WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>wo</td><td>w</td><td>1E98</td><td>ẘ</td><td>&amp;#x1E98;</td><td>LATIN SMALL LETTER W WITH RING ABOVE</td>
 </tr>
-<tr align="left" valign="top"><td>a.</td><td>a</td><td>1EA1</td><td>ạ</td><td>&nbsp;</td><td>LATIN SMALL LETTER A WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>yo</td><td>y</td><td>1E99</td><td>ẙ</td><td>&amp;#x1E99;</td><td>LATIN SMALL LETTER Y WITH RING ABOVE</td>
 </tr>
-<tr align="left" valign="top"><td>E.</td><td>E</td><td>1EB8</td><td>Ẹ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER E WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>A.</td><td>A</td><td>1EA0</td><td>Ạ</td><td>&amp;#x1EA0;</td><td>LATIN CAPITAL LETTER A WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>e.</td><td>e</td><td>1EB9</td><td>ẹ</td><td>&nbsp;</td><td>LATIN SMALL LETTER E WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>a.</td><td>a</td><td>1EA1</td><td>ạ</td><td>&amp;#x1EA1;</td><td>LATIN SMALL LETTER A WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>E~</td><td>E</td><td>1EBC</td><td>Ẽ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER E WITH TILDE</td>
+<tr align="left" valign="top"><td>E.</td><td>E</td><td>1EB8</td><td>Ẹ</td><td>&amp;#x1EB8;</td><td>LATIN CAPITAL LETTER E WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>e~</td><td>e</td><td>1EBD</td><td>ẽ</td><td>&nbsp;</td><td>LATIN SMALL LETTER E WITH TILDE</td>
+<tr align="left" valign="top"><td>e.</td><td>e</td><td>1EB9</td><td>ẹ</td><td>&amp;#x1EB9;</td><td>LATIN SMALL LETTER E WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>I.</td><td>I</td><td>1ECA</td><td>Ị</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER I WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>E~</td><td>E</td><td>1EBC</td><td>Ẽ</td><td>&amp;#x1EBC;</td><td>LATIN CAPITAL LETTER E WITH TILDE</td>
 </tr>
-<tr align="left" valign="top"><td>i.</td><td>i</td><td>1ECB</td><td>ị</td><td>&nbsp;</td><td>LATIN SMALL LETTER I WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>e~</td><td>e</td><td>1EBD</td><td>ẽ</td><td>&amp;#x1EBD;</td><td>LATIN SMALL LETTER E WITH TILDE</td>
 </tr>
-<tr align="left" valign="top"><td>O.</td><td>O</td><td>1ECC</td><td>Ọ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER O WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>I.</td><td>I</td><td>1ECA</td><td>Ị</td><td>&amp;#x1ECA;</td><td>LATIN CAPITAL LETTER I WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>o.</td><td>o</td><td>1ECD</td><td>ọ</td><td>&nbsp;</td><td>LATIN SMALL LETTER O WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>i.</td><td>i</td><td>1ECB</td><td>ị</td><td>&amp;#x1ECB;</td><td>LATIN SMALL LETTER I WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>U.</td><td>U</td><td>1EE4</td><td>Ụ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER U WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>O.</td><td>O</td><td>1ECC</td><td>Ọ</td><td>&amp;#x1ECC;</td><td>LATIN CAPITAL LETTER O WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>u.</td><td>u</td><td>1EE5</td><td>ụ</td><td>&nbsp;</td><td>LATIN SMALL LETTER U WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>o.</td><td>o</td><td>1ECD</td><td>ọ</td><td>&amp;#x1ECD;</td><td>LATIN SMALL LETTER O WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>'Y</td><td>Y</td><td>1EF2</td><td>Ỳ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER Y WITH GRAVE</td>
+<tr align="left" valign="top"><td>U.</td><td>U</td><td>1EE4</td><td>Ụ</td><td>&amp;#x1EE4;</td><td>LATIN CAPITAL LETTER U WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>'y</td><td>y</td><td>1EF3</td><td>ỳ</td><td>&nbsp;</td><td>LATIN SMALL LETTER Y WITH GRAVE</td>
+<tr align="left" valign="top"><td>u.</td><td>u</td><td>1EE5</td><td>ụ</td><td>&amp;#x1EE5;</td><td>LATIN SMALL LETTER U WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>Y.</td><td>Y</td><td>1EF4</td><td>Ỵ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER Y WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>'Y</td><td>Y</td><td>1EF2</td><td>Ỳ</td><td>&amp;#x1EF2;</td><td>LATIN CAPITAL LETTER Y WITH GRAVE</td>
 </tr>
-<tr align="left" valign="top"><td>y.</td><td>y</td><td>1EF5</td><td>ỵ</td><td>&nbsp;</td><td>LATIN SMALL LETTER Y WITH DOT BELOW</td>
+<tr align="left" valign="top"><td>'y</td><td>y</td><td>1EF3</td><td>ỳ</td><td>&amp;#x1EF3;</td><td>LATIN SMALL LETTER Y WITH GRAVE</td>
 </tr>
-<tr align="left" valign="top"><td>Y~</td><td>Y</td><td>1EF8</td><td>Ỹ</td><td>&nbsp;</td><td>LATIN CAPITAL LETTER Y WITH TILDE</td>
+<tr align="left" valign="top"><td>Y.</td><td>Y</td><td>1EF4</td><td>Ỵ</td><td>&amp;#x1EF4;</td><td>LATIN CAPITAL LETTER Y WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>y~</td><td>y</td><td>1EF9</td><td>ỹ</td><td>&nbsp;</td><td>LATIN SMALL LETTER Y WITH TILDE</td>
+<tr align="left" valign="top"><td>y.</td><td>y</td><td>1EF5</td><td>ỵ</td><td>&amp;#x1EF5;</td><td>LATIN SMALL LETTER Y WITH DOT BELOW</td>
 </tr>
-<tr align="left" valign="top"><td>ff</td><td>ff</td><td>FB00</td><td>ﬀ</td><td>&nbsp;</td><td>LATIN SMALL LIGATURE FF</td>
+<tr align="left" valign="top"><td>Y~</td><td>Y</td><td>1EF8</td><td>Ỹ</td><td>&amp;#x1EF8;</td><td>LATIN CAPITAL LETTER Y WITH TILDE</td>
 </tr>
-<tr align="left" valign="top"><td>fi</td><td>fi</td><td>FB01</td><td>ﬁ</td><td>&nbsp;</td><td>LATIN SMALL LIGATURE FI</td>
+<tr align="left" valign="top"><td>y~</td><td>y</td><td>1EF9</td><td>ỹ</td><td>&amp;#x1EF9;</td><td>LATIN SMALL LETTER Y WITH TILDE</td>
 </tr>
-<tr align="left" valign="top"><td>fl</td><td>fl</td><td>FB02</td><td>ﬂ</td><td>&nbsp;</td><td>LATIN SMALL LIGATURE FL</td>
+<tr align="left" valign="top"><td>ff</td><td>ff</td><td>FB00</td><td>ﬀ</td><td>&amp;#xFB00;</td><td>LATIN SMALL LIGATURE FF</td>
 </tr>
-<tr align="left" valign="top"><td>st</td><td>st</td><td>FB06</td><td>ﬆ</td><td>&nbsp;</td><td>LATIN SMALL LIGATURE ST</td>
+<tr align="left" valign="top"><td>fi</td><td>fi</td><td>FB01</td><td>ﬁ</td><td>&amp;#xFB01;</td><td>LATIN SMALL LIGATURE FI</td>
+</tr>
+<tr align="left" valign="top"><td>fl</td><td>fl</td><td>FB02</td><td>ﬂ</td><td>&amp;#xFB02;</td><td>LATIN SMALL LIGATURE FL</td>
+</tr>
+<tr align="left" valign="top"><td>st</td><td>st</td><td>FB06</td><td>ﬆ</td><td>&amp;#xFB06;</td><td>LATIN SMALL LIGATURE ST</td>
 </tr>
 <tr align="left" valign="top"><td>u!</td><td>u</td><td>E724</td><td></td><td>&amp;uvertline</td><td>LATIN SMALL LETTER U WITH VERTICAL LINE ABOVE</td>
 </tr>
@@ -2463,7 +2470,7 @@ $IndexPage{'A'} = <<'XXEOFXX';
 <li>Albatross
  - see <a href="B.html#birdwhole">Bird - Whole</a>
 <li>Alder
- - see <a href="T.html#treeelongatedshape">Tree - Elongated shape</a>
+ - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
 <a name="alembic">
 <li><a href="XXDescSearchUrlXX?p=ALEMBIC%20AND%20RETORT">Alembic</a>
 <li>Alembic flask
@@ -2508,6 +2515,8 @@ $IndexPage{'A'} = <<'XXEOFXX';
  - see <a href="F.html#foilsexfoil">Foil - Sexfoil</a>
 <li>Angle
  - see <a href="T.html#toolother">Tool - Other</a> and <a href="C.html#chevron">Chevron</a>
+<li>Anille
+ - see <a href="M.html#millrind">Millrind</a>
 <li>Ankh
  - see <a href="C.html#cross">Cross</a>
 <li>Ankhus
@@ -2566,6 +2575,8 @@ $IndexPage{'A'} = <<'XXEOFXX';
  - see also <a href="W.html#windmill">Windmill</a> and <a href="C.html#castle">Castle</a> and <a href="K.html#keystone">Keystone</a> and <a href="G.html#gate">Gate</a>
 <li>Ark
  - see <a href="S.html#ship">Ship</a>
+<li>Ark of the Covenant
+ - see <a href="B.html#box">Box</a>
 <a name="arm">
 <li><a href="XXDescSearchUrlXX?p=ARM">Arm</a>
 <li>Armadillo
@@ -2878,6 +2889,10 @@ $IndexPage{'B'} = <<'XXEOFXX';
  - see <a href="M.html#monsterdragon">Monster - Dragon</a>
 <a name="basket">
 <li><a href="XXDescSearchUrlXX?p=BASKET">Basket</a>
+<li>Bass cornetto
+ - see <a href="M.html#musicalinstrumenthorn">Musical instrument - Horn</a>
+<li>Bassinet
+ - see <a href="B.html#basket">Basket</a>
 <li>Bat
  - see <a href="B.html#beastbat">Beast - Bat</a>
 <li>Baton
@@ -3284,7 +3299,7 @@ $IndexPage{'B'} = <<'XXEOFXX';
 <li>Bee
  - see <a href="A.html#arthropodbee">Arthropod - Bee</a>
 <li>Beech tree
- - see <a href="T.html#treeelongatedshape">Tree - Elongated shape</a>
+ - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
 <a name="beehive">
 <li><a href="XXDescSearchUrlXX?p=BEEHIVE">Beehive</a>
 <li>Beetle
@@ -3296,6 +3311,8 @@ $IndexPage{'B'} = <<'XXEOFXX';
  - see also <a href="C.html#clothingfoolsmotley">Clothing - Fool's motley</a>
 <li>Belled hood
  - see <a href="B.html#bell">Bell</a> and <a href="C.html#clothingheadgear">Clothing - Headgear</a>
+<li>Bellflower
+ - see <a href="F.html#flowertrumpetshape">Flower - Trumpet shape</a>
 <li>Bellows
  - see <a href="T.html#toolother">Tool - Other</a>
 <li>Belt
@@ -3373,7 +3390,7 @@ $IndexPage{'B'} = <<'XXEOFXX';
 <li>Billhook
  - see <a href="P.html#poleaxe">Pole axe</a>
 <li>Birch
- - see <a href="T.html#treeelongatedshape">Tree - Elongated shape</a>
+ - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
 <a name="bird">
 <a name="birddemi">
 <li><a href="XXDescSearchUrlXX?p=BIRD9DEMI">Bird - Demi</a>
@@ -3658,6 +3675,8 @@ $IndexPage{'B'} = <<'XXEOFXX';
  - see <a href="B.html#beastdog">Beast - Dog</a>
 <li>Bracket
  - see <a href="A.html#axlebracket">Axle bracket</a>
+<li>Braid of garlic
+ - see <a href="P.html#plantonion">Plant - Onion</a>
 <li>Bramble
  - see <a href="P.html#plantthorn">Plant - Thorn</a>
 <li>Branch
@@ -3775,11 +3794,15 @@ $IndexPage{'C'} = <<'XXEOFXX';
  - see also <a href="T.html#toolother">Tool - Other</a>
 <li>Calla lily
  - see <a href="F.html#flowertrumpetshape">Flower - Trumpet shape</a>
+<li>Calligrapher's knife
+ - see <a href="T.html#toolartistic">Tool - Artistic</a>
 <a name="caltrap">
 <li><a href="XXDescSearchUrlXX?p=CALTRAP">Caltrap</a>
  - see also <a href="M.html#mullet">Mullet</a>
 <li>Calygreyhound
  - see <a href="M.html#monsterother">Monster - Other</a>
+<li>Camail
+ - see <a href="A.html#armor">Armor</a>
 <li>Camel
  - see <a href="B.html#beastcamel">Beast - Camel</a>
 <li>Camellia
@@ -3898,6 +3921,8 @@ $IndexPage{'C'} = <<'XXEOFXX';
  - see <a href="M.html#monstercentaur">Monster - Centaur</a>
 <li>Centauress
  - see <a href="M.html#monstercentaur">Monster - Centaur</a>
+<li>Centipede
+ - see <a href="R.html#reptileworm">Reptile - Worm</a>
 <li>Chabot
  - see <a href="F.html#fishother">Fish - Other</a>
 <li><a href="XXDescSearchUrlXX?p=CHAIN">Chain</a>
@@ -4260,6 +4285,8 @@ $IndexPage{'C'} = <<'XXEOFXX';
 <li><a href="XXDescSearchUrlXX?p=COFFIN">Coffin</a>
 <li>Cogwheel
  - see <a href="W.html#wheel">Wheel</a>
+<li>Coin die set
+ - see <a href="T.html#toolother">Tool - Other</a>
 <li>Collie
  - see <a href="B.html#beastdog">Beast - Dog</a>
 <li>Columbine
@@ -4311,6 +4338,8 @@ $IndexPage{'C'} = <<'XXEOFXX';
  - see <a href="M.html#musicalinstrumenthorn">Musical instrument - Horn</a>
 <li>Cornflower
  - see <a href="F.html#flowerrose">Flower - Rose</a>
+<li>Cornice
+ - see <a href="A.html#architecture">Architecture</a>
 <a name="cornucopia">
 <li><a href="XXDescSearchUrlXX?p=CORNUCOPIA">Cornucopia</a>
 <li>Coronet
@@ -4341,6 +4370,8 @@ $IndexPage{'C'} = <<'XXEOFXX';
  - see <a href="T.html#toolother">Tool - Other</a>
 <li>Crawfish
  - see <a href="A.html#arthropodlobster">Arthropod - Lobster</a>
+<li>Crayfish
+ - see <a href="F.html#fishlobster">Fish - Lobster</a>
 <li>Crequier plant
  - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
 <a name="crescent">
@@ -4392,6 +4423,8 @@ $IndexPage{'C'} = <<'XXEOFXX';
  - see <a href="T.html#torch">Torch</a>
 <li>Crest
  - see <a href="H.html#helmcrest">Helm crest</a>
+<li>Cricket
+ - see <a href="A.html#arthropodmantis">Arthropod - Mantis</a>
 <li>Crocodile
  - see <a href="R.html#reptilelizard">Reptile - Lizard</a>
 <li>Crocus
@@ -4453,7 +4486,7 @@ $IndexPage{'C'} = <<'XXEOFXX';
 <li>Crusily
  - see <a href="C.html#crossascharge">Cross - As charge</a>
 <li>Crustacean
- - see <a href="A.html#arthropod">Arthropod</a>
+ - see <a href="A.html#arthropodlobster">Arthropod - Lobster</a>
 <li><a href="XXDescSearchUrlXX?p=CRUTCH">Crutch</a>
 <li>Crux ansata
  - see <a href="C.html#crossascharge">Cross - As charge</a>
@@ -4493,7 +4526,7 @@ $IndexPage{'C'} = <<'XXEOFXX';
 <li>Cypher
  - see <a href="S.html#symbol">Symbol</a>
 <li>Cypress
- - see <a href="T.html#treeelongatedshape">Tree - Elongated shape</a>
+ - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
 </ul>
 
 XXTrailerXX
@@ -4530,7 +4563,7 @@ $IndexPage{'D'} = <<'XXEOFXX';
 <li>Dane - Great
  - see <a href="B.html#beastdog">Beast - Dog</a>
 <li>Date palm
- - see <a href="T.html#treepalmtreeshape">Tree - Palm tree shape</a>
+ - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
 <li>Death's head
  - see <a href="H.html#headhumanskull">Head - Human skull</a>
 <li>Decrescent
@@ -4599,7 +4632,9 @@ $IndexPage{'D'} = <<'XXEOFXX';
 <li>Dog's head
  - see <a href="H.html#headbeastdog">Head - Beast - Dog</a>
 <li>Dogwood blossom
- - see <a href="F.html#flowerrose">Flower - Rose</a>
+ - see <a href="F.html#flowerfewpetals">Flower - Few petals</a> and <a href="Q.html#quatrefoil">Quatrefoil</a>
+<li>Dogwood flower
+ - see <a href="F.html#flowerfewpetals">Flower - Few petals</a> and <a href="Q.html#quatrefoil">Quatrefoil</a>
 <li>Doll
  - see <a href="T.html#toy">Toy</a>
 <li>Dolmen
@@ -4625,7 +4660,7 @@ $IndexPage{'D'} = <<'XXEOFXX';
 <li>Dragon
  - see <a href="M.html#monsterdragon">Monster - Dragon</a>
 <li>Dragon - Sea
- - see <a href="M.html#monsterseadragon">Monster - Sea - Dragon</a>
+ - see <a href="M.html#monsterdragon">Monster - Dragon</a>
 <a name="dragonscale">
 <li><a href="XXDescSearchUrlXX?p=DRAGON%20SCALE">Dragon scale</a>
 <li>Dragonfly
@@ -4713,12 +4748,16 @@ $IndexPage{'E'} = <<'XXEOFXX';
  - see <a href="F.html#fishother">Fish - Other</a>
 <li>Eel fork
  - see <a href="T.html#trident">Trident</a> and <a href="T.html#toolother">Tool - Other</a>
+<li>Eel-fork
+ - see <a href="T.html#trident">Trident</a> and <a href="T.html#toolother">Tool - Other</a>
 <li>Egg
  - see <a href="C.html#cartouche">Cartouche</a> and <a href="F.html#foodstuff">Foodstuff</a>
 <li>Eglantine
  - see <a href="F.html#flowerrose">Flower - Rose</a>
 <li>Egret
  - see <a href="B.html#birdwhole">Bird - Whole</a>
+<li>Elder tree
+ - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
 <li>Elderflower
  - see <a href="F.html#flowerroseheraldic">Flower - Rose - Heraldic</a>
 <li>Elephant
@@ -4766,7 +4805,6 @@ $IndexPage{'E'} = <<'XXEOFXX';
  - see <a href="E.html#erminespot">Ermine spot</a>
 <li>Ermined
  - see <a href="F.html#fieldtreatmentermined">Field treatment - Ermined</a>
-<a name="escallop">
 <li>Escallop
  - see <a href="S.html#shellescallop">Shell - Escallop</a>
 <li>Escallopy
@@ -4827,6 +4865,7 @@ $IndexPage{'F'} = <<'XXEOFXX';
  - see <a href="B.html#birdwhole">Bird - Whole</a>
 <li>Falcon's head
  - see <a href="H.html#headbird">Head - Bird</a>
+<a name="fan">
 <li><a href="XXDescSearchUrlXX?p=FAN">Fan</a>
  - see also <a href="S.html#shellescallop">Shell - Escallop</a>
 <li>Fang
@@ -5565,6 +5604,8 @@ $IndexPage{'F'} = <<'XXEOFXX';
  - see <a href="G.html#grenade">Grenade</a>
 <li>Firebird
  - see <a href="M.html#monsterphoenix">Monster - Phoenix</a>
+<li>Firebrand
+ - see <a href="T.html#torch">Torch</a>
 <li>Fireplace
  - see <a href="A.html#architecture">Architecture</a>
 <li>Firewheel blossom
@@ -5584,6 +5625,7 @@ $IndexPage{'F'} = <<'XXEOFXX';
 <li><a href="XXDescSearchUrlXX?p=DOLPHIN%3a3%20or%20more">Fish - Dolphin - 3 or more</a>
 <li>Fish - Herring
  - see <a href="F.html#fishother">Fish - Other</a>
+<a name="fishlobster">
 <li>Fish - Lobster
  - see <a href="A.html#arthropodlobster">Arthropod - Lobster</a>
 <li>Fish - Lucy
@@ -5669,6 +5711,8 @@ $IndexPage{'F'} = <<'XXEOFXX';
  - see <a href="H.html#hide">Hide</a> and <a href="B.html#beastgoat">Beast - Goat</a>
 <li>Flesh hook
  - see <a href="T.html#tooleating">Tool - Eating</a>
+<li>Fleshpot
+ - see <a href="C.html#cauldron">Cauldron</a>
 <a name="fleurdelys">
 <li><a href="XXDescSearchUrlXX?p=FDL%3a1">Fleur de lys - 1</a>
 <li><a href="XXDescSearchUrlXX?p=FDL%3aargent%3a2">Fleur de lys - 2 - Argent</a>
@@ -5751,7 +5795,7 @@ $IndexPage{'F'} = <<'XXEOFXX';
 <li>Flower - Dandelion
  - see <a href="F.html#flowermultipetaled">Flower - Multipetaled</a>
 <li>Flower - Dogwood
- - see <a href="F.html#flowerfewpetals">Flower - Few petals</a>
+ - see <a href="F.html#flowerfewpetals">Flower - Few petals</a> and <a href="Q.html#quatrefoil">Quatrefoil</a>
 <li>Flower - Dondril
  - see <a href="F.html#flowerfewpetals">Flower - Few petals</a>
 <li>Flower - Dryas
@@ -5829,7 +5873,7 @@ $IndexPage{'F'} = <<'XXEOFXX';
 <a name="flowermultipetaled">
 <li><a href="XXDescSearchUrlXX?p=FLOWER%2dMULTI%2dPETALED">Flower - Multipetaled</a>
 <li>Flower - Mustard
- - see <a href="F.html#flowerfewpetals">Flower - Few petals</a> and <a href="Q.html#quatrefoil">Quatrefoil</a>
+ - see <a href="F.html#flowerfewpetals">Flower - Few petals</a> and <a href="F.html#foilquatrefoil">Foil - Quatrefoil</a>
 <li>Flower - Narcissus
  - see <a href="F.html#flowertrumpetshape">Flower - Trumpet shape</a>
 <li>Flower - Orchid
@@ -5879,11 +5923,15 @@ $IndexPage{'F'} = <<'XXEOFXX';
 <li><a href="XXDescSearchUrlXX?p=ROSE%3asable%3a3">Flower - Rose - 3 - Sable</a>
 <li><a href="XXDescSearchUrlXX?p=ROSE%3avert%3a3">Flower - Rose - 3 - Vert</a>
 <li><a href="XXDescSearchUrlXX?p=ROSE%3a4%20or%20more">Flower - Rose - 4 or more</a>
+<li>Flower - Rue
+ - see <a href="F.html#flowerfewpetals">Flower - Few petals</a> and <a href="F.html#foilquatrefoil">Foil - Quatrefoil</a>
 <li>Flower - Sedum
  - see <a href="F.html#flowerrose">Flower - Rose</a>
 <li>Flower - Sexfoil
  - see <a href="F.html#foilsexfoil">Foil - Sexfoil</a>
 <li>Flower - Silver bell
+ - see <a href="F.html#flowertrumpetshape">Flower - Trumpet shape</a>
+<li>Flower - Snowdrop
  - see <a href="F.html#flowertrumpetshape">Flower - Trumpet shape</a>
 <li>Flower - Spiderwort
  - see <a href="F.html#flowerfewpetals">Flower - Few petals</a>
@@ -6207,12 +6255,17 @@ $IndexPage{'G'} = <<'XXEOFXX';
 <li><a href="XXDescSearchUrlXX?p=GOUTE%3apurpure">Goute - Purpure</a>
 <li><a href="XXDescSearchUrlXX?p=GOUTE%3asable">Goute - Sable</a>
 <li><a href="XXDescSearchUrlXX?p=GOUTE%3avert">Goute - Vert</a>
+<a name="goutte">
 <li>Goutte
  - see <a href="G.html#goute">Goute</a>
 <li>Goutty
  - see <a href="G.html#goute">Goute</a>
+<li>Gower
+ - see <a href="B.html#beastdog">Beast - Dog</a>
 <li>Gown
  - see <a href="C.html#clothinggown">Clothing - Gown</a>
+<li>Grail
+ - see <a href="C.html#cup">Cup</a>
 <li>Grain
  - see <a href="P.html#plantwheat">Plant - Wheat</a>
 <li>Grape
@@ -6231,9 +6284,11 @@ $IndexPage{'G'} = <<'XXEOFXX';
 <li>Griffin
  - see <a href="M.html#monstergriffin">Monster - Griffin</a>
 <li>Griffin - Sea
- - see <a href="M.html#monsterseadragon">Monster - Sea - Dragon</a>
+ - see <a href="M.html#monsterdragon">Monster - Dragon</a>
 <li>Griffin's head
  - see <a href="H.html#headmonstergriffin">Head - Monster - Griffin</a>
+<li>Grillage
+ - see <a href="P.html#pale">Pale</a> and <a href="F.html#fess">Fess</a>
 <li>Grozing iron
  - see <a href="T.html#toolother">Tool - Other</a>
 <li>Gryphon
@@ -6244,6 +6299,8 @@ $IndexPage{'G'} = <<'XXEOFXX';
  - see <a href="B.html#birdwhole">Bird - Whole</a>
 <a name="gun">
 <li><a href="XXDescSearchUrlXX?p=CANNON%2cGUN%20AND%20ROCKET">Gun</a>
+<li>Gunbai
+ - see <a href="F.html#fan">Fan</a>
 <li>Gunrest
  - see <a href="C.html#clarion">Clarion</a>
 <li>Gunstone
@@ -6323,6 +6380,10 @@ $IndexPage{'H'} = <<'XXEOFXX';
 <li><a href="XXDescSearchUrlXX?p=HANDLE">Handle</a>
 <li>Hare
  - see <a href="B.html#beastrabbit">Beast - Rabbit</a>
+<li>Harebell
+ - see <a href="F.html#flowertrumpetshape">Flower - Trumpet shape</a>
+<li>Hares head
+ - see <a href="H.html#headbeastrabbit">Head - Beast - Rabbit</a>
 <li>Harness
  - see <a href="S.html#saddlery">Saddlery</a>
 <li>Harp
@@ -6355,6 +6416,8 @@ $IndexPage{'H'} = <<'XXEOFXX';
  - see <a href="F.html#fruitnutnotacorn">Fruit - Nut - Not acorn</a>
 <li>Hazel tree
  - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
+<li>Hazelnut
+ - see <a href="F.html#fruitnutnotacorn">Fruit - Nut - Not acorn</a>
 <a name="head">
 <li>Head - Arrow
  - see <a href="P.html#pheon">Pheon</a>
@@ -6461,6 +6524,8 @@ $IndexPage{'H'} = <<'XXEOFXX';
 <li><a href="XXDescSearchUrlXX?p=HEAD%2dMONSTER9OTHER">Head - Monster - Other</a>
 <li>Head - Rabbit
  - see <a href="H.html#headbeastrabbit">Head - Beast - Rabbit</a>
+<li>Head - Raccoon
+ - see <a href="H.html#headbeastbadger">Head - Beast - Badger</a>
 <li>Head - Ram
  - see <a href="H.html#headbeastgoat">Head - Beast - Goat</a>
 <li><a href="XXDescSearchUrlXX?p=HEAD%2dREPTILE">Head - Reptile</a>
@@ -6561,6 +6626,8 @@ $IndexPage{'H'} = <<'XXEOFXX';
 <li>Hive
  - see <a href="B.html#beehive">Beehive</a>
 <li>Hobby horse
+ - see <a href="T.html#toy">Toy</a>
+<li>Hobbyhorse
  - see <a href="T.html#toy">Toy</a>
 <li>Hoe
  - see <a href="T.html#toolagricultural">Tool - Agricultural</a>
@@ -6780,6 +6847,10 @@ $IndexPage{'J'} = <<'XXEOFXX';
  - see <a href="M.html#monsterpithon">Monster - Pithon</a>
 <li>Jambe
  - see <a href="L.html#legbeast">Leg - Beast</a> and <a href="L.html#legbird">Leg - Bird</a>
+<li>Japanese nail puller
+ - see <a href="T.html#toolother">Tool - Other</a> and <a href="B.html#billet">Billet</a>
+<li>Japanese well frame
+ - see <a href="B.html#billet">Billet</a>
 <li>Jar
  - see <a href="E.html#ewer">Ewer</a>
 <li>Jasmine blossom
@@ -6805,8 +6876,10 @@ $IndexPage{'J'} = <<'XXEOFXX';
  - see <a href="F.html#flowertrumpetshape">Flower - Trumpet shape</a>
 <li>Joscelyn
  - see <a href="T.html#torse">Torse</a>
+<li>Jug
+ - see <a href="B.html#bottle">Bottle</a>
 <li>Juniper
- - see <a href="T.html#treeelongatedshape">Tree - Elongated shape</a>
+ - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
 </ul>
 
 XXTrailerXX
@@ -6949,7 +7022,7 @@ $IndexPage{'L'} = <<'XXEOFXX';
 <li>Lathe
  - see <a href="T.html#toolother">Tool - Other</a>
 <li>Laurel branch
- - see <a href="T.html#treebranch">Tree - Branch</a> and <a href="P.html#plantsprig">Plant - Sprig</a> and <a href="P.html#plantherb">Plant - Herb</a>
+ - see <a href="T.html#treebranch">Tree branch</a> and <a href="P.html#plantsprig">Plant - Sprig</a> and <a href="P.html#plantherb">Plant - Herb</a>
 <li>Laurel tree
  - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
 <li>Laurel wreath
@@ -7014,8 +7087,8 @@ $IndexPage{'L'} = <<'XXEOFXX';
  - see <a href="B.html#birdwhole">Bird - Whole</a>
 <li>Lion
  - see <a href="B.html#beastcat">Beast - Cat</a>
-<li>Lion dragon
- - see <a href="M.html#monsterother">Monster - Other</a> and <a href="M.html#monsterdragon">Monster - Dragon</a> and <a href="B.html#beastcat">Beast - Cat</a> and <a href="M.html#monstersealion">Monster - Sea - Lion</a>
+<li>Lion-dragon
+ - see <a href="M.html#monsterdragon">Monster - Dragon</a> and <a href="M.html#monstersealion">Monster - Sea - Lion</a> and <a href="M.html#monstercomposite">Monster - Composite</a> and <a href="M.html#monsterwinged">Monster - Winged</a>
 <li>Lion - Bicorporate
  - see <a href="B.html#beastcat">Beast - Cat</a> and <a href="M.html#monstermultibodied">Monster - Multibodied</a>
 <li>Lion - Sea
@@ -7227,6 +7300,8 @@ $IndexPage{'M'} = <<'XXEOFXX';
  - see <a href="P.html#plantholly">Plant - Holly</a>
 <li>Mistral
  - see <a href="C.html#cloud">Cloud</a> and <a href="H.html#headhuman">Head - Human</a>
+<li>Mitsutomoe
+ - see <a href="S.html#symbol">Symbol</a> and <a href="A.html#alembic">Alembic</a> and <a href="G.html#goutte">Goutte</a>
 <li>Mjollnir
  - see <a href="H.html#hammer">Hammer</a>
 <li>Mole
@@ -7249,7 +7324,7 @@ $IndexPage{'M'} = <<'XXEOFXX';
 <li>Monogram
  - see <a href="S.html#symbol">Symbol</a>
 <li>Monster - Alphyn
- - see <a href="M.html#monstergriffin">Monster - Griffin</a>
+ - see <a href="M.html#monsterother">Monster - Other</a>
 <li>Monster - Amphisbaena
  - see <a href="M.html#monsterdragon">Monster - Dragon</a> and <a href="M.html#monstermultiheaded">Monster - Multiheaded</a>
 <a name="monsterantelope">
@@ -7373,10 +7448,10 @@ $IndexPage{'M'} = <<'XXEOFXX';
 <a name="monstersea">
 <li>Monster - Sea - Dog
  - see <a href="M.html#monsterseawolf">Monster - Sea - Wolf</a>
-<a name="monsterseadragon">
-<li><a href="XXDescSearchUrlXX?p=MONSTER%2dSEA%20DRAGON%20AND%20SEA%20GRIFFIN">Monster - Sea - Dragon</a>
+<li>Monster - Sea - Dragon
+ - see <a href="M.html#monsterdragon">Monster - Dragon</a>
 <li>Monster - Sea - Griffin
- - see <a href="M.html#monsterseadragon">Monster - Sea - Dragon</a>
+ - see <a href="M.html#monsterdragon">Monster - Dragon</a>
 <a name="monsterseahorse">
 <li><a href="XXDescSearchUrlXX?p=MONSTER%2dSEA%20HORSE%20AND%20SEA%20UNICORN%3aargent%3a1">Monster - Sea - Horse - 1 - Argent</a>
 <li><a href="XXDescSearchUrlXX?p=MONSTER%2dSEA%20HORSE%20AND%20SEA%20UNICORN%3aazure%3a1">Monster - Sea - Horse - 1 - Azure</a>
@@ -7660,7 +7735,7 @@ $IndexPage{'M'} = <<'XXEOFXX';
 <li>Musimon's head
  - see <a href="H.html#headbeastgoat">Head - Beast - Goat</a>
 <li>Mustard flower
- - see <a href="F.html#flowerfewpetals">Flower - Few petals</a> and <a href="Q.html#quatrefoil">Quatrefoil</a>
+ - see <a href="F.html#flowerfewpetals">Flower - Few petals</a> and <a href="F.html#foilquatrefoil">Foil - Quatrefoil</a>
 </ul>
 
 XXTrailerXX
@@ -7688,6 +7763,8 @@ $IndexPage{'N'} = <<'XXEOFXX';
  - see <a href="S.html#spear">Spear</a>
 <a name="nail">
 <li><a href="XXDescSearchUrlXX?p=NAIL">Nail</a>
+<li>Nail puller - Japanese
+ - see <a href="T.html#toolother">Tool - Other</a> and <a href="B.html#billet">Billet</a>
 <li>Narcissus blossom
  - see <a href="F.html#flowertrumpetshape">Flower - Trumpet shape</a>
 <li>Narwhal
@@ -7790,6 +7867,8 @@ $IndexPage{'O'} = <<'XXEOFXX';
  - see <a href="F.html#floweriris">Flower - Iris</a>
 <li>Organ
  - see <a href="M.html#musicalinstrumentorgan">Musical instrument - Organ</a>
+<li>Organ pipe
+ - see <a href="M.html#musicalinstrumentorgan">Musical instrument - Organ</a>
 <li>Oriole
  - see <a href="B.html#birdwhole">Bird - Whole</a>
 <a name="orle">
@@ -7888,7 +7967,7 @@ $IndexPage{'P'} = <<'XXEOFXX';
 <li>Palm frond
  - see <a href="L.html#leaf">Leaf</a>
 <li>Palm tree
- - see <a href="T.html#treepalmtreeshape">Tree - Palm tree shape</a>
+ - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
 <li>Palmer
  - see <a href="H.html#humanfigure">Human figure</a>
 <li>Palmer's staff
@@ -8039,6 +8118,8 @@ $IndexPage{'P'} = <<'XXEOFXX';
 <li>Pick
  - see <a href="H.html#hammer">Hammer</a> and <a href="T.html#toolagricultural">Tool - Agricultural</a> and <a href="T.html#toolother">Tool - Other</a>
 <li>Pick axe
+ - see <a href="T.html#toolother">Tool - Other</a>
+<li>Pickaxe
  - see <a href="T.html#toolother">Tool - Other</a>
 <li>Pie
  - see <a href="F.html#foodstuff">Foodstuff</a>
@@ -8223,12 +8304,16 @@ $IndexPage{'P'} = <<'XXEOFXX';
  - see <a href="B.html#birdwhole">Bird - Whole</a>
 <li>Plow
  - see <a href="T.html#toolagricultural">Tool - Agricultural</a>
+<li>Plum
+ - see <a href="F.html#fruitother">Fruit - Other</a>
 <li>Plumb-line
  - see <a href="T.html#toolcarpentry">Tool - Carpentry</a>
 <li>Plume
  - see <a href="F.html#feather">Feather</a>
 <li>Plumetty
  - see <a href="F.html#fieldtreatmentplumetty">Field treatment - Plumetty</a>
+<li>Plummet
+ - see <a href="T.html#toolcarpentry">Tool - Carpentry</a>
 <li>Pod
  - see <a href="F.html#fruitother">Fruit - Other</a>
 <li>Point
@@ -8237,6 +8322,8 @@ $IndexPage{'P'} = <<'XXEOFXX';
  - see <a href="P.html#plantvine">Plant - Vine</a>
 <a name="poleaxe">
 <li><a href="XXDescSearchUrlXX?p=POLE%2dAXE">Pole axe</a>
+<li>Pole-cannon
+ - see <a href="G.html#gun">Gun</a>
 <li>Polecat
  - see <a href="B.html#beastsquirrel">Beast - Squirrel</a>
 <a name="polygon">
@@ -8253,7 +8340,7 @@ $IndexPage{'P'} = <<'XXEOFXX';
 <li>Popinjay
  - see <a href="B.html#birdwhole">Bird - Whole</a>
 <li>Poplar
- - see <a href="T.html#treeelongatedshape">Tree - Elongated shape</a>
+ - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
 <li>Poppy
  - see <a href="F.html#flowercupshape">Flower - Cup shape</a> and <a href="F.html#flowerrose">Flower - Rose</a>
 <li>Porcupine
@@ -8357,6 +8444,8 @@ $IndexPage{'Q'} = <<'XXEOFXX';
  - see <a href="F.html#feather">Feather</a> and <a href="P.html#pen">Pen</a>
 <li>Quill of yarn
  - see <a href="T.html#tooltextile">Tool - Textile</a>
+<li>Quince
+ - see <a href="F.html#fruitother">Fruit - Other</a>
 <li><a href="XXDescSearchUrlXX?p=QUINTAIN">Quintain</a>
 <li><a href="XXDescSearchUrlXX?p=QUIVER">Quiver</a>
 </ul>
@@ -8384,6 +8473,8 @@ $IndexPage{'R'} = <<'XXEOFXX';
  - see <a href="B.html#beastrabbit">Beast - Rabbit</a>
 <li>Raccoon
  - see <a href="B.html#beastbadger">Beast - Badger</a>
+<li>Raccoon head
+ - see <a href="H.html#headbeastbadger">Head - Beast - Badger</a>
 <li>Radish
  - see <a href="F.html#fruitother">Fruit - Other</a>
 <li>Ragweed
@@ -8422,6 +8513,8 @@ $IndexPage{'R'} = <<'XXEOFXX';
  - see <a href="H.html#headbird">Head - Bird</a>
 <li>Ray
  - see <a href="F.html#fishray">Fish - Ray</a>
+<li>Razorbill
+ - see <a href="B.html#birdpenguin">Bird - Penguin</a>
 <li>Reaping hook
  - see <a href="T.html#toolagricultural">Tool - Agricultural</a> and <a href="H.html#hook">Hook</a>
 <li>Rebec
@@ -8608,6 +8701,8 @@ $IndexPage{'R'} = <<'XXEOFXX';
  - see <a href="M.html#mullet">Mullet</a>
 <li>Rudder
  - see <a href="S.html#shippart">Ship - Part</a>
+<li>Rue flower
+ - see <a href="F.html#flowerfewpetals">Flower - Few petals</a> and <a href="F.html#foilquatrefoil">Foil - Quatrefoil</a>
 <li>Rune
  - see <a href="S.html#symbol">Symbol</a>
 <li>Rush
@@ -8750,13 +8845,15 @@ $IndexPage{'S'} = <<'XXEOFXX';
 <li>Sea dog
  - see <a href="M.html#monsterseawolf">Monster - Sea - Wolf</a>
 <li>Sea dragon
- - see <a href="M.html#monsterseadragon">Monster - Sea - Dragon</a>
+ - see <a href="M.html#monsterdragon">Monster - Dragon</a>
 <li>Sea elephant
  - see <a href="B.html#beastseal">Beast - Seal</a> and <a href="M.html#monsterseaother">Monster - Sea - Other</a>
 <li>Sea food
  - see <a href="A.html#arthropodlobster">Arthropod - Lobster</a> and <a href="S.html#shell">Shell</a> and <a href="M.html#molluskoctopus">Mollusk - Octopus</a>
+<li>Sea-fox
+ - see <a href="M.html#monsterseawolf">Monster - Sea - Wolf</a>
 <li>Sea griffin
- - see <a href="M.html#monsterseadragon">Monster - Sea - Dragon</a>
+ - see <a href="M.html#monsterdragon">Monster - Dragon</a>
 <li>Sea gull
  - see <a href="B.html#birdwhole">Bird - Whole</a>
 <li>Sea horse
@@ -8777,6 +8874,8 @@ $IndexPage{'S'} = <<'XXEOFXX';
 <li>Sea monster
  - see <a href="M.html#monstersea">Monster - Sea</a>
 <li>Sea moose
+ - see <a href="M.html#monsterseaother">Monster - Sea - Other</a>
+<li>Sea nettle
  - see <a href="M.html#monsterseaother">Monster - Sea - Other</a>
 <li>Sea otter
  - see <a href="B.html#beastweasel">Beast - Weasel</a>
@@ -8982,6 +9081,8 @@ $IndexPage{'S'} = <<'XXEOFXX';
  - see <a href="R.html#reptilesnake">Reptile - Snake</a>
 <li>Snip - Cloth
  - see <a href="S.html#shear">Shear</a>
+<li>Snowdrop
+ - see <a href="F.html#flowertrumpetshape">Flower - Trumpet shape</a>
 <li>Snowflake
  - see <a href="E.html#escarbuncle">Escarbuncle</a>
 <li>Sock
@@ -9026,6 +9127,8 @@ $IndexPage{'S'} = <<'XXEOFXX';
 <a name="spindle">
 <li><a href="XXDescSearchUrlXX?p=SPINDLE">Spindle</a>
  - see also <a href="T.html#tooltextile">Tool - Textile</a>
+<li>Spinning wheel
+ - see <a href="T.html#tooltextile">Tool - Textile</a>
 <li>Spiral
  - see <a href="G.html#gurges">Gurges</a>
 <li>Spiral horn
@@ -9407,7 +9510,7 @@ $IndexPage{'T'} = <<'XXEOFXX';
  - see <a href="S.html#siegeengine">Siege engine</a>
 <a name="tree">
 <li>Tree - Alder
- - see <a href="T.html#treeelongatedshape">Tree - Elongated shape</a>
+ - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
 <li>Tree - Apple
  - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
 <li>Tree - Ash
@@ -9415,9 +9518,9 @@ $IndexPage{'T'} = <<'XXEOFXX';
 <li>Tree - Aspen
  - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
 <li>Tree - Beech
- - see <a href="T.html#treeelongatedshape">Tree - Elongated shape</a>
+ - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
 <li>Tree - Birch
- - see <a href="T.html#treeelongatedshape">Tree - Elongated shape</a>
+ - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
 <a name="treeblasted">
 <li><a href="XXDescSearchUrlXX?p=TREE%2dBLASTED">Tree - Blasted</a>
 <li>Tree - Cedar
@@ -9427,13 +9530,11 @@ $IndexPage{'T'} = <<'XXEOFXX';
 <li>Tree - Cinnamon
  - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
 <li>Tree - Cypress
- - see <a href="T.html#treeelongatedshape">Tree - Elongated shape</a>
+ - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
 <li>Tree - Date palm
- - see <a href="T.html#treepalmtreeshape">Tree - Palm tree shape</a>
+ - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
 <li>Tree - Elm
  - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
-<a name="treeelongatedshape">
-<li><a href="XXDescSearchUrlXX?p=TREE%2dELONGATED%20SHAPE">Tree - Elongated shape</a>
 <li>Tree - Fir
  - see <a href="T.html#treepinetreeshape">Tree - Pine tree shape</a>
 <li>Tree - Hazel
@@ -9443,7 +9544,7 @@ $IndexPage{'T'} = <<'XXEOFXX';
 <li>Tree - Hurst
  - see <a href="T.html#treemultiple">Tree - Multiple</a>
 <li>Tree - Juniper
- - see <a href="T.html#treeelongatedshape">Tree - Elongated shape</a>
+ - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
 <li>Tree - Laurel
  - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
 <li>Tree - Madrone
@@ -9460,8 +9561,8 @@ $IndexPage{'T'} = <<'XXEOFXX';
  - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
 <li>Tree - Orange
  - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
-<a name="treepalmtreeshape">
-<li><a href="XXDescSearchUrlXX?p=TREE%2dPALM%20TREE%20SHAPE">Tree - Palm tree shape</a>
+<li>Tree - Palm
+ - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
 <li>Tree - Pear
  - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
 <a name="treepinetreeshape">
@@ -9469,7 +9570,7 @@ $IndexPage{'T'} = <<'XXEOFXX';
 <li>Tree - Pointed shape
  - see <a href="T.html#treepinetreeshape">Tree - Pine tree shape</a>
 <li>Tree - Poplar
- - see <a href="T.html#treeelongatedshape">Tree - Elongated shape</a>
+ - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
 <li>Tree - Redwood
  - see <a href="T.html#treepinetreeshape">Tree - Pine tree shape</a>
 <a name="treeroundedshape">
@@ -9511,6 +9612,8 @@ $IndexPage{'T'} = <<'XXEOFXX';
  - see <a href="F.html#foiltrefoil">Foil - Trefoil</a>
 <li>Trenket
  - see <a href="T.html#toolother">Tool - Other</a>
+<li>Tress
+ - see <a href="K.html#knot">Knot</a>
 <li>Tressure
  - see <a href="O.html#orle">Orle</a>
 <li>Trews
@@ -9531,6 +9634,8 @@ $IndexPage{'T'} = <<'XXEOFXX';
 <a name="tripod">
 <li><a href="XXDescSearchUrlXX?p=TRIPOD%20AND%20TRIVET">Tripod</a>
 <li><a href="XXDescSearchUrlXX?p=TRIQUETRA">Triquetra</a>
+<li>Trireme
+ - see <a href="S.html#shiplymphad">Ship - Lymphad</a>
 <li>Triskele
  - see <a href="T.html#triskelion">Triskelion</a>
 <a name="triskelion">
@@ -9629,6 +9734,8 @@ $IndexPage{'U'} = <<'XXEOFXX';
  - see <a href="B.html#beasthedgehog">Beast - Hedgehog</a>
 <li>Urchin - Sea
  - see <a href="M.html#monsterseaother">Monster - Sea - Other</a>
+<li>Urinal
+ - see <a href="B.html#bottle">Bottle</a>
 <li>Urn
  - see <a href="E.html#ewer">Ewer</a>
 </ul>
@@ -9672,6 +9779,10 @@ $IndexPage{'V'} = <<'XXEOFXX';
  - see <a href="C.html#clothingheadgear">Clothing - Headgear</a>
 <li>Vetu
  - see <a href="F.html#fielddivisionvetu">Field division - Vetu</a>
+<li>Vexilium
+ - see <a href="F.html#flag">Flag</a>
+<li>Vexillium
+ - see <a href="F.html#flag">Flag</a>
 <li>Vexillum
  - see <a href="F.html#flag">Flag</a>
 <li>Vine
@@ -9737,8 +9848,10 @@ $IndexPage{'W'} = <<'XXEOFXX';
  - see <a href="B.html#beastbull">Beast - Bull</a>
 <li>Water lily
  - see <a href="F.html#flowercupshape">Flower - Cup shape</a>
+<li>Waterlily
+ - see <a href="F.html#flowercupshape">Flower - Cup shape</a>
 <li>Waterwheel
- - see <a href="W.html#wheelheraldic">Wheel - Heraldic</a>
+ - see <a href="W.html#wheel">Wheel</a>
 <li><a href="XXDescSearchUrlXX?p=WAVE">Wave</a>
 <li>Weapon
  - see <a href="M.html#mace">Mace</a> and <a href="S.html#sword">Sword</a> and <a href="A.html#arrow">Arrow</a> and <a href="A.html#axe">Axe</a> and <a href="B.html#bow">Bow</a> and <a href="H.html#hammer">Hammer</a> and <a href="P.html#poleaxe">Pole axe</a> and <a href="T.html#trident">Trident</a> and <a href="S.html#spear">Spear</a> and <a href="S.html#sling">Sling</a> and <a href="G.html#gun">Gun</a> and <a href="S.html#siegeengine">Siege engine</a> and <a href="S.html#staff">Staff</a>
@@ -9756,6 +9869,8 @@ $IndexPage{'W'} = <<'XXEOFXX';
  - see <a href="I.html#inkhorn">Inkhorn</a>
 <li><a href="XXDescSearchUrlXX?p=WELL">Well - Water</a>
  - see also <a href="A.html#architecture">Architecture</a>
+<li>Werewolf
+ - see <a href="B.html#beastdog">Beast - Dog</a>
 <li>Whale
  - see <a href="F.html#fishwhale">Fish - Whale</a>
 <li>Wheat
@@ -9769,7 +9884,7 @@ $IndexPage{'W'} = <<'XXEOFXX';
 <li>Wheel - Wool
  - see <a href="T.html#tooltextile">Tool - Textile</a>
 <li>Whelk
- - see <a href="S.html#shellother">Shell - Other</a> and <a href="E.html#escallop">Escallop</a>
+ - see <a href="S.html#shellother">Shell - Other</a> and <a href="S.html#shellescallop">Shell - Escallop</a>
 <li>Whip
  - see <a href="S.html#saddlery">Saddlery</a>
 <li>Whippet
@@ -10680,20 +10795,21 @@ if ($p ne '') {
 print '<p>There are <a href="XXSearchMenuUrlXX">other search forms</a> available.';
 print 'For help using this form, please refer to the <a href="XXNpHintsPageUrlXX">hints page</a>.';
 
-print '<p>Enter the name pattern for which you are searching ->;';
+print '<p>Enter the name pattern for which you are searching -> ';
 print '<input type="text" name="p" value="', $p, '" size=30>';
 
 print '<p>Select type of search ->;';
 &select ('b', $breadth, @breadths);
 &select ('c', $case, @cases);
 
-print '<p>Maximum number of items to display ->;';
+print '<p>Maximum number of items to display -> ';
 print '<input type="text" name="l" value="', $limit, '" size=3>';
 
 &display_options ();
 
 print '<h3>Actions:</h3>';
 print '<input type="submit" value="search for items matching the name pattern">';
+print '<input type="submit" value="convert pattern to search for variations on items matching the name pattern">';
 print '</form>';
 
 if ($p ne '') {
@@ -11342,7 +11458,7 @@ $sockaddr = 'S n a4 x8';   # format of socket address
 $AF_INET = XXAF_INETXX;
 $SOCK_STREAM = XXSOCK_STREAMXX;
 
-$[ = 1;
+#$[ = 1;
 $" = '|';
 $\ = "\n";
 
@@ -11641,7 +11757,7 @@ $\ = "\n";
  'November', '11',
  'December', '12');
 
-@month_name = (
+@month_name = ( '',
  'January',
  'February',
  'March',
@@ -11776,8 +11892,8 @@ sub print_match {
   if ($type eq 'Nc') {
     print 'This name';
     if ($source =~ /-/) {
-      print ', registered ', &source ($source[1]), ',';
-      $source = $source[2];
+      print ', registered ', &source ($source[0]), ',';
+      $source = $source[1];
     }
     print ' was corrected to ', &name ($text);
     print ' ', &source ($source), '.';
@@ -11785,8 +11901,8 @@ sub print_match {
   } elsif ($type eq 'BNc') {
     print 'This branch-name';
     if ($source =~ /-/) {
-      print ', registered ', &source ($source[1]), ',';
-      $source = $source[2];
+      print ', registered ', &source ($source[0]), ',';
+      $source = $source[1];
     }
     print ' was corrected to ', &name ($text);
     print ' ', &source ($source), '.';
@@ -11794,8 +11910,8 @@ sub print_match {
   } elsif ($type eq 'u') {
     print 'This branch name';
     if ($source =~ /-/) {
-      print ', registered ', &source ($source[1]), ',';
-      $source = $source[2];
+      print ', registered ', &source ($source[0]), ',';
+      $source = $source[1];
     }
     print ' was updated to ', &name ($text);
     print ' ', &source ($source), '.';
@@ -11803,8 +11919,8 @@ sub print_match {
   } elsif ($type eq 'ANC') {
     print 'This alternate name';
     if ($source =~ /-/) {
-      print ', registered ', &source ($source[1]), ',';
-      $source = $source[2];
+      print ', registered ', &source ($source[0]), ',';
+      $source = $source[1];
     }
     print ' was changed to ', &name ($text);
     print ' ', &source ($source), '.';
@@ -11812,8 +11928,8 @@ sub print_match {
   } elsif ($type eq 'HNC') {
     print 'This household name';
     if ($source =~ /-/) {
-      print ', registered ', &source ($source[1]), ',';
-      $source = $source[2];
+      print ', registered ', &source ($source[0]), ',';
+      $source = $source[1];
     }
     print ' was changed to ', &name ($text);
     print ' ', &source ($source), '.';
@@ -11821,8 +11937,8 @@ sub print_match {
   } elsif ($type eq 'OC') {
     print 'This order name';
     if ($source =~ /-/) {
-      print ', registered ', &source ($source[1]), ',';
-      $source = $source[2];
+      print ', registered ', &source ($source[0]), ',';
+      $source = $source[1];
     }
     print ' was changed to ', &name ($text);
     print ' ', &source ($source), '.';
@@ -11831,8 +11947,8 @@ sub print_match {
     $text =~ s/^See //;
     print 'This branch-name';
     if ($source =~ /-/) {
-      print ', registered ', &source ($source[1]), ',';
-      $source = $source[2];
+      print ', registered ', &source ($source[0]), ',';
+      $source = $source[1];
     }
     print ' was changed to ', &name ($text);
     print ' ', &source ($source), '.';
@@ -11841,20 +11957,20 @@ sub print_match {
     $text =~ s/^See //;
     print 'This name';
     if ($source =~ /-/) {
-      print ', registered ', &source ($source[1]), ',';
-      $source = $source[2];
+      print ', registered ', &source ($source[0]), ',';
+      $source = $source[1];
     }
     print ' was changed to ', &name ($text);
     print ' ', &source ($source), '.';
 
   } elsif ($type eq 'j') {
-    print 'This name was referenced ', &source ($source[1]);
+    print 'This name was referenced ', &source ($source[0]);
     print ' as joint registrant of a badge';
     print ' with ', &name ($text), '.';
 
   } elsif ($type eq 'R') {
     $text =~ s/^See (also )?//;
-    print 'This name was referenced ', &source ($source[1]);
+    print 'This name was referenced ', &source ($source[0]);
     if ($text =~ /^\"(.+)\"$/) {
       print ' in registrations by ';
       @targs = split (/\" or \"/, $1);
@@ -11868,62 +11984,62 @@ sub print_match {
 
   } elsif ($type eq 'vc' || $type eq 'Bvc') {
     if ($source !~ /-/) {
-      $source[1] = $source[2];
-      $source[2] = $source;
+      $source[0] = $source[1];
+      $source[1] = $source;
     }
-    print 'This appeared ', &source ($source[1]);
+    print 'This appeared ', &source ($source[0]);
     print ' as a mis-spelling of ', &name ($text), '. ';
-    print 'The error was corrected ', &source ($source[2]);
+    print 'The error was corrected ', &source ($source[1]);
 
   } elsif ($type eq 'v' || $type eq 'Bv') {
-    print 'This appeared ', &source ($source[1]);
+    print 'This appeared ', &source ($source[0]);
     print '.<br>It appears to have been a mis-spelling of ';
     print &name ($text), '.';
 
   } elsif ($type eq 'BN') {
-    print 'This branch-name was registered ', &source ($source[1]);
-    print ' and released ', &source ($source[2]) if ($source =~ /-/);
+    print 'This branch-name was registered ', &source ($source[0]);
+    print ' and released ', &source ($source[1]) if ($source =~ /-/);
     print '.';
 
   } elsif ($type eq 'N') {
-    print 'This name was registered ', &source ($source[1]);
-    print ' and released ', &source ($source[2]) if ($source =~ /-/);
+    print 'This name was registered ', &source ($source[0]);
+    print ' and released ', &source ($source[1]) if ($source =~ /-/);
     print '.';
 
   } elsif ($type eq 't' || $type eq 'AN' || $type eq 'HN' || $type eq 'O') {
     $text =~ s/^For // if ($type eq 'AN');
     print 'This ', $type_name{$type}, ' was registered to ';
-    print &name ($text), ' ', &source ($source[1]);
-    print ' and ', $disp, ' ', &source ($source[2]) if ($source =~ /-/);
+    print &name ($text), ' ', &source ($source[0]);
+    print ' and ', $disp, ' ', &source ($source[1]) if ($source =~ /-/);
     print '.';
 
   } elsif ($type eq 'BD') {
     print 'Either the branch-name or the following arms';
-    print ' associated it (or both) were registered ', &source ($source[1]);
-    print ' and ', $disp, ' ', &source ($source[2]) if ($source =~ /-/);
+    print ' associated it (or both) were registered ', &source ($source[0]);
+    print ' and ', $disp, ' ', &source ($source[1]) if ($source =~ /-/);
     print ':<br><b>', &blazon ($text), '</b>';
 
   } elsif ($type =~ /^[ABDS]$/) {
     $type =~ tr/ABDS/abds/;
     print 'Either the name or the following ', $type_name{$type};
-    print ' associated it (or both) were registered ', &source ($source[1]);
-    print ' and ', $disp, ' ', &source ($source[2]) if ($source =~ /-/);
+    print ' associated it (or both) were registered ', &source ($source[0]);
+    print ' and ', $disp, ' ', &source ($source[1]) if ($source =~ /-/);
     print ':<br><b>', &blazon ($text), '</b>';
 
   } elsif ($type =~ /^[abdgs]$/ || $type eq 'D?') {
     print 'The following ', $type_name{$type};
-    print ' associated with this name was registered ', &source ($source[1]);
-    print ' and ', $disp, ' ', &source ($source[2]) if ($source =~ /-/);
+    print ' associated with this name was registered ', &source ($source[0]);
+    print ' and ', $disp, ' ', &source ($source[1]) if ($source =~ /-/);
     print ':<br><b>', &blazon ($text), '</b>';
 
   } elsif ($type eq 'W') {
-    print 'An heraldic will was filed with Laurel ', source($source[1]);
+    print 'An heraldic will was filed with Laurel ', source($source[0]);
 
   } elsif ($type eq 'C') {
     print 'A database comment:<br>', $text;
 
   } elsif ($type eq 'r') {
-    print 'Is a reserved word or phrase noted ', source($source[1]);
+    print 'Is a reserved word or phrase noted ', source($source[0]);
 
   } else {
     print "An unknown record (type=`$type') was found in the database.";
@@ -12103,7 +12219,7 @@ sub byscoreblazon {
 #  Non-ASCII chars, ampersands, angle-brackets, etc. are escaped.
 sub escape {
   local($out) = '';
-  foreach (split (//, $_[1])) {
+  foreach (split (//, $_[0])) {
     if (m&^[ !'()*+,./0-9:;?A-Za-z-]$&) {
       $out .= $_;
     } else {
@@ -12116,7 +12232,7 @@ sub escape {
 # Common client function to translate a Latin-1 string into a URL fragment.
 
 sub encodeway {
-  local($_) = $_[1];
+  local($_) = $_[0];
 
   tr/\300\301\302\303\304\305\307\310\311\312\313\314\315\316\317\321\322\323\324\325\326\330\331\332\333\334\335\340\341\342\343\344\345\347\350\351\352\353\354\355\356\357\361\362\363\364\365\366\370\371\372\373\374\375\377/AAAAAACEEEEIIIINOOOOOOUUUUYaaaaaaceeeeiiiinoooooouuuuyy/;
   s/\306/AE/g;
@@ -12132,7 +12248,7 @@ sub encodeway {
 
 sub encode {
   local($out) = '';
-  local($_) = $_[1];
+  local($_) = $_[0];
 
   local(@chars) = split (//, $_);
 
@@ -12174,6 +12290,7 @@ sub source {
       ++$year if ($month > 4);
 
       # Convert the numeric SCA year (1 .. 99) to Roman numerals.
+      #FIXME?
       $year = 'A.S. ' . ('', 'X', 'XX', 'XXX', 'XL', 'L',
                        'LX', 'LXX', 'LXXX', 'XC')[$[ + int($year/10)]
                     . ('', 'I', 'II', 'III', 'IV', 'V', 

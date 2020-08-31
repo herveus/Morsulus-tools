@@ -11,7 +11,7 @@
 <br>
     updated by Herveus d'Ormonde
 <br>
-    28 March 2014
+    1 December 2018
 
 </h3><p>
 This document describes the format used to record names and armory in
@@ -38,35 +38,35 @@ after the end-of-notice.
 </h4><p>
 Each record occupies a single line in the file, and each line contains
 one record.  A record has at least five fields, separated by stiles
-(`|').  The five required fields are:  name, source, type, text,
+('|').  The five required fields are:  name, source, type, text,
 and notes, in that order.
 
 <p><ul><li>
   (1)  a name associated with the item
 <ul><li>
-	  If the type is one of `B' `D' `N' `a' `b' `d' `g' `j' `s'
-            `BD' `BN' `W' or `D?', this is the registrant's name.
+	  If the type is one of 'B' 'D' 'N' 'a' 'b' 'd' 'g' 'j' 's'
+            'BD' 'BN' 'W', or 'D?', this is the registrant's name.
 <li>
-	  If the type is `AN', this is the alternate name.
+	  If the type is 'AN', this is the alternate name.
 <li>
-	  If the type is `HN', this is the household name.
+	  If the type is 'HN', this is the household name.
 <li>
-	  If the type is `O', this is the name of the award or order.
+	  If the type is 'O', this is the name of the award or order.
 <li>
-	  If the type is `t', this is the heraldic title.
+	  If the type is 't', this is the heraldic title.
 <li>
-	  If the type is one of `ANC' `BNC' `BNc' `NC' `Nc'
-            `HNC' or `OC', this is the earlier name.
+	  If the type is one of 'ANC' 'BNC' 'BNc' 'NC' 'Nc'
+            'HNC', 'OC', or 'u', this is the earlier name.
 <li>
-	  If the type is one of `Bv' `Bvc' `v' or `vc', this is the
+	  If the type is one of 'Bv' 'Bvc' 'v', or 'vc', this is the
             incorrect spelling of the name.
 <li>
-	  If the type is `C', this is a blank.
+	  If the type is 'C', this is a blank.
 <li>
-	  If the type is `R', this indicates where the cross-reference
+	  If the type is 'R', this indicates where the cross-reference
             appears in the Armorial.
 <li>
-	  If the type is `r', this indicates a word or phrase that is
+	  If the type is 'r', this indicates a word or phrase that is
 	        reserved or too generic for registration by itself. 
              
 
@@ -83,16 +83,16 @@ and notes, in that order.
 <p>
 	     Examples:
 <p><ul><li>
-                `197010'  (= the October 1970 LoAR or errata letter)
+                '197010'  (= the October 1970 LoAR or errata letter)
 <li>
-		`199001E' (= the January 1990 LoAR or errata letter under "EAST")
+		'199001E' (= the January 1990 LoAR or errata letter under "EAST")
 <li>
-		`205912W' (= the December 2059 LoAR or errata letter under "WEST")
+		'205912W' (= the December 2059 LoAR or errata letter under "WEST")
 
 </ul><p>
 	     In this case, the LoAR date indicates the date of the
 	     Laurel action that created the record.  For combined
-             records (record types `B' `BD' and `D') this is not
+             records (record types 'B' 'BD' and 'D') this is not
              necessarily the date the name was registered, nor
 	     is it necessarily the date the armory was registered.
 <p><li>
@@ -215,6 +215,8 @@ and notes, in that order.
 <li>
 	  t    = heraldic Title
 <li>
+	  u    = branch designator update
+<li>
           v    = personal name Variant without correction (probable error)
 <li>
           vc   = personal name Variant with Correction
@@ -224,45 +226,45 @@ and notes, in that order.
 </ul><p><li>
   (4)  text:
 <ul><li>
-	  If the type is one of `B' `D' `a' `b' `d' `g' `s' `BD' or `D?',
+	  If the type is one of 'B' 'D' 'a' 'b' 'd' 'g' 's' 'BD', or 'D?',
             this is the blazon.
 <li>
-	  If the type is `BN' `N' or `W', this must be empty.
+	  If the type is 'BN' 'N', or 'W', this must be empty.
 <li>
-	  If the type is `j', this is the name of other registrant of the
+	  If the type is 'j', this is the name of other registrant of the
             joint badge.  (The other registrant's record will have the
             complete blazon.)
 <li>
-	  If the type is `AN', this is `For' followed by the
+	  If the type is 'AN', this is 'For' followed by the
 	    primary name of the registrant.
 <li>
-	  If the type is `HN', this is the name of the registrant, or
+	  If the type is 'HN', this is the name of the registrant, or
             a list of registrants, enclosed in double-quotes and
-            separated by `and'.
+            separated by 'and'.
 <li>
-	  If the type is `O', this is the name of the
+	  If the type is 'O', this is the name of the
 	    branch that registered the award or order.
 <li>
-	  If the type is `t', this is the name of the branch
+	  If the type is 't', this is the name of the branch or person
             which registered the title.
 <li>
-	  If the type is `BNC' or `NC', this is the word `See' followed by
+	  If the type is 'BNC', or 'NC', this is the word 'See' followed by
 	    the new (branch or personal) name.
 <li>
-	  If the type is `ANC' `HNC' or 'OC' this is the new (alternate,
+	  If the type is 'ANC' 'HNC', or 'OC' this is the new (alternate,
             household, or award/order) name.
 <li>
-	  If the type is `BNc', `Bv', `Bvc', `Nc', `v' or 'vc',
+	  If the type is 'BNc', 'Bv', 'Bvc', 'Nc', 'u', 'v', or 'vc',
             this is the corrected form of the (branch or personal) name.
 <li>
-	  If the type is `C', this is the text of the comment.
+	  If the type is 'C', this is the text of the comment.
 <li>
-	  If the type is `R', this is the word `See' followed by
+	  If the type is 'R', this is the word 'See' followed by
 	    the name under which the referenced item appears,
             or a list of names enclosed in double-quotes and separated
-            by `or'.
+            by 'or'.
 <li>
-      If the type is `r', this is 'Society for Creative Anachronism'.
+      If the type is 'r', this is 'Society for Creative Anachronism'.
 
 </ul><p>
 	  There is no official limit on the length of the text field.
@@ -271,19 +273,19 @@ and notes, in that order.
   (5)  notes, individually enclosed in parentheses:
 <ul><li>
 	  To clarify the blazon:
-	    `A Cross of Samildanach is four Menorahs in cross'
+	    'A Cross of Samildanach is four Menorahs in cross'
 <li>
 	  To indicate the status the item:
-	    `Closed' `Deceased' `Disbanded' `-released' `-corrected blazon'
+	    'Closed' 'Deceased' 'Disbanded' '-released' '-corrected blazon'
 <li>
 	  To indicate a special class of armory:
-	    `Civil Ensign' `Ensign' `Flag' `Naval Ensign' `War Banner'
+	    'Civil Ensign' 'Ensign' 'Flag' 'Naval Ensign' 'War Banner'
 <li>
 	  To indicate the intended use of the item:
-	    `For House of Duckford' `For the populace'
+	    'For House of Duckford' 'For the populace'
 <li>
 	  To indicate the other holder of a joint badge:
-	    `JB: Elinor Aurora of Rosewood'
+	    'JB: Elinor Aurora of Rosewood'
 
 </ul><p>
 	  There is no official limit on the number of notes or their length.
@@ -295,7 +297,7 @@ and notes, in that order.
           (and thus five fields).
 <p>
 
-          For armory items (types `B' `D' `a' `b' `d' `g' `s' `BD' and `D?')
+          For armory items (types 'B' 'D' 'a' 'b' 'd' 'g' 's' 'BD' and 'D?')
           additional fields are used to describe the headings under which
           the armory is indexed in the SCA Ordinary.  Obsolete armory
           is not indexed, and there is no official limit on the number
