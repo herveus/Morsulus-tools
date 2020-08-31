@@ -1,0 +1,160 @@
+<html>
+<head><title>Format of the SCA Armorial Database</title>
+<base href="XXDbFormatPageUrlXX">XXHeadXX
+</head><body>
+XXSiteHeadXX
+
+<h2>Format of the Category File</h2>
+
+<p>
+The armorial descriptions in the database are stored using codes defined in a text file known as my.cat, which is roughly 128 KB in size. 
+
+<p>
+You can download the category file via
+HTTP from <a href="XXWebCategoryUrlXX">XXWebCategoryUrlXX</a>
+
+<p>
+The category file is divided into three sections, each of which uses a different format:
+<ul>
+<li> Features (around 350 lines) function as adjectives, such as <code>argent</code> or <code>maltese</code>, providing additional details about a description.</li>
+<li> Categories (around 450 lines) function as nouns, such as <code>CROSS</code> or <code>HUMAN FIGURE</code>, providing the core content of a description.</li>
+<li> Cross-references (around 2,750 lines) list additional terms which are grouped under another category, such as <code>woman - see human figure</code>.</li>
+</ul>
+
+Although the features section of the file appears first in the file, we'll discuss the other two sections first here because categories appear before features when entering search terms.
+
+<h3>
+Categories
+</h3>
+
+<p>
+Categories are the core of armory descriptions. 
+
+<p>
+Each category line contains a human-readable term, then a pipe character ("<code>|</code>"), followed by a capitalized category code.
+
+<p>
+For example, here are a selection of category lines.
+
+<pre>
+axe|AXE
+azure field|AZ
+beast, bear|BEAST-BEAR
+beast, dog|DOG
+bird, demi|BIRD9DEMI
+bird, whole|BIRD
+cross, as charge|CRAC
+cross, throughout|CROSS
+field division, per fess|PFESS
+field division, per pale|PPALE
+pole axe|POLE-AXE
+</pre>
+
+<p>
+As you can see, the category code is sometimes a predictable capitalized version of the human-readable term, and other times is more idiosyncratic.
+
+<p>
+Most categories represent types of charges, but some correspond to solid fields or field divisions, and others indicate specific arrangments of charges.
+
+<h3>
+Cross-References
+</h3>
+
+<p>
+Cross-references make it easier to find individual category terms.
+
+<p>
+Each cross-reference line contains a human-readable term, then either "<code>see</code>" or "<code>see also</code>", followed by one or more human-readable category names.
+
+<p>
+For example, here are a selection of cross-reference lines.
+
+<pre>
+axe - see also pole axe
+broadaxe - see axe
+</pre>
+
+<p>
+The <code>see also</code> lines mark places where one category is being linked to another, related category, so in the above example so we can expect to find both <code>axe</code> and <code>pole axe</code> in the category list.
+
+<p>
+The <code>see</code> lines mark places where an additional term is being linked to an existing category, so the above example is telling us that there is no <code>broadaxe</code> category and instead all broadaxes are indexed under the <code>axe</code> category.
+
+<p>
+Some cross-reference lines direct you to more than one corresponding category, separated by <code>and</code>.
+
+<pre>
+bluejay - see bird, whole and bird, demi
+swallow - see bird, whole and bird, demi
+</pre>
+
+<p>
+The above example shows that bluejays and swallows are each indexed in one of two distinct categories, either <code>bird, whole</code> or <code>bird, demi</code>.
+
+<p>
+Many of the cross references define varieties, heraldic synonyms, or related charges that are indexed together.
+
+<pre>
+alaunt - see beast, dog
+cub, wolf - see beast, dog
+fox - see beast, dog
+husky - see beast, dog
+hyena - see beast, dog
+talbot - see beast, dog
+wolf - see beast, dog
+</pre>
+
+<p>
+Each of these is either a variety of dog (husky), or an old heraldic term for a variety of dog (alaunt, talbot), or a related canine that is indexed with dogs (fox, hyena, wolf).
+
+<h3>
+Features
+</h3>
+
+<p>
+Features are used to provide additional details about armory descriptions.
+
+<p>
+Each feature line starts with a pipe character ("<code>|</code>"), then has a feature set name followed by a colon, and then the individual feature name. 
+
+<p>
+For example, the <code>cross_family</code> feature set is used to mark subtypes of crosses. Its contents are defined in a series of lines like the below:
+<pre>
+|cross_family:crosslet
+|cross_family:flory
+|cross_family:maltese
+</pre>
+
+<p>
+The feature name may optionaly be followed by one or more markers showing their relationship to other feature names.
+
+<p>
+For example, the <code>tincture</code> feature set is used to mark the coloration of fields or charges. Its contents are defined in a series of lines like the below:
+
+<pre>
+|tincture:argent&lt;light
+|tincture:ermine&lt;fur&lt;light
+|tincture:neutral=multicolor=fur
+</pre>
+
+<p>
+The first line defines a <code>tincture</code> code named <code>argent</code>, and indicates that it is a subtype of the <code>tincture</code> named <code>light</code>. The second line defines a <code>tincture</code> named <code>ermine</code> and marks it as a subtype of both <code>fur</code> and <code>light</code>. The third line defines a <code>tincture</code> named <code>neutral</code> and marks it as equivalent to both <code>multicolor</code> and <code>fur</code>.
+
+<p>
+The subtype relationship defined by the <code>&lt;</code> chracter indicates that the term on the left is a more-specific feature encompased by the term on the right. For example, a search for <code>CROSS:light</code> should also match any armory that is marked as <code>CROSS:argent</code>. However, this relationship is not symatrical; if you search for <code>CROSS:argent</code>, it should not match armory that is marked as <code>CROSS:light</code>.
+
+<p>
+The equivalence relationship defined by the <code>=</code> chracter indicates a symetrical relationship between the terms. For example, a search for <code>CROSS:neutral</code> should also match any armory that is marked as <code>CROSS:multicolor</code>, and a search for <code>CROSS:multicolor</code> should also match any armory that is marked as <code>CROSS:neutral</code>.
+
+<p>
+Individual armory descriptions may combine multiple features from different feature sets. For example, an Maltese cross throughout argent might be coded as <code>CROSS:maltese:argent</code>
+
+<p>
+Individual armory descriptions never use more than one feature from a given feature set. For example, there will never be a cross with two different cross features such as <code>CROSS:crosslet:maltese</code>. 
+
+<p>
+Some feature sets are only applicable to certain categories. For example, the features in the <code>bird_posture</code> feature set are only ever used with the <code>BIRD</code> or <code>BIRD9DEMI</code> categories.
+
+XXTrailerXX
+XXTrailer2XX
+XXCloseHtmlXX

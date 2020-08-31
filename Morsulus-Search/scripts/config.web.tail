@@ -170,6 +170,10 @@ $PageUrl = &get_html_url ('XXPageUrlXX', 'O&A web pages', $PagePath);
 $WebDataPath = &get_filepath ('XXWebDataPathXX', 'database file',
    'oanda.db', $DocumentRoot);
 $WebDataUrl = &get_html_url ('XXWebDataUrlXX', 'database file', $WebDataPath);
+ 
+$WebCategoryPath = &get_filepath ('XXWebCategoryPathXX', 'category file',
+   'my.cat', $DocumentRoot);
+$WebCategoryUrl = &get_html_url ('XXWebCategoryUrlXX', 'category file', $WebCategoryPath);
 
 foreach $tag (keys %pages) {
   &set_page_info ($tag);
@@ -290,6 +294,7 @@ $ConfigDbPath = &get_filepath ('XXConfigDbPathXX',
 &page_install ($LimitPage, 'LimitPage');
 &page_install ($DownloadPage, 'DownloadPage');
 &page_install ($DbFormatPage, 'DbFormatPage');
+&page_install ($CategoryFormatPage, 'CategoryFormatPage');
 &page_install ($DbSymbolsPage, 'DbSymbolsPage');
 
 &install ($IndexPage, "$IndexDirPath/index.html", 0444,
