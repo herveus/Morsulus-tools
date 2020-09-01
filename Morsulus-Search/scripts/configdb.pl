@@ -65,7 +65,6 @@ $listen_queue_length = 5;
 #   set -- "number" and "tincture" are _sets_
 
 $\ = "\n";     # print a newline after every print statment.
-$[ = 1;        # index of first element in a list
 $; = ':';      # separator for lookup arguments
 $" = '.';      # separator for octets of IP address
 $, = '';       # separator for print items
@@ -394,7 +393,7 @@ sub log {
   #  Note the time.
   @time = localtime time;
   $ts = sprintf ('%02u%02u%02u %02u:%02u:%02u(%u)',
-    $time[6], $time[5]+1, $time[4], $time[3], $time[2], $time[1], $$);
+    $time[5], $time[4]+1, $time[3], $time[2], $time[1], $time[0], $$);
   print LOG_FILE $ts, $msg;
 }
 
@@ -791,7 +790,7 @@ sub permute {
 
 # Database server function to convert Latin-1 strings to ASCII.
 sub ascii {
-  local ($_) = $_[1];
+  local ($_) = $_[0];
   tr/\300\301\302\303\304\305\307\310\311\312\313\314\315\316\317\321\322\323\324\325\326\330\331\332\333\334\335\340\341\342\343\344\345\347\350\351\352\353\354\355\356\357\361\362\363\364\365\366\370\371\372\373\374\375\377/AAAAAACEEEEIIIINOOOOOOUUUUYaaaaaaceeeeiiiinoooooouuuuyy/;
   s/\306/AE/g;
   s/\320/Dh/g;
