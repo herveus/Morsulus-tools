@@ -13761,8 +13761,8 @@ sub log {
 
   #  Note the time.
   @time = localtime time;
-  $ts = sprintf ('%02u%02u%02u %02u:%02u:%02u(%u)',
-    $time[5], $time[4]+1, $time[3], $time[2], $time[1], $time[0], $$);
+  $ts = sprintf ('%04u-%02u-%02u %02u:%02u:%02u (%u)',
+    $time[5] += 1900, $time[4]+1, $time[3], $time[2], $time[1], $time[0], $$);
   print LOG_FILE $ts, $msg;
 }
 
