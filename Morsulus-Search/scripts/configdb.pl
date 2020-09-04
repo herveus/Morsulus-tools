@@ -250,17 +250,17 @@ while (1) {
             ($d1,$d2) = split (/\-/, $f2);
             $flag = 0;
             if ($d1 ne '') {
-              $k1 = substr($d1, 7);
+              $k1 = substr($d1, 6);
               if ($k1 eq '' || index($kstring, $k1) != $[-1) {
-                $d1 = substr($d1, 1, 6);
+                $d1 = substr($d1, 0, 6);
                 $d1 += 10000 if ($d1 < 196600);
                 $flag = 1 if ($d1 >= $date1 && $d1 <= $date2);
               }
             }
             if ($d2 ne '' && $flag eq 0) {
-              $k2 = substr($d2, 7);
+              $k2 = substr($d2, 6);
               if ($k2 eq '' || index($kstring, $k2) != $[-1) {
-                $d2 = substr($d2, 1, 6);
+                $d2 = substr($d2, 0, 6);
                 $d2 += 10000 if ($d2 < 196600);
                 $flag = 1 if ($d2 >= $date1 && $d2 <= $date2);
               }
@@ -280,17 +280,17 @@ while (1) {
             ($d1,$d2) = split (/\-/, $f2);
             $flag = 0;
             if ($d1 ne '') {
-              $k1 = substr($d1, 7);
+              $k1 = substr($d1, 6);
               if ($k1 eq '' || index($kstring, $k1) != $[-1) {
-                $d1 = substr($d1, 1, 6);
+                $d1 = substr($d1, 0, 6);
                 $d1 += 10000 if ($d1 < 196600);
                 $flag = 1 if ($d1 >= $date1 && $d1 <= $date2);
               }
             }
             if ($d2 ne '' && $flag eq 0) {
-              $k2 = substr($d2, 7);
+              $k2 = substr($d2, 6);
               if ($k2 eq '' || index($kstring, $k2) != $[-1) {
-                $d2 = substr($d2, 1, 6);
+                $d2 = substr($d2, 0, 6);
                 $d2 += 10000 if ($d2 < 196600);
                 $flag = 1 if ($d2 >= $date1 && $d2 <= $date2);
               }
