@@ -15,6 +15,7 @@ my %textblobs = (
     LimitPage => 'search_limits.html',
     DownloadPage => 'data_obtain.html',
     DbFormatPage => 'data_format.html',
+    CategoryFormatPage => 'category_format.html',
     DbSymbolsPage => 'data_symbols.html',
     IndexPage => 'ord_index.html',
     # IndexPage<letter> => 'ordinary/<letter>.html' for letter in A..Z
@@ -72,6 +73,7 @@ my @textnames = qw/
     LimitPage
     DownloadPage
     DbFormatPage
+    CategoryFormatPage
     DbSymbolsPage
     IndexPage
     IndexPageA
