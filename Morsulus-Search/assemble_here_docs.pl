@@ -54,6 +54,7 @@ my %textblobs = (
     BpSearchScript => 'oanda_bp.cgi',
     DateSearchScript => 'oanda_date.cgi',
     ComplexSearchScript => 'oanda_complex.cgi',
+    BetaComplexSearchScript => 'oanda_complexb.cgi',
     CorrectionScript => 'correction.cgi',
     CommonClientCode => 'commonclient.pl',
     ConfigDbScript => 'configdb.pl',
@@ -111,6 +112,7 @@ my @textnames = qw/
     BpSearchScript
     DateSearchScript
     ComplexSearchScript
+    BetaComplexSearchScript
     CorrectionScript
     CommonClientCode
     ConfigDbScript

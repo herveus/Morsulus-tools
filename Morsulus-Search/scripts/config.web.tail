@@ -316,6 +316,7 @@ for $letter ('A' .. 'Z') {
 &script_install ($BpSearchScript, 'BpSearch');
 &script_install ($DateSearchScript, 'DateSearch');
 &script_install ($ComplexSearchScript, 'ComplexSearch');
+&script_install ($BetaComplexSearchScript, 'BetaComplexSearch');
 # &script_install ($CorrectionScript, 'Correction');
 
 &key_install ($CommonClientCode, 'CommonClient', 0444, 'common Perl code');
