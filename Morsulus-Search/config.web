@@ -12808,10 +12808,12 @@ sub print_trailer {
 sub fixcase # make heading UC, features lc
 {
     my $desc = shift;
-    my ($hdg, $features) = split(/:/, $desc, 2);
-    $hdg = uc($hdg);
-    $features = lc($features) if defined $features;
-    return defined $features ? "$hdg:$features" : $hdg;
+    join '|', map {
+        my ($hdg, $features) = split(/:/, $_, 2);
+        $hdg = uc($hdg);
+        $features = lc($features) if defined $features;
+        defined $features ? "$hdg:$features" : $hdg;
+    } ( split '[|]', $desc )
 }
 1;
 # end of XXCommonClientPathXX
