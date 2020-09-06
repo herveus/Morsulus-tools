@@ -122,7 +122,6 @@ $cat_file_name = 'scripts/temp.cat';
 $print_file_name = 'scripts/tprint.cat';
 
 $\ = "\n";     # print a newline after every print statment.
-$[ = 1;        # index of first element in a list
 $" = ':';     # list separator for interpolation
 
 read_cat_file ($cat_file_name);
@@ -167,7 +166,7 @@ while (<PRINT_FILE>) {
     if ($target{$t}) {
       $urlt = $t;
       $urlt =~ s/[^A-Za-z0-9]//g;
-      $this = substr ($urlt, 1, 1);
+      $this = substr ($urlt, 0, 1);
       $this =~ tr/[a-z]/[A-Z]/;
       if ($this ne $last) {
         print  $fh $tail unless ($last eq '');
@@ -193,7 +192,7 @@ while (<PRINT_FILE>) {
 
   $cat = publish ($_);
 
-  $this = substr ($_, 1, 1);
+  $this = substr ($_, 0, 1);
   $this =~ tr/[a-z]/[A-Z]/;
   if ($this ne $last) {
     print $fh $tail unless ($last eq '');
@@ -277,7 +276,7 @@ sub read_cat_file {
 sub encode {
   # Encode non-alphanumeric characters when generating a URL.
   local($out) = '';
-  local($_) = $_[1];
+  local($_) = $_[0];
     
   local(@chars) = split (//, $_);
   foreach (@chars) {
@@ -291,8 +290,8 @@ sub encode {
 }
 
 sub publish {
-  @f = split (/, /, @_[1]); 
-  grep (substr($_,1,1) =~ tr/[a-z]/[A-Z]/, @f);
+  @f = split (/, /, @_[0]);
+  grep (substr($_,0,1) =~ tr/[a-z]/[A-Z]/, @f);
   $cat = join (', ', @f);
   $cat =~ s/,/ -/g;
   $cat =~ s/~//g;
@@ -302,8 +301,8 @@ sub publish {
 }
 
 sub cref {
-  local ($name) = @_[1];
-  $letter = substr ($name, 1, 1);
+  local ($name) = @_[0];
+  $letter = substr ($name, 0, 1);
   $letter =~ tr/a-z/A-Z/;
   $name =~ s/[^A-Za-z0-9]//g;
   return sprintf ('<a href="%s.html#%s">%s</a>',
