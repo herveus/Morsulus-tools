@@ -212,6 +212,8 @@ if ($Cgibin) {
 }
 $CommonClientPath = &get_filepath ('XXCommonClientPathXX',
    'common Perl code', "$1/common.pl", '/');
+$CommonClientPath = &get_filepath ('XXMyCatXX',
+   'my.cat Perl code', "$1/mycat.pl", '/');
 
 #=========================#
 # Set $CorrectionLogPath. #
