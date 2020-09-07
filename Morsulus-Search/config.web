@@ -54,7 +54,8 @@ if ($opt eq '-r') {
   'NpSearch', 'name pattern search:oanda_np',
   'BpSearch', 'blazon pattern search:oanda_bp',
   'DateSearch', 'date/kingdom search:oanda_date',
-  'ComplexSearch', 'complex search:oanda_complex'
+  'ComplexSearch', 'complex search:oanda_complex',
+  'BetaComplexSearch', 'beta complex search:oanda_complexb',
   #  'Correction', 'correction request:correction'
 );
 
@@ -14115,6 +14116,219 @@ print "\nYou should probably add the startup command to /etc/rc or something.\n"
 
 XXEOFXX
 
+$MakeMyCatPerl = <<'XXEOFXX';
+#!XXPerlPathXX
+use strict;
+use warnings;
+# see categorize.pod for detailed docs
+
+#% turn category file into subroutines that return appropriate lists
+#% of parsed category file data
+
+# usage: mk_cat_file -i category_file -o library_file -h heading_groups_file
+#			-i names the input file; reads from STDIN otherwise
+#			-o names the output file; writes to STDOUT otherwise
+#			-h names the heading_groups; otherwise, all categories in 'Other:'
+
+use Getopt::Std;
+use Data::Dumper;
+$Data::Dumper::Indent = 1;
+
+getopt('ioh');
+
+open(CAT_IN, defined($Getopt::Std::opt_i) ? $Getopt::Std::opt_i : '-')
+	or die "Can't open input file: $!";
+
+defined $Getopt::Std::opt_o and do {
+	open(STDOUT, ">$Getopt::Std::opt_o")
+	or die "Can't open output file: $!";
+	};
+
+print "# category file ", defined($Getopt::Std::opt_i) ? $Getopt::Std::opt_i : '(STDIN)', " generated ", scalar(localtime), "\n";
+
+my %set_name; # keys are feature_names, values are set_names
+my %set_names; # keys are set_names, values are feature counts
+my %compatible; # keys are feature_names, values are {feature_name => relationship}
+my @feature_names; # values are feature_names in load order
+my %xrefs; # keys and values are category_names
+my %categories = (); # keys are category_names, values are {heading => heading, features => [allowable_feature_list], group => [category_group_list]}
+my %group = (); # keys are group headings, values are ref to ordered list of category_names
+my @group; # ordered list of group_headings
+
+print STDERR "Load category file\n";
+while (<CAT_IN>)
+{	
+	chomp;
+	
+	/^#/ and next; # skip comments
+	
+	/^[|]/ and do	# feature definition
+	{
+		my ($set_name, $feature_name, $relationship, $feature2);
+		# set_name:feature_name{[<=]related_feature}...
+		/^[|]([^:]+):([^<=]+)(.*)$/ or die "cannot parse feature definition: $_";
+		($set_name, $feature_name, $_) = ($1, $2, $3);
+		
+		exists $set_name{$feature_name} and die "duplicated feature name: ($feature_name) $_";
+		$set_name{$feature_name} = $set_name;
+		$set_names{$set_name}++;
+		push @feature_names, $feature_name;
+		
+		while ($_)
+		{
+			/^([<=])([^<=]+)(.*)$/ or die "cannot parse feature relationship:
+			$_";
+			($relationship, $feature2, $_) = ($1, $2, $3);
+			
+			$compatible{$feature_name}->{$feature2} = $relationship;
+		}
+		next;
+	};
+	
+	/^(.+) - see (also )?(.+)/ and do # cross-reference
+	{
+		my ($from, $to) = ($1, $3);
+		push @{$xrefs{$from}}, split(/ and /, $to);
+		next;
+	};
+	
+	# otherwise a heading
+	my ($category, $heading, $features) = split(/[|]/, $_, 3);
+	$categories{$category} = {heading => $heading,
+		features => []};
+	defined $features and $categories{$category}->{features} = [split(/:/, $features)];
+	push @{$xrefs{$category}}, $category;
+}
+
+# insert compatibility refinement here
+print STDERR "Refine compatibility matrix\n";
+my $progress = 1;
+my $pass = 1;
+while ($progress)
+{
+	$progress = 0;
+	foreach my $f1 (keys %compatible)
+	{
+		foreach my $f2 (keys %{$compatible{$f1}})
+		{
+			unless (exists $compatible{$f2}->{$f1})
+			{
+				# if f1 is compatible with f2 then f2 is compatible with f1
+				$compatible{$f2}->{$f1} = '=';
+				#print "$f1=$f2 -> $f2=$f1\n";
+				$progress++;
+			}
+			
+			if ($compatible{$f1}->{$f2} eq '<')
+			{
+				# if f1 is a subset of f2
+				# and f2 is a subset of f3
+				# then f1 is a subset of f3
+				foreach my $f3 (@feature_names)
+				{
+					next unless exists $compatible{$f2}->{$f3};
+					next unless $compatible{$f2}->{$f3} eq '<';
+					next if (exists $compatible{$f1}->{$f3} and  $compatible{$f1}->{$f3} eq '<');
+					$compatible{$f1}->{$f3} = '<';
+					#print "$f1<<$f2 AND $f2<<$f3 GIVES $f1<<$f3\n";
+					$progress++;
+				}
+			}
+			elsif ($compatible{$f1}->{$f2} eq '=')
+			{
+				# if f1 is compatible with f2
+				# and f2 is a subset of f3
+				# then f1 is compatible with f3
+				foreach my $f3 (@feature_names)
+				{
+					next unless exists $compatible{$f2}->{$f3};
+					next unless $compatible{$f2}->{$f3} eq '<';
+					next if exists $compatible{$f1}->{$f3};
+					$compatible{$f1}->{$f3} = '=';
+					#print "$f1=$f2 and $f2<$f3 -> $f1=$f3\n";
+					$progress++;
+				}
+			}
+		}
+	}
+	print STDERR "pass ", $pass++, " made $progress improvements\n";
+}
+
+# now try for the category groups
+print STDERR "Group categories\n";
+if (defined($Getopt::Std::opt_h) && open(HEADINGS, $Getopt::Std::opt_h))
+{
+	print "# category group file ", $Getopt::Std::opt_h, " included\n";
+	my $group;
+	while (<HEADINGS>)
+	{
+		chomp;
+		/^#/ and next;
+		/^$/ and next;
+		/^[A-Z]/ and $group = $_ and push @group, $_ and next;
+		push @{$group{$group}}, $_;
+		push @{$categories{$_}->{group}}, $group;
+	}
+	close HEADINGS;
+}
+else
+{
+	print "# category group file either unreadable or unspecified\n";
+}
+
+# ensure that all categories have a group; add those not yet grouped to Other:
+print STDERR "Mark ungrouped as Other\n";
+foreach my $cat (keys %categories)
+{
+	push @{$categories{$cat}->{group}}, 'Other:' unless exists $categories{$cat}->{group};
+}
+
+# now make perl code of this
+my $tmp = Data::Dumper->Dump([\%set_name], ['*set_name']);
+$tmp =~ s/^%set_name = /sub set_name {/;
+$tmp .= "}\n";
+print $tmp;
+print STDERR "set_name dumped\n";
+$tmp = Data::Dumper->Dump([\%set_names], ['*set_names']);
+$tmp =~ s/^%set_names = /sub set_names {/;
+$tmp .= "}\n";
+print $tmp;
+print STDERR "set_names dumped\n";
+$tmp = Data::Dumper->Dump([\%compatible], ['*compatible']);
+$tmp =~ s/^%compatible = /sub compatible {/;
+$tmp .= "}\n";
+print $tmp;
+print STDERR "compatible dumped\n";
+$tmp = Data::Dumper->Dump([\@feature_names], ['*feature_names']);
+$tmp =~ s/^\@feature_names = /sub feature_names {/;
+$tmp .= "}\n";
+print $tmp;
+print STDERR "feature_names dumped\n";
+$tmp = Data::Dumper->Dump([\%xrefs], ['*xrefs']);
+$tmp =~ s/^%xrefs = /sub xrefs {/;
+$tmp .= "}\n";
+print $tmp;
+print STDERR "xrefs dumped\n";
+$tmp = Data::Dumper->Dump([\%categories], ['*categories']);
+$tmp =~ s/^%categories = /sub categories {/;
+$tmp .= "}\n";
+print $tmp;
+print STDERR "categories dumped\n";
+$tmp = Data::Dumper->Dump([\%group], ['*group']);
+$tmp =~ s/^%group = /sub group_hash {/;
+$tmp .= "}\n";
+print $tmp;
+print STDERR "group (hash) dumped\n";
+$tmp = Data::Dumper->Dump([\@group], ['*group']);
+$tmp =~ s/^\@group = /sub group_array {/;
+$tmp .= "}\n";
+print $tmp;
+print STDERR "group (array) dumped\n";
+print "1;\n";
+exit;
+
+XXEOFXX
+
 $ConfigDbScript .= $Helpers;
 
 $ConfigDbScript .= $ConfigDbScriptB;
@@ -14329,8 +14543,10 @@ if ($Cgibin) {
 }
 $CommonClientPath = &get_filepath ('XXCommonClientPathXX',
    'common Perl code', "$1/common.pl", '/');
-$CommonClientPath = &get_filepath ('XXMyCatXX',
+$MyCatDotPLPath = &get_filepath ('XXMyCatXX',
    'my.cat Perl code', "$1/mycat.pl", '/');
+$MakeMyCatPerlPath = &get_filepath ('XXMakeMyCatPerlPathXX',
+   'my.cat generator script', "$1/mk_cat_file", '/');
 
 #=========================#
 # Set $CorrectionLogPath. #
@@ -14437,6 +14653,7 @@ for $letter ('A' .. 'Z') {
 # &script_install ($CorrectionScript, 'Correction');
 
 &key_install ($CommonClientCode, 'CommonClient', 0444, 'common Perl code');
+key_install ($MakeMyCatPerl, 'MakeMyCatPerl', 0555, 'script to generate mycat.pl');
 &key_install ($ConfigDbScript, 'ConfigDb', 0444,
   'database server config script');
 
@@ -14445,5 +14662,7 @@ for $letter ('A' .. 'Z') {
 #=================================#
 
 print "\nYou have successfully installed the webserver files.\n";
-print "Now copy `$ConfigDbPath' to the machine `$DataHost'\n";
+print "First generate mycat.pl from my.cat:\n",
+    " execute $config{XXMakeMyCatPerlPathXX} -i <my.cat> -o $config{XXMyCatXX}\n";
+print "Then copy `$ConfigDbPath' to the machine `$DataHost'\n";
 print " and execute `perl $ConfigDbPath' there.\n";

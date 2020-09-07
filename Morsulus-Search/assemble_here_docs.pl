@@ -59,6 +59,7 @@ my %textblobs = (
     CommonClientCode => 'commonclient.pl',
     ConfigDbScript => 'configdb.pl',
     ConfigDbScriptB => 'configdb.b.pl',
+    MakeMyCatPerl => 'mk_cat_file',
     );
     
 my @textnames = qw/
@@ -117,6 +118,7 @@ my @textnames = qw/
     CommonClientCode
     ConfigDbScript
     ConfigDbScriptB
+    MakeMyCatPerl
     /;
 
 #  path to category and print files

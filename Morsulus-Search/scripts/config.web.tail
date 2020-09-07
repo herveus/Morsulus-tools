@@ -212,8 +212,10 @@ if ($Cgibin) {
 }
 $CommonClientPath = &get_filepath ('XXCommonClientPathXX',
    'common Perl code', "$1/common.pl", '/');
-$CommonClientPath = &get_filepath ('XXMyCatXX',
+$MyCatDotPLPath = &get_filepath ('XXMyCatXX',
    'my.cat Perl code', "$1/mycat.pl", '/');
+$MakeMyCatPerlPath = &get_filepath ('XXMakeMyCatPerlPathXX',
+   'my.cat generator script', "$1/mk_cat_file", '/');
 
 #=========================#
 # Set $CorrectionLogPath. #
@@ -320,6 +322,7 @@ for $letter ('A' .. 'Z') {
 # &script_install ($CorrectionScript, 'Correction');
 
 &key_install ($CommonClientCode, 'CommonClient', 0444, 'common Perl code');
+key_install ($MakeMyCatPerl, 'MakeMyCatPerl', 0555, 'script to generate mycat.pl');
 &key_install ($ConfigDbScript, 'ConfigDb', 0444,
   'database server config script');
 
@@ -328,5 +331,7 @@ for $letter ('A' .. 'Z') {
 #=================================#
 
 print "\nYou have successfully installed the webserver files.\n";
-print "Now copy `$ConfigDbPath' to the machine `$DataHost'\n";
+print "First generate mycat.pl from my.cat:\n",
+    " execute $config{XXMakeMyCatPerlPathXX} -i <my.cat> -o $config{XXMyCatXX}\n";
+print "Then copy `$ConfigDbPath' to the machine `$DataHost'\n";
 print " and execute `perl $ConfigDbPath' there.\n";

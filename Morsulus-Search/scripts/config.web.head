@@ -54,7 +54,8 @@ if ($opt eq '-r') {
   'NpSearch', 'name pattern search:oanda_np',
   'BpSearch', 'blazon pattern search:oanda_bp',
   'DateSearch', 'date/kingdom search:oanda_date',
-  'ComplexSearch', 'complex search:oanda_complex'
+  'ComplexSearch', 'complex search:oanda_complex',
+  'BetaComplexSearch', 'beta complex search:oanda_complexb',
   #  'Correction', 'correction request:correction'
 );
 

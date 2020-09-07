@@ -4,7 +4,7 @@
 # It is to be installed at XXComplexSearchPathXX on XXServerNameXX.
 
 # Set URL for this script.
-$cgi_url = 'XXComplexSearchUrlXX';
+$cgi_url = 'XXBetaComplexSearchUrlXX';
 
 require 'XXCommonClientPathXX';
 require 'XXMyCatXX';
@@ -221,11 +221,11 @@ sub validate_descs
 {
     my ($descs) = @_;
     my @descs;
-    for my $d (split([|], $descs))
+    for my $d (split(/[|]/, $descs))
     {
         push @descs, validate_desc($d);
     }
-    return @descs;
+    return join('|', @descs);
 }
 
 sub validate_desc
