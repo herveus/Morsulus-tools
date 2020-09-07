@@ -233,7 +233,36 @@ for my $textname (@textnames)
 }
 $textblob .= read_file('scripts/config.web.tail');
 
+my $config_version = sprintf "%s (%s)", iso_date_string(), revision_marker();
+$textblob =~ s/XXConfigVersionFromAssemblerXX/$config_version/g;
+
 write_file('config.web', $textblob);
+
+# END
+
+sub iso_date_string {
+    my @time = localtime time;
+    return sprintf( '%04u-%02u-%02u', $time[5] += 1900, $time[4]+1, $time[3] )
+}
+
+# Return a revision string like "105", or "mathghamhain:development:150"
+sub revision_marker {
+    my @revision = split "\n", qx{
+        git config --get remote.origin.url &&
+        git rev-parse --abbrev-ref HEAD &&
+        git rev-list --count HEAD &&
+        git status -s
+    };
+
+    my ( $owner ) = ( $revision[0] =~ m{:(.*?)/} );
+    my $has_changes = scalar grep { ! /^[?][?]/ } @revision[3..$#revision];
+
+    return join ':', grep $_, (
+        ( ! $owner or $owner eq 'herveus' ? '' : $owner ),
+        ( $revision[1] eq 'master' ? '' : $revision[1] ),
+        $revision[2] . ( $has_changes ? '+' : '' ),
+    );
+}
 
 sub read_cat_file {
   local ($cat_file_name) = @_;
