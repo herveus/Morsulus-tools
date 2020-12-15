@@ -81,6 +81,7 @@ arm
 armadillo
 armillary sphere
 armor
+armica
 arrangement, beast
 arrangement, creature, addorsed
 arrangement, creature, combattant, argent
@@ -849,6 +850,7 @@ bush, thorn
 bustard
 buttercup
 butterfly
+bycocket
 cabbage
 cactus
 caduceus
@@ -1012,6 +1014,7 @@ chevron reversed
 chevronel
 chevronel inverted
 chevronelly
+cicada
 chicken
 chicory flower
 chief, uncharged, plain line, argent
@@ -1333,7 +1336,7 @@ cub, bear
 cub, lion
 cub, wolf
 cubit
-cup, 1, argent
+cucumbercup, 1, argent
 cup, 1, azure
 cup, 1, fur
 cup, 1, gules
@@ -2202,6 +2205,7 @@ flax blossom
 fleam
 fleece
 flesh hook
+flesh-hook
 fleshpot
 fleur de lys, 1
 fleur de lys, 2, argent
@@ -2226,6 +2230,7 @@ fleury
 flower, adonis
 flower, almond
 flower, amaranth
+flower, arnica
 flower, aster
 flower, basil
 flower, blackeyed susan
@@ -2354,6 +2359,7 @@ flower, water lily
 flower, wild ginger
 flower, wisteria
 flute
+fly
 foal
 foi
 foil, trefoil
@@ -2510,6 +2516,7 @@ grape
 grapevine
 grasshopper
 grater
+graver
 great dane
 greenbriar
 grenade
@@ -2602,6 +2609,7 @@ head, beast, goat
 head, beast, horse
 head, beast, marten
 head, beast, rabbit
+head, beast, rat
 head, beast, skull
 head, beast, other
 head, bird
@@ -2681,6 +2689,7 @@ heron
 heron's head
 herring
 hexagon
+hibiscus
 hide
 hill
 hillock
@@ -2871,6 +2880,7 @@ leg, human
 leg, monster
 lei
 lemming
+lemon
 leopard
 leopard's head
 letter
@@ -3258,6 +3268,7 @@ musical instrument, zither
 musical note
 musimon
 musimon's head
+muskito
 mustard flower
 naga
 naginata
@@ -3282,6 +3293,7 @@ no primary
 non cross
 noose
 norse serpent
+Norse sun cross
 nosegay
 note, musical
 nugget
@@ -3327,6 +3339,7 @@ osprey
 ostrich
 ostrich plume
 otter
+otter's head
 ounce
 outrigger
 oval
@@ -3366,6 +3379,7 @@ palmer's staff
 palomino
 paly
 pan pipe
+panache
 panda
 pangolin
 panpipe
@@ -3620,6 +3634,7 @@ rapier
 raptor
 raspberry
 rat
+rat's head
 raven
 raven's head
 ray
@@ -3690,6 +3705,7 @@ rock
 rocket
 rod
 rod of Aesculapius
+rod of asclepius
 roebuck
 rogacina
 Roman dining couch
@@ -3758,6 +3774,7 @@ sagittary
 sailfin
 salamander
 salmon
+salt cellar
 saltcellar
 saltire, as charge
 saltire, throughout, uncharged, plain line
@@ -3831,6 +3848,7 @@ sea weed
 sea wolf
 sea-fox
 sea-nettle
+sea-raccoon
 seagull
 seal
 sealion
@@ -3912,6 +3930,7 @@ skeleton
 skeleton of fish
 skene
 skillet
+skimmer
 skin, beast
 skin, snake
 skold
@@ -4141,6 +4160,7 @@ torque
 torse
 torteau
 tortoise
+tortoise-shell plate
 totem pole
 touch me not
 tower
@@ -4276,6 +4296,7 @@ vine
 viol
 violet
 violin
+vireo
 vires
 vixen
 vol
@@ -4354,6 +4375,7 @@ woodbine
 woodchuck
 woodpecker
 woodruff
+wool comb
 wool fleece
 wool pack
 wool sack
