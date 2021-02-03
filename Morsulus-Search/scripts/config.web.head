@@ -38,6 +38,8 @@ if ($opt eq '-r') {
   'BpHintsPage', 'blazon pattern search hints:hints_bp',
   'ComplexHintsPage', 'complex search hints:hints_complex',
   'OverviewPage', 'about SCA heraldry:heraldry_overview',
+  'RecordCodesPage', 'record type codes:codes_records',
+  'KingdomCodesPage', 'kingdom codes:codes_kingdoms',
   'LimitPage', 'about search limits:search_limits',
   'DownloadPage', 'about obtaining the database:data_obtain',
   'DbFormatPage', 'about the database format:data_format',
