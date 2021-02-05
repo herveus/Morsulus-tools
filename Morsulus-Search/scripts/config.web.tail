@@ -297,6 +297,7 @@ $ConfigDbPath = &get_filepath ('XXConfigDbPathXX',
 &page_install ($OverviewPage, 'OverviewPage');
 &page_install ($RecordCodesPage, 'RecordCodesPage');
 &page_install ($KingdomCodesPage, 'KingdomCodesPage');
+&page_install ($CategoryCodesPage, 'CategoryCodesPage');
 &page_install ($LimitPage, 'LimitPage');
 &page_install ($DownloadPage, 'DownloadPage');
 &page_install ($DbFormatPage, 'DbFormatPage');
