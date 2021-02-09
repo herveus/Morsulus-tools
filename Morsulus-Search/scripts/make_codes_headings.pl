@@ -36,6 +36,8 @@ while (<CATS>) {
 
 close CATS;
 
+my @categories = sort keys %categories;
+
 sub url_escape {
     local $_ = shift;
     s{([^A-Za-z0-9])}{ sprintf('%%%02X', ord ($1)) }eg;
@@ -55,16 +57,9 @@ sub capitalize {
 }
 
 sub add_optional_word_breaks {
-    local $_ = reverse(shift);
-    s{(.)\b(.)}{$1>rbw<$2}g;
-    return scalar reverse($_);
-}
-
-my @categories = sort keys %categories;
-
-my @table_rows;
-foreach my $category ( @categories ) {
-    push @table_rows, [ $categories{ $category }, $category, $xrefs{$category}, $alsos{$category} ]
+    local $_ = shift;
+    s{(....[^ a-zA-Z])([a-zA-Z])}{$1<wbr>$2}g;
+    return $_;
 }
 
 sub find_category_heading {
@@ -79,17 +74,20 @@ sub find_category_heading {
 my $table_body = join("\n", 
     "<tbody>",
     ( map { 
-        my ( $heading, $category, $xrefs, $alsos ) = @$_;
+        my $category = $_;
+        my $heading = $categories{ $category };
+        my $xrefs = $xrefs{$category};
+        my $alsos = $alsos{$category};
         my $heading_link = heading_link( $heading, add_optional_word_breaks($heading) );
         my $heading_escape = url_escape( $heading );
         my $category_text = capitalize( $category );
-        my $xref_string = ( ! $xrefs ) ? '' : ' (' . join('; ', map { capitalize($_) } @$xrefs) . ')';
+        my $xref_string = ( ! $xrefs ) ? '' : ' <span class="category-synonyms">(' . join('; ', map { capitalize($_) } @$xrefs) . ')</span>';
         my $alsos_string = ( ! $alsos ) ? '' : ' See also ' . join('; ', map { sprintf qq{<a href="#%s">%s</a>}, find_category_heading($_), capitalize($_) } @$alsos);
         "<tr>",
-            qq{<td> <a name="$heading"></a> $category_text $xref_string $alsos_string </td>},
             qq{<td> $heading_link </td>},
+            qq{<td> <a name="$heading"></a> $category_text $xref_string $alsos_string </td>},
         "</tr>",
-    } @table_rows ),
+    } @categories ),
     "</tbody>",
 );
 
