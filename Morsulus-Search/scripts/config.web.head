@@ -41,6 +41,7 @@ if ($opt eq '-r') {
   'RecordCodesPage', 'record type codes:codes_records',
   'KingdomCodesPage', 'kingdom codes:codes_kingdoms',
   'CategoryCodesPage', 'category codes:codes_categories',
+  'FeatureCodesPage', 'feature codes:codes_features',
   'LimitPage', 'about search limits:search_limits',
   'DownloadPage', 'about obtaining the database:data_obtain',
   'DbFormatPage', 'about the database format:data_format',
