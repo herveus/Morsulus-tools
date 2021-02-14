@@ -48,9 +48,9 @@ $invalid = 0;
 $valid = 0;
 for $i (1 .. $criteria) {
     next if $p[$i] eq '';
-  if ($weight[$i] !~ /^[+&]?\d+$/) {
+  if ($weight[$i] !~ /^[+&-]?\d+$/) {
     if ($method[$i] ne '') {
-      print "<h4>You specified an invalid weight ($weight[$i]) for criterion #$i; a weight must be a positive number.</h4>";
+      print "<h4>You specified an invalid weight ($weight[$i]) for criterion #$i; a weight must be an integer.</h4>";
       $invalid++;
     }
   } else {
