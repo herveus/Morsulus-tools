@@ -38,10 +38,10 @@ if ($opt eq '-r') {
   'BpHintsPage', 'blazon pattern search hints:hints_bp',
   'ComplexHintsPage', 'complex search hints:hints_complex',
   'OverviewPage', 'about SCA heraldry:heraldry_overview',
-  'RecordCodesPage', 'record type codes:codes_records',
-  'KingdomCodesPage', 'kingdom codes:codes_kingdoms',
-  'CategoryCodesPage', 'category codes:codes_categories',
-  'FeatureCodesPage', 'feature codes:codes_features',
+  'RecordCodesPage', 'record type codes:recordtype_codes',
+  'KingdomCodesPage', 'kingdom codes:kingdom_codes',
+  'CategoryCodesPage', 'category codes:category_codes',
+  'FeatureCodesPage', 'feature codes:feature_codes',
   'LimitPage', 'about search limits:search_limits',
   'DownloadPage', 'about obtaining the database:data_obtain',
   'DbFormatPage', 'about the database format:data_format',
@@ -3467,7 +3467,7 @@ XXSiteHeadXX
 <h2>Feature Codes</h2>
 
 <p>
-    The <a href="XXDescSearchUrlXX">Armory Description Search Form</a> allows you to filter armory records based on the types of elements they contain.
+    The <a href="XXDescSearchUrlXX">Armory Description Search Form</a> allows you to filter armory records based on features of the items they contain.
 </p>
 
 <style>
@@ -18374,7 +18374,7 @@ $conf_file = '.configweb';
 
 $config{'XXPrimerUrlXX'} = 'http://heraldry.sca.org/armory/newprimer/';
 $config{'XXLoARUrlXX'} = 'http://heraldry.sca.org/loar';
-$config_version = '2021-02-09 (mathghamhain:development:176+)';
+$config_version = '2021-02-14 (mathghamhain:development:177+)';
 $config{'XXVersionXX'} = $config_version;
 $config{'XXHeadXX'} = '';
 

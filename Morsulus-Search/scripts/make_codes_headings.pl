@@ -112,13 +112,13 @@ my $table_body = join("\n",
     "</tbody>",
 );
 
-open (HTML, "codes_categories.html") || die "cannot read codes_categories.html";
+open (HTML, "category_codes.html") || die "cannot read category_codes.html";
 my $html = join "", <HTML>;
 close HTML;
 
 $html =~ s{<tbody>.*</tbody>}{$table_body}s;
 
-open (HTML, ">codes_categories.html") || die "cannot write to codes_categories.html";
+open (HTML, ">category_codes.html") || die "cannot write to category_codes.html";
 print HTML $html;
 close HTML;
 
@@ -149,12 +149,12 @@ $table_body = join("\n",
     "</tbody>",
 );
 
-open (HTML, "codes_features.html") || die "cannot read codes_features.html";
+open (HTML, "feature_codes.html") || die "cannot read feature_codes.html";
 $html = join "", <HTML>;
 close HTML;
 
 $html =~ s{<tbody>.*</tbody>}{$table_body}s;
 
-open (HTML, ">codes_features.html") || die "cannot write to codes_features.html";
+open (HTML, ">feature_codes.html") || die "cannot write to feature_codes.html";
 print HTML $html;
 close HTML;
