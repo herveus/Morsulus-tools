@@ -1794,44 +1794,52 @@ XXEOFXX
 
 $DbSymbolsPage = <<'XXEOFXX';
 <html>
-<head><title>Da'ud Encodings</title>
+<head><title>Da'ud Notation</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <base href="XXDbSymbolsPageUrlXX">XXHeadXX
-</head><body><h2>
-              Non-ASCII Symbols in the SCA Armorial Database
-</h2><h3>
-				by
-			 Iulstan Sigewealding, updated by Herveus d'Ormonde
-<br>
-                           4 January 2014
-</h3>
+</head><body>
+<h2>
+    Da'ud Notation for Non-ASCII Symbols in the SCA Armorial Database
+</h2>
 
 <p>
-Since January 1996, the SCA Ordinary database (oanda.db) has begun to
-encode non-ASCII symbols in names and blazons.  The encoding is mostly
-complete for items registered since July 1980, but only sporadic before
-that date.  In other words, over 90% of the database has been revised.
+    The SCA Ordinary and Armorial database (oanda.db) encodes non-ASCII
+    symbols in names and blazons using a syntax known as Da'ud Notation.
 </p>
 
 <p>
-When a Latin-1 encoding exists, the non-ASCII symbol is encoded
-in accordance with that standard.  The resulting code is an 8-bit
-byte with the most-significant bit set to 1, as detailed in the
-table below.  (Unfortunately, these 8-bit codes are NOT compatible
-with the "437" code page normally active on PCs running MS-DOS
-in the United States.)
+    Characters that can not be represented in the ASCII may be written
+    using a pair of curly braces containing the two- or three-character
+    code shown in the first column of the table below.
+    For example, <code>{o'}</code> represents the character ó (lowercase o with an acute
+    accent), and <code>{th}</code> represents the character þ (lowercase thorn).
 </p>
 
 <p>
-For cases where the character does not appear in Latin-1, the ASCII
-encoding is used, but a note is appended to the entry giving the 
-fully Da'ud encoded form.
+    This practice was proposed by Laurel Herald Da'ud ibn Auda in the
+    mid-1990s and adopted as the database standard in January 1996, with
+    additional character encodings added as needed in the following years.
+    (Records from before this time were retroactively converted to follow
+    this practice as well, but a few lingering entries from prior to 1980
+    might not reflect accent marks as written in the original LoARs.)
+    This same syntax is also used by the OSCAR commentary system and in some
+    articles about period naming practices written for the College of Arms.
 </p>
 
 <p>
-The table below lists all of the Da'ud encodings Morsulus recognizes.
-If you need something not listed there, contact Morsulus to discuss
-how to proceed. Don't simply Make Something Up. Please.
+    Within the database, characters are recorded using the Latin-1 encoding
+    where that is possible; for characters beyond the original seven-bit ASCII
+    range, the resulting code is an 8-bit byte with the most-significant bit
+    set to 1, as detailed in the table below.
+    For cases where the character can not be written in Latin-1, the ASCII
+    equivalent shown below is used, but a note is appended to the entry giving
+    the full value encoded in Da'ud notation.
+</p>
+
+<p>
+    The table below lists all of the Da'ud encodings Morsulus recognizes.
+    If you need something not listed there, contact Morsulus to discuss
+    how to proceed. Don't simply Make Something Up. Please.
 </p>
 
 <style>
@@ -1850,7 +1858,7 @@ how to proceed. Don't simply Make Something Up. Please.
 <thead>
 <tr>
 <th>Da'ud<br>code</th>
-<th>ASCII<br>encoding</th>
+<th>ASCII<br>equivalent</th>
 <th>Unicode<br>code point</th>
 <th>Unicode<br>character</th>
 <th>HTML<br>entity</th>
