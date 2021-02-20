@@ -1892,12 +1892,12 @@ $DbSymbolsPage = <<'XXEOFXX';
 <tr><td>{a,}</td><td>a</td><td>ą</td><td>0105</td><td>&amp;#x0105;</td><td>LATIN SMALL LETTER A WITH OGONEK</td></tr>
 <tr><td>{ao}</td><td>aa</td><td>å</td><td>00E5</td><td>&amp;aring;</td><td>LATIN SMALL LETTER A WITH RING ABOVE</td></tr>
 <tr><td>{a~}</td><td>a</td><td>ã</td><td>00E3</td><td>&amp;atilde;</td><td>LATIN SMALL LETTER A WITH TILDE</td></tr>
+<tr><td>{AE}</td><td>AE</td><td>Æ</td><td>00C6</td><td>&amp;AElig;</td><td>LATIN CAPITAL LIGATURE AE</td></tr>
 <tr><td>{AE'}</td><td>AE</td><td>Ǽ</td><td>01FC</td><td>&amp;#x01FC;</td><td>LATIN CAPITAL LETTER AE WITH ACUTE</td></tr>
 <tr><td>{AE-}</td><td>AE</td><td>Ǣ</td><td>01E2</td><td>&amp;#x01E2;</td><td>LATIN CAPITAL LETTER AE WITH MACRON</td></tr>
-<tr><td>{AE}</td><td>AE</td><td>Æ</td><td>00C6</td><td>&amp;AElig;</td><td>LATIN CAPITAL LIGATURE AE</td></tr>
+<tr><td>{ae}</td><td>ae</td><td>æ</td><td>00E6</td><td>&amp;aelig;</td><td>LATIN SMALL LIGATURE AE</td></tr>
 <tr><td>{ae'}</td><td>ae</td><td>ǽ</td><td>01FD</td><td>&amp;#x01FD;</td><td>LATIN SMALL LETTER AE WITH ACUTE</td></tr>
 <tr><td>{ae-}</td><td>ae</td><td>ǣ</td><td>01E3</td><td>&amp;#x01E3;</td><td>LATIN SMALL LETTER AE WITH MACRON</td></tr>
-<tr><td>{ae}</td><td>ae</td><td>æ</td><td>00E6</td><td>&amp;aelig;</td><td>LATIN SMALL LIGATURE AE</td></tr>
 <tr><td>{B.}</td><td>B</td><td>Ḅ</td><td>1E04</td><td>&amp;#x1E04;</td><td>LATIN CAPITAL LETTER B WITH DOT BELOW</td></tr>
 <tr><td>{B_}</td><td>B</td><td>Ḇ</td><td>1E06</td><td>&amp;#x1E06;</td><td>LATIN CAPITAL LETTER B WITH LINE BELOW</td></tr>
 <tr><td>{B-}</td><td>Bh</td><td>Ƃ</td><td>0182</td><td>&amp;#x0182;</td><td>LATIN CAPITAL LETTER B WITH TOPBAR</td></tr>
@@ -1928,6 +1928,8 @@ $DbSymbolsPage = <<'XXEOFXX';
 <tr><td>{d-}</td><td>dh</td><td>ƌ</td><td>018C</td><td>&amp;#x018C;</td><td>LATIN SMALL LETTER D WITH TOPBAR</td></tr>
 <tr><td>{Dj_}</td><td>Dj</td><td>Ǧ</td><td>01E6</td><td>&amp;#x01E6;</td><td>UNDERLINED CAPITAL LETTER DJ <sup><a href="#fn2">2</a></sup></td></tr>
 <tr><td>{dj_}</td><td>dj</td><td>ǧ</td><td>01E7</td><td>&amp;#x01E7;</td><td>UNDERLINED SMALL LETTER DJ <sup><a href="#fn2">2</a></sup></td></tr>
+<tr><td>{Dh}</td><td>Dh</td><td>Ð</td><td>00D0</td><td>&amp;ETH;</td><td>LATIN CAPITAL LETTER ETH</td></tr>
+<tr><td>{dh}</td><td>dh</td><td>ð</td><td>00F0</td><td>&amp;eth;</td><td>LATIN SMALL LETTER ETH</td></tr>
 <tr><td>{E'}</td><td>E</td><td>É</td><td>00C9</td><td>&amp;Eacute;</td><td>LATIN CAPITAL LETTER E WITH ACUTE</td></tr>
 <tr><td>{Eu}</td><td>E</td><td>Ĕ</td><td>0114</td><td>&amp;#x0114;</td><td>LATIN CAPITAL LETTER E WITH BREVE</td></tr>
 <tr><td>{Ev}</td><td>E</td><td>Ě</td><td>011A</td><td>&amp;#x011A;</td><td>LATIN CAPITAL LETTER E WITH CARON</td></tr>
@@ -1954,12 +1956,6 @@ $DbSymbolsPage = <<'XXEOFXX';
 <tr><td>{e-}</td><td>e</td><td>ē</td><td>0113</td><td>&amp;#x0113;</td><td>LATIN SMALL LETTER E WITH MACRON</td></tr>
 <tr><td>{e,}</td><td>e</td><td>ę</td><td>0119</td><td>&amp;#x0119;</td><td>LATIN SMALL LETTER E WITH OGONEK</td></tr>
 <tr><td>{e~}</td><td>e</td><td>ẽ</td><td>1EBD</td><td>&amp;#x1EBD;</td><td>LATIN SMALL LETTER E WITH TILDE</td></tr>
-<tr><td>{Ng}</td><td>Ng</td><td>Ŋ</td><td>014A</td><td>&amp;#x014A;</td><td>LATIN CAPITAL LETTER ENG</td></tr>
-<tr><td>{ng}</td><td>ng</td><td>ŋ</td><td>014B</td><td>&amp;#x014B;</td><td>LATIN SMALL LETTER ENG</td></tr>
-<tr><td>{Dh}</td><td>Dh</td><td>Ð</td><td>00D0</td><td>&amp;ETH;</td><td>LATIN CAPITAL LETTER ETH</td></tr>
-<tr><td>{dh}</td><td>dh</td><td>ð</td><td>00F0</td><td>&amp;eth;</td><td>LATIN SMALL LETTER ETH</td></tr>
-<tr><td>{Zh}</td><td>Zh</td><td>Ʒ</td><td>01B7</td><td>&amp;#x01B7;</td><td>LATIN CAPITAL LETTER EZH</td></tr>
-<tr><td>{zh}</td><td>zh</td><td>ʒ</td><td>0292</td><td>&amp;#x0292;</td><td>LATIN SMALL LETTER EZH</td></tr>
 <tr><td>{ff}</td><td>ff</td><td>ﬀ</td><td>FB00</td><td>&amp;#xFB00;</td><td>LATIN SMALL LIGATURE FF</td></tr>
 <tr><td>{fi}</td><td>fi</td><td>ﬁ</td><td>FB01</td><td>&amp;#xFB01;</td><td>LATIN SMALL LIGATURE FI</td></tr>
 <tr><td>{fl}</td><td>fl</td><td>ﬂ</td><td>FB02</td><td>&amp;#xFB02;</td><td>LATIN SMALL LIGATURE FL</td></tr>
@@ -2059,6 +2055,8 @@ $DbSymbolsPage = <<'XXEOFXX';
 <tr><td>{n.}</td><td>n</td><td>ṇ</td><td>1E47</td><td>&amp;#x1E47;</td><td>LATIN SMALL LETTER N WITH DOT BELOW</td></tr>
 <tr><td>{n_}</td><td>n</td><td>ṉ</td><td>1E49</td><td>&amp;#x1E49;</td><td>LATIN SMALL LETTER N WITH LINE BELOW</td></tr>
 <tr><td>{n~}</td><td>n</td><td>ñ</td><td>00F1</td><td>&amp;ntilde;</td><td>LATIN SMALL LETTER N WITH TILDE</td></tr>
+<tr><td>{Ng}</td><td>Ng</td><td>Ŋ</td><td>014A</td><td>&amp;#x014A;</td><td>LATIN CAPITAL LETTER ENG</td></tr>
+<tr><td>{ng}</td><td>ng</td><td>ŋ</td><td>014B</td><td>&amp;#x014B;</td><td>LATIN SMALL LETTER ENG</td></tr>
 <tr><td>{O'}</td><td>O</td><td>Ó</td><td>00D3</td><td>&amp;Oacute;</td><td>LATIN CAPITAL LETTER O WITH ACUTE</td></tr>
 <tr><td>{Ou}</td><td>O</td><td>Ŏ</td><td>014E</td><td>&amp;#x014E;</td><td>LATIN CAPITAL LETTER O WITH BREVE</td></tr>
 <tr><td>{Ov}</td><td>O</td><td>Ǒ</td><td>01D1</td><td>&amp;#x01D1;</td><td>LATIN CAPITAL LETTER O WITH CARON</td></tr>
@@ -2215,6 +2213,8 @@ $DbSymbolsPage = <<'XXEOFXX';
 <tr><td>{z.}</td><td>z</td><td>ẓ</td><td>1E93</td><td>&amp;#x1E93;</td><td>LATIN SMALL LETTER Z WITH DOT BELOW</td></tr>
 <tr><td>{z_}</td><td>z</td><td>ẕ</td><td>1E95</td><td>&amp;#x1E95;</td><td>LATIN SMALL LETTER Z WITH LINE BELOW</td></tr>
 <tr><td>{z/}</td><td>z</td><td>ƶ</td><td>01B6</td><td>&amp;#x01B6;</td><td>LATIN SMALL LETTER Z WITH STROKE</td></tr>
+<tr><td>{Zh}</td><td>Zh</td><td>Ʒ</td><td>01B7</td><td>&amp;#x01B7;</td><td>LATIN CAPITAL LETTER EZH</td></tr>
+<tr><td>{zh}</td><td>zh</td><td>ʒ</td><td>0292</td><td>&amp;#x0292;</td><td>LATIN SMALL LETTER EZH</td></tr>
 </tbody>
 </table>
 
@@ -2222,7 +2222,7 @@ $DbSymbolsPage = <<'XXEOFXX';
 
 <p><sup><a name="fn1">1</a></sup> The <code>{u!}</code> notation represent a character used in Middle High German. It has been proposed by the Medieval Unicode Font Initiative but is not yet part of the official standard. For additional details, see <a href="http://heraldry.sca.org/loar/2012/08/12-08cl.html">the August 2012 cover letter</a>.
 
-<p><sup><a name="fn2">2</a></sup> The {Dj_} and {Sh_} notations represent characters used for the transliteration of Arabic as defined in The Encyclopedia of Islam. For additional details, see <a href="http://heraldry.sca.org/loar/2019/11/19-11cl.html#8">the November 2019 cover letter</a>.
+<p><sup><a name="fn2">2</a></sup> The <code>{Dj_}</code> and <code>{Sh_}</code> notations represent characters used for the transliteration of Arabic as defined in The Encyclopedia of Islam. For additional details, see <a href="http://heraldry.sca.org/loar/2019/11/19-11cl.html#8">the November 2019 cover letter</a>.
 
 <h3>Related web pages:</h3>
 <ul>
@@ -15033,7 +15033,6 @@ $conf_file = '.configweb';
 $config{'XXPrimerUrlXX'} = 'http://heraldry.sca.org/armory/newprimer/';
 $config{'XXLoARUrlXX'} = 'http://heraldry.sca.org/loar';
 $config_version = '2021-02-20 (mathghamhain:development:191+)';
-footnotes)
 $config{'XXVersionXX'} = $config_version;
 $config{'XXHeadXX'} = '';
 
