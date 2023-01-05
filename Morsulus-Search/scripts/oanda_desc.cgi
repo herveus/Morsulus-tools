@@ -48,7 +48,7 @@ if ($p ne '') {
   print '<hr>';
   &print_results ("description=\"<i>".&escape($p)."</i>\"", $n, $scoresort);
 
-  print '<a href="XXComplexSearchUrlXX?a=', $arm_descs, '&d=', $era, '&g=', $gloss_links, '&l=500&s=blazon&w1=1&m1=armory+description&p1=', &encode ($p), '">convert to complex search</a>'
+  print '<a href="XXComplexSearchUrlXX?a=', $arm_descs, '&d=', $era, '&g=', $gloss_links, '&l=500&s=score+and+blazon&w1=1&m1=armory+description&p1=', &encode ($p), '">convert to complex search</a>'
 }
 &print_trailer ();
 # end of XXDescSearchPathXX

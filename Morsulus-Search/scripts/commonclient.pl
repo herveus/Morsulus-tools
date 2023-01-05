@@ -18,11 +18,14 @@ $port = XXDataPortXX;
 # display option settings:
 @eras = ('modern', 'SCA');
 @onoff = ('enabled', 'disabled');
+@registered_status = ('all items', 'registered', 'not registered');
 
 # default display options:
 $era = 'modern';
 $gloss_links = 'disabled';
 $arm_descs = 'disabled';
+$raw_display_mode = 'disabled';
+$registered_status = 'all items';
 
 # networking constants:
 $sockaddr = 'S n a4 x8';   # format of socket address
@@ -391,6 +394,12 @@ sub display_options {
 
   print '<li>Armory descriptions ';
   &select ('a', $arm_descs, @onoff);
+  
+  print '<li>Raw display mode ';
+  &select ('raw', $raw_display_mode, @onoff);
+  
+  print '<li>Registration status ';
+  &select ('rs', $registered_status, @registered_status);
 
   print '</ul>';
 }
@@ -452,6 +461,14 @@ sub print_match {
   local ($\) = '';
   local (@source);
   local ($disp) = 'altered or released';
+  
+  if ($raw_display_mode eq 'enabled')
+  {
+    print join('|', @_), '<br>', "\n";
+    return;
+  }
+  return if ($registered_status eq 'registered' && $source =~ /-/);
+  return if ($registered_status eq 'not registered' && $source !~ /-/);
 
   if ($notes =~ /^(.*)[(]-([^)]+)[)](.*)/) {
     $notes = $1.$3;
@@ -619,7 +636,7 @@ sub print_match {
   if ($notes =~ /^\((.*)\)$/) {
     foreach (split (/\)\(/, $1)) {
         next if /^regid:/;
-      if (/^JB: (.+)$/) {
+      if (/^JB: (.+)$/ || /^JHN: (.*)$/) {
         print '<br>registered jointly with ', &name ($1);
       } elsif (/^\-?transferred to (the )?(.+)$/) {
         print '<br>transferred to ', $1, &name ($2);
@@ -925,6 +942,8 @@ sub blazon {
 # Permute the words of a name so that the first word is significant.
 sub permute {
   local ($_) = @_; 
+  
+  return $_ if /,/;
 
   s/^(the|la|le) +//i;
   if (

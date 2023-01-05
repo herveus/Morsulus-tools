@@ -19,6 +19,7 @@ $case = 'case-insensitive';
 $sort = 'name only';  # default
 
 # Process arguments.
+#$ENV{'QUERY_STRING'} ~= tr/<>//;
 foreach $pair (split (/\&/, $ENV{'QUERY_STRING'})) {
   ($left, $right) = split (/[=]/, $pair, 2);
   $left = &decode ($left);

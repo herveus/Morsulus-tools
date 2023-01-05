@@ -53,7 +53,7 @@ $db_file_name = 'XDbFileNameX';
 $log_file_name = '';
 
 # default limit on result-list size
-$limit = 500;
+$limit = 800;
 
 # max number of waiting connections 
 $listen_queue_length = 5;

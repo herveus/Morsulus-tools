@@ -23,7 +23,7 @@ $criteria = 10;
 
 # option settings
 
-@methods = ('', 'armory description', 'name pattern', 'record type', 'blazon pattern', 'broad name', 'date and kingdom');
+@methods = ('', 'armory description', 'name pattern', 'record type', 'blazon pattern', 'broad name', 'date and kingdom', 'notes pattern');
 
 @sorts = ('score and blazon', 'score and name', 'score only', 'name only', 'last action date', 'blazon');
 $sort = 'score and blazon';  # default
@@ -45,6 +45,8 @@ foreach $pair (split (/\&/, $ENV{'QUERY_STRING'})) {
   $gloss_links = $right if ($left eq 'g');
   $limit = $right if ($left eq 'l');
   $sort = $right if ($left eq 's');
+  $registered_status = $right if ($left eq 'rs');
+  $raw_display_mode = $right if ($left eq 'raw');
 }
 $limit = 500
   if ($limit !~ /^\d+$/);
@@ -78,7 +80,7 @@ if ($valid > 0 && $invalid == 0) {
   for $i (1 .. $criteria) {
     next if $p[$i] eq '';
     if ($method[$i] eq 'name pattern') {
-      print S "e1 $weight[$i] $p[$i]";
+      print S "eni $weight[$i] $p[$i]";
     } elsif ($method[$i] eq 'record type') {
       $temp = $p[$i];
       s/([^\\])?/$1\\?/g;
@@ -95,6 +97,8 @@ if ($valid > 0 && $invalid == 0) {
       print S "d0 $weight[$i] $p[$i]";
     } elsif ($method[$i] eq 'blazon pattern') {
       print S "ebi $weight[$i] $p[$i]";
+    } elsif ($method[$i] eq 'notes pattern') {
+      print S "e5i $weight[$i] $p[$i]";
     } elsif ($method[$i] eq 'broad name') {
       print S "n $weight[$i] $p[$i]";
     } elsif ($method[$i] eq 'date and kingdom') {
@@ -234,7 +238,7 @@ sub validate_desc
     
     $desc =~ s/\s+/ /g;
     
-    if ($desc =~ /:/ or $desc !~ /[a-z]/) # heading maybe with features
+    if ($desc =~ /:/ or $desc !~ /[a-z,]/) # heading maybe with features
     {
         my ($heading, @features) = split(/:/, $desc);
         $heading = uc($heading);
