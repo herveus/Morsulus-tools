@@ -11,6 +11,7 @@ XXSiteHeadXX
 </p>
 
 <style>
+	form.table-filter { margin: 1em; border: 1px solid #ccc; background: #eee; padding: 0.5em; }
     table.lookup { border-collapse: collapse; }
     table.lookup thead tr { background: #eee; border-bottom: 1px solid #999; }
     table.lookup tr { vertical-align: top; }
@@ -24,6 +25,38 @@ XXSiteHeadXX
     table.lookup tr:hover td { background: #ffc;}
     span.category-synonyms { color: #666; }
 </style>
+
+<form class="table-filter">
+	<input type="search" id="filter" placeholder="Type to search" style="width: 100%">
+</form>
+
+<script>
+	$('#filter').on('input', function () {
+		filter_rows();
+		setTimeout( filter_rows, 100 )
+	} );
+	$('#filter').on('change', filter_rows );
+	function filter_rows() {
+		const search = $('#filter').val();
+		const search_re = new RegExp(search, 'i');
+		// console.log( "Search:", search_re );
+		$('table.lookup tbody tr').each( function () {
+			var match;
+			if ( ! search ) {
+				match = 1
+			} else {
+				match = ! ! $(this).text().match(search_re);
+			}
+			var visible = $(this).is(':visible');
+			// console.log( 'match?', match, visible, match != visible );
+			if ( match && ! visible ) {
+				$( this ).slideDown( 100 )
+			} else if ( visible && ! match ) {
+				$( this ).slideUp( 100 )
+			}
+		} );
+	}
+</script>
 
 <table class="lookup">
     <thead>

@@ -11,6 +11,7 @@ XXSiteHeadXX
 </p>
 
 <style>
+	form.table-filter { margin: 1em; border: 1px solid #ccc; background: #eee; padding: 0.5em; }
     table.lookup { border-collapse: collapse; }
     table.lookup thead tr { background: #eee; border-bottom: 1px solid #999; }
     table.lookup tr { vertical-align: top; }
@@ -26,6 +27,54 @@ XXSiteHeadXX
     table.lookup tr:not(.feature-set):hover td { background: #ffc;}
     span.feature-relationships { color: #666; }
 </style>
+
+<form class="table-filter">
+	<input type="search" id="filter" placeholder="Type to search" style="width: 100%">
+</form>
+
+<script>
+	$('#filter').on('input', function () {
+		filter_rows();
+		setTimeout( filter_rows, 100 )
+	} );
+	$('#filter').on('change', filter_rows );
+	function filter_rows() {
+		const search = $('#filter').val();
+		const search_re = new RegExp(search, 'i');
+		// console.log( "Search:", search_re );
+		$('table.lookup tbody tr:not(.feature-set)').each( function () {
+			var row = $(this);
+			var match;
+			if ( ! search ) {
+				match = 1
+			} else {
+				match = ! ! row.text().match(search_re);
+			}
+			var visible = row.is(':visible');
+			// console.log( 'match?', match, visible, match != visible );
+			if ( match && ! visible ) {
+				row.slideDown( 100 );
+				row.removeClass('filtered');
+			}
+			else if ( visible && ! match ) {
+				row.slideUp( 100 );
+				row.addClass('filtered');
+			}
+		} );
+		$('table.lookup tbody tr.feature-set').each( function () {
+			var row = $(this);
+			var next_visible = row.nextAll(':not(.filtered )');
+			var empty = ( next_visible.length == 0 || next_visible.first().is('.feature-set') );
+			var visible = row.is(':visible');
+			if ( ! empty && ! visible ) {
+				row.slideDown( 100 )
+			}
+			else if ( visible && empty ) {
+				row.slideUp( 100 )
+			}
+		} );
+	}
+</script>
 
 <table class="lookup">
     <thead>
