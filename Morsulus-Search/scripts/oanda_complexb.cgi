@@ -244,7 +244,8 @@ sub validate_desc
         $heading = uc($heading);
         if (! exists $heading{$heading})
         {
-            push @validation_errors, "'$desc' has invalid heading";
+            my $newdesc = join(', ', lc($heading), @features);
+            return validate_desc($newdesc);
         }
         for my $feature (@features)
         {
