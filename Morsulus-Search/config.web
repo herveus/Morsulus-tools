@@ -1230,15 +1230,16 @@ The <a href="XXNpSearchUrlXX">name pattern search form</a>,
 and <a href="XXComplexSearchUrlXX">complex search form</a>
 each allow you to set a limit on the number of returned items.
 On these forms, if you do not specify a limit, your results will be limited
-to 25 items.
+to 500 items.
 
 <p>
-If your search is limited, you will see a message such as:
+If your search is limited, you will see a message at the bottom of your results listing similar to the below:
 <blockquote>
 <p>There were <em>n</em> other items for which details are not
 available, due to the <a href="XXLimitPageUrlXX">limit feature</a>.
 </blockquote>
-at the bottom of your results listing.  In this case, the item
+<p>
+    In this case, the item
 you were looking for may be one of the ones that was cut from
 the listing.  There are several things you might do next:
 <ul>
@@ -14612,7 +14613,7 @@ $conf_file = '.configweb';
 
 $config{'XXPrimerUrlXX'} = 'http://heraldry.sca.org/armory/newprimer/';
 $config{'XXLoARUrlXX'} = 'http://heraldry.sca.org/loar';
-$config_version = '2022-12-16 (1:127+)';
+$config_version = '2021-02-14 (mathghamhain:development:179+)';
 $config{'XXVersionXX'} = $config_version;
 $config{'XXHeadXX'} = '';
 
