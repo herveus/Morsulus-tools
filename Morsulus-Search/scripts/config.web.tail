@@ -41,11 +41,13 @@ $config{'XXPrimerUrlXX'} = 'http://heraldry.sca.org/armory/newprimer/';
 $config{'XXLoARUrlXX'} = 'http://heraldry.sca.org/loar';
 $config_version = 'XXConfigVersionFromAssemblerXX';
 $config{'XXVersionXX'} = $config_version;
-$config{'XXHeadXX'} = '';
+$config{'XXHeadXX'} ||= '';
+$config{'XXSiteHeadXX'} ||= '';
 
-$config{'XXTrailerXX'} = "<hr><address>config.web version $config_version ";
-$config{'XXTrailer2XX'} = '';
-$config{'XXCloseHtmlXX'} = '</address></body></html>';
+undef $config{'XXTrailerXX'} if ( $config{'XXTrailerXX'} =~ /2016/ );
+$config{'XXTrailerXX'} ||= "<hr><address>config.web version XXVersionXX ";
+$config{'XXTrailer2XX'} ||= '';
+$config{'XXCloseHtmlXX'} ||= '</address></body></html>';
 
 #============================#
 # Set webserver parameters.  #

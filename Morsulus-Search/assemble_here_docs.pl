@@ -140,6 +140,8 @@ $IndexPage{'%s'} = <<'XXEOFXX';
 <head><title>Index of the SCA Ordinary - The Letter %s</title>
 <base href="XXIndexDirUrlXX/%s.html">XXHeadXX
 </head><body>
+XXSiteHeadXX
+
 <h2>Index of the SCA Ordinary - The Letter %s</h2>
 <p>
 <a href="XXIndexDirUrlXX/A.html">A</a>

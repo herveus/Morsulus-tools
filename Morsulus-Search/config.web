@@ -255,12 +255,18 @@ sub read_config_file {
     return unless -r $conf_file;
     print "\nReading previous configuration from $conf_file ...";
     open my $CONF, '<', $conf_file or die "Can't open config file $conf_file: $?";
+    my $last_tag;
     while (<$CONF>)
     {
         next if /^#/;
         chomp;
-        my ($tag, $value) = split(/\|/);
-        $config{$tag} = $value;
+        my ($tag, $value) = split(/\|/, $_, 2);
+        if ( ! length $tag ) {
+            $config{$last_tag} .= "\n" . $value;
+        } else {
+            $config{$tag} = $value;
+            $last_tag = $tag;
+        }
     }
     print " done.\n";
     return %config;
@@ -277,6 +283,7 @@ sub save_config {
     {
         next if $tag eq 'CONF_FILE';
         my $value = $config{$tag};
+        $value =~ s/\n/\n|/g;
         print $CONF "$tag|$value\n";
     }
     print " done.\n";
@@ -291,9 +298,18 @@ sub configure {
 
   print "\nConfiguring $what.\n";
 
-  while (($tag, $value) = each %config) {
-    s/$tag/$value/g;
+  my $rerun = 1;
+  while ( $rerun ) {
+      $rerun = 0;
+      while (($tag, $value) = each %config) {
+        if ( s/$tag/$value/g ) {
+            if ( $value =~ /XX\w+XX/ ) {
+                $rerun ++;
+            }
+        }
+      }
   }
+
   return $_;
 }
 
@@ -474,6 +490,7 @@ $SearchMenu = <<'XXEOFXX';
 <head><title>Search Forms for the SCA Armorial</title>
 <base href="XXSearchMenuUrlXX">XXHeadXX
 </head><body>
+XXSiteHeadXX
 
     <h2>Welcome to the Ordinary &amp; Armorial of the SCA</h2>
     <p>
@@ -525,6 +542,7 @@ $NameHintsPage = <<'XXEOFXX';
 <head><title>Name Search Hints</title>
 <base href="XXNameHintsPageUrlXX">XXHeadXX
 </head><body>
+XXSiteHeadXX
 
 <h2>Name Search Hints</h2>
 
@@ -579,6 +597,7 @@ $DateHintsPage = <<'XXEOFXX';
 <head><title>Date/Kingdom Search Hints</title>
 <base href="XXDateHintsPageUrlXX">XXHeadXX
 </head><body>
+XXSiteHeadXX
 
 <h2>Date/Kingdom Search Hints</h2>
 
@@ -651,6 +670,7 @@ $DescHintsPage = <<'XXEOFXX';
 <head><title>Armory Description Search Hints</title>
 <base href="XXDescHintsPageUrlXX">XXHeadXX
 </head><body>
+XXSiteHeadXX
 
 <h2>Armory Description Search Hints</h2>
 <p>
@@ -740,6 +760,7 @@ $NpHintsPage = <<'XXEOFXX';
 <head><title>Name Pattern Search Hints</title>
 <base href="XXNpHintsPageUrlXX">XXHeadXX
 </head><body>
+XXSiteHeadXX
 
 <h2>Name Pattern Search Hints</h2>
 <p>
@@ -884,6 +905,7 @@ $BpHintsPage = <<'XXEOFXX';
 <head><title>Blazon Pattern Search Hints</title>
 <base href="XXBpHintsPageUrlXX">XXHeadXX
 </head><body>
+XXSiteHeadXX
 
 <h2>Blazon Pattern Search Hints</h2>
 <p>
@@ -1008,6 +1030,9 @@ $ComplexHintsPage = <<'XXEOFXX';
 <head><title>Complex Search Hints</title>
 <base href="XXComplexHintsPageUrlXX">XXHeadXX
 </head>
+<body>
+XXSiteHeadXX
+
 <h2>Complex Search Hints</h2>
 <p>
 Here are some hints for using the 
@@ -1121,6 +1146,7 @@ $OverviewPage = <<'XXEOFXX';
 <head><title>About SCA Heraldry</title>
 <base href="XXOverviewPageUrlXX">XXHeadXX
 </head><body>
+XXSiteHeadXX
 
 <h2>About SCA Heraldry</h2>
 
@@ -1221,6 +1247,7 @@ $LimitPage = <<'XXEOFXX';
 <head><title>Search Limits</title>
 <base href="XXLimitPageUrlXX">XXHeadXX
 </head><body>
+XXSiteHeadXX
 
 <h2>Search Limits</h2>
 
@@ -1266,6 +1293,7 @@ $DownloadPage = <<'XXEOFXX';
 <head><title>SCA Armorial Database</title>
 <base href="XXDownloadPageUrlXX">XXHeadXX
 </head><body>
+XXSiteHeadXX
 
 <h2>Obtaining the SCA Armorial Database</h2>
 
@@ -1313,7 +1341,9 @@ $DbFormatPage = <<'XXEOFXX';
 <html>
 <head><title>Format of the SCA Armorial Database</title>
 <base href="XXDbFormatPageUrlXX">XXHeadXX
-</head><body><h2>
+</head><body>
+XXSiteHeadXX
+<h2>
                  Format of the SCA Armorial Database
 </h2><h3>
 				by
@@ -1797,7 +1827,9 @@ $DbSymbolsPage = <<'XXEOFXX';
 <head><title>Da'ud Encodings</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <base href="XXDbSymbolsPageUrlXX">XXHeadXX
-</head><body><h2>
+</head><body>
+XXSiteHeadXX
+<h2>
               Non-ASCII Symbols in the SCA Armorial Database
 </h2><h3>
 				by
@@ -2550,6 +2582,7 @@ $IndexPage = <<'XXEOFXX';
 <head><title>Online SCA Ordinary - Master Index</title>
 <base href="XXIndexDirUrlXX/index.html">XXHeadXX
 </head><body>
+XXSiteHeadXX
 
 <h2>Online SCA Ordinary - Master Index</h2>
 <p>
@@ -2605,6 +2638,8 @@ $IndexPage{'A'} = <<'XXEOFXX';
 <head><title>Index of the SCA Ordinary - The Letter A</title>
 <base href="XXIndexDirUrlXX/A.html">XXHeadXX
 </head><body>
+XXSiteHeadXX
+
 <h2>Index of the SCA Ordinary - The Letter A</h2>
 
 <ul>
@@ -3013,6 +3048,8 @@ $IndexPage{'B'} = <<'XXEOFXX';
 <head><title>Index of the SCA Ordinary - The Letter B</title>
 <base href="XXIndexDirUrlXX/B.html">XXHeadXX
 </head><body>
+XXSiteHeadXX
+
 <h2>Index of the SCA Ordinary - The Letter B</h2>
 
 <ul>
@@ -4009,6 +4046,8 @@ $IndexPage{'C'} = <<'XXEOFXX';
 <head><title>Index of the SCA Ordinary - The Letter C</title>
 <base href="XXIndexDirUrlXX/C.html">XXHeadXX
 </head><body>
+XXSiteHeadXX
+
 <h2>Index of the SCA Ordinary - The Letter C</h2>
 
 <ul>
@@ -4816,6 +4855,8 @@ $IndexPage{'D'} = <<'XXEOFXX';
 <head><title>Index of the SCA Ordinary - The Letter D</title>
 <base href="XXIndexDirUrlXX/D.html">XXHeadXX
 </head><body>
+XXSiteHeadXX
+
 <h2>Index of the SCA Ordinary - The Letter D</h2>
 
 <ul>
@@ -5008,6 +5049,8 @@ $IndexPage{'E'} = <<'XXEOFXX';
 <head><title>Index of the SCA Ordinary - The Letter E</title>
 <base href="XXIndexDirUrlXX/E.html">XXHeadXX
 </head><body>
+XXSiteHeadXX
+
 <h2>Index of the SCA Ordinary - The Letter E</h2>
 
 <ul>
@@ -5145,6 +5188,8 @@ $IndexPage{'F'} = <<'XXEOFXX';
 <head><title>Index of the SCA Ordinary - The Letter F</title>
 <base href="XXIndexDirUrlXX/F.html">XXHeadXX
 </head><body>
+XXSiteHeadXX
+
 <h2>Index of the SCA Ordinary - The Letter F</h2>
 
 <ul>
@@ -6462,6 +6507,8 @@ $IndexPage{'G'} = <<'XXEOFXX';
 <head><title>Index of the SCA Ordinary - The Letter G</title>
 <base href="XXIndexDirUrlXX/G.html">XXHeadXX
 </head><body>
+XXSiteHeadXX
+
 <h2>Index of the SCA Ordinary - The Letter G</h2>
 
 <ul>
@@ -6680,6 +6727,8 @@ $IndexPage{'H'} = <<'XXEOFXX';
 <head><title>Index of the SCA Ordinary - The Letter H</title>
 <base href="XXIndexDirUrlXX/H.html">XXHeadXX
 </head><body>
+XXSiteHeadXX
+
 <h2>Index of the SCA Ordinary - The Letter H</h2>
 
 <ul>
@@ -7132,6 +7181,8 @@ $IndexPage{'I'} = <<'XXEOFXX';
 <head><title>Index of the SCA Ordinary - The Letter I</title>
 <base href="XXIndexDirUrlXX/I.html">XXHeadXX
 </head><body>
+XXSiteHeadXX
+
 <h2>Index of the SCA Ordinary - The Letter I</h2>
 
 <ul>
@@ -7208,6 +7259,8 @@ $IndexPage{'J'} = <<'XXEOFXX';
 <head><title>Index of the SCA Ordinary - The Letter J</title>
 <base href="XXIndexDirUrlXX/J.html">XXHeadXX
 </head><body>
+XXSiteHeadXX
+
 <h2>Index of the SCA Ordinary - The Letter J</h2>
 
 <ul>
@@ -7268,6 +7321,8 @@ $IndexPage{'K'} = <<'XXEOFXX';
 <head><title>Index of the SCA Ordinary - The Letter K</title>
 <base href="XXIndexDirUrlXX/K.html">XXHeadXX
 </head><body>
+XXSiteHeadXX
+
 <h2>Index of the SCA Ordinary - The Letter K</h2>
 
 <ul>
@@ -7360,6 +7415,8 @@ $IndexPage{'L'} = <<'XXEOFXX';
 <head><title>Index of the SCA Ordinary - The Letter L</title>
 <base href="XXIndexDirUrlXX/L.html">XXHeadXX
 </head><body>
+XXSiteHeadXX
+
 <h2>Index of the SCA Ordinary - The Letter L</h2>
 
 <ul>
@@ -7557,6 +7614,8 @@ $IndexPage{'M'} = <<'XXEOFXX';
 <head><title>Index of the SCA Ordinary - The Letter M</title>
 <base href="XXIndexDirUrlXX/M.html">XXHeadXX
 </head><body>
+XXSiteHeadXX
+
 <h2>Index of the SCA Ordinary - The Letter M</h2>
 
 <ul>
@@ -8158,6 +8217,8 @@ $IndexPage{'N'} = <<'XXEOFXX';
 <head><title>Index of the SCA Ordinary - The Letter N</title>
 <base href="XXIndexDirUrlXX/N.html">XXHeadXX
 </head><body>
+XXSiteHeadXX
+
 <h2>Index of the SCA Ordinary - The Letter N</h2>
 
 <ul>
@@ -8242,6 +8303,8 @@ $IndexPage{'O'} = <<'XXEOFXX';
 <head><title>Index of the SCA Ordinary - The Letter O</title>
 <base href="XXIndexDirUrlXX/O.html">XXHeadXX
 </head><body>
+XXSiteHeadXX
+
 <h2>Index of the SCA Ordinary - The Letter O</h2>
 
 <ul>
@@ -8352,6 +8415,8 @@ $IndexPage{'P'} = <<'XXEOFXX';
 <head><title>Index of the SCA Ordinary - The Letter P</title>
 <base href="XXIndexDirUrlXX/P.html">XXHeadXX
 </head><body>
+XXSiteHeadXX
+
 <h2>Index of the SCA Ordinary - The Letter P</h2>
 
 <ul>
@@ -8877,6 +8942,8 @@ $IndexPage{'Q'} = <<'XXEOFXX';
 <head><title>Index of the SCA Ordinary - The Letter Q</title>
 <base href="XXIndexDirUrlXX/Q.html">XXHeadXX
 </head><body>
+XXSiteHeadXX
+
 <h2>Index of the SCA Ordinary - The Letter Q</h2>
 
 <ul>
@@ -8929,6 +8996,8 @@ $IndexPage{'R'} = <<'XXEOFXX';
 <head><title>Index of the SCA Ordinary - The Letter R</title>
 <base href="XXIndexDirUrlXX/R.html">XXHeadXX
 </head><body>
+XXSiteHeadXX
+
 <h2>Index of the SCA Ordinary - The Letter R</h2>
 
 <ul>
@@ -9207,6 +9276,8 @@ $IndexPage{'S'} = <<'XXEOFXX';
 <head><title>Index of the SCA Ordinary - The Letter S</title>
 <base href="XXIndexDirUrlXX/S.html">XXHeadXX
 </head><body>
+XXSiteHeadXX
+
 <h2>Index of the SCA Ordinary - The Letter S</h2>
 
 <ul>
@@ -9862,6 +9933,8 @@ $IndexPage{'T'} = <<'XXEOFXX';
 <head><title>Index of the SCA Ordinary - The Letter T</title>
 <base href="XXIndexDirUrlXX/T.html">XXHeadXX
 </head><body>
+XXSiteHeadXX
+
 <h2>Index of the SCA Ordinary - The Letter T</h2>
 
 <ul>
@@ -10267,6 +10340,8 @@ $IndexPage{'U'} = <<'XXEOFXX';
 <head><title>Index of the SCA Ordinary - The Letter U</title>
 <base href="XXIndexDirUrlXX/U.html">XXHeadXX
 </head><body>
+XXSiteHeadXX
+
 <h2>Index of the SCA Ordinary - The Letter U</h2>
 
 <ul>
@@ -10311,6 +10386,8 @@ $IndexPage{'V'} = <<'XXEOFXX';
 <head><title>Index of the SCA Ordinary - The Letter V</title>
 <base href="XXIndexDirUrlXX/V.html">XXHeadXX
 </head><body>
+XXSiteHeadXX
+
 <h2>Index of the SCA Ordinary - The Letter V</h2>
 
 <ul>
@@ -10374,6 +10451,8 @@ $IndexPage{'W'} = <<'XXEOFXX';
 <head><title>Index of the SCA Ordinary - The Letter W</title>
 <base href="XXIndexDirUrlXX/W.html">XXHeadXX
 </head><body>
+XXSiteHeadXX
+
 <h2>Index of the SCA Ordinary - The Letter W</h2>
 
 <ul>
@@ -10611,6 +10690,8 @@ $IndexPage{'X'} = <<'XXEOFXX';
 <head><title>Index of the SCA Ordinary - The Letter X</title>
 <base href="XXIndexDirUrlXX/X.html">XXHeadXX
 </head><body>
+XXSiteHeadXX
+
 <h2>Index of the SCA Ordinary - The Letter X</h2>
 
 <ul>
@@ -10636,6 +10717,8 @@ $IndexPage{'Y'} = <<'XXEOFXX';
 <head><title>Index of the SCA Ordinary - The Letter Y</title>
 <base href="XXIndexDirUrlXX/Y.html">XXHeadXX
 </head><body>
+XXSiteHeadXX
+
 <h2>Index of the SCA Ordinary - The Letter Y</h2>
 
 <ul>
@@ -10675,6 +10758,8 @@ $IndexPage{'Z'} = <<'XXEOFXX';
 <head><title>Index of the SCA Ordinary - The Letter Z</title>
 <base href="XXIndexDirUrlXX/Z.html">XXHeadXX
 </head><body>
+XXSiteHeadXX
+
 <h2>Index of the SCA Ordinary - The Letter Z</h2>
 
 <ul>
@@ -12145,6 +12230,7 @@ print '<html><head><title>', $form_title, '</title></head>';
 
 # Print first part of HTML body.
 print '<body>';
+print q{XXSiteHeadXX};
 
 $valid = 0;
 
@@ -13334,10 +13420,13 @@ sub print_header {
   print "Content-Type:  text/html\n";
 
   # Print HTML header.
-  print '<html><head><title>', $form_title, '</title></head>';
+  print '<html><head><title>', $form_title, '</title>';
+  print q{XXHeadXX};
+  print '</head>';
 
   # Print first part of HTML body.
   print '<body>';
+  print q{XXSiteHeadXX};
   print '<form action="', $cgi_url, '",type="POST",enctype="', $enctype, '">';
   print '<h2>', $form_title, '</h2>';
 }
@@ -14614,11 +14703,13 @@ $config{'XXPrimerUrlXX'} = 'http://heraldry.sca.org/armory/newprimer/';
 $config{'XXLoARUrlXX'} = 'http://heraldry.sca.org/loar';
 $config_version = '2022-12-16 (1:127+)';
 $config{'XXVersionXX'} = $config_version;
-$config{'XXHeadXX'} = '';
+$config{'XXHeadXX'} ||= '';
+$config{'XXSiteHeadXX'} ||= '';
 
-$config{'XXTrailerXX'} = "<hr><address>config.web version $config_version ";
-$config{'XXTrailer2XX'} = '';
-$config{'XXCloseHtmlXX'} = '</address></body></html>';
+undef $config{'XXTrailerXX'} if ( $config{'XXTrailerXX'} =~ /2016/ );
+$config{'XXTrailerXX'} ||= "<hr><address>config.web version XXVersionXX ";
+$config{'XXTrailer2XX'} ||= '';
+$config{'XXCloseHtmlXX'} ||= '</address></body></html>';
 
 #============================#
 # Set webserver parameters.  #
