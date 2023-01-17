@@ -12,6 +12,10 @@ my %textblobs = (
     BpHintsPage => 'hints_bp.html',
     ComplexHintsPage => 'hints_complex.html',
     OverviewPage => 'heraldry_overview.html',
+    RecordCodesPage => 'recordtype_codes.html',
+    KingdomCodesPage => 'kingdom_codes.html',
+    CategoryCodesPage => 'category_codes.html',
+    FeatureCodesPage => 'feature_codes.html',
     LimitPage => 'search_limits.html',
     DownloadPage => 'data_obtain.html',
     DbFormatPage => 'data_format.html',
@@ -72,6 +76,10 @@ my @textnames = qw/
     BpHintsPage
     ComplexHintsPage
     OverviewPage
+    KingdomCodesPage
+    RecordCodesPage
+    CategoryCodesPage
+    FeatureCodesPage
     LimitPage
     DownloadPage
     DbFormatPage
@@ -248,7 +256,7 @@ while (<PRINT_FILE>) {
     grep ($_ = cref ($_), @cr);
     print $fh ' - see ', $also, join (' and ', @cr);
   } else {
-    die if ($heading eq '');
+    die "Heading not found in $print_file_name" if ($heading eq '');
   }
 }
 print $fh $tail unless ($last eq '');

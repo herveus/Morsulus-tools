@@ -1,0 +1,1556 @@
+<html>
+<head><title>Feature Codes</title>
+<base href="XXCategoryCodesPageUrlXX">XXHeadXX
+</head><body>
+XXSiteHeadXX
+
+<h2>Feature Codes</h2>
+
+<p>
+    The <a href="XXDescSearchUrlXX">Armory Description Search Form</a> allows you to filter armory records based on features of the items they contain.
+</p>
+
+<style>
+	form.table-filter { margin: 1em; border: 1px solid #ccc; background: #eee; padding: 0.5em; }
+    table.lookup { border-collapse: collapse; }
+    table.lookup thead tr { background: #eee; border-bottom: 1px solid #999; }
+    table.lookup tr { vertical-align: top; }
+    table.lookup tbody tr { border-top: 1px solid #ddd; }
+    table.lookup tbody tr:nth-child(even) { background: #fcfcfc; }
+    table.lookup tbody tr.feature-set { background: #eee; border-top: 1px solid #333; }
+    table.lookup tbody tr.feature-set td { font-weight: bold; }
+    table.lookup th { text-align: left; }
+    table.lookup th,
+    table.lookup td { padding: 2px 5px; }
+    table.lookup th:nth-child(2),
+    table.lookup td:nth-child(2) { min-width: 25%; }
+    table.lookup tr:not(.feature-set):hover td { background: #ffc;}
+    span.feature-relationships { color: #666; }
+</style>
+
+<form class="table-filter">
+	<input type="search" id="filter" placeholder="Type to search" style="width: 100%">
+</form>
+
+<script>
+	$('#filter').on('input', function () {
+		filter_rows();
+		setTimeout( filter_rows, 100 )
+	} );
+	$('#filter').on('change', filter_rows );
+	function filter_rows() {
+		const search = $('#filter').val();
+		const search_re = new RegExp(search, 'i');
+		// console.log( "Search:", search_re );
+		$('table.lookup tbody tr:not(.feature-set)').each( function () {
+			var row = $(this);
+			var match;
+			if ( ! search ) {
+				match = 1
+			} else {
+				match = ! ! row.text().match(search_re);
+			}
+			var visible = row.is(':visible');
+			// console.log( 'match?', match, visible, match != visible );
+			if ( match && ! visible ) {
+				row.slideDown( 100 );
+				row.removeClass('filtered');
+			}
+			else if ( visible && ! match ) {
+				row.slideUp( 100 );
+				row.addClass('filtered');
+			}
+		} );
+		$('table.lookup tbody tr.feature-set').each( function () {
+			var row = $(this);
+			var next_visible = row.nextAll(':not(.filtered )');
+			var empty = ( next_visible.length == 0 || next_visible.first().is('.feature-set') );
+			var visible = row.is(':visible');
+			if ( ! empty && ! visible ) {
+				row.slideDown( 100 )
+			}
+			else if ( visible && empty ) {
+				row.slideUp( 100 )
+			}
+		} );
+	}
+</script>
+
+<table class="lookup">
+    <thead>
+        <tr>
+            <th style>
+                Set
+            </th>
+            <th>
+                Feature
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+<tr class='feature-set'>
+<td> arrangement </td>
+<td></td>
+</tr>
+<tr>
+<td>  </td>
+<td> in saltire  </td>
+</tr>
+<tr class='feature-set'>
+<td> bird_posture </td>
+<td></td>
+</tr>
+<tr>
+<td>  </td>
+<td> bird affronty  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> bird lying on its back  <span class="feature-relationships">(&#60;other bird posture)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> bird naiant affronty addorsed  <span class="feature-relationships">(&#60;bird naiant affronty)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> bird naiant affronty displayed  <span class="feature-relationships">(&#60;bird naiant affronty)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> bird naiant affronty  <span class="feature-relationships">(&#60;bird affronty)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> bird naiant to dexter addorsed  <span class="feature-relationships">(&#60;volant to dexter)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> bird naiant to dexter  <span class="feature-relationships">(&#60;close to dexter)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> bird naiant to sinister addorsed  <span class="feature-relationships">(&#60;volant to sinister)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> bird naiant to sinister  <span class="feature-relationships">(&#60;close to sinister)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> bird passant to dexter addorsed  <span class="feature-relationships">(&#60;volant to dexter)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> bird passant to dexter displayed  <span class="feature-relationships">(&#60;displayed)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> bird passant to dexter one wing  <span class="feature-relationships">(&#60;other bird posture)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> bird passant to dexter  <span class="feature-relationships">(&#60;close to dexter)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> bird passant to sinister addorsed  <span class="feature-relationships">(&#60;volant to sinister)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> bird passant to sinister displayed  <span class="feature-relationships">(&#60;displayed)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> bird passant to sinister one wing  <span class="feature-relationships">(&#60;other bird posture)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> bird passant to sinister  <span class="feature-relationships">(&#60;close to sinister)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> bird rampant to dexter addorsed  <span class="feature-relationships">(&#60;rising to dexter)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> bird rampant to dexter  <span class="feature-relationships">(&#60;bird rampant)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> bird rampant  <span class="feature-relationships">(&#60;other bird posture)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> bird tergiant close  <span class="feature-relationships">(&#60;bird affronty)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> close  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> close affronty  <span class="feature-relationships">(&#60;bird affronty)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> close to dexter inverted  <span class="feature-relationships">(&#60;other bird posture)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> close to dexter one wing  <span class="feature-relationships">(&#60;other bird posture)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> close to dexter  <span class="feature-relationships">(&#60;close)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> close to sinister  <span class="feature-relationships">(&#60;close)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> displayed  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> displayed affronty  <span class="feature-relationships">(&#60;bird affronty)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> displayed bendwise sinister inverted  <span class="feature-relationships">(&#60;stooping to dexter)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> displayed bendwise  <span class="feature-relationships">(&#60;rising to dexter)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> hovering palewise to dexter  <span class="feature-relationships">(&#60;other bird posture)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> in pride  <span class="feature-relationships">(&#60;bird affronty)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> migrant bendwise sinister  <span class="feature-relationships">(&#60;rising to sinister)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> migrant bendwise  <span class="feature-relationships">(&#60;rising to dexter)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> migrant to base  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> migrant to chief  <span class="feature-relationships">(&#60;displayed)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> migrant to dexter  <span class="feature-relationships">(&#60;volant to dexter)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> migrant to sinister  <span class="feature-relationships">(&#60;volant to sinister)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> other bird posture  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> pavanated to dexter  <span class="feature-relationships">(&#60;close to dexter)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> pavanated to sinister  <span class="feature-relationships">(&#60;close to sinister)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> rising to dexter  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> rising to dexter addorsed  <span class="feature-relationships">(&#60;rising to dexter)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> rising to dexter displayed  <span class="feature-relationships">(&#60;rising to dexter)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> rising to sinister  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> rising to sinister addorsed  <span class="feature-relationships">(&#60;rising to sinister)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> rising to sinister displayed  <span class="feature-relationships">(&#60;rising to sinister)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> stooping to dexter  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> stooping to dexter addorsed  <span class="feature-relationships">(&#60;stooping to dexter)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> stooping to sinister  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> stooping to sinister displayed  <span class="feature-relationships">(&#60;stooping to sinister)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> striking affronty  <span class="feature-relationships">(&#60;bird affronty)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> striking to dexter addorsed  <span class="feature-relationships">(&#60;striking to dexter)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> striking to dexter displayed  <span class="feature-relationships">(&#60;striking to dexter)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> striking to dexter  <span class="feature-relationships">(&#60;rising to dexter)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> striking to sinister displayed  <span class="feature-relationships">(&#60;striking to sinister)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> striking to sinister  <span class="feature-relationships">(&#60;rising to sinister)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> volant affronty displayed  <span class="feature-relationships">(&#60;bird affronty)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> volant affronty  <span class="feature-relationships">(&#60;bird affronty)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> volant to base addorsed  <span class="feature-relationships">(&#60;volant to base)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> volant to base  <span class="feature-relationships">(&#60;migrant to base)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> volant to chief addorsed  <span class="feature-relationships">(&#60;other bird posture)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> volant to chief  <span class="feature-relationships">(&#60;displayed)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> volant to dexter  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> volant to dexter addorsed  <span class="feature-relationships">(&#60;volant to dexter)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> volant to dexter displayed  <span class="feature-relationships">(&#60;volant to dexter)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> volant to sinister  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> volant to sinister addorsed  <span class="feature-relationships">(&#60;volant to sinister)</span> </td>
+</tr>
+<tr class='feature-set'>
+<td> bird_type </td>
+<td></td>
+</tr>
+<tr>
+<td>  </td>
+<td> chicken  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> dove  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> duck  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> eagle  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> heron  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> hummingbird  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> owl  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> parrot  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> peacock  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> pelican  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> penguin  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> raven  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> roc  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> seagull  </td>
+</tr>
+<tr class='feature-set'>
+<td> blade </td>
+<td></td>
+</tr>
+<tr>
+<td>  </td>
+<td> broken  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> obscured  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> odd shape  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> plain blade  </td>
+</tr>
+<tr class='feature-set'>
+<td> chrelation </td>
+<td></td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 1 argent  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 1 argent only  <span class="feature-relationships">(&#60;above 1 argent)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 1 argent plus  <span class="feature-relationships">(&#60;above 1 argent)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 1 azure  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 1 azure only  <span class="feature-relationships">(&#60;above 1 azure)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 1 azure plus  <span class="feature-relationships">(&#60;above 1 azure)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 1 fur  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 1 fur only  <span class="feature-relationships">(&#60;above 1 fur)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 1 fur plus  <span class="feature-relationships">(&#60;above 1 fur)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 1 gules  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 1 gules only  <span class="feature-relationships">(&#60;above 1 gules)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 1 gules plus  <span class="feature-relationships">(&#60;above 1 gules)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 1 multicolor  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 1 multicolor only  <span class="feature-relationships">(&#60;above 1 multicolor)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 1 multicolor plus  <span class="feature-relationships">(&#60;above 1 multicolor)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 1 or  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 1 or only  <span class="feature-relationships">(&#60;above 1 or)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 1 or plus  <span class="feature-relationships">(&#60;above 1 or)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 1 purpure  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 1 purpure only  <span class="feature-relationships">(&#60;above 1 purpure)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 1 purpure plus  <span class="feature-relationships">(&#60;above 1 purpure)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 1 sable  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 1 sable only  <span class="feature-relationships">(&#60;above 1 sable)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 1 sable plus  <span class="feature-relationships">(&#60;above 1 sable)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 1 vert  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 1 vert only  <span class="feature-relationships">(&#60;above 1 vert)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 1 vert plus  <span class="feature-relationships">(&#60;above 1 vert)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 2  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 3 or more  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 3  <span class="feature-relationships">(&#60;above 3 or more)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above 4 or more  <span class="feature-relationships">(&#60;above 3 or more)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> above seme  <span class="feature-relationships">(&#60;above 4 or more)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> not above  </td>
+</tr>
+<tr class='feature-set'>
+<td> count </td>
+<td></td>
+</tr>
+<tr>
+<td>  </td>
+<td> of 1  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> of 2  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> of 3 or 4  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> of 3  <span class="feature-relationships">(&#60;of 3 or 4)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> of 4  <span class="feature-relationships">(&#60;of 3 or 4)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> of 5  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> of 6  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> of 7  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> of 8 or more  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> of 8  <span class="feature-relationships">(&#60;of 8 or more)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> of 9 or more  <span class="feature-relationships">(&#60;of 8 or more)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> of 9  <span class="feature-relationships">(&#60;of 9 or more)</span> </td>
+</tr>
+<tr class='feature-set'>
+<td> crescent_dir </td>
+<td></td>
+</tr>
+<tr>
+<td>  </td>
+<td> decrescent  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> increscent  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> pendant  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> tilted  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> upright  </td>
+</tr>
+<tr class='feature-set'>
+<td> cross_family </td>
+<td></td>
+</tr>
+<tr>
+<td>  </td>
+<td> calvary  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> crosslet  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> doubled  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> flory  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> formy  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> gringoly  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> maltese  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> moline  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> other cross  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> plain cross  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> pomelly  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> potent  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> tau  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> toulouse  </td>
+</tr>
+<tr class='feature-set'>
+<td> fish_posture </td>
+<td></td>
+</tr>
+<tr>
+<td>  </td>
+<td> hauriant  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> naiant to dexter  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> naiant to sinister  </td>
+</tr>
+<tr class='feature-set'>
+<td> group </td>
+<td></td>
+</tr>
+<tr>
+<td>  </td>
+<td> debruising  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> g2pa  <span class="feature-relationships">(&#60;gpa)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> g2pna  <span class="feature-relationships">(&#60;gpna)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> g3pa  <span class="feature-relationships">(&#60;gpa)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> g3pna  <span class="feature-relationships">(&#60;gpna)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> gpa  <span class="feature-relationships">(&#60;group primary)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> gpna  <span class="feature-relationships">(&#60;group primary)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> group primary  <span class="feature-relationships">(&#60;primary)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> held  <span class="feature-relationships">(&#60;secondary; &#60;second)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> maintained  <span class="feature-relationships">(&#60;held)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> overall  <span class="feature-relationships">(&#61;debruising)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> primary  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> seme on field  <span class="feature-relationships">(&#60;secondary; &#60;second)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> second  <span class="feature-relationships">(&#61;secondary)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> secondary  <span class="feature-relationships">(&#61;second)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> sole primary  <span class="feature-relationships">(&#60;primary)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> spa  <span class="feature-relationships">(&#60;sole primary)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> spna  <span class="feature-relationships">(&#60;sole primary)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> sustained  <span class="feature-relationships">(&#60;held)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> tertiary  </td>
+</tr>
+<tr class='feature-set'>
+<td> line </td>
+<td></td>
+</tr>
+<tr>
+<td>  </td>
+<td> arrondi  <span class="feature-relationships">(&#60;complex line; &#60;cl)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> cl  <span class="feature-relationships">(&#61;complex line)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> complex line  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> cotised  <span class="feature-relationships">(&#60;pl)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> dovetailed  <span class="feature-relationships">(&#60;square)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> embattled  <span class="feature-relationships">(&#60;square)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> embowed  <span class="feature-relationships">(&#60;pl)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> enarched  <span class="feature-relationships">(&#60;pl)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> enflamed  <span class="feature-relationships">(&#60;long)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> engrailed  <span class="feature-relationships">(&#60;jagged)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> indented  <span class="feature-relationships">(&#60;jagged)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> invected  <span class="feature-relationships">(&#60;jagged)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> jagged  <span class="feature-relationships">(&#60;complex line; &#60;cl)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> long  <span class="feature-relationships">(&#60;complex line; &#60;cl)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> nebuly  <span class="feature-relationships">(&#60;wavy)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> pl  <span class="feature-relationships">(&#61;plain line)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> plain line  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> ploye  <span class="feature-relationships">(&#60;pl)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> pointed  <span class="feature-relationships">(&#60;jagged)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> potenty  <span class="feature-relationships">(&#60;complex line)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> raguly  <span class="feature-relationships">(&#60;square)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> rayonny  <span class="feature-relationships">(&#60;long)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> rompu  <span class="feature-relationships">(&#60;square)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> square  <span class="feature-relationships">(&#60;complex line; &#60;cl)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> triangular  <span class="feature-relationships">(&#60;indented)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> urdy  <span class="feature-relationships">(&#60;wavy)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> wavy  <span class="feature-relationships">(&#60;complex line; &#60;cl)</span> </td>
+</tr>
+<tr class='feature-set'>
+<td> number </td>
+<td></td>
+</tr>
+<tr>
+<td>  </td>
+<td> 10 or more  <span class="feature-relationships">(&#60;5 or more)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> 2 or fewer  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> 3 or fewer  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> 1  <span class="feature-relationships">(&#60;4 or fewer; &#60;3 or fewer; &#60;2 or fewer)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> 2 or more  <span class="feature-relationships">(&#61;4 or fewer)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> 2  <span class="feature-relationships">(&#60;2 or more; &#60;4 or fewer; &#60;3 or fewer; &#60;2 or fewer)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> 3 or more  <span class="feature-relationships">(&#60;2 or more; &#61;4 or fewer)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> 3  <span class="feature-relationships">(&#60;3 or more; &#60;4 or fewer; &#60;2 or more; &#60;3 or fewer)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> 4 or fewer  <span class="feature-relationships">(&#61;2 or more; &#61;3 or more; &#61;4 or more)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> 4 or more  <span class="feature-relationships">(&#60;3 or more; &#61;4 or fewer)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> 4  <span class="feature-relationships">(&#60;4 or fewer; &#60;4 or more; &#60;2 or more)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> 5 or more  <span class="feature-relationships">(&#60;4 or more)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> 5  <span class="feature-relationships">(&#60;5 or more; &#60;2 or more)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> 6  <span class="feature-relationships">(&#60;5 or more; &#60;2 or more)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> 7  <span class="feature-relationships">(&#60;5 or more; &#60;2 or more)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> 8  <span class="feature-relationships">(&#60;5 or more; &#60;2 or more)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> 9  <span class="feature-relationships">(&#60;5 or more; &#60;2 or more)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> seme  <span class="feature-relationships">(&#60;5 or more; &#60;2 or more; &#61;6; &#61;7; &#61;8; &#61;9; &#61;10 or more)</span> </td>
+</tr>
+<tr class='feature-set'>
+<td> ordinary </td>
+<td></td>
+</tr>
+<tr>
+<td>  </td>
+<td> base  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> bend  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> bend sinister  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> chevron  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> chevron inverted  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> cross  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> fess  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> pale  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> pall  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> pall inverted  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> pile  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> pile inverted  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> saltire  </td>
+</tr>
+<tr class='feature-set'>
+<td> orientation </td>
+<td></td>
+</tr>
+<tr>
+<td>  </td>
+<td> bendwise  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> bendwise sinister  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> chevronwise inverted  <span class="feature-relationships">(&#60;fesswise)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> chevronwise  <span class="feature-relationships">(&#60;fesswise)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> fesswise  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> palewise  </td>
+</tr>
+<tr class='feature-set'>
+<td> posture </td>
+<td></td>
+</tr>
+<tr>
+<td>  </td>
+<td> addorsed  <span class="feature-relationships">(&#61;rampant)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> affronte  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> combattant  <span class="feature-relationships">(&#61;rampant)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> couchant  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> couchant to dexter  <span class="feature-relationships">(&#60;couchant)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> couchant to sinister  <span class="feature-relationships">(&#60;couchant)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> courant  <span class="feature-relationships">(&#61;passant; &#61;statant)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> courant to dexter  <span class="feature-relationships">(&#60;passant; &#61;passant to dexter; &#60;statant; &#61;statant to dexter)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> courant to sinister  <span class="feature-relationships">(&#61;passant; &#61;passant to sinister; &#60;statant; &#61;statant to sinister)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> dormant to dexter  <span class="feature-relationships">(&#60;dormant; &#61;couchant to dexter)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> dormant to sinister  <span class="feature-relationships">(&#60;dormant; &#61;couchant to sinister)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> dormant  <span class="feature-relationships">(&#61;couchant)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> passant  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> passant to dexter  <span class="feature-relationships">(&#60;passant)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> passant to sinister  <span class="feature-relationships">(&#60;passant)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> rampant  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> rampant to dexter  <span class="feature-relationships">(&#60;rampant)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> rampant to sinister  <span class="feature-relationships">(&#60;rampant)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> salient to dexter  <span class="feature-relationships">(&#60;rampant; &#61;rampant to dexter)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> salient to sinister  <span class="feature-relationships">(&#60;rampant; &#61;rampant to sinister)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> salient  <span class="feature-relationships">(&#61;rampant)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> sejant  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> sejant to dexter  <span class="feature-relationships">(&#60;sejant)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> sejant to sinister  <span class="feature-relationships">(&#60;sejant)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> statant to dexter  <span class="feature-relationships">(&#60;statant; &#61;passant to dexter)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> statant to sinister  <span class="feature-relationships">(&#60;statant; &#61;passant to sinister)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> statant  <span class="feature-relationships">(&#61;passant)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> tergiant  </td>
+</tr>
+<tr class='feature-set'>
+<td> relation </td>
+<td></td>
+</tr>
+<tr>
+<td>  </td>
+<td> between  <span class="feature-relationships">(&#60;not surrounding)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> not surrounding  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> surrounding  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> surrounding 1 only  <span class="feature-relationships">(&#60;surrounding)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> surrounding 1 plus  <span class="feature-relationships">(&#60;surrounding)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> surrounding 2  <span class="feature-relationships">(&#60;surrounding)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> surrounding 3 or more  <span class="feature-relationships">(&#60;surrounding)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> surrounding 3  <span class="feature-relationships">(&#60;surrounding 3 or more)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> surrounding 4  <span class="feature-relationships">(&#60;surrounding 3 or more)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> surrounding 5  <span class="feature-relationships">(&#60;surrounding 3 or more)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> surrounding 6  <span class="feature-relationships">(&#60;surrounding 3 or more)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> surrounding 7  <span class="feature-relationships">(&#60;surrounding 3 or more)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> surrounding 8  <span class="feature-relationships">(&#60;surrounding 3 or more)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> surrounding 9 or more  <span class="feature-relationships">(&#60;surrounding 3 or more)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> surrounding seme  <span class="feature-relationships">(&#60;surrounding 3 or more)</span> </td>
+</tr>
+<tr class='feature-set'>
+<td> star_type </td>
+<td></td>
+</tr>
+<tr>
+<td>  </td>
+<td> mullet  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> sun  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> estoile  </td>
+</tr>
+<tr class='feature-set'>
+<td> style </td>
+<td></td>
+</tr>
+<tr>
+<td>  </td>
+<td> heraldic  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> natural  </td>
+</tr>
+<tr class='feature-set'>
+<td> subtype </td>
+<td></td>
+</tr>
+<tr>
+<td>  </td>
+<td> t1  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> t2  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> t3  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> t4  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> t5  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> t6  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> t7  </td>
+</tr>
+<tr class='feature-set'>
+<td> tertiaries </td>
+<td></td>
+</tr>
+<tr>
+<td>  </td>
+<td> charged  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> unc  <span class="feature-relationships">(&#60;uncharged)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> uncharged  </td>
+</tr>
+<tr class='feature-set'>
+<td> tincture </td>
+<td></td>
+</tr>
+<tr>
+<td>  </td>
+<td> argent  <span class="feature-relationships">(&#60;light)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> azure  <span class="feature-relationships">(&#60;dark)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> brown  <span class="feature-relationships">(&#60;sable)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> counterermine  <span class="feature-relationships">(&#60;fur; &#60;dark)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> dark  <span class="feature-relationships">(&#61;multicolor; &#61;fur)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> ermine  <span class="feature-relationships">(&#60;fur; &#60;light)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> erminois  <span class="feature-relationships">(&#60;fur; &#60;light)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> fur  <span class="feature-relationships">(&#61;light; &#61;dark; &#61;neutral)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> gules  <span class="feature-relationships">(&#60;dark)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> light  <span class="feature-relationships">(&#61;multicolor; &#61;fur)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> multicolor dark  <span class="feature-relationships">(&#60;multicolor; &#60;dark)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> multicolor light  <span class="feature-relationships">(&#60;multicolor; &#60;light)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> multicolor neutral  <span class="feature-relationships">(&#60;multicolor; &#60;neutral)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> multicolor  <span class="feature-relationships">(&#61;light; &#61;dark; &#61;neutral)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> neutral  <span class="feature-relationships">(&#61;multicolor; &#61;fur)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> or  <span class="feature-relationships">(&#60;light)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> pean  <span class="feature-relationships">(&#60;fur; &#60;dark)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> proper  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> purpure  <span class="feature-relationships">(&#60;dark)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> sable  <span class="feature-relationships">(&#60;dark)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> tinctureless  <span class="feature-relationships">(&#61;light; &#61;dark; &#61;neutral)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> vair  <span class="feature-relationships">(&#60;multicolor neutral)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> vert  <span class="feature-relationships">(&#60;dark)</span> </td>
+</tr>
+<tr class='feature-set'>
+<td> tincture1 </td>
+<td></td>
+</tr>
+<tr>
+<td>  </td>
+<td> &#126; argent  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> &#126; azure  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> &#126; fur  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> &#126; gules  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> &#126; multicolor  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> &#126; or  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> &#126; purpure  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> &#126; sable  </td>
+</tr>
+<tr class='feature-set'>
+<td> tincture2 </td>
+<td></td>
+</tr>
+<tr>
+<td>  </td>
+<td> &#126;and argent  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> &#126;and azure  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> &#126;and counterermine  <span class="feature-relationships">(&#60;&#126;and fur)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> &#126;and ermine  <span class="feature-relationships">(&#60;&#126;and fur)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> &#126;and erminois  <span class="feature-relationships">(&#60;&#126;and fur)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> &#126;and fur  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> &#126;and gules  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> &#126;and multicolor  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> &#126;and or  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> &#126;and pean  <span class="feature-relationships">(&#60;&#126;and fur)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> &#126;and purpure  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> &#126;and sable  </td>
+</tr>
+<tr>
+<td>  </td>
+<td> &#126;and vair  <span class="feature-relationships">(&#60;&#126;and multicolor)</span> </td>
+</tr>
+<tr>
+<td>  </td>
+<td> &#126;and vert  </td>
+</tr>
+</tbody>
+</table>
+
+XXTrailerXX
+XXTrailer2XX
+XXCloseHtmlXX
