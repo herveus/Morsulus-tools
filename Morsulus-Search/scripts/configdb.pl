@@ -54,6 +54,7 @@ $log_file_name = '';
 
 # default limit on result-list size
 $limit = 800;
+$minimum_score = 1;
 
 # max number of waiting connections 
 $listen_queue_length = 5;
@@ -136,7 +137,7 @@ while (1) {
       if (/^c$/) {
         $show_copyright = 1;
 
-      } elsif (/^d(\d?) ([+&]?)(\d+) (.+)$/) {
+      } elsif (/^d(\d?) ([+&]?)([-]?\d+) (.+)$/) {
         # compatible armory description search w/tolerance
         local ($tol, $op, $weight, @descs, $desc);
 
@@ -151,7 +152,7 @@ while (1) {
         }
         &operation ($op, $weight);
 
-      } elsif (/^e([1-5b])(i?) ([+&]?)(\d+) (.+)$/) {
+      } elsif (/^e([1-5b])(i?) ([+&]?)([-]?\d+) (.+)$/) {
         # pattern search on field or blazons, w/flags
         local ($ind, $flags, $op, $weight, $pat, $cond, $pos);
 
@@ -192,7 +193,7 @@ while (1) {
           }@, $weight, $cond);
         }
 
-      } elsif (/^en(i?) ([+&]?)(\d+) (.+)$/) {
+      } elsif (/^en(i?) ([+&]?)([-]?\d+) (.+)$/) {
         # pattern search on cooked names, w/flags
         local ($flags, $op, $weight, $pat, @pos);
 
@@ -218,7 +219,11 @@ while (1) {
         # change the output limit
         $limit = $1 if ($limit > 0);
 
-      } elsif (/^n ([+&]?)(\d+) (.+)$/) {
+      } elsif (/^m (\d+)$/) {
+        # change the minimum score
+        $minimum_score = $1 if ($1 > 0);
+
+      } elsif (/^n ([+&]?)([-]?\d+) (.+)$/) {
         # exact search on cooked names
         local ($op, $weight, $pat, @pos);
         $op = $1;
@@ -232,7 +237,7 @@ while (1) {
         }
         &operation ($op, $weight);
 
-      } elsif (/^s ([+&]?)(\d+) ([12][09]\d\d[0-1]\d) ([12][09]\d\d[0-1]\d) ([A-Za-z]+)$/) {
+      } elsif (/^s ([+&]?)([-]?\d+) ([12][09]\d\d[0-1]\d) ([12][09]\d\d[0-1]\d) ([A-Za-z]+)$/) {
         # range search on dates
         local ($op, $weight, $d1, $d2, $kstring);
 
@@ -324,13 +329,13 @@ while (1) {
     @tops = ();
     while (($key, $tot) = each %total) {
       for ($i = $#tops; $i >= $[; $i--) {
-        ($itot, $ikey) = unpack ('N2', $tops[$i]);
+        ($itot, $ikey) = unpack ('lN', $tops[$i]);
         last if ($itot > $tot || ($itot == $tot && $ikey <= $key));
         $tops[$i+1] = $tops[$i];
       }
-      $tops[$i+1] = pack ('N2', $tot, $key);
+      $tops[$i+1] = pack ('lN', $tot, $key);
       while (@tops > $limit) {
-        $lost{unpack ('N', pop (@tops))}++;
+        $lost{unpack ('l', pop (@tops))}++;
       }
     }
     
@@ -350,7 +355,8 @@ while (1) {
       }
     }
     foreach $rec (@tops) {
-      ($total, $pos) = unpack ('N2', $rec);
+      ($total, $pos) = unpack ('lN', $rec);
+      next if ( $total < $minimum_score );
       $_ = &get_item ($pos);
       print NS $total, '|', $_;
       #&log ("> $total|$_");
