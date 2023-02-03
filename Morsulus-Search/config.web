@@ -12017,9 +12017,19 @@ print '<p>Ending date ->;';
 &select ('m2', $month2, @month_name);
 print '<input type="text" name="y2" value="', $year2, '" size=4>';
 
-foreach (sort keys %kingdom_name) {
+sub remove_the {
+    local $_ = shift;
+    s/^the //;
+    return $_
+}
+
+sub sort_kingdom_keys {
+    remove_the($kingdom_name{$a}) cmp remove_the($kingdom_name{$b})
+}
+
+foreach (sort sort_kingdom_keys keys %kingdom_name) {
   print '<br><input type="checkbox" name="k', $_, '" value="checked" ',
-    $kingdom_set{$_}, '>', $kingdom_name{$_};
+    $kingdom_set{$_}, '> ', remove_the( $kingdom_name{$_} );
 }
 
 print '<p>Maximum number of items to display ->;';
