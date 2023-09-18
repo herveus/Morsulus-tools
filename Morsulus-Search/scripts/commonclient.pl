@@ -1037,6 +1037,11 @@ sub fixcase # make heading UC, features lc
 {
     my $desc = shift;
     join '|', map {
+        s/\s+/ /g;
+        s/ $//;
+        s/ :/:/g;
+        s/: /:/g;
+        s/^ //;
         my ($hdg, $features) = split(/:/, $_, 2);
         $hdg = uc($hdg);
         $features = lc($features) if defined $features;
