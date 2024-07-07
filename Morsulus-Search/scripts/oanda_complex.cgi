@@ -239,8 +239,8 @@ sub validate_desc
     $desc =~ s/\s+/ /g;
     $desc =~ s/ $//;
     $desc =~ s/ :/:/g;
-    $desc ~= s/: /:/g;
-    $desc ~= s/^ //;
+    $desc =~ s/: /:/g;
+    $desc =~ s/^ //;
     
     if ($desc =~ /:/ or $desc !~ /[a-z,]/) # heading maybe with features
     {

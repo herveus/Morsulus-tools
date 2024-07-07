@@ -152,7 +152,7 @@ for $i (1 .. $criteria) {
 print '</ol>';
 if ($valid && @validation_errors)
 {
-    print '<p>Description validation errors:';
+    print '<h3>Description validation errors:</h3>';
     print '<br/>', $_ for @validation_errors;
 }
 print '<p>Maximum number of items to display ->';
@@ -239,8 +239,8 @@ sub validate_desc
     $desc =~ s/\s+/ /g;
     $desc =~ s/ $//;
     $desc =~ s/ :/:/g;
-    $desc ~= s/: /:/g;
-    $desc ~= s/^ //;
+    $desc =~ s/: /:/g;
+    $desc =~ s/^ //;
     
     if ($desc =~ /:/ or $desc !~ /[a-z,]/) # heading maybe with features
     {

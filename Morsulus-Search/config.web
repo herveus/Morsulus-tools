@@ -835,10 +835,8 @@ treat "A" and "a" as being the same, so that "And" would match both
 <h3>Maximum Number of Items to Display</h3>
 <p>
 You can control the size of your search result by typing a number
-of items (1-500) in this box.  If you do not fill in the box, at most
-25 items will be displayed.  Note that there is a
-<a href="XXLimitPageUrlXX">built-in limit</a>
-of 500 items, which you cannot override.
+of items in this box.  If you do not fill in the box, at most
+500 will be filled in for you.  There is no limit placed on the size of the number. 
 <p>
 <h3>Display Options</h3>
 <p>
@@ -1029,7 +1027,7 @@ familiarize yourself with the following search methods:
 
 <h3>Scoring Criteria</h3>
 <p>
-This portion of the form allows you to specify up to five search
+This portion of the form allows you to specify up to ten search
 criteria in order to find the registration(s) of interest to you.
 A certain number of registrations will match each criterion.
 Usually, the result of a complex search consists of all registrations
@@ -1473,6 +1471,8 @@ and notes, in that order.
 <ul><li>
 	  a    = Augmentation of arms
 <li>
+      ABN  = Ancient Branch Name
+<li>
 	  AN   = Alternate Name
 <li>
 	  ANC  = Alternate Name Change
@@ -1546,6 +1546,8 @@ and notes, in that order.
 	  If the type is 'j', this is the name of other registrant of the
             joint badge.  (The other registrant's record will have the
             complete blazon.)
+<li>
+      If the type is 'ABN', this is the current name of the branch.
 <li>
 	  If the type is 'AN', this is 'For' followed by the
 	    primary name of the registrant.
@@ -2380,6 +2382,8 @@ $IndexPage{'A'} = <<'XXEOFXX';
  - see <a href="F.html#fruitnutnotacorn">Fruit - Nut - Not acorn</a>
 <li>Almond flower
  - see <a href="F.html#flowerrose">Flower - Rose</a>
+<li>Alpaca
+ - see <a href="B.html#beastcamel">Beast - Camel</a>
 <li>Alphyn
  - see <a href="M.html#monsterother">Monster - Other</a>
 <li>Altar
@@ -2873,6 +2877,8 @@ $IndexPage{'B'} = <<'XXEOFXX';
  - see <a href="F.html#fruitother">Fruit - Other</a>
 <li>Bear
  - see <a href="B.html#beastbear">Beast - Bear</a>
+<li>Bears-cut
+ - see <a href="H.html#headbeastbear">Head - Beast - Bear</a> and <a href="F.html#fielddivisionother">Field division - Other</a>
 <li>Bear's head
  - see <a href="H.html#headbeastbear">Head - Beast - Bear</a>
 <li>Beard
@@ -3408,6 +3414,8 @@ $IndexPage{'B'} = <<'XXEOFXX';
  - see <a href="P.html#portcullis">Portcullis</a> and <a href="T.html#toolother">Tool - Other</a>
 <li>Bird of paradise plant
  - see <a href="P.html#plantother">Plant - Other</a>
+<li>Bird's crop
+ - see <a href="B.html#bodypart">Body part</a>
 <li>Bird's egg
  - see <a href="C.html#cartouche">Cartouche</a> and <a href="F.html#foodstuff">Foodstuff</a>
 <li>Bird's feather
@@ -3616,6 +3624,8 @@ $IndexPage{'B'} = <<'XXEOFXX';
  - see <a href="M.html#monsterother">Monster - Other</a>
 <a name="bottle">
 <li><a href="XXDescSearchUrlXX?p=BOTTLE%20AND%20FLASK">Bottle</a>
+<li>Bottle gourd
+ - see <a href="F.html#fruitother">Fruit - Other</a>
 <li>Bouget
  - see <a href="W.html#waterbouget">Water bouget</a>
 <li>Bough
@@ -3696,6 +3706,8 @@ $IndexPage{'B'} = <<'XXEOFXX';
 <li>Bucket
  - see <a href="B.html#basket">Basket</a>
 <li><a href="XXDescSearchUrlXX?p=BUCKLE">Buckle</a>
+<li>Buckler
+ - see <a href="R.html#roundelwhole">Roundel - Whole</a>
 <li>Bud
  - see <a href="F.html#flower">Flower</a>
 <li>Buffalo
@@ -3867,6 +3879,8 @@ $IndexPage{'C'} = <<'XXEOFXX';
  - see <a href="W.html#wagon">Wagon</a>
 <li>Carrot
  - see <a href="F.html#fruitother">Fruit - Other</a>
+<li>Carrot flower
+ - see <a href="F.html#flowermultifloretted">Flower - Multifloretted</a>
 <li>Cart
  - see <a href="W.html#wagon">Wagon</a>
 <a name="cartouche">
@@ -3944,6 +3958,8 @@ $IndexPage{'C'} = <<'XXEOFXX';
 <li>Chabot
  - see <a href="F.html#fishother">Fish - Other</a>
 <li><a href="XXDescSearchUrlXX?p=CHAIN">Chain</a>
+<li>Chaine shot
+ - see <a href="A.html#ammunition">Ammunition</a>
 <a name="chair">
 <li><a href="XXDescSearchUrlXX?p=CHAIR">Chair</a>
 <li>Chalice
@@ -4183,6 +4199,8 @@ $IndexPage{'C'} = <<'XXEOFXX';
  - see <a href="H.html#headreptile">Head - Reptile</a>
 <li>Circlet
  - see <a href="C.html#crown">Crown</a>
+<li>Circular baldaquin
+ - see <a href="P.html#pavilion">Pavilion</a> and <a href="U.html#umbrella">Umbrella</a>
 <li>Citadel
  - see <a href="C.html#castle">Castle</a>
 <li>Cithara
@@ -4359,6 +4377,8 @@ $IndexPage{'C'} = <<'XXEOFXX';
  - see <a href="C.html#cauldron">Cauldron</a>
 <li>Copihue
  - see <a href="F.html#flowertrumpetshape">Flower - Trumpet shape</a>
+<li>Coracle
+ - see <a href="S.html#shiplymphad">Ship - Lymphad</a>
 <li>Coral
  - see <a href="T.html#treebranch">Tree branch</a>
 <li>Corbie
@@ -4477,6 +4497,8 @@ $IndexPage{'C'} = <<'XXEOFXX';
  - see <a href="F.html#flowertrumpetshape">Flower - Trumpet shape</a>
 <li>Crook
  - see <a href="S.html#staff">Staff</a>
+<li>Crop
+ - see <a href="B.html#bodypart">Body part</a>
 <a name="cross">
 <li>Cross - Arrangement in
  - see <a href="A.html#arrangementincross">Arrangement - In cross</a>
@@ -4528,6 +4550,8 @@ $IndexPage{'C'} = <<'XXEOFXX';
 <li>Crowth
  - see <a href="M.html#musicalinstrumentharp">Musical instrument - Harp</a>
 <li>Crozier
+ - see <a href="S.html#staff">Staff</a>
+<li>Crozier's head
  - see <a href="S.html#staff">Staff</a>
 <li>Crusily
  - see <a href="C.html#crossascharge">Cross - As charge</a>
@@ -4636,6 +4660,8 @@ $IndexPage{'D'} = <<'XXEOFXX';
  - see <a href="F.html#fess">Fess</a>
 <li>Dandelion
  - see <a href="F.html#flowermultipetaled">Flower - Multipetaled</a>
+<li>Dandelion plant
+ - see <a href="P.html#plantother">Plant - Other</a>
 <li>Dane - Great
  - see <a href="B.html#beastdog">Beast - Dog</a>
 <li>Date palm
@@ -4733,6 +4759,7 @@ $IndexPage{'D'} = <<'XXEOFXX';
  - see <a href="B.html#beasthorse">Beast - Horse</a>
 <li>Donnelly knot
  - see <a href="K.html#knot">Knot</a>
+<a name="door">
 <li>Door
  - see <a href="G.html#gate">Gate</a>
 <li>Dove
@@ -4749,6 +4776,8 @@ $IndexPage{'D'} = <<'XXEOFXX';
 <li><a href="XXDescSearchUrlXX?p=DRAGON%20SCALE">Dragon scale</a>
 <li>Dragonfly
  - see <a href="A.html#arthropoddragonfly">Arthropod - Dragonfly</a>
+<li>Dragons-cut
+ - see <a href="H.html#headmonsterdragon">Head - Monster - Dragon</a> and <a href="F.html#fielddivisionother">Field division - Other</a>
 <li>Dragon's head
  - see <a href="H.html#headmonsterdragon">Head - Monster - Dragon</a>
 <li>Dragon's jambe
@@ -5867,6 +5896,8 @@ $IndexPage{'F'} = <<'XXEOFXX';
 <li><a href="XXDescSearchUrlXX?p=FLAUNCH%3avert">Flaunch - Vert</a>
 <li>Flax blossom
  - see <a href="F.html#flowerrose">Flower - Rose</a>
+<li>Flax flower
+ - see <a href="F.html#flowerroseheraldic">Flower - Rose - Heraldic</a>
 <li><a href="XXDescSearchUrlXX?p=FLEAM">Fleam</a>
 <li>Fleece
  - see <a href="H.html#hide">Hide</a> and <a href="B.html#beastgoat">Beast - Goat</a>
@@ -5875,6 +5906,8 @@ $IndexPage{'F'} = <<'XXEOFXX';
 <li>Flesh-hook
  - see <a href="T.html#tooleating">Tool - Eating</a>
 <li>Fleshpot
+ - see <a href="C.html#cauldron">Cauldron</a>
+<li>Flesh-pot
  - see <a href="C.html#cauldron">Cauldron</a>
 <a name="fleurdelys">
 <li><a href="XXDescSearchUrlXX?p=FDL%3a1">Fleur de lys - 1</a>
@@ -6298,6 +6331,8 @@ $IndexPage{'F'} = <<'XXEOFXX';
 <li><a href="XXDescSearchUrlXX?p=FRUIT9AND%20VEGETABLE%2dOTHER">Fruit - Other</a>
 <li>Frying pan
  - see <a href="T.html#toolother">Tool - Other</a>
+<li>Fundou
+ - see <a href="T.html#toolother">Tool - Other</a>
 <a name="fungus">
 <li><a href="XXDescSearchUrlXX?p=FUNGUS%2dMUSHROOM">Fungus</a>
 <li><a href="XXDescSearchUrlXX?p=FURISON">Furison</a>
@@ -6305,6 +6340,8 @@ $IndexPage{'F'} = <<'XXEOFXX';
  - see <a href="L.html#lozenge">Lozenge</a>
 <li>Fusilly
  - see <a href="F.html#fielddivisionlozengy">Field division - Lozengy</a>
+<li>Futatsutomoe
+ - see <a href="A.html#alembic">Alembic</a> and <a href="G.html#goute">Goute</a> and <a href="S.html#symbol">Symbol</a>
 </ul>
 
 XXTrailerXX
@@ -6408,6 +6445,8 @@ $IndexPage{'G'} = <<'XXEOFXX';
  - see <a href="T.html#toolcarpentry">Tool - Carpentry</a>
 <li>Ginger shoot
  - see <a href="P.html#plantother">Plant - Other</a> and <a href="F.html#fruitpinecone">Fruit - Pinecone</a>
+<li>Ginko leaf
+ - see <a href="L.html#leaf">Leaf</a>
 <li>Giraffe
  - see <a href="B.html#beastother">Beast - Other</a>
 <li>Girl
@@ -6464,8 +6503,8 @@ $IndexPage{'G'} = <<'XXEOFXX';
  - see <a href="H.html#headhuman">Head - Human</a>
 <li>Goshawk
  - see <a href="B.html#birdwhole">Bird - Whole</a>
-<li>Guitar
- - see <a href="M.html#musicalinstrumentlute">Musical instrument - Lute</a>
+<li>Gourd
+ - see <a href="F.html#fruitother">Fruit - Other</a>
 <li>Gout
  - see <a href="G.html#goute">Goute</a>
 <a name="goute">
@@ -6526,6 +6565,8 @@ $IndexPage{'G'} = <<'XXEOFXX';
  - see <a href="M.html#monstergriffin">Monster - Griffin</a>
 <li>Guinea pig
  - see <a href="B.html#beastmouse">Beast - Mouse</a>
+<li>Guitar
+ - see <a href="M.html#musicalinstrumentlute">Musical instrument - Lute</a>
 <li>Gull
  - see <a href="B.html#birdwhole">Bird - Whole</a>
 <a name="gun">
@@ -6780,6 +6821,8 @@ $IndexPage{'H'} = <<'XXEOFXX';
  - see <a href="H.html#headbeastcat">Head - Beast - Cat</a>
 <li>Head - Marten
  - see <a href="H.html#headbeastmarten">Head - Beast - Marten</a>
+<li>Head - Mink
+ - see <a href="H.html#headbeastmarten">Head beast - Marten</a>
 <a name="headmonsterdragon">
 <li><a href="XXDescSearchUrlXX?p=HEAD%2dMONSTER%2cDRAGON">Head - Monster - Dragon</a>
 <a name="headmonstergriffin">
@@ -6792,6 +6835,8 @@ $IndexPage{'H'} = <<'XXEOFXX';
 <li><a href="XXDescSearchUrlXX?p=HEAD%2dMONSTER%2cUNICORN">Head - Monster - Unicorn</a>
 <a name="headmonsterother">
 <li><a href="XXDescSearchUrlXX?p=HEAD%2dMONSTER9OTHER">Head - Monster - Other</a>
+<li>Head - Mouse
+ - see <a href="H.html#headbeastother">Head - Beast - Other</a>
 <li>Head - Rabbit
  - see <a href="H.html#headbeastrabbit">Head - Beast - Rabbit</a>
 <li>Head - Raccoon
@@ -6833,7 +6878,7 @@ $IndexPage{'H'} = <<'XXEOFXX';
 <li><a href="XXDescSearchUrlXX?p=HEART%3avert%3a1">Heart - 1 - Vert</a>
 <li><a href="XXDescSearchUrlXX?p=HEART%3a2%20or%20more">Heart - 2 or more</a>
 <li>Heartsease
- - see <a href="F.html#flowerfewpetals">Flower - Few petals</a>
+ - see <a href="F.html#flowerroseheraldic">Flower - Rose - Heraldic</a>
 <li>Heath tree
  - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
 <li>Heathcock
@@ -6957,6 +7002,8 @@ $IndexPage{'H'} = <<'XXEOFXX';
  - see <a href="A.html#arthropodbee">Arthropod - Bee</a>
 <li>Horse
  - see <a href="B.html#beasthorse">Beast - Horse</a>
+<li>Horseshoe crab
+ - see <a href="F.html#fishlobster">Fish - Lobster</a>
 <li>Horse barnacles
  - see <a href="S.html#saddlery">Saddlery</a>
 <li>Horse - Sea
@@ -7086,8 +7133,10 @@ $IndexPage{'I'} = <<'XXEOFXX';
  - see <a href="B.html#birdwhole">Bird - Whole</a>
 <li>Icicle
  - see <a href="G.html#goute">Goute</a>
+<li>Icosahedral die
+ - see <a href="P.html#polygon">Polygon</a> and <a href="J.html#jewelry">Jewelry</a>
 <li>Icosahedron
- - see <a href="P.html#polygon">Polygon</a>
+ - see <a href="P.html#polygon">Polygon</a> and <a href="J.html#jewelry">Jewelry</a>
 <li>Iguana
  - see <a href="R.html#reptilelizard">Reptile - Lizard</a>
 <li>Increscent
@@ -7184,6 +7233,8 @@ $IndexPage{'J'} = <<'XXEOFXX';
 <p>
 
 <ul>
+<li>Jackdaw
+ - see <a href="B.html#birdraven">Bird - Raven</a>
 <li>Jaculus
  - see <a href="M.html#monsterpithon">Monster - Pithon</a>
 <li>Jambe
@@ -7197,6 +7248,8 @@ $IndexPage{'J'} = <<'XXEOFXX';
 <li>Jar
  - see <a href="E.html#ewer">Ewer</a>
 <li>Jasmine blossom
+ - see <a href="F.html#flowerrose">Flower - Rose</a>
+<li>Jasmine flower
  - see <a href="F.html#flowerrose">Flower - Rose</a>
 <li>Javelin
  - see <a href="S.html#spear">Spear</a>
@@ -7443,6 +7496,8 @@ $IndexPage{'L'} = <<'XXEOFXX';
  - see <a href="C.html#clothingbelt">Clothing - Belt</a>
 <li>Leaves
  - see <a href="L.html#leaf">Leaf</a>
+<li>Leech
+ - see <a href="R.html#reptileworm">Reptile - Worm</a>
 <li>Leek
  - see <a href="F.html#fruitother">Fruit - Other</a> and <a href="P.html#plantonion">Plant - Onion</a>
 <a name="leg">
@@ -7484,6 +7539,8 @@ $IndexPage{'L'} = <<'XXEOFXX';
  - see <a href="F.html#flowermultifloreted">Flower - Multifloreted</a>
 <li>Lily
  - see <a href="F.html#flowertrumpetshape">Flower - Trumpet shape</a>
+<li>Lily affronty
+ - see <a href="F.html#flowerfewpetals">Flower - Few petals</a>
 <li>Lily of the valley
  - see <a href="F.html#flowermultifloreted">Flower - Multifloreted</a>
 <li>Linden leaf
@@ -7741,6 +7798,8 @@ $IndexPage{'M'} = <<'XXEOFXX';
  - see <a href="C.html#castle">Castle</a>
 <li>Mink
  - see <a href="B.html#beastweasel">Beast - Weasel</a>
+<li>Mink's head
+ - see <a href="H.html#headbeastmarten">Head - Beast - Marten</a>
 <a name="mirror">
 <li><a href="XXDescSearchUrlXX?p=MIRROR">Mirror</a>
 <li>Mistletoe
@@ -7764,12 +7823,16 @@ $IndexPage{'M'} = <<'XXEOFXX';
  - see <a href="M.html#molluskoctopus">Mollusk - Octopus</a>
 <li>Moneybag
  - see <a href="C.html#clothingpouch">Clothing - Pouch</a>
+<li>Money-box
+ - see <a href="S.html#saltcellar">Saltcellar</a>
 <li>Mongoose
  - see <a href="B.html#beastweasel">Beast - Weasel</a>
 <li>Monk's head
  - see <a href="H.html#headhuman">Head - Human</a>
 <li>Monkey
  - see <a href="B.html#beastmonkey">Beast - Monkey</a>
+<li>Monkey's head
+ - see <a href="H.html#headbeastother">Head - Beast - Other</a>
 <li>Monogram
  - see <a href="S.html#symbol">Symbol</a>
 <li>Monster - Alphyn
@@ -8016,6 +8079,8 @@ $IndexPage{'M'} = <<'XXEOFXX';
  - see <a href="M.html#mountain">Mountain</a>
 <li>Mouse
  - see <a href="B.html#beastmouse">Beast - Mouse</a>
+<li>Mouse's head
+ - see <a href="H.html#headbeastother">Head - Beast - Other</a>
 <li>Mouse of India
  - see <a href="B.html#beastweasel">Beast - Weasel</a>
 <a name="moustache">
@@ -8246,6 +8311,8 @@ $IndexPage{'N'} = <<'XXEOFXX';
 <p>
 
 <ul>
+<li>Nadeshiko
+ - see <a href="F.html#flowermultipetaled">Flower - Multipetaled</a>
 <li>Naga
  - see <a href="M.html#monstermultiheaded">Monster - Multiheaded</a> and <a href="R.html#reptilesnake">Reptile - Snake</a>
 <li>Naginata
@@ -8259,6 +8326,8 @@ $IndexPage{'N'} = <<'XXEOFXX';
 <li>Narcissus blossom
  - see <a href="F.html#flowertrumpetshape">Flower - Trumpet shape</a>
 <li>Narwhal
+ - see <a href="F.html#fishwhale">Fish - Whale</a>
+<li>Narwhale
  - see <a href="F.html#fishwhale">Fish - Whale</a>
 <li>Nautilus
  - see <a href="S.html#shellother">Shell - Other</a> and <a href="S.html#snail">Snail</a>
@@ -8376,6 +8445,8 @@ $IndexPage{'O'} = <<'XXEOFXX';
  - see <a href="M.html#molluskoctopus">Mollusk - Octopus</a>
 <li>Ogress
  - see <a href="R.html#roundelwhole">Roundel - Whole</a>
+<li>Olive
+ - see <a href="F.html#fruitother">Fruit - Other</a>
 <li>Olive tree
  - see <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
 <li>Onion
@@ -8573,6 +8644,8 @@ $IndexPage{'P'} = <<'XXEOFXX';
  - see <a href="P.html#plantreed">Plant - Reed</a>
 <li>Paraclete
  - see <a href="B.html#birdwhole">Bird - Whole</a>
+<li>Parasol
+ - see <a href="U.html#umbrella">Umbrella</a>
 <li>Parchment
  - see <a href="B.html#book">Book</a>
 <li>Parchmenters frame
@@ -8583,6 +8656,8 @@ $IndexPage{'P'} = <<'XXEOFXX';
  - see <a href="P.html#plantherb">Plant - Herb</a>
 <li>Partisan
  - see <a href="S.html#spear">Spear</a>
+<li>Partridge
+ - see <a href="B.html#birdwhole">Bird - Whole</a>
 <li>Passion nail
  - see <a href="L.html#lozenge">Lozenge</a> and <a href="N.html#nail">Nail</a>
 <li>Paternoster
@@ -8728,6 +8803,8 @@ $IndexPage{'P'} = <<'XXEOFXX';
 <li><a href="XXDescSearchUrlXX?p=PILE%2a7%3auncharged%3a1">Pile inverted - 1 - Uncharged</a>
 <li><a href="XXDescSearchUrlXX?p=PILE%2a7%3acharged%3a1">Pile inverted - 1 - Charged</a>
 <li><a href="XXDescSearchUrlXX?p=PILE%2a7%3a2%20or%20more">Pile inverted - 2 or more</a>
+<li>Pile of sand
+ - see <a href="R.html#rock">Rock</a>
 <li>Pilgrim
  - see <a href="H.html#humanfigure">Human figure</a>
 <a name="pillow">
@@ -8947,6 +9024,8 @@ $IndexPage{'P'} = <<'XXEOFXX';
  - see <a href="C.html#cauldron">Cauldron</a>
 <li>Pot - Ink
  - see <a href="I.html#inkhorn">Inkhorn</a>
+<li>Potato blossom
+ - see <a href="F.html#flowerroseheraldic">Flower - Rose - Heraldic</a>
 <li>Potato plant
  - see <a href="P.html#plantother">Plant - Other</a>
 <li>Potent
@@ -8966,6 +9045,8 @@ $IndexPage{'P'} = <<'XXEOFXX';
  - see <a href="F.html#flowerrose">Flower - Rose</a>
 <li>Prickspur
  - see <a href="S.html#saddlery">Saddlery</a>
+<li>Prick-song book
+ - see <a href="B.html#book">Book</a>
 <li>Primrose
  - see <a href="F.html#flowerrose">Flower - Rose</a>
 <li>Print
@@ -9275,6 +9356,8 @@ $IndexPage{'R'} = <<'XXEOFXX';
  - see <a href="H.html#humanfigure">Human figure</a>
 <li>Ring
  - see <a href="A.html#annulet">Annulet</a> and <a href="J.html#jewelry">Jewelry</a>
+<li>Ring-and-dot auger
+ - see <a href="T.html#toolcarpentry">Tool - Carpentry</a>
 <li>Ring of keys
  - see <a href="A.html#annulet">Annulet</a> and <a href="K.html#key">Key</a>
 <li>Rising sun
@@ -9628,7 +9711,7 @@ $IndexPage{'S'} = <<'XXEOFXX';
 <li>Sea-raccoon
  - see <a href="M.html#monsterseaother">Monster - Sea - Other</a> and <a href="B.html#beastbadger">Beast - Badger</a>
 <li>Sea-stag
- - see <a href="B.html#beastdeer">Beast - Deer</a> and <a href="M.html#monsterwinged">Monster - Winged</a> and <a href="M.html#monsterseaother">Monster - Sea - Other</a>
+ - see <a href="B.html#beastdeer">Beast - Deer</a> and <a href="M.html#monsterseaother">Monster - Sea - Other</a>
 <li>Seagoat
  - see <a href="M.html#monsterseaother">Monster - Sea - Other</a> and <a href="B.html#beastgoat">Beast - Goat</a>
 <li>Seagull
@@ -9748,6 +9831,8 @@ $IndexPage{'S'} = <<'XXEOFXX';
  - see <a href="M.html#musicalinstrumenthorn">Musical instrument - Horn</a>
 <li>Shooting star
  - see <a href="C.html#comet">Comet</a>
+<li>Shotel
+ - see <a href="S.html#sword">Sword</a>
 <li>Shovel
  - see <a href="T.html#toolagricultural">Tool - Agricultural</a>
 <li>Shrew
@@ -9812,6 +9897,8 @@ $IndexPage{'S'} = <<'XXEOFXX';
  - see <a href="T.html#tooltextile">Tool - Textile</a>
 <li>Sledgehammer
  - see <a href="H.html#hammer">Hammer</a>
+<li>Sliding door bolt
+ - see <a href="D.html#doorbolt">Door bolt</a>
 <a name="sling">
 <li><a href="XXDescSearchUrlXX?p=SLING">Sling</a>
 <li>Slip
@@ -9828,6 +9915,8 @@ $IndexPage{'S'} = <<'XXEOFXX';
  - see <a href="M.html#mollusksnail">Mollusk - Snail</a>
 <li>Smith's tongs
  - see <a href="T.html#toolother">Tool - Other</a>
+<li>Smoking pipe
+ - see <a href="P.html#pipesmoking">Pipe - Smoking</a>
 <a name="snail">
 <li>Snail
  - see <a href="M.html#mollusksnail">Mollusk - Snail</a>
@@ -9941,6 +10030,8 @@ $IndexPage{'S'} = <<'XXEOFXX';
  - see <a href="M.html#monsterhumanoid">Monster - Humanoid</a>
 <li>Staple
  - see <a href="N.html#nail">Nail</a>
+<li>Star anise
+ - see <a href="M.html#mullet">Mullet</a>
 <li>Star of Bethlehem
  - see <a href="F.html#flowerfewpetals">Flower - Few petals</a>
 <li>Star of david
@@ -9990,6 +10081,8 @@ $IndexPage{'S'} = <<'XXEOFXX';
 <li><a href="XXDescSearchUrlXX?p=STREAM">Stream</a>
 <li>Streitgabelklinge
  - see <a href="H.html#headweapon">Head - Weapon</a>
+<li>Strike
+ - see <a href="G.html#gate">Gate</a> and <a href="D.html#door">Door</a>
 <li>Stringed instrument
  - see <a href="M.html#musicalinstrumentharp">Musical instrument - Harp</a> and <a href="M.html#musicalinstrumentlute">Musical instrument - Lute</a> and <a href="M.html#musicalinstrumentdulcimer">Musical instrument - Dulcimer</a>
 <li>Stump
@@ -10120,6 +10213,7 @@ $IndexPage{'T'} = <<'XXEOFXX';
 <ul>
 <li>Tabard
  - see <a href="C.html#clothingrobe">Clothing - Robe</a>
+<a name="table">
 <li><a href="XXDescSearchUrlXX?p=TABLE">Table</a>
 <li>Tablet
  - see <a href="B.html#book">Book</a>
@@ -10200,6 +10294,8 @@ $IndexPage{'T'} = <<'XXEOFXX';
  - see <a href="P.html#plantthorn">Plant - Thorn</a> and <a href="T.html#treeroundedshape">Tree - Rounded shape</a>
 <li>Thors hammer
  - see <a href="H.html#hammer">Hammer</a> and <a href="C.html#crossascharge">Cross - As charge</a>
+<li>Three-legged pot
+ - see <a href="C.html#cauldron">Cauldron</a>
 <li>Thrush
  - see <a href="B.html#birdwhole">Bird - Whole</a>
 <a name="thunderbolt">
@@ -10551,6 +10647,8 @@ $IndexPage{'U'} = <<'XXEOFXX';
 <p>
 
 <ul>
+<a name="umbrella">
+<li><a href="XXDescSearchUrlXX?p=UMBRELLA">Umbrella</a>
 <li><a href="XXDescSearchUrlXX?p=UMEBACHI">Umebachi</a>
 <li>Uncial
  - see <a href="S.html#symbol">Symbol</a>
@@ -10808,6 +10906,8 @@ $IndexPage{'W'} = <<'XXEOFXX';
 <a name="windmill">
 <li><a href="XXDescSearchUrlXX?p=WINDMILL">Windmill</a>
  - see also <a href="C.html#castle">Castle</a>
+<li>Window frame
+ - see <a href="A.html#architecture">Architecture</a>
 <li>Wine bottle
  - see <a href="B.html#bottle">Bottle</a>
 <li>Wine cup
@@ -10841,8 +10941,12 @@ $IndexPage{'W'} = <<'XXEOFXX';
  - see <a href="M.html#monsterseawolf">Monster - Sea - Wolf</a>
 <li>Wolf's head
  - see <a href="H.html#headbeastdog">Head - Beast - Dog</a>
+<li>Wolf's teeth
+ - see also <a href="F.html#fielddivisionperpale">Field division - Per pale</a>
 <li><a href="XXDescSearchUrlXX?p=WOLF%2dTOOTH">Wolf's tooth</a>
- - see also <a href="T.html#tooth">Tooth</a> and <a href="P.html#pile">Pile</a>
+ - see also <a href="T.html#tooth">Tooth</a> and <a href="P.html#pile">Pile</a> and <a href="F.html#fielddivisionperpale">Field division - Per pale</a>
+<li>Wolves-cut
+ - see <a href="H.html#headbeastdog">Head beast - Dog</a> and <a href="F.html#fielddivisionother">Field division - Other</a>
 <li>Wolverine
  - see <a href="B.html#beastbadger">Beast - Badger</a> and <a href="B.html#beastbear">Beast - Bear</a>
 <li>Woman
@@ -10922,6 +11026,10 @@ $IndexPage{'W'} = <<'XXEOFXX';
  - see <a href="B.html#birdwhole">Bird - Whole</a>
 <li>Wristguard
  - see <a href="A.html#armor">Armor</a>
+<li>Writing slope
+ - see <a href="T.html#table">Table</a>
+<li>Writing table
+ - see <a href="T.html#table">Table</a>
 <li>Writing tool
  - see <a href="T.html#toolwriting">Tool - Writing</a>
 <li>Wyn
@@ -12061,6 +12169,14 @@ $ComplexSearchScript = <<'XXEOFXX';
 $cgi_url = 'XXComplexSearchUrlXX';
 
 require 'XXCommonClientPathXX';
+require 'XXMyCatXX';
+
+my %categories    = categories();
+my @feature_names = feature_names();
+my %feature_names = map { $_ => $_ } @feature_names;
+my %xref          = xrefs();
+my %heading  = map { $categories{$_}->{heading} => $_ } keys %categories;
+my @validation_errors;
 
 # Set title for form.
 $form_title = 'Complex Search Form';
@@ -12069,7 +12185,7 @@ $criteria = 10;
 
 # option settings
 
-@methods = ('', 'armory description', 'name pattern', 'record type', 'blazon pattern', 'broad name');
+@methods = ('', 'armory description', 'name pattern', 'record type', 'blazon pattern', 'broad name', 'date and kingdom', 'notes pattern');
 
 @sorts = ('score and blazon', 'score and name', 'score only', 'name only', 'last action date', 'blazon');
 $sort = 'score and blazon';  # default
@@ -12091,6 +12207,8 @@ foreach $pair (split (/\&/, $ENV{'QUERY_STRING'})) {
   $gloss_links = $right if ($left eq 'g');
   $limit = $right if ($left eq 'l');
   $sort = $right if ($left eq 's');
+  $registered_status = $right if ($left eq 'rs');
+  $raw_display_mode = $right if ($left eq 'raw');
 }
 $limit = 500
   if ($limit !~ /^\d+$/);
@@ -12130,12 +12248,26 @@ if ($valid > 0 && $invalid == 0) {
       s/([^\\])?/$1\\?/g;
       print S "e3 $weight[$i] ^($p[$i])\$";
     } elsif ($method[$i] eq 'armory description') {
-        $p[$i] = fixcase($p[$i]);
+        my @descs = validate_descs($p[$i]);
+        if (@descs != 1)
+        {
+            unshift @validation_errors, "Armory description matched 0 or more than 1 category:";
+            unshift @validation_errors, @descs;
+            unshift @validation_errors, "First match used" if @descs > 1;
+        }
+        $p[$i] = @descs == 0 ? $p[$i] : $descs[0];
       print S "d0 $weight[$i] $p[$i]";
     } elsif ($method[$i] eq 'blazon pattern') {
       print S "ebi $weight[$i] $p[$i]";
+    } elsif ($method[$i] eq 'notes pattern') {
+      print S "e5i $weight[$i] $p[$i]";
     } elsif ($method[$i] eq 'broad name') {
       print S "n $weight[$i] $p[$i]";
+    } elsif ($method[$i] eq 'date and kingdom') {
+      my ($date1, $date2, $klist) = split(/ /, $p[$i]);
+      $klist = join('', sort keys %kingdom_name) if ($klist eq '*');
+      $p[$i] = parse_date_kingdom($p[$i]);
+      print S "s $weight[$i] $p[$i]";
     }
   }
   print S 'EOF';
@@ -12180,7 +12312,12 @@ for $i (1 .. $criteria) {
   print '<input type="text" name="p', $i, '" value="', $p[$i], '" size=60>';
 }
 print '</ol>';
-print '<p>Maximum number of items to display ->;';
+if ($valid && @validation_errors)
+{
+    print '<p>Description validation errors:';
+    print '<br/>', $_ for @validation_errors;
+}
+print '<p>Maximum number of items to display ->';
 print '<input type="text" name="l" value="', $limit, '" size=3>';
 
 &display_options ();
@@ -12195,7 +12332,142 @@ if ($valid) {
   &print_results ('the scoring criteria above', $n, $scoresort);
 }
 &print_trailer ();
-# end of XXComplexSearchPathXX
+
+sub parse_date_kingdom
+{
+    my ($input) = @_;
+    my @parts = split(/ +/, $input);
+    if (@parts == 1) # is it a date or is it a kstring
+    {
+        # \d{6} is a month -> <date> *
+        # [A-Za-z]+ is a kstring -> <all dates> kstring
+        # * -> <all dates> *
+        if ($parts[0] =~ /\d+/)
+        {
+            @parts = ($parts[0], $parts[0], '*');
+        }
+        elsif ($parts[0] =~ /[A-Za-z]/)
+        {
+            @parts = ('196600', '209912', $parts[0]);
+        }
+        elsif ($parts[0] eq '*')
+        {
+            @parts = ('196600', '209912', '*');
+        }
+    }
+    if (@parts == 2)
+    {
+        # date kstring -> date date kstring (single month)
+        # date date -> date date * (date range; all kingdoms)
+        if ($parts[1] =~ /\d+/)
+        {
+            @parts = ($parts[0], $parts[1], '*');
+        }
+        else
+        {
+            @parts = ($parts[0], $parts[0], $parts[1]);
+        }
+    }
+    if (@parts == 3) 
+    {
+        $parts[0] = '196601' if $parts[0] eq '*';
+        $parts[1] = '209912' if $parts[1] eq '*';
+        $parts[2] = join('', sort keys %kingdom_name) if $parts[2] eq '*';
+        $parts[0] = $parts[0].'01' if $parts[0] =~ /^\d{4}$/;
+        $parts[1] = $parts[1].'12' if $parts[1] =~ /^\d{4}$/;
+        $parts[0] = '196601' if $parts[0] lt '196600';
+        $parts[1] = '196601' if $parts[1] lt '196600';
+        $parts[0] = '209912' if $parts[0] gt '209912';
+        $parts[1] = '209912' if $parts[1] gt '209912';
+    }
+    return join(' ', @parts);
+}
+
+sub validate_descs
+{
+    my ($descs) = @_;
+    my @descs;
+    for my $d (split(/[|]/, $descs))
+    {
+        push @descs, validate_desc($d);
+    }
+    return join('|', @descs);
+}
+
+sub validate_desc
+{
+    my ($desc) = @_;
+    
+    $desc =~ s/\s+/ /g;
+    $desc =~ s/ $//;
+    $desc =~ s/ :/:/g;
+    $desc =~ s/: /:/g;
+    $desc =~ s/^ //;
+    
+    if ($desc =~ /:/ or $desc !~ /[a-z,]/) # heading maybe with features
+    {
+        my ($heading, @features) = split(/:/, $desc);
+        $heading = uc($heading);
+        if (! exists $heading{$heading})
+        {
+            my $newdesc = join(', ', lc($heading), @features);
+            return validate_desc($newdesc);
+        }
+        for my $feature (@features)
+        {
+            if (! exists $feature_names{$feature})
+            {
+                push @validation_errors, "'$feature' in '$desc' is invalid feature";
+            }
+        }
+        return join(":", $heading, @features);
+    }
+    #return "falling off end";
+    # otherwise category maybe with features
+    
+    my @features;
+    
+    while ($desc)
+    {
+        if (exists $xref{$desc})
+        {
+            #say "found xref(s) for $desc:";
+            my @xrefs;
+            for my $xref (@{$xref{$desc}})
+            {
+                if (!exists $categories{$xref})
+                {
+                    push @xrefs, validate_desc($xref);
+                }
+                else 
+                {
+                    push @xrefs, $categories{$xref}->{heading};
+                }
+            }
+            my @descs = map { @features ? join(":", $_, join(":", @features)) : $_ } @xrefs;
+            #say @descs;
+            return @descs;
+        }
+        
+        my ($front, undef, $back) = ($desc =~ /^(.*)(, )(.*?)$/);
+        
+        if (defined $back)
+        {
+            $desc = $front;
+            unshift @features, $back;
+        }
+        else
+        {
+            if (exists $heading{uc($desc)})
+            {
+                return uc($desc);
+            }
+            push @validation_errors, "'$desc' is not a valid category";
+            return;
+        }
+    }
+}
+# end of /home3/www/oanda.sca.org/oanda_complex.cgi
 
 XXEOFXX
 
@@ -12354,7 +12626,7 @@ for $i (1 .. $criteria) {
 print '</ol>';
 if ($valid && @validation_errors)
 {
-    print '<p>Description validation errors:';
+    print '<h3>Description validation errors:</h3>';
     print '<br/>', $_ for @validation_errors;
 }
 print '<p>Maximum number of items to display ->';
@@ -12439,6 +12711,10 @@ sub validate_desc
     my ($desc) = @_;
     
     $desc =~ s/\s+/ /g;
+    $desc =~ s/ $//;
+    $desc =~ s/ :/:/g;
+    $desc =~ s/: /:/g;
+    $desc =~ s/^ //;
     
     if ($desc =~ /:/ or $desc !~ /[a-z,]/) # heading maybe with features
     {
@@ -13787,6 +14063,11 @@ sub fixcase # make heading UC, features lc
 {
     my $desc = shift;
     join '|', map {
+        s/\s+/ /g;
+        s/ $//;
+        s/ :/:/g;
+        s/: /:/g;
+        s/^ //;
         my ($hdg, $features) = split(/:/, $_, 2);
         $hdg = uc($hdg);
         $features = lc($features) if defined $features;
@@ -15050,7 +15331,7 @@ $conf_file = '.configweb';
 
 $config{'XXPrimerUrlXX'} = 'http://heraldry.sca.org/armory/newprimer/';
 $config{'XXLoARUrlXX'} = 'http://heraldry.sca.org/loar';
-$config_version = '2021-02-20 (mathghamhain:development:193+)';
+$config_version = '2024-05-26 (1:152+)';
 $config{'XXVersionXX'} = $config_version;
 $config{'XXHeadXX'} = '';
 
