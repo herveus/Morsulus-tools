@@ -1,7 +1,8 @@
-#!/bin/bash
+#!/bin/zsh
 Xlines=$(ps -x | grep xinit | wc -l)
 if [ $Xlines -eq 1 ]
 then
-    open /Applications/Utilities/X11.app
+    open /Applications/Utilities/XQuartz.app
 fi
-/usr/local/bin/indexer -i $1 
+#export DISPLAY=:0
+/usr/local/bin/indexer -i $1 2>/dev/null

@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl
+#!/usr/bin/env perl
 use strict;
 use warnings;
 
@@ -24,7 +24,7 @@ sub run_ui
 {
     set_current_item(0);
     set_number_of_items(get_item_count());
-    First_Item();
+    Nth_Item($ARGV{-n});
     MainLoop();
 }
 
@@ -752,7 +752,7 @@ sub make_search_frame {
             line => 7, orientation => 8, tincture =>  9, tincture1 => 9.5,
             tincture2 => 10, relation => 11, chrelation => 12, group => 13,
             tertiaries => 0.5, arrangement => 14, cross_family => 0.4,
-            ordinary => 0.3);
+            ordinary => 0.3, headorientation => 8.1, field => 0.5);
         @feature_group_order = sort feature_group_order keys %feature_group_order;
         for my $i (0 .. @feature_group_order-1)
         {
@@ -956,6 +956,22 @@ sub make_search_frame {
             next if is_historical_date($item->{date});
             $current_item = $item_number;
             last;
+        }
+        update_display();
+    }
+    
+    sub  Nth_Item
+    {
+        my $n = shift;
+        $n = $number_of_items if $n > $number_of_items;
+        Save_Indexing() if $current_item;
+        foreach my $item_number (1..$number_of_items)
+        {
+            my $item = get_parsed_item($item_number);
+            next if ! is_armory_type($item->{type});
+            next if is_historical_date($item->{date});
+            $current_item = $item_number;
+            last if $item_number >= $n;
         }
         update_display();
     }
@@ -1215,7 +1231,7 @@ indexer - Index ordinary database file
 
 =head1 VERSION
 
-This documentation refers to indexer version 1.00
+This documentation refers to indexer version 1.01
 
 =head1 USAGE
 
@@ -1257,6 +1273,14 @@ tab as well as to remember updated usage statistics.
     file.default: '/Users/herveus/aux/MFUC'
 
 =back
+
+=item -n <start>
+
+Start at item n. If n is greater than the number of items, start at the last item.
+
+=for Euclid:
+    start.type: int > 0
+    start.default: 1
 
 =head1 DESCRIPTION
 
