@@ -752,7 +752,7 @@ sub make_search_frame {
             line => 7, orientation => 8, tincture =>  9, tincture1 => 9.5,
             tincture2 => 10, relation => 11, chrelation => 12, group => 13,
             tertiaries => 0.5, arrangement => 14, cross_family => 0.4,
-            ordinary => 0.3, headorientation => 8.1, field => 0.5);
+            ordinary => 0.3, headorientation => 8.1, field => 0.5, leaftype => 0.4);
         @feature_group_order = sort feature_group_order keys %feature_group_order;
         for my $i (0 .. @feature_group_order-1)
         {
