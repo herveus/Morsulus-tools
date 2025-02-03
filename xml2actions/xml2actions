@@ -1,8 +1,8 @@
-#!/usr/local/bin/perl
+#!/usr/bin/env perl
 use strict;
 $|++;
 
-my $VERSION = "2018.006.001";
+my $VERSION = "2024.007.001";
 my $USAGE = <<USAGE;
 Usage: $0 [input_file] > output_file
        reads STDIN if input_file not given
@@ -17,6 +17,8 @@ my $discussion = '';
 my @disc_blazons = ();
 my $seq = 'ufo000000';
 my $in_errata = 0;
+my $erratum_date = '';
+my $notes - '';
 
 # table to convert kingdom name to kingdom id
 my %Ktab = (
@@ -54,8 +56,22 @@ my %Ktab = (
    'siren' => 'N',
    'palimpsest' => 'N',
    'trimaris', 'T',
-   'west', 'W'
+   'west', 'W',
 );
+
+my %month_num = (January => '01',
+    February => '02',
+    March => '03',
+    April => '04',
+    May => '05',
+    June => '06',
+    July => '07',
+    August => '08',
+    September => '09',
+    October => '10',
+    November => '11',
+    December => '12',
+    );
 	
 use XML::Twig;
 
@@ -66,6 +82,7 @@ my $xp = XML::Twig->new(twig_handlers => {
 		'kingdom/item/action/name' => \&get_item_action_name,
 		'kingdom/item/armory' => \&get_item_armory,
 		'kingdom/item/discussion' => \&get_item_discussion,
+		'kingdom/item/discussion/native' => \&get_native_form,
 		'kingdom/item/discussion/armory-discussion/p/blazon' => \&get_item_discussion_blazon,
 		'kingdom/item/discussion/p/blazon' => \&get_item_discussion_blazon,
 		'kingdom/item[@decision="accepted"]' => \&extract_action,
@@ -73,6 +90,7 @@ my $xp = XML::Twig->new(twig_handlers => {
 		'kingdom/item[@decision="pended"]' => \&no_action,
 		'kingdom/item[@decision="inprocess"]' => \&no_action,
 		'kingdom/item' => \&bad_action,
+		'errata/errataitem/date' => \&get_erratum_date,
 		'errata' => \&end_errata,
 	},
 	start_tag_handlers => {
@@ -102,6 +120,8 @@ sub reset_vars
 	$armory = '';
 	$discussion = '';
 	@disc_blazons = ();
+	#$erratum_date = '';
+	$notes = '';
 }
 
 sub get_kingdom_name
@@ -116,6 +136,15 @@ sub get_kingdom_name
 	$kingdom = $Ktab{lc($kingdom)};
 	print STDERR $kingdom, "\n";
 	#$xp->purge;
+}
+
+sub get_erratum_date
+{
+    my ($t, $elt) = @_;
+    return if not $in_errata;
+    ($erratum_date = $elt->text) =~ s:[\012\015]+: :sg;
+    my ($month, $year) = split(/ /, $erratum_date);
+    $erratum_date = $year . $month_num{$month};
 }
 
 sub get_item_name
@@ -156,11 +185,24 @@ sub get_item_discussion
 {
 	my ($t, $elt) = @_;
 	#return if $in_errata;
-	if ($action =~ /change|blanket|heraldic title/i or $in_errata)
+	(my $disc = $elt->text) =~ s:[\012\015]+: :sg;
+	if ($action =~ /change|blanket|heraldic title|blazon/i or $in_errata or $disc =~ /Morsulus/)
 	{
-		($discussion = $elt->text) =~ s:[\012\015]+: :sg;
+		$discussion = $disc;
+	}
+	elsif ($disc =~ /Artist's note:/)
+	{
+	    $notes .= "(Artist's note: see LoAR for details)";;
 	}
 #	print "get_item_discussion $discussion\n";
+}
+
+sub get_native_form
+{
+    my ($t, $elt) = @_;
+    (my $native_form = $elt->text) =~ s:[\012\015]+: :sg;
+    $native_form =~ s: +$::;
+    $notes .= "(Native form: $native_form)"
 }
 
 sub get_item_discussion_blazon
@@ -171,6 +213,7 @@ sub get_item_discussion_blazon
 	    or $action =~ /blazon/i 
 	    or $action =~ /exchange of device and badge/i
 	    or $action =~ /\bchange\b/i
+	    or $action =~ /\bacceptance of .+ transfer\b/i
 	    or $in_errata)
 	{
 		(my $disc = $elt->text) =~ s:[\012\015]+: :sg;
@@ -200,6 +243,12 @@ sub extract_action
 	#return if $in_errata;
 	my ($t, $elt) = @_;
 	die "Kingdom not specified for item $seq ($owner)" unless $kingdom;
+	
+	if ($in_errata)
+	{
+	    die "Erratum missing date of error" unless $erratum_date;
+	    $notes .= "(Correcting error on $erratum_date LoAR)";
+	}
 	$armory =~ s/\&quot;/"/g;
 	s/\&quot;/"/g for @disc_blazons;
 	if ($action =~ /^joint badge$/i and $owner =~ /^(.*) and (.*)$/)
@@ -227,32 +276,44 @@ sub extract_action
 	mark_retained($action, $action_name[0], $discussion);
 	if ($action =~ /exchange of device and badge/i)
 	{
-	    my ($old_device) = grep {$discussion =~ /(?:previous|former|old) device, $_/} @disc_blazons;
+	    my ($old_device) = grep {$discussion =~ /(?:previous|prior|former|old) device, $_/} @disc_blazons;
 	    my ($old_badge) = grep {$_ ne $old_device} @disc_blazons, $armory;
 	    if (@disc_blazons == 2 && defined $old_device)
 	    {
 	        @disc_blazons = ();
 	    }
 	    #print "exchange of device ($old_device) and badge ($old_badge)\n";
-	    print join('|', $seq++, $kingdom, "change of badge to device", $owner, $old_badge, "\n");
-	    print join('|', $seq++, $kingdom, "change of device to badge", $owner, $old_device, "\n");
+	    print join('|', $seq++, $kingdom, "change of badge to device", $owner, $old_badge, $notes, "\n");
+	    print join('|', $seq++, $kingdom, "change of device to badge", $owner, $old_device, $notes, "\n");
 	}
 	elsif ($action =~ /exchange of alternate and primary name/i)
 	{
 	    my ($old_primary_name);
 	    
 	}
+	elsif ($action =~ /^badge for/i)
+	{
+	    if ($discussion =~ /$action_name[0] is a generic/i)
+	    {
+	        $action .= " reference";
+	    }
+	    print join('|', $seq++, $kingdom, $action, $owner, $armory, $notes, "\n");
+	}
 	else
 	{
-	    print join('|', $seq++, $kingdom, $action, $owner, $armory, "\n");
+	    if ($action =~ /(device|badge) change\b/ && @disc_blazons == 0) #change with no disposition
+	    {
+	        print join('|', $seq++, $kingdom, "missing disposition", $owner, $armory, $notes, "\n");
+	    }
+	    print join('|', $seq++, $kingdom, $action, $owner, $armory, $notes, "\n");
 	}
-	if (@disc_blazons)
+	if (@disc_blazons) # need to tweak to not break joint reblazons
 	{
 	    my $first_owner = (split(/ and /, $owner))[0];
-        print join('|', $seq++, $kingdom, guess_disposition($_, $discussion, $action), $first_owner, $_, "\n")
+        print join('|', $seq++, $kingdom, guess_disposition($_, $discussion, $action), $first_owner, $_, $notes, "\n")
             foreach @disc_blazons;
     }
-	$discussion and print join('|', $seq++, $kingdom, 'disposition', $owner,  $discussion, "\n");
+	$discussion and print join('|', $seq++, $kingdom, 'disposition', $owner,  $discussion, $notes, "\n");
 	reset_vars();
 	#$xp->purge;
 }
@@ -260,16 +321,27 @@ sub extract_action
 sub mark_retained
 {
     my ($action, $name, $discussion) = @_;
-    return unless $action =~ /^name change/i;
-    return unless $discussion =~ /(?:previous|prior|old|former|current) name, $name, is retained/;
-    $_[0] =~ s/"$name"/"$name" retained/;
+    return unless $action =~ /^(?:branch )?name change/i;
+    if ($action =~ /^name change/i)
+    {
+        if ($discussion =~ /(?:previous|prior|old|former|current) name, $name, is retained/)
+        {
+            $_[0] =~ s/"$name"/"$name" retained/;
+            return;
+        } 
+    } 
+    if ($discussion =~ /retained as an ancient branch name/i)
+    {
+        $_[0] =~ s/"$name"/"$name" retained as Ancient Branch Name/;
+        return;
+    }
     return;
 }
 
 sub guess_disposition
 {
     my ($blazon, $discussion, $action) = @_;
-    if ($discussion =~ /(?:old|previous|prior|former) (device|badge|augmentation), \Q$blazon\E, is (?:to be )?(retained|released)/)
+    if ($discussion =~ /(?:old|previous|prior|former|current) (device|badge|augmentation), \Q$blazon\E, is (?:to be )?(retained|released)/)
     {
         my $retval = "$1 changed/$2";
         if ($discussion =~ /(ancient arms)/)
