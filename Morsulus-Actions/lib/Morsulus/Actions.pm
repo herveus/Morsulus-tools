@@ -4,7 +4,7 @@ use warnings;
 use strict;
 use Carp;
 
-our $VERSION = '2018.004.001';
+our $VERSION = '2022.010.001';
 use Daud;
 use Moose;
 use namespace::autoclean;
@@ -144,13 +144,13 @@ sub bracket_name
     my $self = shift;
     my ($q_name) = @_;
     if ($q_name =~ m/($SPACE 
-        (?: Herald | Pursuivant | King $SPACE of $SPACE Arms | Herault | Herold | herault) \b
+        (?: Principal $SPACE Herald | Herald | Pursuivant | King $SPACE of $SPACE Arms | Herault | Herold | herault | heraut) \b
         (?: $SPACE Extraordinary)?)/xms)
     {
         my $title = $1;
         $q_name =~ s/$title/<$title>/ if $self->cooked_action_of =~ /title|seal/i;
     }
-    elsif ($q_name =~ m/\A ((?: Herold | Faraute) $SPACE)/xms)
+    elsif ($q_name =~ m/\A ((?: Herold | Faraute | Herault) $SPACE)/xms)
     {
         my $title = $1;
         $q_name =~ s/$title/<$title>/ if $self->cooked_action_of =~ /title/i;
@@ -242,12 +242,12 @@ sub permute {
 
     $string =~ s/^the //i;
     if ( $string
-        =~ /^(award|barony|braithrean|brotherhood|canton|casa|chateau|clann?|companions|companionate|company|crown principality|domus|dun|fellowship|freehold|guild|honou?r of the|house|household|hous|ha?us|h\{u'\}sa|keep|kingdom|league|l'ordre|la companie|la tavernehous|maison|manoir|orde[nr]|ord[eo]|ordre|principality|province|riding|shire|university) (.*)/i
+        =~ /^(award|barony|braithrean|brotherhood|canton|casa|chateau|clann?|companions|companionate|companie|company|crown principality|domus|dun|fellowship|freehold|guild|honou?r of the|house|household|hous|ha?us|h\{u'\}sa|keep|kingdom|league|laiva|l'ordre|la companie|la tavernehous|maison|manoir|orde[nr]|ord[eo]|ordre|principality|province|riding|shire|university) (.*)/i
         )
     {
         $string = "$2, $1";
         if ( $string
-            =~ /^(af|an|aus|d[eou]|de[ils]|dell[ao]|in|na|of?|van|vo[mn]) (.*)/i
+            =~ /^(af|an|aus|d[eou]|de[ils]|dell[ao]|in|na|of?|van|vo[mn]|zum) (.*)/i
             )
         {
             $string = "$2 $1";
