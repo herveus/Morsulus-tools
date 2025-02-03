@@ -1,4 +1,4 @@
-#!/usr/local/bin/perl
+#!/usr/bin/env perl
 $|++;
 use Daud;
 
@@ -9,7 +9,7 @@ use Daud;
 
 $, = '|';
 $\ = "\n";
-$[ = 1;
+#$[ = 1;
 
 $firstdate = 197002; # earliest entry in the database
 $splitdate = 197909; # first month for which all names & armory are split
@@ -18,7 +18,7 @@ $lastdate  = shift; # latest entry in the database
 $armorial_mode = 0;
 
 #  Parse the command-line options, if any.
-while ($_ = $ARGV[1], /^-./) {
+while ($_ = $ARGV[0], /^-./) {
   shift;
   last if (/^--$/);    #  end of options
   $armorial_mode = 1 if (/^-a$/);
@@ -31,7 +31,7 @@ while ($_ = $ARGV[1], /^-./) {
 #open (TAB, $unicode_filename) || die "cannot open $unicode_filename";
 #while (<TAB>) {
 for (Daud::_raw_data) {
-  $known_daud{$1} = 1 if (/^(..?);/);
+  $known_daud{$1} = 1 if (/^([^;]{1,3});/);
 }
 close TAB;
 
@@ -74,7 +74,7 @@ while (<>) {
   # split into fields
   @fields = split (/[|]/, $_, 99);
   ($name, $dates, $type, $text, $notes, @descriptions) = @fields;
-  $num_stiles = $#fields - 1;
+  $num_stiles = $#fields;
   &report("too few stiles ($num_stiles) in record") if ($num_stiles < 4);
 
   if ($name eq $text) {
@@ -93,7 +93,7 @@ while (<>) {
     $has_blazon = 1;
   } elsif ($type =~ /^(ANC|BNC|BNc|Bvc|HNC|NC|Nc|OC|u|vc)$/) {
     $historical_type = 1;  # change/correction/update
-  } elsif ($type =~ /^(N|BN)$/) {
+  } elsif ($type =~ /^(N|BN|ABN)$/) {
     $name_only = 1;
   } elsif ($type =~ /^([CORjtvWr]|AN|Bv|HN|BP)$/) {
   } else {
@@ -112,15 +112,15 @@ while (<>) {
   &count('record');
   # TODO: should not be a registration date for inaccurate name ch or corr
   # TODO: should be only one date for B, D, and BD type records
-  &count('missing registration date') if ($dates[1] eq '');
-  $d1 = &check_date ($dates[1]);
+  &count('missing registration date') if ($dates[0] eq '');
+  $d1 = &check_date ($dates[0]);
   if ($historical) {
-    if ($dates[2] eq '') {
+    if ($dates[1] eq '') {
       &count('missing disposition date');
     } else {
       &count('disposition date')
     }
-    $d2 = &check_date ($dates[2]);
+    $d2 = &check_date ($dates[1]);
     &report("dates ($dates) are out-of-order") if ($d2 ne '' && $d1 > $d2);
     &report("dates ($dates) are same") if ($d2 ne '' && $d1 == $d2);
   }
@@ -523,7 +523,7 @@ sub check_description {
   }
   local ($fgr) = $f{'group'};
   local ($fnu) = $f{'number'};
-  if ($fnu eq 'seme') {
+  if ($fnu eq 'seme' || $fnu eq 'semy') {
     $fnu = 6;
   } elsif ($fnu =~ /^(\d+) or more$/) {
     $fnu = $1;
@@ -596,7 +596,7 @@ sub check_name {
 
   &report("null name") if ($name eq '');
 
-  while ($name =~ /^(.*)[{](..?)[}](.*)$/) {
+  while ($name =~ /^(.*)[{](.{1,3})[}](.*)$/) {
     &report("unknown daud-code ($2) in name ($name)")
       if ($known_daud{$2} eq '');
 
@@ -658,7 +658,7 @@ sub check_blazon {
   &report("blazon does not end with a dot")
     if ($work !~ /[.]$/);
 
-  while ($blazon =~ /^(.*)[{](..)[}](.*)$/) {
+  while ($blazon =~ /^(.*)[{](.{1,3})[}](.*)$/) {
     &report("unknown daud-code ($2) in blazon")
       if ($known_daud{$2} eq '');
 

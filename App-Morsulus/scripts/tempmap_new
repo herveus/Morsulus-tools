@@ -1,0 +1,170 @@
+#!/usr/bin/perl
+
+#% Convert a database to temp format for generating an ordinary.
+
+#$[ = 1;                 # set array base to 1
+
+my $tertiaries = 1;
+# if ($ARGV[0] =~ /^-notert/)
+# {
+#     $tertiaries = 0;
+#     shift;
+# }
+
+$map{'AXE-DOUBLE BITTED'}='AXE:of 2';
+$map{'AXE-SINGLE BITTED'}='AXE:of 1';
+
+$map{'BIRD-CHICKEN AND QUAIL'}='BIRD:chicken';
+$map{'BIRD-DUCK,GOOSE AND SWAN'}='BIRD:duck';
+$map{'BIRD-EAGLE,FALCON AND HAWK'}='BIRD:eagle';
+$map{'BIRD-HERON'}='BIRD:heron';
+$map{'BIRD-HUMMINGBIRD'}='BIRD:hummingbird';
+$map{'BIRD-DOVE AND MARTLET'}='BIRD:dove';
+$map{'BIRD-OWL'}='BIRD:owl';
+$map{'BIRD-PARROT'}='BIRD:parrot';
+$map{'BIRD-PEACOCK'}='BIRD:peacock';
+$map{'BIRD-PELICAN'}='BIRD:pelican';
+$map{'BIRD-PENGUIN AND PUFFIN'}='BIRD:penguin';
+$map{'BIRD-RAVEN AND CROW'}='BIRD:raven';
+$map{'BIRD-SEAGULL AND SEABIRD'}='BIRD:seagull';
+$map{'MONSTER-ROC'}='BIRD:roc';
+
+$map{'BEAST-MOLE'}='BEASTETC:t1';
+$map{'BEAST-GIRAFFE'}='BEASTETC:t2';
+$map{'BEAST-BEAVER'}='BEASTETC:t3';
+$map{'BEAST-SLOTH'}='BEASTETC:t4';
+$map{'BEAST-PLATYPUS'}='BEASTETC:t5';
+$map{'BEAST-KANGAROO'}='BEASTETC:t6';
+
+$map{'MONSTER8OTHER'}='METC:t1';
+$map{'MONSTER-COMPOSITE'}='METC:t2';
+
+$map{'CASTLE'}='CASTLE:t1';
+$map{'TOWER'}='CASTLE:t2';
+
+$map{'MULLET'}='STAR:t1:mullet';
+$map{'COMPASS STAR'}='STAR:t2:mullet:of 8';
+$map{'SUN'}='STAR:sun:of 8 or more';
+$map{'ESTOILE'}='STAR:estoile';
+
+$map{'ARRANGEMENT9BEAST&MONSTER,COMBATTANT'} = 'COMBAT';
+$map{'ARRANGEMENT-IN PALE'}='INPALE';
+$map{'ARRANGEMENT-IN SALTIRE,2 SWORDS'}='INSA:t1';
+$map{'ARRANGEMENT-IN SALTIRE,2 TRUMPETS'}='INSA:t2';
+$map{'ARRANGEMENT-IN SALTIRE,ARROW&___'}='INSA:t3';
+$map{'ARRANGEMENT-IN SALTIRE,9OTHER'}='INSA:t4';
+$map{'ARRANGEMENT-IN SALTIRE,QUILL&___'}='INSA:t5';
+$map{'ARRANGEMENT-IN SALTIRE,SPEAR&LANCE'}='INSA:t6';
+$map{'ARRANGEMENT-IN SALTIRE,SWORD&___'}='INSA:t7';
+$map{'BASE AND FORD'}='BASE';
+$map{'BEAST-CAT AND LION'}='CAT';
+$map{'BEAST-DOG,FOX AND WOLF'}='DOG';
+$map{'BEND*3'}='BS';
+$map{'CROSS*9'}='CRAC';
+$map{'CUP AND GOBLET'}='CUP';
+$map{'FIELD DIV.-PER BEND'}='PB';
+$map{'FIELD DIV.-PER BEND*3'}='PBS';
+$map{'FIELD DIV.-PER FESS'}='PFESS';
+$map{'FIELD DIV.-PER PALE'}='PPALE';
+$map{'FIELD DIV.-PER SALTIRE'}='PSALT';
+$map{'FIELD DIV.-QUARTERLY'}='QLY';
+$map{'FLEUR-DE-LYS'}='FDL';
+$map{'HEAD-BEAST,DOG,FOX AND WOLF'}='HEADDOG';
+$map{'MONSTER-PEGASUS AND WINGED UNICORN'}='PEGASUS';
+$map{'MUSICAL INSTR-HARP AND LYRE'}='HARP';
+$map{'WREATH-LAUREL'}='LW';
+
+$map{'FISH-DOLPHIN'}='DOLPHIN:natural';
+$map{'MONSTER-DOLPHIN'}='DOLPHIN:heraldic';
+
+$map{'MONSTER-AMPHISBAENA'}='DRAGON:t3';
+$map{'MONSTER-BASILISK'}='DRAGON:t4';
+$map{'MONSTER-DRAGON'}='DRAGON:t1';
+$map{'MONSTER-HYDRA'}='DRAGON:t5';
+$map{'MONSTER-WIVERN'}='DRAGON:t2';
+$map{'MONSTER-SEA DRAGON AND SEA GRIFFIN'}='DRAGON:t6';
+
+$map{'MONSTER-GRIFFIN'}='GRIFFIN:t1';
+$map{'MONSTER-OPINICUS'}='GRIFFIN:t2';
+
+$map{'MONSTER-SEA WOLF'}='SEAWOLF:t1';
+$map{'MONSTER-SEA DOG AND SEA LOAT'}='SEAWOLF:t2';
+
+$map{'MONSTER-KRAKEN'}='KRAKEN:t1';
+$map{'MOLLUSK-OCTOPUS AND SQUID'}='KRAKEN:t2';
+
+$map{'MONSTER-SALAMANDER'}='LIZARD:t2';
+$map{'REPTILE-LIZARD'}='LIZARD:t2';
+
+$map{'FIELD DIV.-PER CHEVRON'}='PC:t1';
+$map{'FIELD DIV.-CHAPE'}='PC:t2';
+$map{'FIELD DIV.-PER CHEVRON*7'}='PCI:t1';
+$map{'FIELD DIV.-CHAUSSE'}='PCI:t2';
+
+$map{'ESCARBUNCLE'}='ESCARB:t1';
+$map{'SNOWFLAKE'}='ESCARB:t2';
+
+$map{'FRET'}='FRET:t1';
+$map{'FIELD TREATMENT-FRETTY'}='FRET:t2:primary';
+
+$map{'FLOWER-GARDEN ROSE'}='ROSE:natural';
+$map{'FLOWER-HERALDIC ROSE'}='ROSE:heraldic';
+$map{'FLOWER-FEW PETALS'}='ROSE';
+$map{'FOIL-5'}='ROSE';
+
+$map{'FIELD DIV.-GYRONNY'}='GYRONNY:t1';
+$map{'FIELD DIV.-GYRONNY OTHER THAN EIGHT'}='GYRONNY:t2';
+
+$map{'SHIP-CANOE'}='SHIP:t3';
+$map{'SHIP-DRAKKAR'}='SHIP:t2';
+$map{'SHIP-LYMPHAD AND GALLEY'}='SHIP:t1';
+
+$map{'SWORD AND DAGGER*1B'}='SWORD:broken';
+$map{'SWORD AND DAGGER'}='SWORD:plain blade';
+$map{'SWORD AND DAGGER*1C'}='SWORD:obscured';
+$map{'SWORD AND DAGGER*1A'}='SWORD:odd shape';
+$map{'SWORD AND DAGGER*1D'}='SWORD:t1';
+$map{'SWORD AND DAGGER,2'}='SWORD:2';
+$map{'SWORD AND DAGGER,3+'}='SWORD:3 or more';
+
+$map{'TREE-BLASTED'} = 'TREE-ROUNDED SHAPE';
+$map{'TREE-WILLOW'} = 'TREE-ROUNDED SHAPE';
+$map{'TREE-ELONGATED SHAPE'} = 'TREE-ROUNDED SHAPE';
+$map{'TREE-PALM TREE SHAPE'} = 'TREE-ROUNDED SHAPE';
+
+while (<>) {
+  chop;       # strip record separator
+  @fields = split(/\|/);
+  print $fields[0];
+  if ($#fields >= 2) {
+#   Database file.
+    for ($i = 1; $i <= ; $i++) {
+      print '|', $fields[$i];
+    }
+    for ($f = 6; $i <= $#fields; $i++) {
+      #$fields[$i] =~ s/\:tinctureless//;
+      $fields[$i] =~ s/\:hidden line//;
+      if ($tertiaries or $fields[$i] !~ /\:tertiary/) {
+        ($old, $rest) = split (/\:/, $fields[$i], 2); 
+	if ($old eq 'MONSTER-HYDRA') {
+          # special case, since Elsbeth wants hydras to go both places
+	  $new = 'MONSTER9MULTI-HEADED';
+          if ($rest eq '') {
+            print '|', $new;
+          } else {
+            print '|', $new, ':', $rest;
+          }
+	}
+        $new = $map{$old};
+        if ($new eq '') {
+          print '|', $fields[$i];
+        } elsif ($rest eq '') {
+          print '|', $new;
+        } else {
+          print '|', $new, ':', $rest;
+        }
+      }
+    }
+  }
+  print "\n";
+}

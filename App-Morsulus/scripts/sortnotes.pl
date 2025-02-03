@@ -3,7 +3,7 @@
 #  Sort the keys of a database, desc, or map file into canonical order.
 
 $\ = "\n";
-$[ = 1;
+#$[ = 1;
 $, = '|';
 
 $noncat_fields = 5;  # default is db file
@@ -19,10 +19,10 @@ while ($_ = $ARGV[1], /^-./) {
 while (<>) {
   chop;                               # Strip off the record separator.
   my @fields = split (/\|/, $_, 99);     # Split the record into fields.
-  my @notes = split_notes($fields[5]);
+  my @notes = split_notes($fields[4]);
   if (@notes)
   {
-    $fields[5] = '('.join(')(', @notes).')';
+    $fields[4] = '('.join(')(', @notes).')';
   }
   print @fields;
 }

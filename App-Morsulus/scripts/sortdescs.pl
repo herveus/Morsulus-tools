@@ -3,7 +3,7 @@
 #  Sort the keys of a database, desc, or map file into canonical order.
 
 $\ = "\n";
-$[ = 1;
+#$[ = 1;
 $, = '|';
 
 $noncat_fields = 5;  # default is db file

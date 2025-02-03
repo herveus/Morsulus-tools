@@ -1,0 +1,66 @@
+#!/usr/local/bin/perl
+use strict;
+use warnings;
+use Getopt::Euclid;
+
+my %old_items;
+for my $old_item ( `/usr/local/bin/dump_db_all -db $ARGV{-olddb}` )
+{
+    my ($regid) = ($old_item =~ /regid:(\d+)/);
+    push @{$old_items{$regid}}, $old_item;    
+}
+
+my %new_items;
+for my $new_item ( `/usr/local/bin/dump_db_all -db $ARGV{-newdb}` )
+{
+    my ($regid) = ($new_item =~ /regid:(\d+)/);
+    push @{$new_items{$regid}}, $new_item;    
+}
+
+my @added_regids = grep { ! exists $old_items{$_} } (keys %new_items);
+my @deleted_regids = grep { ! exists $new_items{$_} } (keys %old_items);
+my @changed_regids;
+for my $new_regid (keys %new_items)
+{
+    next unless exists $old_items{$new_regid};
+    my @old_items = sort @{$old_items{$new_regid}};
+    my @new_items = sort @{$new_items{$new_regid}};
+    if (@old_items == @new_items)
+    {
+        for my $i (0..$#old_items)
+        {
+            if ($old_items[$i] ne $new_items[$i])
+            {
+                push @changed_regids, $new_regid;
+                next;
+            }
+        }
+        next;
+    }
+    push @changed_regids, $new_regid;
+}
+
+print "New regids\n", join("\n", sort { $a <=> $b } @added_regids), "\n--\n",
+    "Removed regids\n", join("\n", sort { $a <=> $b } @deleted_regids), "\n--\n",
+    "Changed regids\n", join("\n", sort { $a <=> $b } @changed_regids), "\n--\n";
+
+=head1 REQUIRED
+
+=over
+
+=item -newdb <file>
+
+SQLite database file containing current items
+
+=for Euclid:
+    file.type: readable
+
+=item -olddb <file>
+
+SQLite database file containing previous items
+
+=for Euclid:
+    file.type: readable
+    
+=back
+

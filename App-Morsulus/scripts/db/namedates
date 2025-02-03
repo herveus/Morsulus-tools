@@ -1,0 +1,75 @@
+#!/usr/local/bin/perl
+use strict;
+use warnings;
+use Morsulus::Ordinary::Classic;
+use Getopt::Euclid;
+use feature 'say';
+
+#%  List recent armory registrations that lack name registration data.
+my %armory_date;
+my %name_date;
+
+#my $ord = Morsulus::Ordinary::Classic->new(dbname => $ARGV{-db});
+#my $recs = $ord->Registration->search();
+my @recs = `/usr/local/bin/dump_db_all -db $ARGV{-db}`;
+
+#while (my $rec = $ord->get_registration($recs->next))
+for my $rec (@recs)
+{
+    # Split the record into fields.
+    my ($name, $source, $type, $text, $notes, $other) =
+        split(/\|/, $rec);
+    my ($reg, $rel) = split(/\-/, $source);
+    my $date = defined $reg ? substr($reg, 0, 6) : '';
+    if ($date ne '' && $notes !~ /non-SCA/)
+    {
+        if ($date < 6605)
+        {
+            $date += 200000;
+        }
+        elsif ($date < 10000)
+        {
+            $date += 190000;
+        }
+        if ($type =~ /^[NBD]$/ || $type eq 'BN' || $type eq 'BD')
+        {
+            $name_date{$name} = $date;
+
+        }
+        elsif ($type =~ /^[abdgjs]$/ || $type eq 'D?')
+        {
+            if (!exists $armory_date{$name} || $date > $armory_date{$name})
+            {
+                $armory_date{$name} = $date;
+            }
+        }
+    }
+}
+
+while (my ($name, $date) = each (%name_date)) {
+  delete $armory_date{$name};
+}
+
+while (my ($name, $date) = each (%armory_date)) {
+  say join('|', $date, $name);
+}
+
+__END__
+
+=head1 NAME
+
+namenc - check for registration dates for names
+
+=head1 REQUIRED
+
+=over
+
+=item -db <file>
+
+SQLite database file.
+
+=for Euclid:
+    file.type: writable
+
+=back
+

@@ -6,6 +6,7 @@ use Daud;
 use Getopt::Euclid;
 use Morsulus::Ordinary::Classic;
 use feature 'say';
+use Morsulus::Actions;
 
 
 #%  check database format on a record-by-record basis
@@ -28,7 +29,9 @@ my %count = ();
 my %known_daud = ();
 for (Daud::_raw_data)
 {
-    $known_daud{$1} = 1 if (/^(..?);/);
+    next if /^#/;
+    my ($daud, undef) = split(/;/);
+    $known_daud{$daud} = 1;
 }
 
 my %known_category = ();
@@ -815,16 +818,19 @@ sub check_name
 
         if (!grep($name =~ $_, @exceptions) && $name =~ / /)
         {
-            report("designator not bracketed ($name)");
+            if ($name ne Morsulus::Actions->bracket_name($name))
+            {
+                report("designator not bracketed ($name)");
+            }
         }
     }
 
     report("null name") if ($name eq '');
 
-    while ($name =~ /^(.*)[{](..?)[}](.*)$/)
+    while ($name =~ /^(.*)[{](.{1,3})[}](.*)$/)
     {
         report("unknown daud-code ($2) in name ($name)")
-            if ($known_daud{$2} eq '');
+            if (!exists $known_daud{$2} || $known_daud{$2} eq '');
 
         # remove one (more) daud-code from the name
         $name = "$1x$3";
@@ -894,7 +900,7 @@ sub check_blazon
     report("blazon does not end with a dot")
         if ($work !~ /[.]$/);
 
-    while ($blazon =~ /^(.*)[{](..)[}](.*)$/)
+    while ($blazon =~ /^(.*)[{](.{1,3})[}](.*)$/)
     {
         report("unknown daud-code ($2) in blazon")
             if ($known_daud{$2} eq '');

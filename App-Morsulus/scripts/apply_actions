@@ -17,13 +17,21 @@ while (my $action_line = <$input_fh>)
 {
     chomp $action_line;
     # do we still need to convert &quot; to "?
+    next if $action_line =~ /^#/;
     next if $action_line =~ /^err?/ && !$ARGV{-err};
     
-    my ( undef, $kingdom, $action, $name, $armory, $name2, $notes )
+    my $name2 = '';
+    my ( $ufocode, $kingdom, $action, $name, $armory, $notes )
         = split( /[|]/, $action_line );
-    print STDERR $action_line if $ARGV{-verbose};
+    print STDERR $action_line."\n" if $ARGV{-verbose};
     next if $action eq 'disposition';
     next if $action =~ /^ignore/;
+    
+    if ($action =~ /with artists note/)
+    {
+        $notes .= "(Artist's note: see LoAR for details)";
+        $action =~ s/ with artists note//;
+    }
     
     $action =~ s/\s+$//;
 
@@ -42,7 +50,7 @@ while (my $action_line = <$input_fh>)
         $act->apply_entries;
         }
     catch {
-        warn $@."$_";
+        warn $@."$ufocode:$_";
         # ultimately emit unprocessed action
         }
 }
