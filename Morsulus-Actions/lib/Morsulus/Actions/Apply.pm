@@ -6,7 +6,7 @@ use Carp;
 use Moose;
 extends 'Morsulus::Actions';
 
-our $VERSION = '2024.012.001';
+our $VERSION = '2025.002.002';
 
 has 'db' => (
     isa => 'Morsulus::Ordinary::Classic',
@@ -42,7 +42,7 @@ my $NEWLINE = qq{\n};
 my $SPACE = qr/[ ]/;
 my $BRANCH = qr/(?: Kingdom | Principality | Barony |
         Province | Region | Shire | Canton | Stronghold | Port |
-        College | Crown $SPACE Province | March | Dominion | Barony-Marche )/xms;
+        College | Crown $SPACE Province | March | Dominion | Barony-Marche | Hamlet)/xms;
 
 sub is_name_registered
 {
@@ -1391,6 +1391,18 @@ sub apply_entries
     return 1;
 }
 
+sub check_notes_for_retention
+{
+    my ($self, $reg) = @_;
+    my $notes;
+    for my $n (map { $_->note_text } $reg->notes->all())
+    {
+        next if $n =~ /Owner:/;
+        $notes .= "($n)";
+    }
+    warn "Notes may need transferred " . $self->name_of . ":" . $notes if $notes;
+}
+
 sub armory_disposition
 {
     my ($self) = @_;
@@ -1523,6 +1535,7 @@ sub name_change
     	            registration_kingdom => $self->kingdom_of,
     	        })->update unless $retained eq 'erratum';
     	    $got_the_primary_name = 1;
+            $self->check_notes_for_retention($reg);
     	}
     	elsif ($reg->action->action_id ~~ @name_types)
     	{
@@ -1673,6 +1686,7 @@ sub order_name_change_reversed
     $self->db->add_name($self->permute($self->quoted_names_of->[0]));
     $reg->text_name($self->permute($self->quoted_names_of->[0]));
     $reg->update;
+    $self->check_notes_for_retention($reg);
     
     $self->db->add_note($reg, "-$note") if $note;
     
@@ -1735,6 +1749,7 @@ sub name_correction
     	            registration_kingdom => $self->kingdom_of,
     	        })->update unless $erratum eq 'erratum';
     	    $got_the_primary_name = 1;
+            $self->check_notes_for_retention($reg);
     	}
     	elsif ($reg->action->action_id ~~ @name_types)
     	{
@@ -1824,6 +1839,7 @@ sub owned_name_correction_reversed
     $reg->text_name($self->permute($self->quoted_names_of->[0]));
     $reg->action('Nc');
     $reg->update;
+    $self->check_notes_for_retention($reg);
     
     $self->name_owned_by($type, $note);
     return;
@@ -1881,6 +1897,7 @@ sub name_owned_by
     for my $n ($self->split_notes, $note)
     {
         next unless $n;
+        next if $n =~ /Artist's note:/;
         $self->db->add_note($reg, $n);
     }
     return $reg;
@@ -1909,6 +1926,7 @@ sub name_owned_by2
     for my $n ($self->split_notes, $note)
     {
         next unless $n;
+        next if $n =~ /Artist's note:/;
         $self->db->add_note($reg, $n);
     }
     return $reg;
@@ -2451,6 +2469,7 @@ sub armory_release
     $reg->release_date($self->date_of);
     $reg->release_kingdom($self->kingdom_of);
     $reg->update;
+    $self->check_notes_for_retention($reg);
     for my $n ($self->split_notes, defined($reason)?"-$reason":undef)
     {
         next unless $n;
@@ -2483,6 +2502,7 @@ sub name_release
     $reg->release_date($self->date_of);
     $reg->release_kingdom($self->kingdom_of);
     $reg->update;
+    $self->check_notes_for_retention($reg);
     
     $self->db->add_note($reg, "-$reason");
     for my $n ($self->split_notes)
@@ -2525,6 +2545,7 @@ sub owned_name_release
     $reg->release_kingdom($self->kingdom_of);
     $reg->update;
     
+    $self->check_notes_for_retention($reg);
     $self->db->add_note($reg, "-$reason");
     for my $n ($self->split_notes)
     {
@@ -2559,6 +2580,7 @@ sub owned_name_release_reverse2
     $reg->release_date($self->date_of);
     $reg->release_kingdom($self->kingdom_of);
     $reg->update;
+    $self->check_notes_for_retention($reg);
     
     $self->db->add_note($reg, "-$reason");
     for my $n ($self->split_notes)
@@ -2593,6 +2615,7 @@ sub owned_name_release_reverse
     $reg->release_date($self->date_of);
     $reg->release_kingdom($self->kingdom_of);
     $reg->update;
+    $self->check_notes_for_retention($reg);
     
     $self->db->add_note($reg, "-$reason");
     for my $n ($self->split_notes)
@@ -2643,6 +2666,7 @@ sub transfer_armory
     $reg->release_date($self->date_of);
     $reg->release_kingdom($self->kingdom_of);
     $reg->update;
+    $self->check_notes_for_retention($reg);
     $self->db->add_note($reg, "-$note to " .  $self->permute($self->quoted_names_of->[-1]));
     return;   
     die $self->as_str;
@@ -2680,6 +2704,7 @@ sub transfer_name
     $reg->release_date($self->date_of);
     $reg->release_kingdom($self->kingdom_of);
     $reg->update;
+    $self->check_notes_for_retention($reg);
     $self->db->add_note($reg, '-transferred to ' .  $self->permute($self->quoted_names_of->[-1]));
     return;   
     die $self->as_str;
