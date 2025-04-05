@@ -2,12 +2,13 @@
 use strict;
 $|++;
 
-my $VERSION = "2024.007.001";
+my $VERSION = "2025.002.001";
 my $USAGE = <<USAGE;
 Usage: $0 [input_file] > output_file
        reads STDIN if input_file not given
 USAGE
 
+my $meetingdate = '';
 my $kingdom;
 my $owner = '';
 my $action = '';
@@ -95,6 +96,7 @@ my $xp = XML::Twig->new(twig_handlers => {
 	},
 	start_tag_handlers => {
 		'errata' => \&start_errata,
+		'loar' => \&get_meetingdate,
 	},
 	keep_encoding => 1,);
 
@@ -122,6 +124,13 @@ sub reset_vars
 	@disc_blazons = ();
 	#$erratum_date = '';
 	$notes = '';
+}
+
+sub get_meetingdate
+{
+    my ($t, $elt) = @_;
+    $meetingdate = $elt->att('meetingdate');
+    print STDERR "meetingdate is $meetingdate\n";
 }
 
 sub get_kingdom_name
@@ -192,7 +201,7 @@ sub get_item_discussion
 	}
 	elsif ($disc =~ /Artist's note:/)
 	{
-	    $notes .= "(Artist's note: see LoAR for details)";;
+	    $notes .= "(Artist's note: see $meetingdate LoAR for details)";
 	}
 #	print "get_item_discussion $discussion\n";
 }
