@@ -306,6 +306,7 @@ foreach $pair (split (/\&/, $ENV{'QUERY_STRING'})) {
 
 $def = $definition{$p};
 $plink = $plink{$p};
+$plink = ''; # suppress attempt to point to primer
 
 &print_header ();
 
