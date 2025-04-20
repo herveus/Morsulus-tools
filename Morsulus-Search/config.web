@@ -3891,6 +3891,8 @@ $IndexPage{'C'} = <<'XXEOFXX';
  - see <a href="T.html#toolcarpentry">Tool - Carpentry</a>
 <li>Carriage
  - see <a href="W.html#wagon">Wagon</a>
+<li>Carriage axle
+ - see <a href="W.html#wheelheraldic">Wheel - Heraldic</a>
 <li>Carrot
  - see <a href="F.html#fruitother">Fruit - Other</a>
 <li>Carrot flower
@@ -6885,6 +6887,8 @@ $IndexPage{'H'} = <<'XXEOFXX';
  - see also <a href="P.html#pheon">Pheon</a>
 <li>Head - Wolf
  - see <a href="H.html#headbeastdog">Head - Beast - Dog</a>
+<li>Head - Yak
+ - see <a href="H.html#headbeastbull">Head - Beast - Bull</a>
 <li>Headgear
  - see <a href="C.html#clothingheadgear">Clothing - Headgear</a>
 <a name="heart">
@@ -8685,6 +8689,8 @@ $IndexPage{'P'} = <<'XXEOFXX';
  - see <a href="H.html#headbeastcat">Head - Beast - Cat</a>
 <li>Papelonny
  - see <a href="F.html#fieldtreatmentpapelonny">Field treatment - Papelonny</a>
+<li>Papellony
+ - see <a href="F.html#fieldtreatmentpapelonny">Field treatment - Papelonny</a>
 <li>Papillion
  - see <a href="A.html#arthropodmoth">Arthropod - Moth</a>
 <li>Papyrus
@@ -8717,6 +8723,8 @@ $IndexPage{'P'} = <<'XXEOFXX';
  - see <a href="L.html#legbeast">Leg - Beast</a>
 <a name="pawprint">
 <li><a href="XXDescSearchUrlXX?p=PAW%20PRINT">Paw print</a>
+<li>Pawprint
+ - see <a href="P.html#pawprint">Paw print</a>
 <li>Pea pod
  - see <a href="F.html#fruitother">Fruit - Other</a>
 <li>Peach
@@ -10713,7 +10721,8 @@ $IndexPage{'U'} = <<'XXEOFXX';
 <ul>
 <a name="umbrella">
 <li><a href="XXDescSearchUrlXX?p=UMBRELLA">Umbrella</a>
-<li><a href="XXDescSearchUrlXX?p=UMEBACHI">Umebachi</a>
+<li>Umebachi
+ - see <a href="F.html#flowerrose">Flower - Rose</a>
 <li>Uncial
  - see <a href="S.html#symbol">Symbol</a>
 <li>Unicorn
@@ -11210,6 +11219,8 @@ $IndexPage{'Y'} = <<'XXEOFXX';
 <ul>
 <li>Yak
  - see <a href="B.html#beastbull">Beast - Bull</a>
+<li>Yak's head
+ - see <a href="H.html#headbeastbull">Head - Beast - Bull</a>
 <li>Yale
  - see <a href="M.html#monsterantelope">Monster - Antelope</a>
 <li>Yarn
@@ -11605,6 +11616,7 @@ foreach $pair (split (/\&/, $ENV{'QUERY_STRING'})) {
 
 $def = $definition{$p};
 $plink = $plink{$p};
+$plink = ''; # suppress attempt to point to primer
 
 &print_header ();
 
@@ -15399,7 +15411,7 @@ $conf_file = '.configweb';
 
 $config{'XXPrimerUrlXX'} = 'http://heraldry.sca.org/armory/newprimer/';
 $config{'XXLoARUrlXX'} = 'http://heraldry.sca.org/loar';
-$config_version = '2025-03-22 (1:158+)';
+$config_version = '2025-04-20 (1:163+)';
 $config{'XXVersionXX'} = $config_version;
 $config{'XXHeadXX'} = '';
 
